@@ -12,6 +12,7 @@ tmp*.md
 old_*
 _old_*
 */src/vendor/*
+api/src/data/*
 .vscode
 *.crt
 *.key
