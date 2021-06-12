@@ -68,9 +68,9 @@ RUN a2enmod ssl
 
 #USER root
 COPY ./src /var/www/html/
-COPY ./src/database.sql /var/www/html/db/
-RUN chown -R www-data /var/www/html/db
-RUN chown -R www-data /var/www/html/upload
+#COPY ./src/database.sql /var/www/html/db/
+#RUN chown -R www-data /var/www/html/db
+#RUN chown -R www-data /var/www/html/data
 
 #change ownership of our applications
 RUN chown -R www-data:www-data /var/www/html
