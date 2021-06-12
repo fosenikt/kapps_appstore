@@ -1,0 +1,41 @@
+<div class="container page-top-space">
+
+	<!-- <h1>Applikasjoner</h1> -->
+
+	<!-- <a class="waves-effect waves-light btn" href="/app/new">
+		Ny applikasjon
+	</a> -->
+
+
+	<div id="apps-by-type" class="row apps-list">
+		<i class="fas fa-circle-notch fa-spin"></i> Henter applikasjoner...
+	</div>
+
+</div>
+
+<script>
+	remote.rpc(config.api_url+'/apps/get'+window.location.search).then(response => {
+		if (response != null) {
+			template.load_webpart('/components/Apps/_webparts/app_item.jsr', '#apps-by-type', response);
+		}
+
+		else {
+			document.getElementById('apps-by-type').innerHTML = `
+				<div class="noResult">
+					<div>
+						Fant ingen applikasjoner eller tjenester i denne kategorien...
+					</div>
+
+					<div>
+						Kanskje du har en å <a href="/app/new">dele</a>?
+					</div>
+				</div>
+			`;
+		}
+	})
+
+	.catch((err) => {
+		notification.error('En feil oppstod under henting av template');
+		console.log(err);
+	});
+</script>

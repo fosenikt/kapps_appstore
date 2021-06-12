@@ -1,0 +1,21 @@
+<div class="sidebar-content">
+	<!-- <div class="sidebar-header">
+		<div class="title">
+			Administrasjon
+		</div>
+	</div> -->
+
+
+	<a class="nav-item" href="/admin">
+		<i class="fal fa-fw fa-cog"></i> Administrasjon
+	</a>
+
+	<a class="nav-item" href="/admin/companies">
+		<i class="fal fa-fw fa-school"></i> Virksomheter
+	</a>
+
+	<a class="nav-item" href="/admin/users">
+		<i class="fal fa-fw fa-users"></i> Brukere
+	</a>
+
+</div>

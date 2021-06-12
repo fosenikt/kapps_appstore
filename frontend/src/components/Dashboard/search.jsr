@@ -1,0 +1,115 @@
+<div class="container">
+	<h1>Søk</h1>
+
+	<div class="app-search search-page" style="margin-bottom:45px;">
+		<form id="nav-search" action="/search/all" method="POST">
+			<div class="search-container">
+				<div class="search-input">
+					<input type="text" class="input-app-search" id="input-nav-search" name="q" placeholder="Søk etter app eller tjeneste her...">
+				</div>
+				<div class="search-btn">
+					<button type="submit">
+						<i class="fas fa-search"></i>
+					</button>
+				</div>
+			</div>
+		</form>
+	</div>
+
+	<div id="nav-search-results" class="row search-list">
+		<i class="fas fa-circle-notch fa-spin"></i> Henter resultater...
+	</div>
+</div>
+
+
+<style>
+	/* Extra small devices (phones, 600px and down) */
+	@media only screen and (max-width: 600px) {
+		.app-search.search-page { display:block; }
+	}
+
+	/* Small devices (portrait tablets and large phones, 600px and up) */
+	@media only screen and (min-width: 600px) {
+		.app-search.search-page { display:block; }
+	}
+
+	/* Medium devices (landscape tablets, 768px and up) */
+	@media only screen and (min-width: 768px) {
+		.app-search.search-page { display:none; }
+	}
+
+	/* Large devices (laptops/desktops, 992px and up) */
+	@media only screen and (min-width: 992px) {
+		.app-search.search-page { display:none; }
+	}
+
+	/* Extra large devices (large laptops and desktops, 1200px and up) */
+	@media only screen and (min-width: 1200px) {
+		.app-search.search-page { display:none; }
+	}
+</style>
+
+<script>
+	// Get search-term from URL parameters
+	search_term = getParameterByName('q');
+
+	// Create form data to send search-term to backend
+	formData = new FormData();
+	formData.append('q', search_term);
+
+	//document.getElementById('input-nav-search').value = search_term; // Add search-term to input
+	document.querySelectorAll('.input-app-search').forEach(function(input) {
+		input.value = search_term
+	});
+	
+
+	if (search_term == null) {
+		document.getElementById('nav-search-results').innerHTML = `
+		<div class="noResults">
+			Skriv et søkeord i toppen :-)
+		</div>`;
+	}
+
+
+	else {
+
+		// Request from backend
+		remote.rpc_post(config.api_url+'/search/all', formData).then(response => {
+			console.log(response);
+
+
+			// If no response? Or no results
+			if (response == null || response.length == 0) {
+				if (search_term.length > 0) {
+					document.getElementById('nav-search-results').innerHTML = `
+						<div class="noResults">
+							Fant ingen treff på &nbsp; <i>${search_term}</i> ...
+						</div>`;
+				} else {
+					document.getElementById('nav-search-results').innerHTML = `
+						<div class="noResults">
+							Det kan være lurt å skrive inn et ord eller to som du ønsker å søke etter :-)
+						</div>`;
+				}
+			}
+
+
+			// Get template and show results
+			else {
+				template.load_webpart('/components/Dashboard/_webparts/search_result.jsr', '#nav-search-results', response).then(response => {
+					console.log('Template loaded...');
+				})
+
+				.catch((err) => {
+					notification.error('En feil oppstod under lasting av siden. Vennligst prøv oppfrisk siden å prøv på nytt.');
+					console.log(err);
+				});
+			}
+		})
+
+		.catch((err) => {
+			notification.error('En feil oppstod under henting av template');
+			console.log(err);
+		});
+	}
+</script>

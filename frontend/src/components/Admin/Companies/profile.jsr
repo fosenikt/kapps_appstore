@@ -1,0 +1,402 @@
+<div class="page-content page-padding">
+	<div class="row">
+		<div class="col s8">
+			<h1>{{>title}}</h1>
+		</div>
+		<div class="col s4">
+			<div class="page-tools">
+				<a class="modal-trigger" href="#modal-company-logo-{{>public_id}}">
+					<i class="fas fa-camera"></i>
+				</a>
+
+				<a class="modal-trigger" href="#modal-company-update-{{>public_id}}">
+					<i class="fas fa-pencil-alt"></i>
+				</a>
+
+				<a class="modal-trigger" href="#modal-company-delete-{{>public_id}}">
+					<i class="fas fa-trash-alt" style="color:red;"></i>
+				</a>
+			</div>
+		</div>
+	</div>
+	
+
+	
+
+
+	<div class="row">
+		<div class="col s8">
+			<div class="item-list">
+				<div class="item">
+					<div class="title">
+						Fylke
+					</div>
+					<div class="value">
+						{{if county}}
+							{{>county}}
+						{{else}}
+							<i>Ikke oppgitt</i>
+						{{/if}}
+					</div>
+				</div>
+
+				<div class="item">
+					<div class="title">
+						Type ID
+					</div>
+					<div class="value">
+						{{if type_id}}
+							{{>type_id}}
+						{{else}}
+							<i>Ikke oppgitt</i>
+						{{/if}}
+					</div>
+				</div>
+
+				<div class="item">
+					<div class="title">
+						Organisasjonsnummer
+					</div>
+					<div class="value">
+						{{if org_numb}}
+							{{>org_numb}}
+						{{else}}
+							<i>Ikke oppgitt</i>
+						{{/if}}
+					</div>
+				</div>
+
+				<div class="item">
+					<div class="title">
+						Webside
+					</div>
+					<div class="value">
+						{{if website}}
+							<a href="{{>website}}" target="_blank">
+								{{>website}}
+							</a>
+						{{else}}
+							<i>Ikke oppgitt</i>
+						{{/if}}
+					</div>
+				</div>
+
+				<div class="item">
+					<div class="title">
+						Påloggingsdomene / E-postdomene
+					</div>
+					<div class="value">
+						{{if domain}}
+							{{>domain}}
+						{{else}}
+							<i>Ikke oppgitt</i>
+						{{/if}}
+					</div>
+				</div>
+
+				<div class="item">
+					<div class="title">
+						Type
+					</div>
+					<div class="value">
+						{{if type}}
+							{{>type}}
+						{{else}}
+							<i>Ikke oppgitt</i>
+						{{/if}}
+					</div>
+				</div>
+
+			</div> <!-- end item-list -->
+		</div> <!-- end col -->
+
+
+		<div class="col s4">
+			<div style="padding:25px; background-color:rgba(219, 219, 219); border-radius:8px;">
+				<a class="modal-trigger" href="#modal-company-logo-{{>public_id}}">
+					<img style="max-height:200px; min-width:150px; width:100%; display:inline-block;" src="{{>logo.image}}" alt="Logo">
+				</a>
+			</div>
+		</div>
+	</div>
+
+
+	
+</div>
+
+
+
+
+
+<!-- Modal: Update company -->
+<div id="modal-company-update-{{>public_id}}" class="modal">
+
+	<form id="form-company-update-{{>public_id}}" action="/company/update" method="POST">
+		<div class="modal-content">
+			<h4>Rediger virksomhet</h4>
+			
+			<div style="margin-top:35px; padding:20px;">
+				<input type="hidden" id="input-company-id" name="public_id" value="{{>public_id}}">
+
+				<div class="row">
+					<div class="col s8">
+						<div class="input-field">
+							<input type="text" id="input-company-title" name="title" value="{{>title}}">
+							<label for="input-company-title">Navn på virksomhet</label>
+						</div>
+					</div>
+
+					<div class="col s4">
+						<div class="input-field">
+							<input type="text" id="input-company-org_numb" name="org_numb" value="{{>org_numb}}">
+							<label for="input-company-org_numb">Organisasjonsnummer</label>
+						</div>
+					</div>
+				</div>
+
+				<div class="row">
+					<div class="input-field col s8">
+						<input type="text" id="input-company-website" name="website" value="{{>website}}">
+						<label for="input-company-website">Nettside</label>
+					</div>
+
+					<div class="input-field col s4">
+						<input type="text" id="input-company-domain" name="domain" value="{{>domain}}">
+						<label for="input-company-domain">Påloggingsdomene</label>
+						<div class="help">
+							<i class="fas fa-info-circle"></i> E-post påloggingsdomene
+						</div>
+					</div>
+				</div>
+
+				
+
+				<div class="row">
+					<div class="input-field col s4">
+						<select id="input-company-type" name="type">
+							<option value="Bedrift">Bedrift</option>
+							<option value="Departement">Departement</option>
+							<option value="Etat">Etat</option>
+							<option value="Direktorat">Direktorat</option>
+							<option value="Kommune">Kommune</option>
+							<option value="Fylke">Fylke</option>
+							<option value="Interkommunalt samarbeid">Interkommunalt samarbeid</option>
+							<option value="IKS">IKS</option>
+							<option value="Organisasjonsledd">Organisasjonsledd</option>
+							<option value="Skole / Universitet">Skole / Universitet</option>
+						</select>
+						<label for="input-company-type">Virksomhetstype</label>
+					</div>
+
+					<div class="input-field col s4">
+						<input type="text" id="input-company-county" name="county" value="{{>county}}">
+						<label for="input-company-county">Fylke</label>
+						<div class="help">
+							<i class="fas fa-info-circle"></i> Relevant dersom virksomhetstype er kommune
+						</div>
+					</div>
+
+					<div class="input-field col s4">
+						<input type="text" id="input-company-type_id" name="type_id" value="{{>type_id}}">
+						<label for="input-company-type_id">Type ID</label>
+						<div class="help">
+							<i class="fas fa-info-circle"></i> Kommune eller fylkesnummer (f.eks. fylke => 50 eller kommune 5054)
+						</div>
+					</div>
+				</div>
+			</div>
+
+		</div>
+		
+		<div class="modal-footer">
+			<a href="#!" class="modal-close waves-effect waves-green btn-flat">Lukk</a>
+			<button type="submit" class="btn waves-effect waves-light blue">Lagre</button>
+		</div>
+	</form>
+</div>
+
+
+
+
+<!-- Modal: Upload logo -->
+<div id="modal-company-logo-{{>public_id}}" class="modal">
+
+	<form id="form-company-logo-{{>public_id}}" action="/company/logo/upload" method="POST">
+		<div class="modal-content">
+			<h4>Last opp logo</h4>
+			
+			<div style="margin-top:35px; padding:20px;">
+				<input type="hidden" id="input-company-id" name="public_id" value="{{>public_id}}">
+
+				<div class="file-field input-field">
+					<div class="btn">
+						<span>File</span>
+						<input type="file" id="file-logo-{{>public_id}}" name="image">
+					</div>
+					<div class="file-path-wrapper">
+						<input class="file-path validate" type="text">
+					</div>
+				</div>
+			</div>
+
+		</div>
+		
+		<div class="modal-footer">
+			<a href="#!" class="modal-close waves-effect waves-green btn-flat">Lukk</a>
+			<button type="submit" class="btn waves-effect waves-light blue">Last opp</button>
+		</div>
+	</form>
+</div>
+
+
+
+<!-- Modal: Delete -->
+<div id="modal-company-delete-{{>public_id}}" class="modal">
+
+	<div class="modal-content">
+		<h4>Slett virksomhet</h4>
+		
+		<div style="margin-top:35px; padding:20px;">
+			Er du sikker på at du vil slette denne virksomheten?
+		</div>
+
+	</div>
+	
+	<div class="modal-footer">
+		<a href="#!" class="modal-close waves-effect waves-green btn-flat">Lukk</a>
+		<a type="submit" class="btn waves-effect waves-light red" href="javascript:deleteCompany('{{>public_id}}')">Slett virksomhet</a>
+	</div>
+</div>
+
+
+<script>
+    var modal_update = M.Modal.init(document.getElementById('modal-company-update-{{>public_id}}'), {});
+    var modal_delete = M.Modal.init(document.getElementById('modal-company-delete-{{>public_id}}'), {});
+    var modal_logo = M.Modal.init(document.getElementById('modal-company-logo-{{>public_id}}'), {
+		onOpenStart: function (modal, trigger) {
+			document.getElementById('file-logo-{{>public_id}}').click();
+		}
+	});
+
+
+	document.getElementById('input-company-type').value = '{{>type}}';
+    var select_type = M.FormSelect.init(document.getElementById('input-company-type'), {
+		container: 'body',
+		wrapper: 'body',
+	});
+
+
+	M.updateTextFields();
+
+
+
+
+	addEvent(document, 'submit', '#form-company-update-{{>public_id}}', function(e) {
+		e.preventDefault();
+		e.stopImmediatePropagation(); // Stops event to fire twice
+
+		var thisForm = document.getElementById(e.target.getAttribute("id"));
+		var formData = new FormData(e.target);
+		var formAction = e.target.getAttribute("action");
+
+		remote.rpc_post(config.api_url+formAction, formData).then(response => {			
+			console.log(response);
+			if (response.status == 'success') {
+				notification.success('Virksomhet oppdatert'); // Notification
+				thisForm.reset();
+				modal_update.close();
+
+				var public_id = formData.get('public_id');
+				if (document.getElementById('page-admin-companies-' + public_id)) {
+					document.getElementById('page-admin-companies-' + public_id).remove();
+				}
+
+				page('/admin/company/' + public_id);
+			}
+		})
+
+		.catch((err) => {
+			console.log(err);
+		});
+
+		return false;
+	});
+
+
+
+	document.getElementById("file-logo-{{>public_id}}").onchange = function(e) {
+		e.preventDefault();
+		e.stopImmediatePropagation(); // Stops event to fire twice
+
+		var form = document.getElementById('form-company-logo-{{>public_id}}');
+		submit_logo_upload(form);
+	};
+
+	addEvent(document, 'submit', '#form-company-logo-{{>public_id}}', function(e) {
+		e.preventDefault();
+		e.stopImmediatePropagation(); // Stops event to fire twice
+
+		submit_logo_upload(e);
+	});
+
+
+	function submit_logo_upload(e) {
+		
+
+		var thisForm = document.getElementById('form-company-logo-{{>public_id}}');
+		var formData = new FormData(thisForm);
+		var formAction = thisForm.getAttribute("action");
+
+		console.log(thisForm);
+		console.log(formData);
+		console.log(formAction);
+
+		remote.rpc_post(config.api_url+formAction, formData).then(response => {			
+			console.log(response);
+			if (response.status == 'success') {
+				notification.success('Logo lastet opp'); // Notification
+				thisForm.reset();
+				modal_logo.close();
+
+				var public_id = formData.get('public_id');
+				if (document.getElementById('page-admin-companies-' + public_id)) {
+					document.getElementById('page-admin-companies-' + public_id).remove();
+				}
+
+				page('/admin/company/' + public_id);
+			}
+		})
+
+		.catch((err) => {
+			console.log(err);
+		});
+
+		return false;
+	}
+
+
+
+
+	function deleteCompany(public_id) {
+		remote.rpc(config.api_url+'/company/delete/'+public_id).then(response => {			
+			console.log(response);
+			if (response.status == 'success') {
+				notification.success('Virksomhet slettet'); // Notification
+				modal_delete.close();
+
+				if (document.getElementById('page-admin-companies-' + public_id)) {
+					document.getElementById('page-admin-companies-' + public_id).remove();
+				}
+
+				page('/admin/companies');
+			}
+		})
+
+		.catch((err) => {
+			console.log(err);
+		});
+
+		return false;
+	}
+
+</script>

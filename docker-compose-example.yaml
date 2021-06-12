@@ -1,0 +1,137 @@
+version: '3.2'
+services:
+
+  ## FRONTEND
+  fipo-calendar-frontend:
+    container_name: fipo-calendar-frontend
+    build:
+      context: ./frontend/
+      dockerfile: .docker/Dockerfile
+    restart: always
+    ports:
+      - "8040:80"
+    volumes:
+      - type: bind
+        source: /var/www/fipo-calendar/frontend/src
+        target: /var/www/html
+        bind:
+          propagation: shared
+      - "/etc/timezone:/etc/timezone:ro"
+      - "/etc/localtime:/etc/localtime:ro"
+    environment:
+        - VIRTUAL_HOST=calendar.fikt.no
+        - API_URL=calendarapi.fikt.no
+    networks:
+      - default
+
+  ## API
+  fipo-calendar-api:
+    container_name: fipo-calendar-api
+    build:
+      context: ./api/
+      dockerfile: .docker/Dockerfile
+    #command: sh -c "composer install"
+    restart: always
+    ports:
+      - "8041:80"
+    volumes:
+      - type: bind
+        source: /var/www/fipo-calendar/api/src
+        target: /var/www/html
+        bind:
+          propagation: shared
+      # named_volume_name:/container/path
+#      - fipo-calendar-api:/var/www/html/
+      - "/etc/timezone:/etc/timezone:ro"
+      - "/etc/localtime:/etc/localtime:ro"
+    environment:
+        - VIRTUAL_HOST=calendarapi.fikt.no
+        - FRONTEND_HOST=calendar.fikt.no
+        - DB_NAME=calendar
+        - DB_USER=calendar
+        - DB_PASSWORD=___DB_PASSWORD___
+        - DB_HOST=fipo-calendar-db
+        - MEMCACHED_HOST=fipo-memcached
+        - MEMCACHED_PORT=11211
+        - O365_TENANT_ID=___TENANT_ID___
+        - O365_APP_ID=___APP_ID___
+        - O365_APP_SECRET=___APP_SECRET___
+        - JWT_ISSUER=___NAME_OF_YOUR_COMPANY___
+        - JWT_SECRET=___JWT_SECRET___
+        - API_SOURCE_DIR=/var/www/fipo-calendar/api/src/
+        - UPLOAD_FOLDER=/upload
+        - IPGEOLOCATION_API_KEY=___OPTIONAL___
+    networks:
+      - default
+
+  fipo-calendar-composer:
+    container_name: fipo-calendar-composer
+    image: composer:latest
+    #command: ["composer", "install --ignore-platform-reqs"]
+    command: sh -c "composer install --ignore-platform-reqs"
+    volumes:
+      - type: bind
+        source: /var/www/fipo-calendar/api/src
+        target: /app
+        bind:
+          propagation: shared
+      # named_volume_name:/container/path
+#      - fipo-calendar-api:/app
+    depends_on:
+      - fipo-calendar-api
+
+
+  ## Database
+  fipo-calendar-db:
+    container_name: fipo-calendar-db
+    build:
+      context: ./db/
+      dockerfile: .docker/Dockerfile
+    restart: always
+    command: --default-authentication-plugin=mysql_native_password
+    restart: always
+    environment:
+      MYSQL_DATABASE: 'calendar'
+      # So you don't have to use root, but you can if you like
+      MYSQL_USER: 'calendar'
+      # You can use whatever password you like
+      MYSQL_PASSWORD: '___DB_PASSWORD___'
+      # Password for root access
+      MYSQL_ROOT_PASSWORD: '___DB_PASSWORD___'
+      TZ: Europe/Oslo
+    ports:
+      # <Port exposed> : < MySQL Port running inside container>
+      - '3310:3306'
+      # Where our data will be persisted
+    volumes:
+      - ./db:/docker-entrypoint-initdb.d
+      - fipo-calendar-db:/var/lib/mysql
+      - "/etc/timezone:/etc/timezone:ro"
+      - "/etc/localtime:/etc/localtime:ro"
+
+  ## PHPmyadmin
+  fipo-calendar-phpmyadmin:
+    container_name: fipo-calendar-phpmyadmin
+    image: phpmyadmin/phpmyadmin
+    links:
+      - fipo-calendar-db
+    environment:
+      VIRTUAL_HOST: calendardb.fikt.no
+      PMA_HOST: fipo-calendar-db
+      PMA_PORT: 3306
+    ports:
+      - '8042:80'
+    volumes: 
+      - /sessions
+
+## VOLUMES
+volumes:
+    persistent:
+    fipo-calendar-api:
+    fipo-calendar-db:
+    fipo-calendar-upload:
+
+networks:
+  default:
+    external:
+      name: webproxy

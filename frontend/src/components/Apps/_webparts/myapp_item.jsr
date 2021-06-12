@@ -1,0 +1,33 @@
+<tr>
+	<td>
+		<a href="/app/{{>id}}">
+			{{>title}}
+		</a>
+	</td>
+
+	<td>
+		<i class="fas {{>type.icon}}"></i> {{>type.title}}
+	</td>
+
+	<td>
+		{{if status == 'draft'}}
+			<span class="badge blue">Utkast</span>
+		{{else status == 'published'}}
+			<span class="badge green">Publisert</span>
+		{{else status == 'deleted'}}
+			<span class="badge red">Slettet</span>
+		{{else}}
+			<span class="badge gray">{{>status}}</span>
+		{{/if}}
+	</td>
+
+	<td>
+		{{>updated_by.firstname}} {{>updated_by.lastname}}
+	</td>
+
+	<td>
+		<a href="/app/edit/{{>id}}">
+			Rediger
+		</a>
+	</td>
+</tr>

@@ -1,0 +1,58 @@
+<div class="row">
+
+	<div class="input-field col s12 l4">
+		<select id="app-new-select-type" name="type_id"></select>
+		<label for="app-new-select-type">Type</label>
+		<div class="help">
+			<i class="fas fa-info-circle"></i> (Påkrevd) Overordnet kategori for applikasjon/tjeneste.
+			Se <a href="https://rammeverk.kapps.no/deling/applications" target="_blank">Rammeverket</a> (åpnes i nytt vindu) for beskrivelse av de.
+		</div>
+	</div>
+
+	<div class="input-field col s12 l8">
+		<input type="text" id="app-new-input-title" name="title">
+		<label for="app-new-input-title">Tittel</label>
+		<div class="help">
+			<i class="fas fa-info-circle"></i> (Påkrevd)
+		</div>
+	</div>
+
+</div>
+
+<div style="text-align:right; margin-top:40px; margin-right:15px;">
+	<button type="submit" class="waves-effect waves-light btn">Forsett <i class="fas fa-chevron-right"></i></button>
+</div>
+
+
+<script>
+	function app_new_types_get()
+	{
+		remote.rpc(config.api_url+'/types/get').then(response => {
+
+			target = document.getElementById('app-new-select-type');
+			target.innerHTML = ""; // Empty target
+
+			// Loop
+			if (response != null) {
+				for (let i = 0; i < response.length; i++) {
+					// Create a option
+					option = document.createElement('option');
+					option.text = response[i].title;
+					option.value = response[i].id;
+					target.add(option);
+				}
+			}
+
+			var instances = M.FormSelect.init(target, {});
+		})
+
+		.catch((err) => {
+			notification.error('En feil oppstod under henting av template');
+			console.log(err);
+		});
+	}
+
+	app_new_types_get();
+	var instances = M.FormSelect.init(document.getElementById('app-new-select-install-type'), {});
+</script>
+

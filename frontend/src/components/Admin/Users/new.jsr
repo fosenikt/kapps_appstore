@@ -1,0 +1,280 @@
+<div class="page-content page-padding">
+
+	<div style="max-width:800px;">
+
+		{{if id}}
+			<h1>Rediger bruker</h1>
+		{{else}}
+			<h1>Ny bruker</h1>
+		{{/if}}
+
+		<p class="help">
+			<i class="fas fa-info-circle"></i> Merk at brukere vil automatisk logges inn basert på virksomhetsdomene.
+			Dette skjema brukes hovedsaklig til å opprette systembrukere, som igjen kan benyttes til å opprette token for maskin-til-maskin API.
+		</p>
+
+
+		<form id="form-admin-user-new" action="/admin/user/create" method="POST">
+
+			<input type="hidden" name="id" id="input-newuser-id" value="{{>id}}">
+
+			{{if customer}}
+				<div id="new-user-selected-customer">
+					<div class="logo">
+						<img src="{{>customer.logo.thumb}}" alt="Company logo">
+					</div>
+					<div class="info">
+						<a href="javascript:select_new_customer();" class="new-customer">
+							<i class="fas fa-times"></i>
+						</a>
+						<div class="title">{{>customer.title}}</div>
+						<div class="subtitle">{{>customer.type}} &nbsp; - &nbsp; {{>customer.domain}}</div>
+					</div>
+				</div>
+			{{/if}}
+
+			<div id="new-user-select-customer" style="{{if customer}}display:none;{{/if}}">
+				<div class="row">
+					<div class="col s12">
+						<label for="input-newuser-company-id">Virksomhet</label>
+						<div class="row">
+							<div class="input-field col s12">
+								<select id="select-newuser-company-search" name="state" style="width:100%;"></select>
+								<input type="hidden" name="customer_id" id="input-newuser-company-id" value="{{if customer}}{{>customer.id}}{{/if}}">
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+
+
+			<div class="row">
+				<div class="col s6">
+					<div class="input-field">
+						<input type="text" id="input-newuser-firstname" name="firstname" value="{{>firstname}}">
+						<label for="input-newuser-firstname">Fornavn</label>
+					</div>
+				</div>
+
+				<div class="col s6">
+					<div class="input-field">
+						<input type="text" id="input-newuser-lastname" name="lastname" value="{{>lastname}}">
+						<label for="input-newuser-lastname">Etternavn</label>
+					</div>
+				</div>
+			</div>
+
+			<div class="row">
+				<div class="col s12">
+					<div class="input-field">
+						<input type="text" id="input-newuser-role" name="company_role" value="{{>company_role}}">
+						<label for="input-newuser-mail">Rolle / tittel</label>
+					</div>
+				</div>
+			</div>
+
+
+
+			<div class="row">
+				<div class="col s12">
+					<div class="input-field">
+						<input type="text" id="input-newuser-mail" name="mail" value="{{>mail}}">
+						<label for="input-newuser-mail">E-post</label>
+					</div>
+				</div>
+			</div>
+
+			<div class="row">
+				<div class="col s12">
+					<div class="input-field">
+						<input type="text" id="input-newuser-mobile" name="mobile" value="{{>mobile}}">
+						<label for="input-newuser-mobile">Mobil</label>
+					</div>
+				</div>
+			</div>
+
+			<div class="row">
+				<div class="input-field col s12">
+					<select name="status" id="sel-newuser-status">
+						<option value="active">Aktiv</option>
+						<option value="deactivated">Deaktivert</option>
+						<option value="system">System-bruker</option>
+					</select>
+					<label>Status</label>
+				</div>
+			</div>
+
+
+			<!-- <div class="switch">
+				<label>
+					<input type="checkbox" name="system_user" id="chk-newuser-systemuser" value="1">
+					<span class="lever"></span>
+					System bruker
+				</label>
+			</div> -->
+
+			<div class="switch">
+				<label>
+					<input type="checkbox" name="admin" id="chk-newuser-systemuser" value="1">
+					<span class="lever"></span>
+					Administrator
+				</label>
+			</div>
+
+
+
+			<div style="text-align:right; padding:25px;">
+				<button type="submit" class="waves-effect waves-light btn blue">Lagre</button>
+			</div>
+
+			
+		</form>
+
+	</div>
+</div>
+
+
+
+<style>
+	#new-user-selected-customer { display:flex; background-color:#eaeaea; padding:15px; position:relative; border-radius:8px; margin-bottom:35px; }
+	#new-user-selected-customer .logo { flex:0 0 40px; text-align:center; }
+	#new-user-selected-customer .logo img { width:100%; }
+	#new-user-selected-customer .info { flex:1 1 auto; padding-left:25px; }
+	#new-user-selected-customer .info .title { font-size:1.2rem; }
+	#new-user-selected-customer .info .subtitle { font-size:0.7rem; color:var(--muted-text-color); }
+	#new-user-selected-customer .info a.new-customer { position:absolute; top:0; right:0; padding:6px 15px; }
+</style>
+
+
+<script>
+	setTimeout(function(){
+		var instances = M.FormSelect.init(document.getElementById('sel-newuser-status'), {});
+	}, 500);
+
+
+	remote.rpc(config.api_url + '/companies/simplelist/get').then(response => {
+		
+		var elem_autocomplete = document.querySelectorAll('.autocomplete-company');
+		var instances = M.Autocomplete.init(elem_autocomplete, {
+			data: response,
+		});
+
+	}).catch((err) => {
+		console.log(err);
+	});
+
+
+
+	$('#select-newuser-company-search').select2({
+		ajax: {
+			url: function (params) {
+				return config.api_url+'/companies/search/' + params.term;
+			},
+			dataType: 'json',
+			delay: 250,
+			beforeSend: function (xhr) {
+				xhr.setRequestHeader('Authorization', 'Bearer ' + localStorage.getItem('user_token'));
+			},
+			processResults: function (data, params) {
+				params.page = params.page || 1;
+				return {
+					results: data
+				};
+			},
+			cache: true
+		},
+		placeholder: 'Søk etter virksomhet',
+		minimumInputLength: 2,
+		templateResult: tech_assign_formatState,
+		templateSelection: tech_assign_formatRepoSelection
+	}).on("change", function(e) {
+		var thisData = $(this).select2('data');
+		var id_input = $(this).siblings('#input-newuser-company-id');
+		$(id_input).val(thisData[0].id);
+
+		//console.log('Show merc selected');
+		//merc_selected = document.getElementById("modalAddMerchandise").getElementsByClassName("mercSelected")[0];
+		//merc_selected.style.display = 'block';
+	});
+
+	/*
+		User-search format for select2
+	*/
+	function tech_assign_formatState (state) {
+		if (!state.id) { return state.text; }
+		var $state = $(
+			'<div class="sel2-search-item">'
+				+'<div class="icon"><img class="pp pp-xs" style="" src="' + state.logo.thumb + '"></div>'
+				+'<div class="content">'
+					+'<div class="title">' + state.title + '</div>'
+					+'<div class="subtitle">' + state.type + '</div>'
+				+'</div>'
+			+'</div>'
+		);
+		return $state;
+	};
+
+	function tech_assign_formatRepoSelection(state) {
+		if (state.title != undefined) {
+			return state.title || state.text;
+		} else {
+			return 'Søk etter virksomhet';
+		}
+	};
+
+
+
+	function select_new_customer() {
+		document.getElementById('new-user-selected-customer').style.display = 'none';
+		document.getElementById('new-user-select-customer').style.display = 'block';
+	}
+
+
+
+
+	addEvent(document, 'submit', '#form-admin-user-new', function(e) {
+		e.preventDefault();
+		e.stopImmediatePropagation(); // Stops event to fire twice
+
+		var thisForm = document.getElementById(e.target.getAttribute("id"));
+		var formData = new FormData(e.target);
+		var formAction = e.target.getAttribute("action");
+
+		var id = formData.get('id');
+		console.log(id);
+
+		let endpoint = '';
+
+		if (id == '' || id == null || id == undefined) {
+			formAction = '/admin/user/create';
+		} else {
+			formAction = '/admin/user/update';
+		}
+
+		remote.rpc_post(config.api_url+formAction, formData).then(response => {			
+			console.log(response);
+			if (response.status == 'success') {
+				notification.success('Bruker lagret'); // Notification
+				thisForm.reset();
+
+				if (document.getElementById('page-admin-user-new')) {
+					document.getElementById('page-admin-user-new').remove();
+				}
+
+				if (document.getElementById('page-admin-user-edit-'+response.id)) {
+					document.getElementById('page-admin-user-edit-'+response.id).remove();
+				}
+
+				page('/admin/user/' + response.id);
+			}
+		})
+
+		.catch((err) => {
+			console.log(err);
+		});
+
+		return false;
+	});
+
+	
+</script>

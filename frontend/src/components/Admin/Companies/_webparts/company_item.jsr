@@ -1,0 +1,9 @@
+<tr>
+	<td>
+		<a href="/admin/company/{{>public_id}}">
+			<img style="max-height:13px; max-width:13px;" src="{{>logo.image}}" alt="Logo"> <span class="title">{{>title}}</span>
+		</a>
+	</td>
+	<td>{{>type}}</td>
+	<td>{{>domain}}</td>
+</tr>

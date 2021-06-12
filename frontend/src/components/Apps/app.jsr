@@ -1,0 +1,67 @@
+<div class="container page-top-space application-view">
+
+	<div class="row">
+		<div class="col s8">
+			<h1>{{>title}}</h1>
+			<p>{{>short_description}}</p>
+		</div>
+		<div class="col s4" style="text-align:right;">
+			{{if edit_access == 1}}
+				<a class="waves-effect waves-light btn blue" href="/app/edit/{{>id}}">Rediger</a>
+			{{/if}}
+		</div>
+	</div>
+
+
+	
+
+	<div class="row">
+		<div class="col s12 l4">
+			<div class="image" id="app-product-images-{{>id}}">
+				<a class="app-img primary-img" data-fancybox="gallery-{{>id}}" href="{{>primary_image.image}}">
+					<img src="{{:primary_image.thumb}}">
+				</a>
+				<div class="secondary-images">
+					{{for images}}
+						{{if primary == 0}}
+							<a class="app-img secondary-img" data-fancybox="gallery-{{>~root.id}}" href="{{>image}}"><img src="{{>thumb}}"></a>
+						{{/if}}
+					{{/for}}
+				</div>
+			</div>
+
+
+			<div style="margin-top:45px;">
+				<h4>Eier</h4>
+				<div class="company" style="display:flex; background-color:#eaeaea; padding:10px; border-radius:8px;">
+					<div style="flex:0 0 60px; text-align:center;">
+						<img style="max-width:50%;" src="{{>company.logo.thumb}}" alt="Logo">
+					</div>
+
+					<div style="flex:1 1 auto;">
+						<a href="/company/profile/{{>company.public_id}}">
+							{{>company.title}}
+						</a>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="col s12 l8">
+
+			<section>
+				<h2>Beskrivelse</h2>
+				<div id="app-description-{{>id}}">
+					{{:description}}
+				</div>
+			</section>
+
+			<section style="margin-top:50px;">
+				<h2>Installasjonsveiledning</h2>
+				<div id="app-installation-{{>id}}">
+					{{:installation}}
+				</div>
+			</section>
+
+		</div>
+	</div>
+</div>

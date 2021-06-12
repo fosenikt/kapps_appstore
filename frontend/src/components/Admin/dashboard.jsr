@@ -1,0 +1,30 @@
+<div class="page-content page-padding">
+	<h1>Administrasjon</h1>
+
+	<div class="tiles">
+		<a class="tile tile-white tile-lg" href="/admin/companies">
+			<span class="tile-icon">
+				<i class="fal fa-fw fa-school"></i>
+			</span>
+			<span class="title">
+				Virksomheter
+			</span>
+			<span class="subtitle">
+				Se og administrer virksomheter
+			</span>
+		</a>
+
+		<a class="tile tile-white tile-lg" href="/admin/users">
+			<span class="tile-icon">
+				<i class="fal fa-fw fa-users"></i>
+			</span>
+			<span class="title">
+				Brukere
+			</span>
+			<span class="subtitle">
+				Se og administrer brukere
+			</span>
+		</a>
+	</div>
+
+</div>

@@ -1,0 +1,17 @@
+<div class="app-card-outer">
+	<div class="card app-card">
+		<div class="app-card-inner">
+			<div class="card-image">
+				<a href="/app/{{>id}}" class="card-image-inner" style="background-image:url('{{>primary_image.thumb}}');">
+					<div class="card-title">{{>title}}</div>
+				</a>
+			</div>
+			<div class="card-content">
+				{{>short_description}}
+			</div>
+			<div class="card-action">
+				<a href="/app/edit/{{>id}}">Edit</a>
+			</div>
+		</div>
+	</div>
+</div>

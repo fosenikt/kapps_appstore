@@ -1,0 +1,152 @@
+<section class="top-header">
+	<!-- <img class="header-image" src="/assets/images/wp/header03.jpg" alt=""> -->
+	<section class="header-content container">
+
+		<div class="row" style="padding-top:45px;">
+			<div class="col s6 l6">
+				<h1>Kapps Appstore</h1>
+				<p>
+					Et bibliotek med app-er og tjenester av og for offentlige virksomheter
+				</p>
+
+				<div style="margin-top:25px;">
+					<a href="/app/new" class="btn waves-effect waves-light btn-large blue">
+						Jeg vil dele
+					</a>
+				</div>
+			</div>
+			<div class="col s6 l6">
+				<img style="max-width:90%;" src="/assets/images/icons/Vector-Smart-Object.png" alt="city illustration" />
+			</div>
+		</div>
+	</section>
+
+</section>
+
+
+
+
+<section style="margin-top:60px;">
+	<div class="container" style="text-align:center;">
+		xxx Tjenester deles
+	</div>
+</section>
+
+
+
+
+<section style="margin-top:60px;">
+	<div class="container">
+		<div class="dashboard-app-types" id="app-types">
+			<i class="fas fa-circle-notch fa-spin"></i> Henter app-kategorier...
+		</div>
+	</div>
+</section>
+
+
+
+<section style="margin-top:60px;">
+	<div class="container">
+		<div class="row">
+			<div class="col s4">
+				<h4>Topp 5</h4>
+				<ul>
+					<li>App #1</li>
+					<li>App #2</li>
+					<li>App #3</li>
+					<li>App #4</li>
+					<li>App #5</li>
+				</ul>
+			</div>
+
+			<div class="col s4">
+				<h4>Nykommere</h4>
+				<ul>
+					<li>App #1</li>
+					<li>App #2</li>
+					<li>App #3</li>
+					<li>App #4</li>
+					<li>App #5</li>
+				</ul>
+			</div>
+		</div>
+	</div>
+</section>
+
+
+
+
+
+<style>
+
+.top-header {
+	position: relative;
+	height: 600px;
+	background-image: linear-gradient(#ff9d2f, #ff6126);
+	border-bottom-left-radius: 50% 20%;
+	border-bottom-right-radius: 50% 20%;
+}
+
+.dashboard-app-types {
+	display: flex;
+}
+
+.dashboard-app-type {
+	text-align: center;
+	background-color: rgba(0, 0, 0, .35);  
+	backdrop-filter: blur(5px);
+	border-radius: 8px;
+	padding: 15px 0px;
+	margin: 6px 5px;
+	color: #fff;
+}
+.dashboard-app-type .icon {
+	font-size: 4rem;
+}
+.dashboard-app-type .title {
+	font-weight: 600;
+}
+
+
+@media (min-width: 0px) and (max-width: 992px) {
+	.dashboard-app-types {
+		flex-direction: column;
+	}
+	.dashboard-app-type {
+		flex: 0 0 100%;
+	}
+}
+
+
+@media only screen and (min-width: 992px) {
+	.dashboard-app-types {
+		flex-direction: rows;
+	}
+	.dashboard-app-type {
+		flex: 0 0 25%;
+	}
+}
+
+</style>
+
+<script>
+	remote.rpc(config.api_url+'/types/get').then(response => {
+		template.load_webpart('/components/Dashboard/_webparts/dashboard_app_types.jsr', '#app-types', response).then(response => {
+			VanillaTilt.init(document.querySelectorAll(".dashboard-app-type"), {
+				max: 15,
+				speed: 1500,
+				glare: true,
+			});
+		})
+
+		.catch((err) => {
+			notification.error('En feil oppstod under lasting av siden. Vennligst prøv oppfrisk siden å prøv på nytt.');
+			console.log(err);
+		});
+	})
+
+	.catch((err) => {
+		notification.error('En feil oppstod under henting av template');
+		console.log(err);
+	});
+</script>

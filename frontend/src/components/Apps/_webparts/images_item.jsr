@@ -1,0 +1,10 @@
+<a class="app-img primary-img" data-fancybox="gallery" href="{{>primary_image.image}}">
+	<img src="{{:primary_image.thumb}}">
+</a>
+<div class="secondary-images">
+	{{for images}}
+		{{if primary == 0}}
+			<a class="app-img secondary-img" data-fancybox="gallery" href="{{>image}}"><img src="{{>thumb}}"></a>
+		{{/if}}
+	{{/for}}
+</div>

@@ -1,0 +1,31 @@
+{{if images}}
+	{{for images}}
+		<div class="product-image product-image-thumb {{if primary == 1}}active{{/if}}" style="background:url('{{>thumb}}') no-repeat center center;">
+			<div class="tools">
+				<a class="btn-delete-product-image" href="#" data-id="{{>~root.id}}" data-image="{{>image}}">
+					<i class="fa fa-trash-alt"></i> Delete
+				</a>
+				
+				{{if primary == 0}}
+					<a class="btn-primary-product-image" style="float:right;" href="#" data-id="{{>~root.id}}" data-image="{{>filename}}">
+						<i class="fa fa-check"></i> Sett standard
+					</a>
+				{{/if}}
+			</div>
+		</div>
+	{{/for}}
+{{else}}
+	<div class="noResult" style="padding-top:8%; text-align:center;">
+		<div style="font-size:3rem;">
+			<i class="fal fa-images"></i>
+		</div>
+		<div>
+			Denne tjenesten har ingen bilder...
+		</div>
+		<div>
+			<a href="#" data-toggle="modal" data-target="#modal-merc-upload">
+				<i class="fa fa-upload"></i> Last opp bilder
+			</a>
+		</div>
+	</div>
+{{/if}}

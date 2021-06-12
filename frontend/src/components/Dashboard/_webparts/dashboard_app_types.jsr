@@ -1,0 +1,9 @@
+<a class="dashboard-app-type" href="/apps/get?type={{>id}}" data-tilt data-tilt-max="50" data-tilt-speed="400" data-tilt-perspective="500">
+	<div class="icon">
+		<i class="{{>fa_icon}}"></i>
+	</div>
+
+	<div class="title">
+		{{>title}}
+	</div>
+</a>

@@ -1,0 +1,14 @@
+.fa-icon-selector {}
+.fa-icon-selector .dropdown-menu {}
+.fa-icon-selector .dropdown-menu a.fa-selector-icon {
+	border:1px solid transparent;
+	color:#000;
+	display: inline-block;
+	padding:5px;
+	margin:1px;
+}
+
+.fa-icon-selector .dropdown-menu a.fa-selector-icon:hover {
+	border:1px solid #4287f5;
+	background-color: #eaeaea;
+}

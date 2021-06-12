@@ -1,0 +1,16 @@
+<div class="row">
+	<div class="col s2">
+		<img style="width:90%;" src="{{>logo.thumb}}" alt="Logo">
+	</div>
+	<div class="col s10">
+		<h4>
+			<a href="/company/profile/{{>public_id}}">
+				{{>title}}
+			</a>
+		</h4>
+
+		{{if website}}
+			<a href="{{>website}}" target="_blank">{{>website}}</a>
+		{{/if}}
+	</div>
+</div>

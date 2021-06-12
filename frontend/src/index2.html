@@ -1,0 +1,351 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<!-- <meta http-equiv="Content-Security-Policy" content="upgrade-insecure-requests"> -->
+
+	<title>Architect</title>
+	
+	<link rel="apple-touch-icon" sizes="180x180" href="./assets/images/app/apple-touch-icon.png">
+	<link rel="icon" type="image/png" sizes="32x32" href="./assets/images/app/favicon-32x32.png">
+	<link rel="icon" type="image/png" sizes="16x16" href="./assets/images/app/favicon-16x16.png">
+	<link rel="manifest" href="./site.webmanifest">
+	<link rel="mask-icon" href="./assets/images/app/safari-pinned-tab.svg" color="#5bbad5">
+	<meta name="msapplication-TileColor" content="#da532c">
+	<meta name="theme-color" content="#ffffff">
+
+
+	
+
+
+	<!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+	<!-- <script src="/assets/lib/jquery-3.4.1.min.js"></script> -->
+	<!--
+		<script src="https://code.jquery.com/jquery-2.2.4.min.js" integrity="sha256-BbhdlvQf/xTY9gja0Dq3HiwQF8LaCRTXxZKRutelT44=" crossorigin="anonymous"></script>
+	-->
+	<script src="https://code.jquery.com/jquery-3.6.0.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
+
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/cytoscape/3.18.2/cytoscape.min.js" integrity="sha512-CBGCXtszkG5rYlQSTNUzk54/731Kz28WPk2uT1GCPCqgfVRJ2v514vzzf16HuGX9WVtE7JLqRuAERNAzFZ9Hpw==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+
+
+	<!--
+		Bootstrap CSS
+	<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+	-->
+	<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-BmbxuPwQa2lc/FVzBcNJ7UAyJxM6wuqIj61tLrc4wSX0szH/Ev+nYRRuWlolflfl" crossorigin="anonymous">
+	<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta2/dist/js/bootstrap.bundle.min.js" integrity="sha384-b5kHyXgcpbZJO/tY9Ul7kGkf1S0CWuKcCD38l8YkeH8z8QjE0GmW1gYU5S9FOnJ0" crossorigin="anonymous"></script>
+
+	<!--
+		jsRender
+		Source: https://www.jsviews.com
+	-->
+	<script src="/assets/lib/jsrender.min.js"></script>
+	<!-- <script src="/assets/lib/jsviews.min.js"></script> -->
+
+	<!--
+		Datepicker
+		Source: https://github.com/eternicode/bootstrap-datepicker
+				 https://bootstrap-datepicker.readthedocs.org/en/latest/
+	<script type="text/javascript" src="/assets/lib/bootstrap-datepicker-1.9.0/js/bootstrap-datepicker.min.js"></script>
+	<link href="/assets/lib/bootstrap-datepicker-1.9.0/css/bootstrap-datepicker.min.css" rel="stylesheet" type="text/css" />
+	<script type="text/javascript" src="/assets/lib/bootstrap-datepicker-1.9.0/locales/bootstrap-datepicker.no.min.js" charset="UTF-8"></script>
+	-->
+
+	<!--
+		cleave.js
+		Source: https://github.com/nosir/cleave.js
+	-->
+	<script src="/assets/lib/cleave.min.js"></script>
+
+
+	<!-- 
+		Noty
+		Source: http://ned.im/noty/
+	-->
+	<script src="/assets/lib/noty/noty.min.js" type="text/javascript"></script>
+	<link href="/assets/lib/noty/noty.css" rel="stylesheet" type="text/css" />
+	<link href="/assets/lib/noty/themes/nest.css" rel="stylesheet" type="text/css" />
+
+
+
+	<!--
+		Select2
+		Source: https://github.com/select2/select2-bootstrap-theme
+	-->
+	<script src="/assets/lib/select2/js/select2.full.min.js"></script>
+	<script src="/assets/lib/select2/js/i18n/nb.js"></script>
+	<link href="/assets/lib/select2/css/select2.min.css" rel="stylesheet"/>
+	<link href="/assets/lib/select2/css/select2-bootstrap4.min.css" rel="stylesheet"/>
+
+
+
+	<!-- 
+		Shepherd
+		Source: https://github.com/shipshapecode/shepherd
+	<script src="https://cdn.jsdelivr.net/npm/shepherd.js@8.1.0/dist/js/shepherd.js"></script>
+	-->
+
+
+
+
+	<!-- Animate.css
+		 Source: https://daneden.github.io/animate.css/
+	<link href="/assets/lib/animate.css/animate.css" rel="stylesheet" type="text/css" />
+	-->
+
+
+
+
+	<link href="https://fonts.googleapis.com/css?family=Architects+Daughter|Kaushan+Script|Lobster+Two|Open+Sans|Permanent+Marker|Poiret+One|Russo+One|Satisfy" rel="stylesheet">
+
+
+
+
+	
+
+	<!-- App framework and design -->
+	<link href="/assets/css/module-tiles.css" rel="stylesheet">
+
+	<link id="css-theme" href="/assets/css/light.css" rel="stylesheet">
+
+	<link href="/assets/css/webframe.css" rel="stylesheet">
+	<link href="/assets/css/webparts.css" rel="stylesheet">
+	<link href="/assets/css/app_components.css" rel="stylesheet">
+</head>
+<body>
+
+
+	<!--
+	Architect
+
+	Welcome to the source of infoplakat.no! Feel free to use any of the open source plugins we have used for this project!
+	But any code written by the infoplakat.no team are copyrighted to Fosen Utvikling/Fosen Development AS.
+	-->
+
+
+	<script type="text/javascript">
+		$(function () {
+			$('[data-toggle="tooltip"]').tooltip();
+		})
+
+
+		// Get URL parameters
+		function getParameterByName(name, url) {
+			if (!url) url = window.location.href;
+			name = name.replace(/[\[\]]/g, '\\$&');
+			var regex = new RegExp('[?&]' + name + '(=([^&#]*)|&|#|$)'),
+			results = regex.exec(url);
+			if (!results) return null;
+			if (!results[2]) return '';
+			return decodeURIComponent(results[2].replace(/\+/g, ' '));
+		}
+
+		function removeParams(sParam)
+		{
+			var url = window.location.href.split('?')[0]+'?';
+			var sPageURL = decodeURIComponent(window.location.search.substring(1)),
+				sURLVariables = sPageURL.split('&'),
+				sParameterName,
+				i;
+
+			for (i = 0; i < sURLVariables.length; i++) {
+				sParameterName = sURLVariables[i].split('=');
+				if (sParameterName[0] != sParam) {
+					url = url + sParameterName[0] + '=' + sParameterName[1] + '&'
+				}
+			}
+			return url.substring(0,url.length-1);
+		}
+
+
+
+		// If token exist in URL
+		// Get user with API request
+		// Redirect if user is found
+		if (getParameterByName('token') != '' && getParameterByName('token') != null) {
+			logging_in = true; // Set login in progress
+
+			localStorage.setItem("user_token", getParameterByName('token')); // Store token in local storage
+			setTimeout(function(){
+				window.location = removeParams('token'); // Redirect to current page without token
+			}, 200);
+		}
+	</script>
+
+
+
+	<div id="loader-fullscreen">
+		<i class="fas fa-spinner fa-pulse"></i>
+		<div id="loader-fullscreen-text">
+			Laster... Vennligst vent...
+		</div>
+	</div>
+
+
+
+	<div class="page-frame">
+		<div class="page-sidenav">
+
+			<a class="logo" href="/">
+				<img src="/assets/images/logo/logo04_color.svg">
+			</a>
+
+			<div class="page-sidenav-mobile">
+				<div class="title">
+					Architect
+				</div>
+
+				<div class="page-sidenav-toggle">
+					<span onClick="nav.toggle_nav();">
+						<i class="fa fa-bars"></i>
+					</span>
+				</div>
+			</div>
+
+			<div id="nav-toggle">
+				<div class="nav-items">
+					<div class="nav-main" id="nav-main">
+						<!-- <a class="nav-item" href="/" data-toggle="tooltip" data-placement="right" title="Hjem">
+							<i class="fal fa-fw fa-home"></i> <span class="title">Hjem</span>
+						</a> -->
+
+						<a class="nav-item" href="/apps" data-toggle="tooltip" data-placement="right" title="Applications">
+							<i class="fal fa-fw fa-boxes-alt"></i> <span class="title">Applications</span>
+						</a>
+
+						<a class="nav-item" href="/business" data-toggle="tooltip" data-placement="right" title="Business">
+							<i class="fal fa-fw fa-briefcase"></i> <span class="title">Business</span>
+						</a>
+					</div>
+
+					<div class="nav-footer" id="nav-footer">
+
+						<!-- <div class="dropdown">
+							<a href="#" class="nav-item" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" data-offset="80,0">
+								<i class="fal fa-fw fa-plus"></i> <span class="title">Ny</span>
+							</a>
+							<div class="dropdown-menu" aria-labelledby="dropdownMenuOffset">
+								<a class="dropdown-item" href="/myprofile">
+									<i class="fal fa-fw fa-tv"></i> Ny infoskjerm
+								</a>
+								<a class="dropdown-item" href="/myprofile">
+									<i class="fal fa-fw fa-tv"></i> Ny side
+								</a>
+							</div>
+						</div> -->
+
+						<!-- <a class="nav-item" href="javascript:theme_toggler.toggle();">
+							<span id="theme-icon"><i class="far fa-fw fa-lightbulb-on"></i></span>
+						</a> -->
+
+						<a class="nav-item" href="/companies" data-toggle="tooltip" data-placement="right" title="Companies">
+							<i class="fa-light fa-shop"></i> <span class="title">Companies</span>
+						</a>
+
+						<a class="nav-item" href="/settings" data-toggle="tooltip" data-placement="right" title="Innstillinger">
+							<i class="fal fa-fw fa-cog"></i> <span class="title">Innstillinger</span>
+						</a>
+
+						<div class="dropend nav-avatar-dropdown">
+							<!-- <a href="/" class="nav-avatar-circle" id="nav-user-circle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" data-offset="80,10"> -->
+							<a class="nav-avatar-circle" href="#" role="button" id="nav-user-circle" data-bs-toggle="dropdown" aria-expanded="false">
+								<span class="nav-circle-initials" id="nav-user-initials">00</span>
+							</a>
+							<div class="dropdown-menu" aria-labelledby="dropdownMenuOffset">
+								<h6 class="dropdown-header">Kundeforhold</h6>
+								<div id="nav-my-customers"></div>
+
+								<div class="dropdown-divider"></div>
+								<h6 class="dropdown-header">Meg selv</h6>
+
+								<a class="dropdown-item" href="/myprofile">
+									<i class="fal fa-fw fa-user"></i> Min profil
+								</a>
+								<div class="dropdown-divider"></div>
+								<a class="dropdown-item" href="#" id="signout">
+									<i class="fal fa-fw fa-sign-out"></i> Logg ut
+								</a>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+			
+		</div>
+
+		<div class="page-nav-sidebar" id="nav-sidebar"></div>
+
+		<div class="page-content" id="main"></div>
+
+
+		<div id="mySidebarRight" class="sidebar-right">
+			<a href="javascript:void(0)" class="closebtn" onclick="sidebarRight.close_sidebar()">&times;</a>
+		</div>
+
+	</div>
+
+
+
+
+	<div id="modal-fullscreen"></div>
+
+
+
+
+
+	<!-- App -->
+	<script src="/config.js"></script>
+	
+	<script src="/assets/js/plugins/notification.js"></script>
+	<script src="/assets/js/plugins/remote.js"></script>
+	<script src="/assets/js/plugins/template.js"></script>
+
+	<script src="/assets/js/app/Login.js"></script>
+	<script>
+		//const login = new Login();
+	</script>
+
+
+	
+	
+	
+	<script src="/assets/js/app/nav.js"></script>
+	<script src="/assets/js/app/sidebarRight.js"></script>
+	<script src="/assets/js/app/sidebarNav.js"></script>
+	<script src="/assets/js/app/dom_functions.js"></script>
+	<script src="/assets/js/app/app.js"></script>
+
+	<script src="/assets/js/plugins/fullpage_toggle.js"></script>
+	<!-- <script src="/assets/js/plugins/theme_toggler.js"></script> -->
+
+	
+
+	<!-- <script src="/assets/js/dashboard.js"></script> -->
+	<script src="/assets/js/myprofile.js"></script>
+
+	<script src="/assets/js/app/dom_events.js"></script>
+
+	
+
+
+
+	<script src="/assets/lib/page.js"></script>
+	<script src="/assets/js/app/routes.js"></script>
+
+
+
+
+	<!--
+		Font awsome
+		Source: https://fontawesome.com/
+	<script src="https://kit.fontawesome.com/66a5583e12.js" crossorigin="anonymous"></script>
+	-->
+	<script src="/assets/lib/fontawesome-pro-6.0.0-beta1-web/all.min.js" crossorigin="anonymous"></script>
+
+
+
+	
+</body>
+</html>

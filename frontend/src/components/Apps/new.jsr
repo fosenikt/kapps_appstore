@@ -1,0 +1,263 @@
+<div class="container">
+	<h1>Jeg ønsker å dele...</h1>
+
+
+	<form id="form-app-new" action="/app/new" method="POST" enctype="multipart/form-data">
+
+
+
+		<div id="app-share-select-type">
+			<a class="share-option" href="javascript:appNewSelectType(1)">
+				<div class="logo">
+					<i class="fad fa-browser"></i>
+				</div>
+
+				<div class="info">
+					<div class="title">
+						Applikasjon
+					</div>
+					<div class="description">
+						Hvilken som helst fullverdig klikkbar applikasjon. Web-applikasjon, nedlasting, osv...
+					</div>
+				</div>
+			</a>
+
+			<a class="share-option" href="javascript:appNewSelectType(3)">
+				<div class="logo">
+					<i class="fad fa-user-robot"></i>
+				</div>
+
+				<div class="info">
+					<div class="title">
+						RPA (Robotic Process Automation)
+					</div>
+					<div class="description">
+						F.eks. BluePrism-eksport av en prosess.
+					</div>
+				</div>
+			</a>
+
+
+			<a class="share-option" href="javascript:appNewSelectType(2)">
+				<div class="logo">
+					<i class="fad fa-chart-network"></i>
+				</div>
+
+				<div class="info">
+					<div class="title">
+						Integrasjon
+					</div>
+					<div class="description">
+						Alt fra PowerShell til andre script som knytter tjenester sammen. F.eks. synkroniserer brukerdatabase fra et fagprogram til et annet.
+					</div>
+				</div>
+			</a>
+
+			<a class="share-option" href="javascript:appNewSelectType(4)">
+				<div class="logo">
+					<i class="fal fa-book"></i>
+				</div>
+
+				<div class="info">
+					<div class="title">
+						Dokument
+					</div>
+					<div class="description">
+						Alt fra ROS, DPIA til prosesskart, digitaliseringsstrategier og lignende...
+					</div>
+				</div>
+			</a>
+
+
+			<div class="help" style="padding:15px;">
+				<i class="fas fa-info-circle"></i> (Påkrevd) Overordnet kategori for applikasjon/tjeneste.
+				Se <a href="https://rammeverk.kapps.no/deling/applications" target="_blank">Rammeverket</a> (åpnes i nytt vindu) for beskrivelse av de.
+			</div>
+		</div>
+
+
+
+		<div id="app-share-title" style="display:none;">
+			<div style="margin-bottom:50px;">
+				<a href="javascript:appNewShowSelectType();">
+					<i class="fas fa-arrow-left"></i> Velg annen type
+				</a>
+			</div>
+
+			<div style="border:1px solid var(--main-border); padding:15px; background-color:#f2f5f7; border-radius:8px;">
+				<div class="input-field">
+					<input type="text" id="app-new-input-title" name="title">
+					<label for="app-new-input-title">Et navn på det du ønsker å dele</label>
+					<div class="help">
+						<i class="fas fa-info-circle"></i> (Påkrevd)<br />
+						Ved å trykke fortsett vil det opprettes en tjeneste hvor du kan legge inn flere detaljer.
+						Når den er klar, kan du publisere den, slik at den blir synlig for andre.
+					</div>
+				</div>
+			</div>
+			
+			<div style="border:1px solid var(--main-border); padding:15px; background-color:#f2f5f7; border-radius:8px; margin-top:15px;">
+				<div class="input-field">
+					<select id="app-new-select-licenses" name="license_id"></select>
+					<label for="app-new-select-licenses">Lisens</label>
+					<div class="help">
+						<i class="fas fa-info-circle"></i> Velg lisens. Se <a href="" class="modal-trigger" data-target="modal-license-info">lisensinformasjon</a> (popup).
+					</div>
+				</div>
+			</div>
+
+
+			<div style="text-align:right; margin-top:40px; margin-right:15px;">
+				<button type="submit" class="waves-effect waves-light btn blue">Forsett <i class="fas fa-chevron-right"></i></button>
+			</div>
+		</div>
+
+
+		<input type="hidden" id="app-new-input-type-id" name="type_id">
+
+
+		
+
+	</form>
+</div>
+
+
+
+
+
+
+<style>
+	a.share-option {
+		display: flex;
+		flex-direction: row;
+		width: 100%;
+		border: 3px solid #eaeaea;
+		margin-bottom: 8px;
+		border-radius: 8px;
+		padding:15px;
+	}
+
+	a.share-option .logo {
+		flex: 0 0 80px;
+		font-size: 2.5rem;
+		text-align: center;
+	}
+	a.share-option .info {
+		flex: 1 1 auto;
+	}
+	a.share-option .info .title {
+		font-size: 1.3rem;
+	}
+	a.share-option .info .description {
+		margin-top:8px;
+		font-size: 0.8rem;
+		color: var(--muted-text-color);
+	}
+
+	a.share-option:hover {
+		border: 3px solid #308aff;
+	}
+
+	#app-new-input-title {
+		font-size: 1.3rem;
+	}
+
+	td.icon { text-align:center; }
+</style>
+
+
+<script>
+	/* template.load_webpart('/components/Apps/_webparts/form_new.jsr', '#form-app-new', '').then(response => {
+		console.log('Form loaded...');
+	}); */
+
+
+	function appNewSelectType(type_id) {
+		document.getElementById('app-new-input-type-id').value = type_id;
+		appNewShowInputTitle();
+	}
+
+
+	function appNewShowSelectType()
+	{
+		document.getElementById('app-share-select-type').style.display = 'block';
+		document.getElementById('app-share-title').style.display = 'none';
+	}
+
+	function appNewShowInputTitle()
+	{
+		document.getElementById('app-share-select-type').style.display = 'none';
+		document.getElementById('app-share-title').style.display = 'block';
+		document.getElementById('app-new-input-title').focus();
+	}
+
+
+
+
+	document.getElementById('form-app-new').addEventListener('submit', function(event) {
+		event.preventDefault();
+		event.stopImmediatePropagation(); // Stops event to fire twice
+
+		console.log('Submitting form');
+
+		var thisForm = $(this);
+		var formAction = thisForm.attr('action');
+
+		var f = event.target,
+			formData = new FormData(f),
+			xhr = new XMLHttpRequest();
+
+		remote.rpc_post(config.api_url+formAction, formData).then(response => {
+			console.log(response);
+
+			if (response.status == 'success') {
+				appNewShowSelectType();
+				document.getElementById('app-new-input-title').value = '';
+
+				page('/app/edit/'+response.page_id);
+			} else {
+				notification.error('En feil oppstod ved opprettelse av tjenesten i backend (Feilkode 1)');
+			}
+		})
+
+		.catch((err) => {
+			notification.error('En feil oppstod (Feilkode 2)');
+			console.log(err);
+		});
+
+
+		return false;
+	}, true);
+
+
+
+	function app_new_licenses_get()
+	{
+		remote.rpc(config.api_url+'/licenses/get').then(response => {
+
+			target = document.getElementById('app-new-select-licenses');
+			target.innerHTML = ""; // Empty target
+
+			// Loop
+			if (response != null) {
+				for (let i = 0; i < response.length; i++) {
+					// Create a option
+					option = document.createElement('option');
+					option.text = response[i].title;
+					option.value = response[i].id;
+					target.add(option);
+				}
+			}
+
+			var instances = M.FormSelect.init(target, {});
+		})
+
+		.catch((err) => {
+			notification.error('En feil oppstod under henting av template');
+			console.log(err);
+		});
+	}
+
+
+	app_new_licenses_get();
+</script>

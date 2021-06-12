@@ -1,0 +1,25 @@
+<div class="sidebar-content">
+	<!-- <div class="sidebar-header">
+		<div class="title">
+			Administrasjon
+		</div>
+	</div> -->
+
+
+	<a class="nav-item" href="/apps/get?type=1">
+		<i class="fal fa-fw fa-browser"></i> Applikasjoner
+	</a>
+
+	<a class="nav-item" href="/apps/get?type=3">
+		<i class="fal fa-fw fa-user-robot"></i> RPA (Robotic Process Automation)
+	</a>
+
+	<a class="nav-item" href="/apps/get?type=2">
+		<i class="fal fa-fw fa-chart-network"></i> Integrasjoner
+	</a>
+
+	<a class="nav-item" href="/apps/get?type=4">
+		<i class="fal fa-fw fa-book"></i> Dokumenter
+	</a>
+
+</div>

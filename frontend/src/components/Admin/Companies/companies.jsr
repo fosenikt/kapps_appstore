@@ -1,0 +1,128 @@
+<script src="/assets/lib/shepherd/shepherd.min.js"></script>
+<link rel="stylesheet" href="/assets/lib/shepherd/shepherd.css">
+
+<div class="page-content page-padding">
+	<h1>Virksomheter</h1>
+
+	<div class="fixed-action-btn" id="btn-float-company-new">
+		<a class="btn-floating btn-large waves-effect waves-light blue" href="/admin/company/new"><i class="material-icons">add</i></a>
+	</div>
+
+
+
+	<div class="input-field col s6" id="tour-company-search">
+		<i class="material-icons prefix">search</i>
+		<input id="icon_prefix" type="text" id="input-companies-search" onkeyup="searchCompanies(this.value)" placeholder="Søk etter virksomhet..">
+	</div>
+
+
+	<div id="businesses-list" class="row apps-list">
+		<table id="table-business-list">
+			<thead>
+				<tr>
+					<th>Navn</th>
+					<th>Type</th>
+					<th>Domene</th>
+				</tr>
+			</thead>
+
+			<tbody id="tbody-businesses-list"></tbody>
+		</table>
+	</div>
+
+</div>
+
+
+
+
+
+<script>
+	remote.rpc(config.api_url+'/companies/get').then(response => {
+		template.load_webpart('/components/Admin/Companies/_webparts/company_item.jsr', '#tbody-businesses-list', response);
+	})
+
+	.catch((err) => {
+		notification.error('En feil oppstod under henting av template');
+		console.log(err);
+	});
+
+
+
+
+
+	function searchCompanies(input) {
+
+		// Declare variables
+		var input, filter, table, tr, td, i ;
+		//input = document.getElementById("Search");
+		filter = input.toUpperCase();
+		table = document.getElementById("table-business-list");
+		tr = table.getElementsByTagName("tr"),
+		th = table.getElementsByTagName("th");
+
+		// Loop through all table rows, and hide those who don't match the        search query
+		for (i = 1; i < tr.length; i++) {
+					tr[i].style.display = "none";
+					for(var j=0; j<th.length; j++){
+				td = tr[i].getElementsByTagName("td")[j];      
+				if (td) {
+					if (td.innerHTML.toUpperCase().indexOf(filter.toUpperCase()) > -1) {
+						tr[i].style.display = "";
+						break;
+					}
+				}
+			}
+		}
+	}
+
+
+const tour = new Shepherd.Tour({
+  defaultStepOptions: {
+    classes: 'shadow-md bg-purple-dark',
+    scrollTo: true
+  }
+});
+
+if (localStorage.getItem('tourAdminCompanies') === null) {
+	tour.on("show", step => console.log("TOUR SHOW", step));
+	tour.on("hide", step => console.log("TOUR HIDE"));
+	tour.on("complete", () => {
+		console.log("TOUR COMPLETED");
+		localStorage.setItem('tourAdminCompanies', 'completed');
+	});
+
+	tour.addStep({
+		id: 'tour-company-search',
+		text: 'Søk etter virksomheter her',
+		attachTo: {
+			element: '#tour-company-search',
+			on: 'bottom'
+		},
+		classes: 'example-step-extra-class',
+		buttons: [
+			{
+			text: 'Next',
+			action: tour.next
+			}
+		]
+	});
+
+	tour.addStep({
+		id: 'btn-float-company-new',
+		text: 'Opprett en ny virksomhet her nede',
+		attachTo: {
+			element: '#btn-float-company-new',
+			on: 'left'
+		},
+		classes: 'example-step-extra-class',
+		buttons: [
+			{
+			text: 'Ferdig',
+			action: tour.complete
+			}
+		]
+	});
+
+	tour.start();
+}
+</script>

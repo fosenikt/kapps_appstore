@@ -1,0 +1,13 @@
+<tr>
+	<td>{{>title}}</td>
+	<td>{{>time_created}}</td>
+	<td>{{>time_expires}}</td>
+	<td>{{>time_last_active}}</td>
+	<td>{{>ip_address}}</td>
+	<td>{{>status}}</td>
+	<td style="text-align:right; padding-right:15px;">
+		<a href="javascript:token_delete({{>id}});">
+			<i class="fas fa-trash-alt" style="color:red;"></i>
+		</a>
+	</td>
+</tr>

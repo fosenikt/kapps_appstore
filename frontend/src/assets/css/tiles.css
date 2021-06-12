@@ -1,0 +1,206 @@
+/**
+Examples:
+-----------------------------------------------
+
+<a class="tile" href="#">
+	<span class="tile-icon">
+		<div class="bg-image" style="background:url('{{image}}');"></div>
+	</span>
+
+	<span class="tile-title">
+		{{title}}
+	</span>
+</a>
+
+Icons supported:
+ - Microsoft Fabric: https://developer.microsoft.com/en-us/fabric#/styles/web/icons
+   Example: <i class="ms-Icon ms-Icon--OfficeLogo" aria-hidden="true"></i>
+ - Font Awsome: https://fontawesome.com/
+   Example: <i class="fal fa-info-circle"></i>
+
+Versions:
+-----------------------------------------------
+2019-06-30: Added support for Office glyphs
+2019-02-18: lg tiles in flexbox and hover-effect
+2018-10-06: Added .bg-image, for fullsize bg image as icon
+*/
+
+.tiles {
+	width: 100%;
+	display: grid;
+	grid-template-columns: 1fr 1fr 1fr;
+	grid-gap: 10px;
+}
+
+.tiles-group { margin:25px 0px; }
+
+
+.tile {
+	display: inline-block;
+	width: 130px;
+	height: 130px;
+	position: relative;
+	vertical-align: top;
+	box-sizing: border-box;
+	transition: .2s ease all;
+	background-color: #fff;
+	color:#000;
+	margin-right: 2.5px;
+	margin-bottom: 6px;
+	padding:10px;
+	/* outline: 3px solid transparent; */
+	border-radius: 7px;
+	font-weight:100;
+	text-decoration: none;
+	text-align: center;
+	cursor: pointer;
+}
+.tile:hover {
+	box-shadow:0 20px 50px rgba(0,0,0,.18);
+	-webkit-transform:scale(1.03);
+	transform:scale(1.03);
+	outline: 0px;
+	color:#000;
+	text-decoration: none;
+}
+.tile .badge { position:absolute; z-index:9999; right:0; margin-top:-15px; margin-right:-5px; font-size:16px; border-radius:50%; padding:6px 6px 3px 6px; min-width:28px; height:28px; text-align:center; }
+
+
+.tile span.tile-icon { display:block; text-align:center; height:85px; padding-top:10px; }
+.tile span.tile-icon img { width: 55%; }
+.tile span.tile-icon .bg-image { height:85px; width:100%; background-repeat:no-repeat !important; background-position:center center !important; -webkit-background-size:cover !important; -moz-background-size:cover !important; -o-background-size:cover !important; background-size:cover !important; }
+.tile span.tile-icon .fa, .tile span.tile-icon .far, .tile span.tile-icon .fal, .tile span.tile-icon .fas, .tile span.tile-icon .fab, .tile span.tile-icon .svg-inline--fa { font-size:55px; padding-top:5px; }
+.tile span.tile-icon .ms-Icon { font-size:45px; padding-top:0px; }
+.tile .tile-icon-text-lg { text-align:center; display:block; font-size:40px; }
+.tile span.tile-title, .tile span.title { text-align:left; margin:5px 0px 0px 0px; display:block; font-size:15px; width:105px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.tile span.tile-title-md { font-size:18px; margin-top:-6px; }
+.tile span.tile-title-corner { float:right; margin-top:-110px; margin-right:6px; font-size: 12px; }
+.tile span.value { display:block; font-size:40px; padding-top:10px; }
+.tile span.unit { font-size:20px; }
+
+/* Tile small */
+.tile-sm { width: 100px; height: 100px; }
+.tile-sm span.tile-icon { height:65px; padding-top:7px; }
+.tile-sm span.tile-icon .fa, .tile-sm span.tile-icon .far, .tile-sm span.tile-icon .fal, .tile-sm span.tile-icon .fas, .tile-sm span.tile-icon .fab, .tile-sm span.tile-icon .svg-inline--fa { font-size:45px; padding-top:5px; }
+.tile-sm span.tile-icon .ms-Icon { font-size:35px; padding-top:0px; }
+.tile-sm span.tile-title, .tile-sm span.title { margin-top:0px; font-size:14px; width:85px; }
+
+
+/* Tile 2x (2x wide) */
+.tile-2x { width:267px; }
+.tile-2x span.tile-icon { text-align:left; height:85px; padding-top:10px; }
+.tile-2x span.tile-icon img { height: 65px; width:auto; padding-top:0px; margin-left:5px; }
+.tile-2x span.tile-icon .fa, .tile-2x span.tile-icon .far, .tile-2x span.tile-icon .fal, .tile-2x span.tile-icon .fas, .tile-2x span.tile-icon .fab, .tile-2x span.tile-icon .svg-inline--fa { font-size:60px; padding-top:0px; margin-left:10px; }
+.tile-2x span.tile-icon .ms-Icon { font-size:45px; padding-top:0px; }
+
+
+/* Tile 4x (2x wide and 2x height) */
+.tile-4x { width:267px; height:267px; }
+.tile-4x span.tile-icon { height:200px; padding-top:6px; }
+.tile-4x span.tile-icon img { width:55%; padding-top:20px; }
+.tile-4x span.tile-icon .fa, .tile-4x span.tile-icon .far, .tile-4x span.tile-icon .fal, .tile-4x span.tile-icon .fas, .tile-4x span.tile-icon .fab, .tile-4x span.tile-icon .svg-inline--fa { font-size:120px; padding-top:25px; }
+.tile-4x span.tile-icon .ms-Icon { font-size:80px; padding-top:0px; }
+.tile-4x span.tile-title { font-size:22px; font-weight:100; width:240px; }
+
+/* Tile full width */
+.tile-full-width { width:100%; }
+.tile-full-width span.tile-icon { float:left; }
+.tile-full-width span.tile-icon img { width:30px; width:auto; }
+.tile-full-width span.tile-icon .fa, .tile-full-width span.tile-icon .far, .tile-full-width span.tile-icon .fal, .tile-full-width span.tile-icon .fas, .tile-full-width span.tile-icon .fab, .tile-full-width span.tile-icon .svg-inline--fa { font-size:40px; padding:5px; }
+.tile-full-width span.tile-icon .ms-Icon { font-size:25px; padding-top:0px; }
+.tile-full-width span.tile-icon .mdi { font-size:40px; padding:0px 13px; }
+.tile-full-width span.tile-icon .badge { font-size: 30px; margin-top:7px; margin-left:15px; }
+.tile-full-width span.tile-title { display:block; font-size:20px; margin-left:0px; margin-top:18px; width:auto; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
+
+.tile-low-height { height:80px; }
+.tile-low-height span.tile-icon img { height:45px; }
+
+.tile-lg {
+	width:100%;
+	height: 175px;
+	border-radius: 7px;
+	transition: .2s ease all;
+	background-color: #fff;
+	text-align: center;
+	color:#000;
+	box-sizing: border-box;
+}
+
+@media only screen and (max-width: 992px) {
+	.tiles { grid-template-columns: 1fr 1fr; }
+}
+
+@media only screen and (max-width: 800px) {
+	.tiles { grid-template-columns: 1fr; }
+}
+
+.tile-lg:hover {
+	box-shadow:0 20px 50px rgba(0,0,0,.18);
+	-webkit-transform:scale(1.03);
+	transform:scale(1.03);
+	outline: 0px;
+	color:#000;
+}
+
+.tile-lg span.tile-icon {
+	display:block;
+	color: #0060d0;
+	fill: #f4f8fd;
+	stroke: #0060d0;
+	stroke-width: .9px;
+	margin-bottom: 0;
+	pointer-events: none;
+}
+/*.tile-lg span.tile-icon .svg-inline--fa { font-size:3rem; }*/
+.tile-lg span.title {
+	display:block;
+	width: 100%;
+	font-weight: 500;
+	font-size: 1.6em;
+	line-height: 1.2em;
+	text-align: center;
+	white-space:nowrap; overflow:hidden; text-overflow:ellipsis;
+}
+.tile-lg span.subtitle { display:block; margin-top:5px; font-size: 0.9em; width: 100%; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
+
+/* Tile colors */
+.tile-lightblue { background-color: #88aebe; color:#fff; }
+.tile-lightblue:hover { color:#fff; }
+.tile-blue { background-color: #0a5ac3; color:#fff !important; }
+.tile-blue:hover { color:#fff; }
+.tile-darkblue { background-color: #0b335e; color:#fff; }
+.tile-darkblue:hover { color:#fff; }
+.tile-navy { background-color: #5f7978; color:#fff; }
+.tile-navy:hover { color:#fff; }
+.tile-green { background-color: #00a400; color:#fff; }
+.tile-green:hover { color:#fff; }
+.tile-lightred { background-color: #b9513e }
+.tile-red { background-color: #b9090b; color:#fff !important; }
+.tile-purple { background-color: #5535af; color:#fff; }
+.tile-purple:hover { color:#fff; }
+.tile-pink { background-color: #ff6780; color:#fff; }
+.tile-pink:hover { color:#fff; }
+.tile-lightpurple { background-color: #bf56bc; color:#fff; }
+.tile-lightpurple:hover { color:#fff; }
+.tile-lightgrey { background-color: #ebebeb; color:#333; }
+.tile-lightgrey:hover { color:#333; }
+.tile-gray { background-color: #5d5d5d; color:#fff; }
+.tile-gray:hover { color:#fff; }
+.tile-dark { background-color: #1f1f1f; color:#fff; }
+.tile-dark:hover { color:#fff; }
+.tile-red { background-color: #b9090b }
+.tile-orange { background-color: #d44a27; color:#fff; }
+.tile-orange:hover { background-color: #CB3915; color:#fff; }
+.tile-lightorange { background-color: #d9712b; color:#fff; }
+.tile-lightorange:hover { color:#fff; }
+.tile-yellow { background-color: #f4f71b; color:#4d4d4d; }
+.tile-yellow:hover { color:#4d4d4d !important; }
+.tile-lightyellow { background-color: #c7b05e; color:#4d4d4d; }
+.tile-white { background-color: #fff; color:#272b2c; border:1px solid #eaeaea; }
+.tile-white:hover { color:#23363e !important; }
+
+.tile.add-new {
+	background-color:transparent;
+	border:3px dotted;
+}
+.tile.add-new:hover { outline: 0px solid rgba(132, 132, 132, 0.2); color:#657082; text-decoration:none; }

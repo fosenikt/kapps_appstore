@@ -1,0 +1,1158 @@
+{{if status == 'draft'}}
+	<div id="app-header-alert-{{>id}}" class="alert alert-info alert-header">
+		<div class="row">
+			<div class="col s12 l8" style="padding-top:7px; font-size:1.1rem;">
+				<b>Utkast!</b> Trykk publiser når den er klar for å deles med andre :-)
+			</div>
+			<div class="col s12 l4" style="text-align:right;">
+				<a href="javascript:change_status({{>id}}, 'publish')" class="waves-effect waves-light btn">
+					Publiser
+				</a>
+			</div>
+		</div>
+	</div>
+{{else status == 'deleted'}}
+	<div id="app-header-alert-{{>id}}" class="alert alert-danger alert-header">
+		<div class="row">
+			<div class="col s12 l8" style="padding-top:7px; font-size:1.1rem;">
+				<b>Slettet!</b> Denne tjenesten er slettet.
+			</div>
+			<div class="col s12 l4" style="text-align:right;">
+				<a href="javascript:change_status({{>id}}, 'draft')" class="waves-effect waves-light btn">
+					Gjenopprett
+				</a>
+			</div>
+		</div>
+	</div>
+{{/if}}
+
+
+<script src="/assets/lib/tinymce/tinymce.min.js"></script>
+<script src="/assets/lib/multi-input.js"></script>
+
+<div class="container application-view page-top-space">
+	<h1>{{>title}}</h1>
+	<p>{{>short_description}}</p>
+
+	
+
+	<div class="row">
+		<div class="col s12 l4">
+			<div class="image" id="app-product-images-{{>id}}">
+				<a class="app-img primary-img" data-fancybox="gallery" href="{{>primary_image.image}}">
+					<img src="{{:primary_image.thumb}}">
+				</a>
+				<div class="secondary-images">
+					{{for images}}
+						{{if primary == 0}}
+							<a class="app-img secondary-img" data-fancybox="gallery" href="{{>image}}"><img src="{{>thumb}}"></a>
+						{{/if}}
+					{{/for}}
+				</div>
+			</div>
+			<div style="padding:8px;">
+				<a href="#modal-app-image-upload-{{>id}}" class="modal-trigger">
+					<i class="fas fa-fw fa-upload"></i> Last opp skjermbilder
+				</a>
+			</div>
+			<div style="padding:8px;">
+				<a href="#" class="btn-modal-image-manager">
+					<i class="fas fa-fw fa-images"></i> Vis bilder
+				</a>
+			</div>
+
+			<div style="padding:8px; margin-top:25px;">
+				<!-- <a href="#modal-app-details-{{>id}}" class="modal-trigger"> -->
+				<a data-target="sidebar-app-details-{{>id}}" class="sidenav-trigger" style="cursor: pointer;">
+					<i class="fas fa-fw fa-pencil-alt"></i> Endre detaljer
+				</a><br />
+
+				<a href="#modal-app-upload-{{>id}}" class="modal-trigger">
+					<i class="fas fa-fw fa-upload"></i> Last opp vedlegg
+				</a>
+			</div>
+			
+			<div style="padding:8px; margin-top:25px;">
+				{{if status == 'draft'}}
+					<a class="tooltipped" href="javascript:change_status({{>id}}, 'publish')" data-position="bottom" data-tooltip="Tjenesten er ikke publisert. Trykk for å publisere.">
+						<i class="fas fa-fw fa-eye"></i> Publiser
+					</a><br />
+					<a class="tooltipped" href="javascript:change_status({{>id}}, 'delete')" style="color:red;" data-position="bottom" data-tooltip="Trykk for å markere tjeneste som slettet.">
+						<i class="fas fa-fw fa-trash-alt"></i> Slett tjeneste
+					</a>
+				{{else status == 'published'}}
+					<a class="tooltipped" href="javascript:change_status({{>id}}, 'unpublish')" data-position="bottom" data-tooltip="Tjenesten er publisert. Trykk for å avpublisere.">
+						<i class="fas fa-fw fa-eye-slash"></i> Avpubliser
+					</a><br />
+					<a class="tooltipped" href="javascript:change_status({{>id}}, 'delete')" style="color:red;" data-position="bottom" data-tooltip="Trykk for å markere tjeneste som slettet.">
+						<i class="fas fa-fw fa-trash-alt"></i> Slett tjeneste
+					</a>
+				{{else status == 'deleted'}}
+					<a class="tooltipped" href="javascript:change_status({{>id}}, 'unpublish')" data-position="bottom" data-tooltip="Tjenesten er slettet. Trykk for å gjenopprette.">
+						<i class="fas fa-fw fa-undo"></i> Gjenopprett
+					</a>			
+				{{/if}}
+			</div>
+		</div>
+		<div class="col s12 l8">
+
+			<section>
+				<h2>Beskrivelse</h2>
+				<a href="#modal-app-description-{{>id}}" class="modal-trigger">
+					<i class="fas fa-pencil-alt"></i> Oppdater beskrivelse
+				</a>
+				<div id="app-description-{{>id}}">
+					{{:description}}
+				</div>
+			</section>
+
+			{{if files}}
+				<section style="margin-top:50px;">
+				<h2>Filer</h2>
+					{{for files}}
+						<div class="app-file" id="app-file-{{>id}}">
+							<div class="fileicon">{{:icon}}</div>
+							<div class="info">
+								<div class="title">
+									<a href="{{>path}}" target="_blank">
+										{{>filename}}
+									</a>
+								</div>
+								<div class="desc">
+									<div>
+										<span class="item">Filstr. {{>size.readable}}</span>
+										<span class="item">Type: .{{>type}}</span>
+										<span class="item">Tid opplastet: {{>time_uploaded}}</span>
+									</div>
+									<div style="margin-top:8px; font-size:0.8rem;">
+										<a href="javascript:app_file_delete({{>id}})" style="color:red;"><i class="fas fa-trash-alt"></i> Slett fil</a>
+									</div>
+								</div>
+							</div>
+						</div>
+					{{/for}}
+				</section>
+			{{/if}}
+
+			<section style="margin-top:50px;">
+				<h2>Installasjonsveiledning</h2>
+				<a href="#modal-app-installation-{{>id}}" class="modal-trigger">
+					<i class="fas fa-pencil-alt"></i> Oppdater installasjonsveiledning
+				</a>
+				<div id="app-installation-{{>id}}">
+					{{:installation}}
+				</div>
+			</section>
+
+		</div>
+	</div>
+
+
+
+	<div class="image-manager" id="merc-modal-image-manager">
+		<div class="image-manager-inner">
+
+			<div class="toolbar">
+				<a href="#modal-app-image-upload-{{>id}}" class="modal-trigger">
+					<i class="fa fa-upload"></i> Last opp skjermbilder
+				</a>
+
+				<a class="btn-image-manager-close">
+					<i class="fa fa-times"></i>
+				</a>
+			</div>
+			
+
+			<div class="images-container" id="app-modal-product-images-{{>id}}">
+				{{for images}}
+					<div class="product-image product-image-thumb {{if primary == 1}}active{{/if}}" style="background:url('{{>thumb}}') no-repeat center center;">
+						<div class="tools">
+							<a class="btn-delete-product-image" href="#" data-id="{{>~root.id}}" data-image="{{>image}}">
+								<i class="fa fa-trash-alt"></i> Delete
+							</a>
+							
+							<a class="btn-primary-product-image" style="float:right; display:none;" href="#" data-id="{{>~root.id}}" data-image="{{>filename}}">
+								<i class="fa fa-check"></i> Sett standard
+							</a>
+						</div>
+					</div>
+				{{/for}}
+			</div>
+		</div>
+	</div>
+</div>
+
+
+
+<!-- Modal: Edit description -->
+<div id="modal-app-description-{{>id}}" class="modal modal-lg">
+	<form id="form-app-description-{{>id}}" action="/app/update/desc" method="POST" enctype="multipart/form-data">
+		<div class="modal-content">
+			<h4>Rediger beskrivelse</h4>
+			<input type="hidden" name="id" value="{{>id}}">
+			<textarea class="tinymce-editor" name="description" id="text-description-{{>id}}">{{:description}}</textarea>
+		</div>
+		<div class="modal-footer">
+			<div class="row">
+				<div class="col s6" style="text-align:left;">
+					<a href="#!" class="modal-close waves-effect waves-green btn-flat">Avbryt</a>
+				</div>
+				<div class="col s6" style="text-align:right;">
+					<button type="submit" class="waves-effect waves-light btn">Lagre</button>
+				</div>
+			</div>
+		</div>
+	</form>
+</div>
+
+
+<!-- Modal: Edit installation -->
+<div id="modal-app-installation-{{>id}}" class="modal modal-lg">
+	<form id="form-app-installation-{{>id}}" action="/app/update/install" method="POST" enctype="multipart/form-data">
+		<div class="modal-content">
+			<h4>Rediger installasjonsveiledning</h4>
+			<input type="hidden" name="id" value="{{>id}}">
+			<textarea class="tinymce-editor" name="installation" id="text-installation-{{>id}}">{{:installation}}</textarea>
+		</div>
+		<div class="modal-footer">
+			<div class="row">
+				<div class="col s6" style="text-align:left;">
+					<a href="#!" class="modal-close waves-effect waves-green btn-flat">Avbryt</a>
+				</div>
+				<div class="col s6" style="text-align:right;">
+					<button type="submit" class="waves-effect waves-light btn">Lagre</button>
+				</div>
+			</div>
+		</div>
+	</form>
+</div>
+
+
+<!-- Modal: Edit details -->
+<!-- <div id="modal-app-details-{{>id}}" class="modal modal-fixed-footer"> -->
+<div id="sidebar-app-details-{{>id}}" class="sidenav" style="width:500px;">
+	<div style="padding:15px 25px;">
+		<form id="form-app-details-{{>id}}" action="/app/update/details" method="POST" enctype="multipart/form-data">
+			<div class="modal-content">
+				<h4>Endre detaljer</h4>
+				<input type="hidden" name="id" value="{{>id}}">
+
+				<div class="input-box">
+					<div class="input-field">
+						<input type="text" id="app-new-title" name="title" value="{{>title}}">
+						<label for="app-new-title">Tittel</label>
+					</div>
+				</div>
+
+				<div class="input-box">
+					<div class="input-field">
+						<input type="text" id="app-new-short-description" name="short_description" value="{{>short_description}}">
+						<label for="app-new-short-description">Kort beskrivelse</label>
+					</div>
+				</div>
+				
+				<div class="input-box">
+					<div class="input-field">
+						<select id="app-edit-select-licenses" name="license_id"></select>
+						<label for="app-edit-select-licenses">Lisens</label>
+						<div class="help">
+							<i class="fas fa-info-circle"></i> (Påkrevd) Velg lisens. Du kan se ytterligere beskrivelse av <a href="https://choosealicense.com/licenses/" target="_blank">lisensene her</a> (åpnes i nytt vindu).
+						</div>
+					</div>
+				</div>
+
+				<section class="input-box">
+					<h4>Leveringsmetode</h4>
+					<div class="help">
+						<i class="fas fa-info-circle"></i> Hvordan skal applikasjonen leveres til mottaker.
+						SaaS bør peke til et registreringsskjema eller lignende. On-premise bør peke til veiledning, bestillingsskjema eller lignende - som hjelper mottaker med å vite hvordan man skal ta i bruk tjenesten.
+					</div>
+					<div class="col s12" id="app-new-delivery-methods">
+						Delivery methods
+					</div>
+				</section>
+
+				<div class="input-box">
+					<label>Tags</label>
+					<div class="chips chips-autocomplete" id="input-tags-{{>id}}"></div>
+					<div class="help">
+						<i class="fas fa-info-circle"></i> (Frivillig) Tagger kan hjelpe andre å finne tjenesten ved søk/filtrering.
+					</div>
+				</div>
+
+				<div class="input-box">
+					<div class="input-field">
+						<input type="text" id="app-new-input-code" name="link_source_code" value="{{>link_source_code}}">
+						<label for="app-new-input-code">Kildekode</label>
+						<div class="help">
+							<i class="fas fa-info-circle"></i> (Frivillig) Lenke til kildekode. F.eks. github, bitbucket eller lignende.
+						</div>
+					</div>
+				</div>
+
+			</div>
+			<div class="modal-footer">
+				<div class="row">
+					<div class="col s6" style="text-align:left;">
+						<a href="#!" class="modal-close waves-effect waves-green btn-flat">Avbryt</a>
+					</div>
+					<div class="col s6" style="text-align:right;">
+						<button type="submit" class="waves-effect waves-light btn">Lagre</button>
+					</div>
+				</div>
+			</div>
+		</form>
+	</div>
+</div>
+<!-- </div> -->
+
+
+<!-- Modal: Upload images -->
+<div id="modal-app-image-upload-{{>id}}" class="modal modal-sm">
+	<form id="form-app-image-upload-{{>id}}" action="/app/images/upload" method="POST" enctype="multipart/form-data">
+		<div class="modal-content">
+			<h4>Last opp skjermbilder</h4>
+			<p>Last opp noen skjermbilder av applikasjonen/tjenesten din her.</p>
+
+				
+			<div id="app-upload-inputs-{{>id}}">
+				<input type="hidden" name="app_id" id="input-app-image-upload-id" value="{{>id}}">
+				<input type="file" name="images[]" id="input-app-image-upload-files" multiple="multiple" style="width:100%;">
+			</div>
+
+			<div id="app-upload-feedback-{{>id}}"></div>
+		</div>
+		<div class="modal-footer" id="app-upload-modal-footer-{{>id}}">
+			<button type="submit" class="waves-effect waves-light btn">Last opp</button>
+		</div>
+	</form>
+</div>
+
+
+<!-- Modal: Upload files -->
+<div id="modal-app-upload-{{>id}}" class="modal modal-sm">
+	<form id="form-app-files-upload-{{>id}}" action="/app/files/upload" method="POST" enctype="multipart/form-data">
+		<div class="modal-content">
+			<h4>Last opp vedlegg</h4>
+			<p>Last opp vedlegg her.</p>
+
+				
+			<div id="app-upload-files-inputs-{{>id}}">
+				<input type="hidden" name="app_id" id="input-app-file-upload-id" value="{{>id}}">
+				<input type="file" name="files[]" id="input-app-file-upload-files" multiple="multiple" style="width:100%;">
+			</div>
+
+			<div id="app-upload-file-feedback-{{>id}}"></div>
+		</div>
+		<div class="modal-footer" id="app-upload-files-modal-footer-{{>id}}">
+			<button type="submit" class="waves-effect waves-light btn">Last opp</button>
+		</div>
+	</form>
+</div>
+
+
+
+<style>
+	.image-manager {
+		display: none;
+		position: fixed;
+		top:0;
+		left:0;
+		bottom:0;
+		width: 100%;
+		z-index: 999;
+	}
+
+	.image-manager .image-manager-inner {
+		background-color: #fff;
+		height: 96%;
+		margin:1.8%;
+		box-shadow: 10px 10px 30px 1px rgba(0,0,0,0.75);
+		padding:25px;
+	}
+	
+	.image-manager .images-container {
+		margin-top:45px;
+	}
+	
+	.image-manager .product-image {
+		display: inline-block;
+		position: relative;
+		border:1px solid #eaeaea;
+		height: 160px;
+		width: 190px;
+		margin:3px;
+		-webkit-background-size: cover !important;
+		-moz-background-size: cover !important;
+		-o-background-size: cover !important;
+		background-size: cover !important;
+	}
+	.image-manager .product-image:hover {
+		border:1px solid #4b8aaf;
+	}
+	.image-manager .product-image.active {
+		border:3px solid #3bd01d;
+	}
+	.image-manager .product-image .tools {
+		background-color:rgba(0,0,0,0.5);
+		position: absolute;
+		bottom: 0;
+		left: 0;
+		width: 100%;
+		padding:6px 6px;
+		font-size: 0.7rem;
+	}
+	.image-manager .product-image .tools a {
+		color:#fff;
+	}
+
+	.image-manager .toolbar {
+		position: absolute;
+		top: 0;
+		right: 0;
+		margin:35px;
+		color:#000;
+		
+	}
+
+	.image-manager .toolbar a {
+		display: inline-block;
+		margin-right:10px;
+		margin-left:10px;
+	}
+	
+	.image-manager .btn-image-manager-close {
+		font-size: 1.2rem;
+	}
+</style>
+
+
+<form id="form-app-edit" action="/app/update" method="POST" enctype="multipart/form-data"></form>
+<script>
+
+	var modal_upload = M.Modal.init(document.getElementById('modal-app-image-upload-{{>id}}'), {
+		/* onOpenStart: function () {
+			console.log("I trigger as soon as the page is loaded");
+		},
+		onCloseEnd: function () {
+			console.log("same");
+		} */
+	});
+
+	var modal_description = M.Modal.init(document.getElementById('modal-app-description-{{>id}}'), {
+		dismissible: false
+	});
+
+	var modal_installation = M.Modal.init(document.getElementById('modal-app-installation-{{>id}}'), {
+		dismissible: false
+	});
+
+	var modal_details = M.Modal.init(document.getElementById('modal-app-details-{{>id}}'), {
+		dismissible: false
+	});
+
+	var modal_files_upload = M.Modal.init(document.getElementById('modal-app-upload-{{>id}}'), {
+		dismissible: true
+	});
+
+
+
+    var sidebar_app_details = M.Sidenav.init(document.getElementById('sidebar-app-details-{{>id}}'), {
+		edge: 'right',
+		onOpenStart: function () {
+			M.updateTextFields();
+		}
+	});
+
+
+	var chips_tags = M.Chips.init(document.getElementById('input-tags-{{>id}}'), {
+		autocompleteOptions: {
+			data: {
+				'Apple': null,
+				'Microsoft': null,
+				'Google': null
+			},
+			limit: Infinity,
+			minLength: 1
+		}
+	});
+
+
+
+	var elems = document.querySelectorAll('.tooltipped');
+    var instances = M.Tooltip.init(elems, {});
+
+
+
+
+	/**
+	 * Tags init at bottom
+	 * Comma-seperated string split to add to chips (tag input)
+	 */
+	function get_tags(tags)
+	{
+		var tags_arr = tags.split(",");
+
+		if (tags_arr.length > 0) {
+			for (let i=0; i < tags_arr.length; i++) {
+
+				chips_tags.addChip({
+					tag: tags_arr[i]
+				});
+				
+			}
+		}
+	}
+
+
+
+	/**
+	 * Submit
+	 * Upload image
+	*/
+	document.getElementById('form-app-image-upload-{{>id}}').addEventListener('submit', function(event) {
+		event.preventDefault();
+		event.stopImmediatePropagation(); // Stops event to fire twice
+
+
+		document.getElementById('app-upload-inputs-{{>id}}').style.display = 'none';
+		document.getElementById('app-upload-modal-footer-{{>id}}').style.display = 'none';
+		document.getElementById('app-upload-feedback-{{>id}}').innerHTML = `
+			<div style="text-align:center; padding-bottom:50px;">
+				<img style="width:200px;" src="/assets/images/animated/animat-cloudsync-color.gif" alt="animated icon loading" />
+				<div style="">
+					Last opp dine bilder, vennligst vent...
+				</div>
+			</div>
+		`;
+
+		var thisForm = $(this);
+		var formAction = thisForm.attr('action');
+
+		//var images = [];
+
+
+		var formData = new FormData();
+		formData.append("app_id", document.getElementById('input-app-image-upload-id').value);
+
+		var ins = document.getElementById('input-app-image-upload-files').files.length;
+		for (var x = 0; x < ins; x++) {
+			formData.append("images[]", document.getElementById('input-app-image-upload-files').files[x]);
+			var file = document.getElementById('input-app-image-upload-files').files[x];
+		}
+
+		var error = false;
+
+		remote.rpc_post(config.api_url+formAction, formData).then(response => {
+			if (response != null) {
+				if (response.status == 'success') {
+					notification.success('Opplasting vellykket');
+					thisForm[0].reset();
+					reload_images();
+
+					document.getElementById('app-upload-feedback-{{>id}}').innerHTML = `
+						<div style="text-align:center; padding-bottom:50px;">
+							<img style="max-width:100%;" src="/assets/images/animated/check.gif" alt="animated icon complete" />
+							<div style="">
+								Opplasting fullført!
+							</div>
+						</div>
+					`;
+
+					setTimeout(function(){
+						modal_upload.close();
+					}, 3500);
+				} else {
+					notification.error('En feil oppstod:&nbsp; ' + response.message + '.<br /><br /> Noen bilder kan ha blitt lastet opp, dersom du har valgt flere.');
+					error = true;
+				}
+			}
+
+			else {
+				notification.error('Ingen respons fra backend...');
+				error = true;
+			}
+
+			if (error) {
+				document.getElementById('app-upload-inputs-{{>id}}').style.display = 'block';
+				document.getElementById('app-upload-modal-footer-{{>id}}').style.display = 'block';
+				document.getElementById('app-upload-feedback-{{>id}}').style.display = 'none';
+			}
+		})
+
+		.catch((err) => {
+			notification.error('En feil oppstod (Feilkode 2). Sjekk console i nettleser og event-viewer under innstillinger.');
+			console.log(err);
+		});
+
+
+		return false;
+	}, true);
+
+
+
+
+
+	
+	function reload_images()
+	{
+		remote.rpc(config.api_url+'/app/get/{{>id}}').then(response => {
+			template.load_webpart('/components/Apps/_webparts/images_item.jsr', '#app-product-images-{{>id}}', response);
+			template.load_webpart('/components/Apps/_webparts/modal_image_items.jsr', '#app-modal-product-images-{{>id}}', response);
+		})
+
+		.catch((err) => {
+			notification.error('En feil oppstod under henting av template');
+			console.log(err);
+		});
+	}
+
+
+
+
+	addEvent(document, 'click', '.btn-modal-image-manager', function(e) {
+		e.preventDefault();
+
+		// Get merc parent container
+		var merc_item = getClosest(this, '.application-view');
+
+		// Get modal inside container
+		var modal = merc_item.getElementsByClassName("image-manager")[0];
+
+		// Show modal
+		modal.style.display = 'block';
+
+		// Reload images inside container
+		reload_images();
+	});
+
+
+
+	addEvent(document, 'click', '.btn-image-manager-close', function(e) {
+		e.preventDefault();
+
+		// Get merc parent container
+		var merc_item = getClosest(this, '.application-view');
+
+		// Get modal inside container
+		var modal = merc_item.getElementsByClassName("image-manager")[0];
+
+		// Show modal
+		modal.style.display = 'none';
+
+		// Reload images inside container
+		reload_images();
+	});
+	
+
+
+
+
+	addEvent(document, 'click', '.btn-delete-product-image', function(e) {
+		e.preventDefault();
+		
+		var app_id = this.getAttribute('data-id');
+		var filename = this.getAttribute('data-image');
+
+		var formData = new FormData();
+		formData.append("app_id", app_id);
+		formData.append("filename", filename);
+
+		remote.rpc_post(config.api_url+'/app/images/delete', formData).then(response => {
+			reload_images();
+		})
+
+		.catch((err) => {
+			notification.error('En feil oppstod (Feilkode 1)');
+			console.log(err);
+		});
+	
+	});
+
+
+
+
+	addEvent(document, 'click', '.btn-primary-product-image', function(e) {
+		e.preventDefault();
+
+		let _this = this;
+
+		var merc_id = this.getAttribute('data-id');
+		var filename = this.getAttribute('data-image');
+
+		var formData = new FormData();
+		formData.append("id", merc_id);
+		formData.append("image", filename);
+
+		remote.rpc_post(config.api_url+'/app/image/primary/set', formData).then(response => {
+			reload_images();
+		})
+
+		.catch((err) => {
+			notification.error('En feil oppstod (Feilkode 1)');
+			console.log(err);
+		});
+	});
+
+
+
+
+
+
+
+	/**
+	 * Submit
+	 * Upload files
+	*/
+	document.getElementById('form-app-files-upload-{{>id}}').addEventListener('submit', function(event) {
+		event.preventDefault();
+		event.stopImmediatePropagation(); // Stops event to fire twice
+
+
+		document.getElementById('app-upload-files-inputs-{{>id}}').style.display = 'none';
+		document.getElementById('app-upload-files-modal-footer-{{>id}}').style.display = 'none';
+		document.getElementById('app-upload-file-feedback-{{>id}}').innerHTML = `
+			<div style="text-align:center; padding-bottom:50px;">
+				<img style="width:200px;" src="/assets/images/animated/animat-cloudsync-color.gif" alt="animated icon loading" />
+				<div style="">
+					Last opp dine filer, vennligst vent...
+				</div>
+			</div>
+		`;
+
+		var thisForm = $(this);
+		var formAction = thisForm.attr('action');
+
+
+
+		var formData = new FormData();
+		formData.append("app_id", document.getElementById('input-app-image-upload-id').value);
+
+		var ins = document.getElementById('input-app-file-upload-files').files.length;
+		for (var x = 0; x < ins; x++) {
+			formData.append("files[]", document.getElementById('input-app-file-upload-files').files[x]);
+			var file = document.getElementById('input-app-file-upload-files').files[x];
+		}
+
+		var error = false;
+
+		remote.rpc_post(config.api_url+formAction, formData).then(response => {
+			if (response != null) {
+				if (response.status == 'success') {
+					notification.success('Opplasting vellykket');
+					thisForm[0].reset();
+					reload_images();
+
+					document.getElementById('app-upload-feedback-{{>id}}').innerHTML = `
+						<div style="text-align:center; padding-bottom:50px;">
+							<img style="max-width:100%;" src="/assets/images/animated/check.gif" alt="animated icon complete" />
+							<div style="">
+								Opplasting fullført!
+							</div>
+						</div>
+					`;
+
+					setTimeout(function(){
+						modal_files_upload.close();
+					}, 3500);
+				} else {
+					//notification.error('En feil oppstod:&nbsp; ' + response.message + '.<br /><br />' + response.num_uploaded + ' av ' + response.num_files + ' bilder lastet opp.');
+					notification.error('En feil oppstod:&nbsp; ' + response.message + '.<br /><br /> Noen filer kan ha blitt lastet opp, dersom du har valgt flere.');
+					error = true;
+				}
+			}
+
+			else {
+				notification.error('Ingen respons fra backend...');
+				error = true;
+			}
+
+			if (error) {
+				document.getElementById('app-upload-files-inputs-{{>id}}').style.display = 'block';
+				document.getElementById('app-upload-files-modal-footer-{{>id}}').style.display = 'block';
+				document.getElementById('app-upload-file-feedback-{{>id}}').style.display = 'none';
+			}
+		})
+
+		.catch((err) => {
+			notification.error('En feil oppstod (Feilkode 2). Sjekk console i nettleser og event-viewer under innstillinger.');
+			console.log(err);
+		});
+
+
+		return false;
+	}, true);
+
+
+
+
+
+
+
+	function app_edit_licenses_get()
+	{
+		remote.rpc(config.api_url+'/licenses/get').then(response => {
+
+			target = document.getElementById('app-edit-select-licenses');
+			target.innerHTML = ""; // Empty target
+
+			// Loop
+			if (response != null) {
+				for (let i = 0; i < response.length; i++) {
+					// Create a option
+					option = document.createElement('option');
+					option.text = response[i].title;
+					option.value = response[i].id;
+					target.add(option);
+				}
+			}
+
+			target.value = '{{>license_id}}'; // Set selected item
+			var instances = M.FormSelect.init(target, {});
+		})
+
+		.catch((err) => {
+			notification.error('En feil oppstod under henting av template');
+			console.log(err);
+		});
+	}
+
+
+	function app_new_delivery_methods()
+	{
+		remote.rpc(config.api_url+'/delivery/methods/get').then(response => {
+
+			target = document.getElementById('app-new-delivery-methods');
+			target.innerHTML = ""; // Empty target
+
+			// Loop
+			if (response != null) {
+				for (let i = 0; i < response.length; i++) {					
+					document.getElementById('app-new-delivery-methods').innerHTML += `
+						<div class="input-box" style="padding-bottom:0px; padding-top:0px;">
+							<div class="row" style="padding-bottom:0px; margin-bottom:0px;">
+								<div class="col s12">
+									<p>
+									<label>
+										<input type="checkbox" name="delivery_id[]" value="${response[i].id}" />
+										<span>${response[i].title}</span>
+									</label>
+									</p>
+								</div>
+								<div class="input-field col s12" style="padding-bottom:0px;">
+									<input type="text" id="app-new-input-title" name="delivery_url[]">
+									<label for="app-new-input-title">URL</label>
+								</div>
+							</div>
+						</div>
+					`;
+
+				}
+			}
+
+			//var instances = M.FormSelect.init(target, {});
+		})
+
+		.catch((err) => {
+			notification.error('En feil oppstod under henting av template');
+			console.log(err);
+		});
+	}
+
+
+
+
+
+	tinymce.init({
+		selector: 'textarea.tinymce-editor',
+		height: 500,
+		menubar: false,
+		plugins: [
+			'print preview paste importcss searchreplace autolink',
+			'directionality code visualblocks visualchars fullscreen image link',
+			'media template codesample table charmap hr pagebreak nonbreaking anchor',
+			'toc insertdatetime advlist lists wordcount imagetools textpattern noneditable help charmap quickbars emoticons'
+		],
+		toolbar: 'undo redo | bold italic underline strikethrough | fontselect fontsizeselect formatselect | alignleft aligncenter alignright alignjustify | outdent indent |  numlist bullist | forecolor backcolor removeformat | charmap emoticons quicktable | fullscreen | insertfile image media template link anchor codesample',
+		
+		/* //without images_upload_url set, Upload tab won't show up
+  		images_upload_url: 'postAcceptor.php',
+		//we override default upload handler to simulate successful upload
+		images_upload_handler: function (blobInfo, success, failure) {
+			setTimeout(function () {
+				//no matter what you upload, we will turn it into TinyMCE logo :)
+				//success('http://moxiecode.cachefly.net/tinymce/v9/images/logo.png');
+			}, 2000);
+		}, */
+
+		/* enable title field in the Image dialog*/
+		image_title: true,
+		/* enable automatic uploads of images represented by blob or data URIs*/
+		automatic_uploads: true,
+		/*
+			URL of our upload handler (for more details check: https://www.tiny.cloud/docs/configure/file-image-upload/#images_upload_url)
+			images_upload_url: 'postAcceptor.php',
+			here we add custom filepicker only to Image dialog
+		*/
+		file_picker_types: 'image',
+		/* and here's our custom image picker*/
+		file_picker_callback: function (cb, value, meta) {
+			var input = document.createElement('input');
+			input.setAttribute('type', 'file');
+			input.setAttribute('accept', 'image/*');
+
+			/*
+			Note: In modern browsers input[type="file"] is functional without
+			even adding it to the DOM, but that might not be the case in some older
+			or quirky browsers like IE, so you might want to add it to the DOM
+			just in case, and visually hide it. And do not forget do remove it
+			once you do not need it anymore.
+			*/
+
+			input.onchange = function () {
+				var file = this.files[0];
+
+				var reader = new FileReader();
+				reader.onload = function () {
+					/*
+					Note: Now we need to register the blob in TinyMCEs image blob
+					registry. In the next release this part hopefully won't be
+					necessary, as we are looking to handle it internally.
+					*/
+					var id = 'blobid' + (new Date()).getTime();
+					var blobCache =  tinymce.activeEditor.editorUpload.blobCache;
+					var base64 = reader.result.split(',')[1];
+					var blobInfo = blobCache.create(id, file, base64);
+					blobCache.add(blobInfo);
+
+					/* call the callback and populate the Title field with the file name */
+					cb(blobInfo.blobUri(), { title: file.name });
+				};
+				reader.readAsDataURL(file);
+			};
+
+			input.click();
+		},
+		
+		content_style: 'body { font-family:Helvetica,Arial,sans-serif; font-size:14px }'
+	});
+
+
+
+
+
+
+
+
+	/**
+	 * Submit description
+	 */
+	document.getElementById('form-app-description-{{>id}}').addEventListener('submit', function(event) {
+		event.preventDefault();
+		event.stopImmediatePropagation(); // Stops event to fire twice
+
+		let formAction = event.target.getAttribute('action');
+		let formData = new FormData(event.target);
+
+		let description = tinymce.get("text-description-{{>id}}").getContent();
+		formData.append('description', description);
+
+		remote.rpc_post(config.api_url+formAction, formData).then(response => {
+			if (response.status == 'success') {
+				document.getElementById('app-description-{{>id}}').innerHTML = description;
+				modal_description.close();
+			} else {
+				notification.error('En feil oppstod ved opprettelse av tjenesten i backend (Feilkode 1)');
+			}
+		})
+
+		.catch((err) => {
+			notification.error('En feil oppstod (Feilkode 2)');
+			console.log(err);
+		});
+
+		return false;
+	}, true);
+
+
+
+
+
+
+	/**
+	 * Submit installation
+	 */
+	document.getElementById('form-app-installation-{{>id}}').addEventListener('submit', function(event) {
+		event.preventDefault();
+		event.stopImmediatePropagation(); // Stops event to fire twice
+
+		let formAction = event.target.getAttribute('action');
+		let formData = new FormData(event.target);
+
+		let installation = tinymce.get("text-installation-{{>id}}").getContent();
+		formData.append('installation', installation);
+
+		remote.rpc_post(config.api_url+formAction, formData).then(response => {
+			if (response.status == 'success') {
+				document.getElementById('app-installation-{{>id}}').innerHTML = installation;
+				modal_installation.close();
+			} else {
+				notification.error('En feil oppstod ved opprettelse av tjenesten i backend (Feilkode 1)');
+			}
+		})
+
+		.catch((err) => {
+			notification.error('En feil oppstod (Feilkode 2)');
+			console.log(err);
+		});
+
+		return false;
+	}, true);
+
+
+
+
+
+
+
+	/**
+	 * Submit details
+	 */
+	document.getElementById('form-app-details-{{>id}}').addEventListener('submit', function(event) {
+		event.preventDefault();
+		event.stopImmediatePropagation(); // Stops event to fire twice
+
+		let formAction = event.target.getAttribute('action');
+		let formData = new FormData(event.target);
+
+		let tags = [];
+
+		for (let i=0; i < chips_tags.chipsData.length; i++) {
+			tags.push(chips_tags.chipsData[i].tag);
+		}
+
+		if (tags.length > 0) {
+			formData.append('tags', tags.join(','));
+		} else {
+
+		}
+
+		remote.rpc_post(config.api_url+formAction, formData).then(response => {
+			if (response.status == 'success') {
+				sidebar_app_details.close();
+			} else {
+				notification.error('En feil oppstod ved opprettelse av tjenesten i backend (Feilkode 1)');
+			}
+		})
+
+		.catch((err) => {
+			notification.error('En feil oppstod (Feilkode 2)');
+			console.log(err);
+		});
+
+		return false;
+	}, true);
+
+
+
+
+
+	/**
+	 * Change status of app
+	 * Published, draft or deleted
+	*/
+	function change_status(id, type) {
+
+		let endpoint = '';
+
+		if (type == 'publish') endpoint = '/app/publish/';
+		else if (type == 'unpublish') endpoint = '/app/unpublish/';
+		else if (type == 'delete') endpoint = '/app/delete/';
+		else {
+			console.log('id: '+id+'. type: '+type);
+		}
+
+		remote.rpc(config.api_url+endpoint+id).then(response => {
+			if (response != null) {
+				if (response.status == 'success') {
+
+					if (type == 'publish') {
+						notification.success('Tjeneste er nå publisert og tilgjengelig for andre');
+					}
+
+					else if (type == 'unpublish') {
+						notification.success('Tjeneste er nå avpublisert og er ikke tilgjengelig for andre');
+					}
+
+					else if (type == 'delete') {
+						notification.success('Tjenesten ble slettet');
+					}
+
+					if (document.getElementById('page-app-edit-'+id)) {
+						document.getElementById('page-app-edit-'+id).remove();
+					}
+
+					page('/app/edit/'+id);
+				}
+				else {
+					notification.error('Kunne ikke endre tjeneste nå. Kanskje du ikke har tilgang? Ta kontakt om feilen vedvarer.');
+				}
+			}
+
+			else {
+				notification.error('Ingen respons fra backend...');
+			}
+		})
+
+		.catch((err) => {
+			notification.error('En feil oppstod (Feilkode 2). Sjekk console i nettleser og event-viewer under innstillinger.');
+			console.log(err);
+		});
+	}
+
+
+
+
+
+
+	/**
+	 * Delete file
+	*/
+	function app_file_delete(id) {
+		if (confirm("Er du sikker på at du vil slette denne filen?")) {
+
+			var formData = new FormData();
+			formData.append('app_id', '{{>id}}');
+			formData.append('file_id', id);
+
+			remote.rpc_post(config.api_url+'/app/file/delete', formData).then(response => {
+				if (response != null) {
+					if (response.status == 'success') {
+						document.getElementById('app-file-'+id).remove();
+					}
+					else {
+						notification.error('Kunne ikke slette fil.');
+					}
+				}
+
+				else {
+					notification.error('Ingen respons fra backend...');
+				}
+			})
+
+			.catch((err) => {
+				notification.error('En feil oppstod (Feilkode 2). Sjekk console i nettleser og event-viewer under innstillinger.');
+				console.log(err);
+			});
+		}
+	}
+
+
+
+
+
+	// Init
+	app_edit_licenses_get();
+	app_new_delivery_methods();
+	get_tags('{{>tags.string}}');
+</script>

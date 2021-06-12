@@ -1,0 +1,13 @@
+<tr>
+	<td>
+		<a href="/admin/user/{{>id}}">
+			<div id="nav-user-circle" class="avatar-circle" style="background-color:{{>color}};">{{>initials}}</div> &nbsp; {{if firstname}}{{>firstname}} {{>lastname}} {{else}}<i>Navn mangler</i>{{/if}}
+		</a>
+	</td>
+	<td>{{>mobile}}</td>
+	<td>
+		<a href="mailto:{{>mail}}">
+			{{>mail}}
+		</a>
+	</td>
+</tr>

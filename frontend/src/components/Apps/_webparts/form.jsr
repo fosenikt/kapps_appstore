@@ -1,0 +1,372 @@
+<script src="/assets/lib/tinymce/tinymce.min.js"></script>
+<script src="/assets/lib/multi-input.js"></script>
+
+
+
+
+<div class="row">
+	<div class="input-field col s12">
+		<input type="text" id="app-new-input-title" name="title">
+		<label for="app-new-input-title">Tittel</label>
+	</div>
+
+	<div class="input-field col s12">
+		<select id="app-new-select-type" name="type_id"></select>
+		<label for="app-new-select-type">Type</label>
+		<div class="help">
+			<i class="fas fa-info-circle"></i> (Påkrevd) Overordnet kategori for applikasjon/tjeneste.
+			Se <a href="https://rammeverk.kapps.no/deling/applications" target="_blank">Rammeverket</a> (åpnes i nytt vindu) for beskrivelse av de.
+		</div>
+	</div>
+
+	<div class="input-field col s12">
+		<select id="app-new-select-licenses" name="license_id"></select>
+		<label for="app-new-select-licenses">Lisens</label>
+		<div class="help">
+			<i class="fas fa-info-circle"></i> (Påkrevd) Velg lisens. Du kan se ytterligere beskrivelse av <a href="https://choosealicense.com/licenses/" target="_blank">lisensene her</a> (åpnes i nytt vindu).
+		</div>
+	</div>
+
+	<section>
+		<h4>Leveringsmetode</h4>
+		<div class="help">
+			<i class="fas fa-info-circle"></i> Hvordan skal applikasjonen leveres til mottaker.
+			SaaS bør peke til et registreringsskjema eller lignende. On-premise bør peke til veiledning, bestillingsskjema eller lignende - som hjelper mottaker med å vite hvordan man skal ta i bruk tjenesten.
+		</div>
+		<div class="col s12" id="app-new-delivery-methods">
+			Delivery methods
+		</div>
+	</section>
+
+
+	<section>
+		<h4>Last opp bilder/filer</h4>
+		<div class="help">
+			<i class="fas fa-info-circle"></i> Last opp bilder eller filer av tjenesten.
+			Filer (som word, powerpoint eller lignende) vil bli listet opp. Bilder vil presenteres som skjermbilder.
+		</div>
+		<div class="file-field input-field">
+			<div class="btn">
+				<span>File</span>
+				<input type="file" multiple>
+			</div>
+			<div class="file-path-wrapper">
+				<input class="file-path validate" type="text" placeholder="Upload one or more files">
+			</div>
+		</div>
+	</section>
+
+	<div class="col s12">
+		<label>Tags</label>
+		<multi-input style="border-top:0px; border-left:0px; border-right:0px;">
+			<input class="multi-input" list="speakers" name="tags">
+			<datalist id="speakers">
+				<option value="x86 applikasjon"></option>
+				<option value="x64 applikasjon"></option>
+				<option value="Web-applikasjon"></option>
+				<option value="SharePoint"></option>
+			</datalist>
+		</multi-input>
+		<div class="help">
+			<i class="fas fa-info-circle"></i> (Frivillig) Tagger kan hjelpe andre å finne tjenesten ved søk/filtrering.
+		</div>
+	</div>
+
+	<div class="col s12" style="margin-top:25px;">
+		<label>Beskrivelse</label>
+		<textarea class="tinymce-editor" id="app-new-description" name="description"></textarea>
+		<div class="help">
+			<i class="fas fa-info-circle"></i> (Påkrevd) Informasjon om hva applikasjonen/tjenesten gjør.
+		</div>
+	</div>
+
+	<div class="col s12" style="margin-top:25px;">
+		<label>Instruksjon for installasjon</label>
+		<textarea class="tinymce-editor" id="app-new-install" name="installation"></textarea>
+		<div class="help">
+			<i class="fas fa-info-circle"></i> (Frivillig) Informasjon om hvordan man installerer eller tar i bruk applikasjonen/tjenesten.
+		</div>
+	</div>
+
+
+	<div class="input-field col s12">
+		<input type="text" id="app-new-input-code" name="link_source_code">
+		<label for="app-new-input-code">Kildekode</label>
+		<div class="help">
+			<i class="fas fa-info-circle"></i> (Frivillig) Lenke til kildekode. F.eks. github, bitbucket eller lignende.
+		</div>
+	</div>
+
+
+	<div class="input-field col s12">
+		<select id="app-new-select-install-type" name="install_type">
+			<option value="click">Klikk / Veiviser</option>
+			<option value="download">Nedlastning</option>
+			<option value="contact">Ta kontakt</option>
+		</select>
+		<label for="app-new-select-install-type">Installasjonstype</label>
+		<div class="help">
+			<i class="fas fa-info-circle"></i> (Påkrevd) Dette valget forklarer brukerne litt hvordan de kan anskaffe applikasjonen/tjenesten.
+		</div>
+	</div>
+
+	<div class="input-field col s12">
+		<input type="text" id="app-new-input-install-link" name="link_install">
+		<label for="app-new-input-install-link">Lenke til installasjon</label>
+		<div class="help">
+			<i class="fas fa-info-circle"></i> (Frivillig) Lenke til installasjon kan være klikk-installasjon til f.eks. Microsoft Store eller bare til github, fil, e-postadresse, lenke til kontaktskjema eller lignende.
+		</div>
+	</div>
+
+</div>
+
+<button type="submit" class="waves-effect waves-light btn">button</button>
+
+
+
+<style>
+	.multi-input {
+		width: auto !important;
+		height: auto !important;
+		border: none !important;
+		font-size: var(--multi-input-input-font-size, 14px) !important;
+		outline: none !important;
+		padding: 10px 10px 0px 5px !important;
+		border-bottom: 1px solid #fff !important;
+		-webkit-box-shadow: 0 1px 0 0 #fff !important;
+		box-shadow: 0 1px 0 0 #fff !important;
+	}
+</style>
+
+
+
+<script>
+	function app_new_types_get()
+	{
+		remote.rpc(config.api_url+'/types/get').then(response => {
+
+			target = document.getElementById('app-new-select-type');
+			target.innerHTML = ""; // Empty target
+
+			// Loop
+			if (response != null) {
+				for (let i = 0; i < response.length; i++) {
+					// Create a option
+					option = document.createElement('option');
+					option.text = response[i].title;
+					option.value = response[i].id;
+					target.add(option);
+				}
+			}
+
+			var instances = M.FormSelect.init(target, {});
+		})
+
+		.catch((err) => {
+			notification.error('En feil oppstod under henting av template');
+			console.log(err);
+		});
+	}
+
+
+	function app_new_licenses_get()
+	{
+		remote.rpc(config.api_url+'/licenses/get').then(response => {
+
+			target = document.getElementById('app-new-select-licenses');
+			target.innerHTML = ""; // Empty target
+
+			// Loop
+			if (response != null) {
+				for (let i = 0; i < response.length; i++) {
+					// Create a option
+					option = document.createElement('option');
+					option.text = response[i].title;
+					option.value = response[i].id;
+					target.add(option);
+				}
+			}
+
+			var instances = M.FormSelect.init(target, {});
+		})
+
+		.catch((err) => {
+			notification.error('En feil oppstod under henting av template');
+			console.log(err);
+		});
+	}
+
+
+	function app_new_delivery_methods()
+	{
+		remote.rpc(config.api_url+'/delivery/methods/get').then(response => {
+
+			target = document.getElementById('app-new-delivery-methods');
+			target.innerHTML = ""; // Empty target
+
+			// Loop
+			if (response != null) {
+				for (let i = 0; i < response.length; i++) {
+
+					console.log(response[i].title);
+					
+					document.getElementById('app-new-delivery-methods').innerHTML += `
+						<div class="input-border">
+							<div class="row">
+								<div class="col s3">
+									<p>
+									<label>
+										<input type="checkbox" value="${response[i].id}" />
+										<span>${response[i].title}</span>
+									</label>
+									</p>
+								</div>
+								<div class="input-field col s9">
+									<input type="text" id="app-new-input-title" name="title">
+									<label for="app-new-input-title">Tittel</label>
+								</div>
+							</div>
+						</div>
+					`;
+
+				}
+			}
+
+			//var instances = M.FormSelect.init(target, {});
+		})
+
+		.catch((err) => {
+			notification.error('En feil oppstod under henting av template');
+			console.log(err);
+		});
+	}
+
+
+
+
+	app_new_types_get();
+	app_new_licenses_get();
+	app_new_delivery_methods();
+	var instances = M.FormSelect.init(document.getElementById('app-new-select-install-type'), {});
+
+
+
+	tinymce.init({
+		selector: 'textarea.tinymce-editor',
+		height: 500,
+		menubar: false,
+		plugins: [
+			'print preview paste importcss searchreplace autolink autosave save',
+			'directionality code visualblocks visualchars fullscreen image link',
+			'media template codesample table charmap hr pagebreak nonbreaking anchor',
+			'toc insertdatetime advlist lists wordcount imagetools textpattern noneditable help charmap quickbars emoticons'
+		],
+		toolbar: 'undo redo | bold italic underline strikethrough | fontselect fontsizeselect formatselect | alignleft aligncenter alignright alignjustify | outdent indent |  numlist bullist | forecolor backcolor removeformat | charmap emoticons quicktable | fullscreen | insertfile image media template link anchor codesample',
+		
+		/* without images_upload_url set, Upload tab won't show up*/
+  		images_upload_url: 'postAcceptor.php',
+		/* we override default upload handler to simulate successful upload*/
+		images_upload_handler: function (blobInfo, success, failure) {
+			setTimeout(function () {
+				/* no matter what you upload, we will turn it into TinyMCE logo :)*/
+				//success('http://moxiecode.cachefly.net/tinymce/v9/images/logo.png');
+			}, 2000);
+		},
+
+		/* enable title field in the Image dialog*/
+		image_title: true,
+		/* enable automatic uploads of images represented by blob or data URIs*/
+		automatic_uploads: true,
+		/*
+			URL of our upload handler (for more details check: https://www.tiny.cloud/docs/configure/file-image-upload/#images_upload_url)
+			images_upload_url: 'postAcceptor.php',
+			here we add custom filepicker only to Image dialog
+		*/
+		file_picker_types: 'image',
+		/* and here's our custom image picker*/
+		file_picker_callback: function (cb, value, meta) {
+			var input = document.createElement('input');
+			input.setAttribute('type', 'file');
+			input.setAttribute('accept', 'image/*');
+
+			/*
+			Note: In modern browsers input[type="file"] is functional without
+			even adding it to the DOM, but that might not be the case in some older
+			or quirky browsers like IE, so you might want to add it to the DOM
+			just in case, and visually hide it. And do not forget do remove it
+			once you do not need it anymore.
+			*/
+
+			input.onchange = function () {
+				var file = this.files[0];
+
+				var reader = new FileReader();
+				reader.onload = function () {
+					/*
+					Note: Now we need to register the blob in TinyMCEs image blob
+					registry. In the next release this part hopefully won't be
+					necessary, as we are looking to handle it internally.
+					*/
+					var id = 'blobid' + (new Date()).getTime();
+					var blobCache =  tinymce.activeEditor.editorUpload.blobCache;
+					var base64 = reader.result.split(',')[1];
+					var blobInfo = blobCache.create(id, file, base64);
+					blobCache.add(blobInfo);
+
+					/* call the callback and populate the Title field with the file name */
+					cb(blobInfo.blobUri(), { title: file.name });
+				};
+				reader.readAsDataURL(file);
+			};
+
+			input.click();
+		},
+		
+		content_style: 'body { font-family:Helvetica,Arial,sans-serif; font-size:14px }'
+	});
+
+
+
+
+
+	/*
+	 * Submit form
+	*/
+	setTimeout(function(){
+		document.getElementById('form-app-new').addEventListener('submit', function(event) {
+			event.preventDefault();
+			event.stopImmediatePropagation(); // Stops event to fire twice
+
+			console.log('Submitting form');
+
+			var thisForm = $(this);
+			var formAction = thisForm.attr('action');
+
+			var f = event.target,
+				formData = new FormData(f),
+				xhr = new XMLHttpRequest();
+
+			var description = tinymce.get("app-new-description").getContent();
+			var install = tinymce.get("app-new-install").getContent();
+			const tags_el = document.querySelector('multi-input');
+			var tags = tags_el.getValues();
+
+			formData.append('description', description);
+			formData.append('installation', install);
+			formData.append('tags', tags);
+
+			remote.rpc_post(config.api_url+formAction, formData).then(response => {
+				console.log(response);
+			})
+
+			.catch((err) => {
+				notification.error('En feil oppstod (Feilkode 2)');
+				console.log(err);
+			});
+
+
+			return false;
+		}, true);
+	}, 3000);
+
+</script>

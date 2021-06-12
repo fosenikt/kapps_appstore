@@ -1,0 +1,64 @@
+<div class="container">
+
+	<h1 style="margin-bottom:0px;">Mine applikasjoner</h1>
+	<p class="help">
+		<i class="fas fa-info-circle"></i> Viser din virksomhet sine applikasjoner og tjenester.
+	</p>
+
+
+
+	<div id="company-app-list-loader">
+		<i class="fas fa-circle-notch fa-spin"></i> Henter applikasjoner...
+	</div>
+
+	<div id="company-app-list-table" style="display:none;">
+		<table id="table-company-app-list">
+			<thead>
+				<tr>
+					<th>Tittel</th>
+					<th>Type</th>
+					<th>Status</th>
+					<th>Bruker</th>
+					<th></th>
+				</tr>
+			</thead>
+
+			<tbody id="tbody-company-app-list"></tbody>
+		</table>
+	</div>
+
+</div>
+
+<script>
+	remote.rpc(config.api_url+'/company/apps').then(response => {
+
+		if (response != null) {
+			document.getElementById('company-app-list-table').style.display = 'block';
+			document.getElementById('company-app-list-loader').style.display = 'none';
+
+			template.load_webpart('/components/Apps/_webparts/myapp_item.jsr', '#tbody-company-app-list', response);
+		}
+
+		else {
+			document.getElementById('company-app-list-table').style.display = 'none';
+			document.getElementById('company-app-list-loader').style.display = 'block';
+
+			document.getElementById('company-app-list-loader').innerHTML = `
+				<div class="noResult">
+					<div>
+						Fant ingen applikasjoner eller tjenester i denne kategorien...
+					</div>
+
+					<div>
+						Kanskje du har en å <a href="/app/new">dele</a>?
+					</div>
+				</div>
+			`;
+		}
+	})
+
+	.catch((err) => {
+		notification.error('En feil oppstod under henting av template');
+		console.log(err);
+	});
+</script>

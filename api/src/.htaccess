@@ -1,0 +1,11 @@
+Options +FollowSymLinks
+RewriteEngine On
+
+RewriteCond %{DOCUMENT_ROOT} !-f
+RewriteRule !\.(js|ico|gif|jpg|png|html|swf|mst|svg|php|jpeg|bmp|webp|doc|docx|rtf|pdf|xls|xlsx|txt|csv|xhtml|psd|sql|log|fla|xml|ade|adp|mdb|accdb|ppt|pptm|pptx|odt|ots|ott|odb|odg|otp|otg|odf|ods|odp|css|ai|kmz,dwg|dxf|hpgl|plt|spl|step|stp|iges|igs|sat|cgm|tiff|mov|mpeg|m4v|mp4|avi|mpg|wma|flv|webm|mp3|mpga|m4a|ac3|aiff|mid|ogg|wav|zip|rar|gz|tar|iso|dmg|bprelease)$ index.php [QSA,L]
+
+RewriteRule ^test/(\d+)*$ ./kake.php?id=$1 [QSA,L]
+
+RewriteCond %{SCRIPT_FILENAME} !-d
+RewriteCond %{SCRIPT_FILENAME} !-f 
+RewriteRule ^.*$ ./index.php

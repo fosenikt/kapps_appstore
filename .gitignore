@@ -1,0 +1,66 @@
+/_*
+/data
+/vendor
+/tmp
+/_old*
+/database/2*
+sftp-config.json
+snippets.php
+tmp*.php
+tmp*.sql
+tmp*.md
+old_*
+_old_*
+*/src/vendor/*
+.vscode
+*.crt
+*.key
+*/node_modules*/
+package-lock.json
+composer.lock
+docker-compose.yaml
+docker-compose.prod.yaml
+docker-compose.dev.yaml
+/frontend/src/config.js
+
+
+# Kubernetes #
+###################
+kube-deploy-backend.yaml
+
+# Compiled source #
+###################
+*.com
+*.class
+*.dll
+*.exe
+*.o
+*.so
+
+# Packages #
+############
+# it's better to unpack these files and commit the raw source
+# git has its own built in compression methods
+*.7z
+*.dmg
+*.gz
+*.iso
+*.jar
+*.rar
+*.tar
+*.zip
+
+# Logs and databases #
+######################
+*.log
+*.sqlite
+
+# OS generated files #
+######################
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db

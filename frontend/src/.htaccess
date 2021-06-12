@@ -1,0 +1,22 @@
+Options +FollowSymLinks
+RewriteEngine On
+ 
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteRule ^/?//assets/(.*)$ /assets/$1 [END]
+
+# Removes index.php from ExpressionEngine URLs  
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteRule ^[^\.]*[^/]$ index.html  [L]
+
+#Options +FollowSymLinks
+#RewriteEngine On
+# 
+#RewriteCond %{REQUEST_FILENAME} !-f
+#RewriteCond %{REQUEST_FILENAME} !-d
+#RewriteRule ^/?//assets/(.*)$ /assets/$1 [END]
+#
+#RewriteCond %{REQUEST_FILENAME} !-f
+#RewriteCond %{REQUEST_FILENAME} !-d
+#RewriteRule ^[^\.]*[^/]$ index.html  [L]

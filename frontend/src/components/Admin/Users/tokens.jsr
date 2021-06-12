@@ -1,0 +1,202 @@
+<div class="page-content page-padding">
+	<h1>Tokens</h1>
+
+	<div class="fixed-action-btn" id="btn-float-users-new">
+		<a class="btn-floating btn-large waves-effect waves-light blue modal-trigger" href="#modal-user-newtoken-{{>id}}"><i class="material-icons">add</i></a>
+	</div>
+
+	<div style="margin:25px;">	
+		<a href="/admin/user/{{>id}}">
+			<i class="fas fa-arrow-left"></i> Tilbake til {{>firstname}} {{>lastname}}
+		</a>
+	</div>
+
+
+	<div id="user-token-list-{{>id}}">
+		<table id="table-users-list">
+			<thead>
+				<tr>
+					<th>Navn</th>
+					<th>Tid opprettet</th>
+					<th>Tid utgår</th>
+					<th>Tid sist brukt</th>
+					<th>IP-addresse</th>
+					<th>Status</th>
+					<th></th>
+				</tr>
+			</thead>
+
+			<tbody id="tbody-user-token-list-{{>id}}"></tbody>
+		</table>
+	</div>
+
+	<div id="user-token-list-{{>id}}-noresults" class="noResult" style="margin:8%;">
+		<p>
+			Denne brukeren har ingen tokens (innloggingssesjoner)!
+		</p>
+
+		<p style="font-size:0.9rem;">
+			For systembruker kan du opprette en "longlived" token for maskin-til-maskin
+			kommunikasjon, ved å trykke på pluss-knappen nede i høyre-hjørne.
+		</p>
+	</div>
+
+</div>
+
+
+
+
+<!-- Modal: Create token -->
+<div id="modal-user-newtoken-{{>id}}" class="modal">
+	<form id="form-newtoken-{{>id}}" action="/admin/user/token/create" method="POST">
+		<div class="modal-content">
+			<h4>Opprett token</h4>
+			<p>Opprett en "longlived" token. Token vil ha varighet på 42 år.</p>
+			<p style="color:red;">Ta vare på token et trygt sted etter den er opprettet. Du vil ikke kunne hente token etter vindu er lukket!</p>
+			
+
+			<div id="newtoken-input-container-{{>id}}">
+				<input type="hidden" name="user_id" value="{{>id}}">
+
+				<div class="row">
+					<div class="input-field col s12">
+						<input type="text" id="input-newtoken-title" name="title" placeholder="Navn på token">
+						<label for="input-newtoken-title">Tittel</label>
+					</div>
+				</div>
+			</div>
+
+			<div id="newtoken-result-container-{{>id}}"></div>
+
+		</div>
+		<div class="modal-footer" id="newtoken-modal-footer-{{>id}}">
+			<a href="#!" class="modal-close waves-effect waves-green btn-flat">Lukk</a>
+			<button class="waves-effect waves-green btn blue">Opprett token</button>
+		</div>
+	</form>
+</div>
+
+
+<style>
+	.token-preview {
+		overflow: auto;
+		padding:25px;
+	}
+</style>
+
+
+<script>
+
+	var modal_newtoken = M.Modal.init(document.getElementById('modal-user-newtoken-{{>id}}'), {
+		dismissible: false,
+		onOpenStart: function (modal, trigger) {
+			document.getElementById('newtoken-input-container-{{>id}}').style.display = 'block';
+			document.getElementById('newtoken-result-container-{{>id}}').style.display = 'none';
+			document.getElementById('newtoken-modal-footer-{{>id}}').innerHTML = `
+				<a href="#!" class="modal-close waves-effect waves-green btn-flat">Lukk</a>
+				<button class="waves-effect waves-green btn blue">Opprett token</button>`;
+			M.updateTextFields();
+		}
+	});
+
+
+
+
+
+	function get_tokens() {
+		remote.rpc(config.api_url+'/admin/user/token/get/{{>id}}').then(response => {
+
+			console.log(response);
+
+			if (response == null) {
+				document.getElementById('user-token-list-{{>id}}').style.display = 'none';
+				document.getElementById('user-token-list-{{>id}}-noresults').style.display = 'block';
+			}
+
+			else {
+				document.getElementById('user-token-list-{{>id}}').style.display = 'block';
+				document.getElementById('user-token-list-{{>id}}-noresults').style.display = 'none';
+				template.load_webpart('/components/Admin/Users/_webparts/token_row.jsr', '#tbody-user-token-list-{{>id}}', response);
+			}
+
+		})
+
+		.catch((err) => {
+			notification.error('En feil oppstod under henting av template');
+			console.log(err);
+		});
+	}
+
+
+
+
+
+
+
+	addEvent(document, 'submit', '#form-newtoken-{{>id}}', function(e) {
+		e.preventDefault();
+		e.stopImmediatePropagation(); // Stops event to fire twice
+
+		var thisForm = document.getElementById(e.target.getAttribute("id"));
+		var formData = new FormData(e.target);
+		var formAction = e.target.getAttribute("action");
+
+		remote.rpc_post(config.api_url+formAction, formData).then(response => {			
+			console.log(response);
+			console.log(response.length);
+
+			if (response == null) {
+				notification.error('<b>En feil oppstod!</b><br /><br />Ingen svar fra backend. Mulig teknisk feil. Sjekk serverlog.'); // Notification
+			}
+
+			else if (response.length > 10) {
+				notification.success('Token opprettet'); // Notification
+				thisForm.reset();
+				get_tokens();
+
+				document.getElementById('newtoken-input-container-{{>id}}').style.display = 'none';
+				document.getElementById('newtoken-result-container-{{>id}}').style.display = 'block';
+				document.getElementById('newtoken-result-container-{{>id}}').innerHTML = `
+					<div class="token-preview"><pre>${response}</pre></div>
+				`;
+				document.getElementById('newtoken-modal-footer-{{>id}}').innerHTML = `<a href="#!" class="modal-close waves-effect waves-green btn red">Lukk</a>`;
+			}
+
+			else {
+				notification.error('<b>En feil oppstod!</b><br /><br />'+response.message); // Notification
+			}
+		})
+
+		.catch((err) => {
+			console.log(err);
+			notification.error('<b>En feil oppstod!</b><br /><br />Teknisk feil'); // Notification
+		});
+
+		return false;
+	});
+
+
+
+
+
+
+	function token_delete(id) {
+		remote.rpc(config.api_url+'/admin/user/token/delete/' + id).then(response => {
+
+			console.log(response);
+
+			get_tokens();
+
+		})
+
+		.catch((err) => {
+			notification.error('En feil oppstod under henting av template');
+			console.log(err);
+		});
+	}
+
+
+	
+	get_tokens();
+
+</script>
