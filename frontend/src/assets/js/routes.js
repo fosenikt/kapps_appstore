@@ -94,12 +94,27 @@ page('/company/apps/:id', function(ctx) {
 
 
 
+page('/myprofile/edit', function(ctx) {
+	page_switch();
+	
+	remote.rpc(config.api_url+'/user/me').then(response => {
+		template.load_page('/components/MyProfile/edit.jsr', '#page-myprofile-edit', response).then(response => {
+			M.updateTextFields();
+		})
 
+	})
+
+	.catch((err) => {
+		notification.error('En feil oppstod under henting av template');
+		console.log(err);
+	});
+});
 
 page('/myprofile', function(ctx) {
 	page_switch();
 	
 	remote.rpc(config.api_url+'/user/me').then(response => {
+		console.log(response);
 		template.load_page('/components/MyProfile/myprofile.jsr', '#page-myprofile', response);
 	})
 

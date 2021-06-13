@@ -1,5 +1,13 @@
 <div class="container">
-	<h1>Min profil</h1>
+
+	<div class="row">
+		<div class="col s8">
+			<h1>Min profil</h1>
+		</div>
+		<div class="col s4" style="text-align:right; padding:40px 8px;">
+			<a class="waves-effect waves-light btn blue" href="/myprofile/edit">Rediger min profil</a>
+		</div>
+	</div>
 
 	<div class="item-list">
 		<div class="item">
@@ -44,6 +52,19 @@
 			<div class="value">
 				{{if mobile}}
 					{{>mobile}}
+				{{else}}
+					<i>Ikke oppgitt</i>
+				{{/if}}
+			</div>
+		</div>
+
+		<div class="item">
+			<div class="title">
+				Rolle / tittel
+			</div>
+			<div class="value">
+				{{if company_role}}
+					{{>company_role}}
 				{{else}}
 					<i>Ikke oppgitt</i>
 				{{/if}}

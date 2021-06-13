@@ -186,6 +186,26 @@ let App = function() {
 		return obj;
 	}
 
+
+
+
+
+	plugin.log = function(type, entity_id, entity_id2)
+	{
+
+		var formData = new FormData();
+		formData.append('type', type); // app, file, company_profile, user_profile
+		formData.append('entity_id', entity_id);
+		formData.append('entity_id2', entity_id2);
+
+		remote.rpc_post(config.api_url + '/stats/log', formData).then(response => {
+			console.log(response);
+		}).catch((err) => {
+			console.log('Could not log event');
+			console.log(err);
+		});
+	}
+
 }
 
 

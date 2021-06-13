@@ -513,7 +513,7 @@ class Files extends Db
 
 			if ($t == 'pptm' || $t == 'ppt' || $t == 'pptx') return '<i class="fal fa-fw fa-file-powerpoint"></i>';
 		elseif ($t == 'jpg' || $t == 'jpeg' || $t == 'png' || $t == 'bmp' || $t == 'svg' || $t == 'ico' || $t == 'webp' || $t == 'tiff')  return '<i class="fal fa-fw fa-file-image"></i>';
-		elseif ($t == 'doc' || $t == 'docx' || $t == 'rtf')  return '<i class="fal fa-fw fa-word"></i>';
+		elseif ($t == 'doc' || $t == 'docx' || $t == 'rtf')  return '<i class="fal fa-fw fa-file-word"></i>';
 		elseif ($t == 'pdf')  return '<i class="fal fa-fw fa-file-pdf"></i>';
 		elseif ($t == 'xls' || $t == 'xlsx')  return '<i class="fal fa-fw fa-file-excel"></i>';
 		elseif ($t == 'csv')  return '<i class="fal fa-fw fa-file-csv"></i>';

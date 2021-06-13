@@ -18,7 +18,7 @@
 				</div> -->
 			</div>
 			<div class="card-action">
-				<a href="/company/apps/{{>company.public_id}}">
+				<a href="/company/profile/{{>company.public_id}}">
 					<img style="max-height:18px; vertical-align:sub;" src="{{>company.logo.thumb}}" alt="Company logo"> {{>company.title}}
 				</a>
 			</div>

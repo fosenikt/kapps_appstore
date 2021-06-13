@@ -32,6 +32,7 @@ class MyProfile extends Db
 					'lastname' => $row['lastname'],
 					'mail' => $row['mail'],
 					'mobile' => $row['mobile'],
+					'company_role' => $row['company_role'],
 					'photo' => $row['photo'],
 					'last_update' => $row['last_update'],
 					'status' => $row['status'],
@@ -65,6 +66,99 @@ class MyProfile extends Db
 		}
 
 		return $r;
+	}
+
+
+
+
+
+
+	public function update($p)
+	{
+
+		$user_id = $this->me['id'];
+		$current_mail = $this->me['mail'];
+
+		if ($this->me['admin'] != 1) {
+			return array('status' => 'error', 'message' => 'No access');
+		}
+
+		if (!isset($user_id) || empty($user_id)) {
+			return array('status' => 'error', 'message' => 'User ID missing');
+		}
+
+
+		if (isset($p['firstname']) && !empty($p['firstname'])) {
+			$firstname = $p['firstname'];
+		} else {
+			$firstname = '';
+		}
+
+		if (isset($p['lastname']) && !empty($p['lastname'])) {
+			$lastname = $p['lastname'];
+		} else {
+			$lastname = '';
+		}
+
+		if (isset($p['mail']) && !empty($p['mail'])) {
+			$mail = $p['mail'];
+
+			// Check if mail is valid
+			if (!filter_var($mail, FILTER_VALIDATE_EMAIL)) {
+				return array('status' => 'error', 'message' => 'Invalid e-postadresse');
+			}
+
+			// Check if domain is not changed
+			list($new_mailuser, $new_maildomain) = explode('@', $mail);
+			list($current_mailuser, $current_maildomain) = explode('@', $current_mail);
+
+			if ($new_maildomain != $current_maildomain) {
+				return array('status' => 'error', 'message' => 'Du kan ikke endre e-postdomenet, da det er knyttet mot din virksomhet.');
+			}
+
+		} else {
+			return array('status' => 'error', 'message' => 'E-postadresse mangler');
+		}
+
+		if (isset($p['mobile']) && !empty($p['mobile'])) {
+			$mobile = $p['mobile'];
+		} else {
+			$mobile = '';
+		}
+
+		if (isset($p['company_role']) && !empty($p['company_role'])) {
+			$company_role = $p['company_role'];
+		} else {
+			$company_role = '';
+		}
+
+
+		// Create DB instance
+		$db = Db::getInstance();
+
+		// Prepare our SQL, preparing the SQL statement will prevent SQL injection.
+		if ($stmt = $db->prepare('UPDATE users SET firstname=?, lastname=?, mail=?, mobile=?, company_role=? WHERE id=?')) {
+			// Bind parameters (s = string, i = int, b = blob, etc), in our case the username is a string so we use "s"
+			$stmt->bind_param('sssssi', $firstname, $lastname, $mail, $mobile, $company_role, $user_id);
+			//$stmt->execute();
+
+			if (!$stmt) {
+				return array('status' => 'error', 'message' => $db->error);
+			}
+
+			if (!$stmt->execute()) {
+				return array('status' => 'error', 'message' => $stmt->error);
+			}
+		}
+
+		if($stmt->affected_rows == 1) {
+			$status = array('status' => 'success');
+		} else {
+			$status = array('status' => 'success', 'message' => 'Ingen endring');
+		}
+
+		$stmt->close();
+		return $status;
 	}
 
 

@@ -155,4 +155,10 @@
 		notification.error('En feil oppstod under henting av template');
 		console.log(err);
 	});
+
+
+
+	// Log visit.
+	// Used to create stats for most visited, popular, shortcuts, etc...
+	app.log('company_profile', '{{>public_id}}');
 </script>

@@ -55,6 +55,31 @@
 				</div>
 			</section>
 
+			{{if files}}
+				<section style="margin-top:50px;">
+				<h2>Filer</h2>
+					{{for files}}
+						<div class="app-file" id="app-file-{{>id}}">
+							<div class="fileicon">{{:icon}}</div>
+							<div class="info">
+								<div class="title">
+									<a href="{{>path}}" target="_blank" onClick="app.log('file', '{{>id}}');">
+										{{>filename}}
+									</a>
+								</div>
+								<div class="desc">
+									<div>
+										<span class="item">Filstr. {{>size.readable}}</span>
+										<span class="item">Type: .{{>type}}</span>
+										<span class="item">Tid opplastet: {{>time_uploaded}}</span>
+									</div>
+								</div>
+							</div>
+						</div>
+					{{/for}}
+				</section>
+			{{/if}}
+
 			<section style="margin-top:50px;">
 				<h2>Installasjonsveiledning</h2>
 				<div id="app-installation-{{>id}}">
@@ -65,3 +90,11 @@
 		</div>
 	</div>
 </div>
+
+
+
+<script>
+	// Log visit.
+	// Used to create stats for most visited, popular, shortcuts, etc...
+	app.log('app', '{{>id}}');
+</script>

@@ -1,0 +1,105 @@
+<div class="container">
+	<h1>Rediger min profil</h1>
+
+	<p style="color:red">
+		Merk at din profil vil være offentlig for alle andre som har tilgang til tjenesten, som i utgangspunktet
+		er alle offentlige virksomheter.
+	</p>
+
+	<br /><br />
+
+
+	<form id="form-myprofile-update" action="/myprofile/update" method="POST">
+
+		<div class="row">
+			<div class="input-field col s6">
+				<input type="text" id="input-myprofile-firstname" name="firstname" placeholder="Fornavn" value="{{>firstname}}">
+				<label for="input-myprofile-firstname">Fornavn</label>
+			</div>
+
+			<div class="input-field col s6">
+				<input type="text" id="input-myprofile-lastname" name="lastname" placeholder="Etternavn" value="{{>lastname}}">
+				<label for="input-myprofile-lastname">Etternavn</label>
+			</div>
+		</div>
+
+
+
+		<div class="row">
+			<div class="input-field col s12">
+				<input type="text" id="input-myprofile-role" name="company_role" placeholder="Rolle / tittel" value="{{>company_role}}">
+				<label for="input-myprofile-role">Rolle / tittel</label>
+			</div>
+		</div>
+
+		<div class="row">
+			<div class="input-field col s12">
+				<input type="text" id="input-myprofile-mail" name="mail" placeholder="Min e-postadresse" value="{{>mail}}">
+				<label for="input-myprofile-mail">Min e-postadresse</label>
+				<p class="help">
+					<i class="fas fa-info-circle"></i> Du kan ikke endre domenet!
+				</p>
+			</div>
+		</div>
+
+		<div class="row">
+			<div class="input-field col s12">
+				<input type="text" id="input-myprofile-mobile" name="mobile" placeholder="Mitt mobilnummer" value="{{>mobile}}">
+				<label for="input-myprofile-mobile">Mitt mobilnummer</label>
+			</div>
+		</div>
+
+		<div style="text-align:right; padding-right:15px;">
+			<button type="submit" class="waves-effect waves-light btn blue">Lagre min profil</button>
+		</div>
+
+	</form>
+
+
+</div>
+
+
+
+
+<script>
+	document.getElementById('form-myprofile-update').addEventListener('submit', function(event) {
+		event.preventDefault();
+		event.stopImmediatePropagation(); // Stops event to fire twice
+
+		console.log('Submitting form');
+
+		var thisForm = $(this);
+		var formAction = thisForm.attr('action');
+
+		var f = event.target,
+			formData = new FormData(f),
+			xhr = new XMLHttpRequest();
+
+		remote.rpc_post(config.api_url+formAction, formData).then(response => {
+			console.log(response);
+
+			if (response.status == 'success') {
+				
+				if (document.getElementById('page-myprofile-edit')) {
+					document.getElementById('page-myprofile-edit').remove();
+				}
+
+				if (document.getElementById('page-myprofile')) {
+					document.getElementById('page-myprofile').remove();
+				}
+
+				page('/myprofile');
+			} else {
+				notification.error('<b>En feil oppstod!</b><br /><br />' + response.message);
+			}
+		})
+
+		.catch((err) => {
+			notification.error('En feil oppstod (Feilkode 2)');
+			console.log(err);
+		});
+
+
+		return false;
+	}, true);
+</script>

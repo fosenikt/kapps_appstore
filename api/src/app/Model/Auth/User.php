@@ -56,7 +56,7 @@ class User extends Db
 
 
 			// Query user
-			$query = "SELECT id, mail, customer_id, firstname, lastname, initials, mobile, admin FROM users WHERE id LIKE '$user_id' LIMIT 1";
+			$query = "SELECT id, mail, customer_id, firstname, lastname, initials, mobile, company_role, admin FROM users WHERE id LIKE '$user_id' LIMIT 1";
 			$db = Db::getInstance();
 			$result = $db->query($query);
 			$numRows = $result->num_rows;
@@ -81,6 +81,7 @@ class User extends Db
 					'lastname' => $row['lastname'],
 					'initials' => $row['initials'],
 					'mobile' => $row['mobile'],
+					'company_role' => $row['company_role'],
 					'admin' => $row['admin'],
 				);
 

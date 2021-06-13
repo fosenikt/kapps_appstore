@@ -89,3 +89,11 @@
 	</div>
 
 </div>
+
+
+
+<script>
+	// Log visit.
+	// Used to create stats for most visited, popular, shortcuts, etc...
+	app.log('user_profile', '{{>id}}');
+</script>

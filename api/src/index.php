@@ -129,6 +129,9 @@ $dispatcher = FastRoute\simpleDispatcher(function(FastRoute\RouteCollector $r) {
 	// Search
 	$r->addRoute('POST', '/search/all', ['Kapps\Controller\Search\Search', 'apps']);
 	$r->addRoute('POST', '/search/apps', ['Kapps\Controller\Search\Search', 'apps']);
+	
+	// Stats
+	$r->addRoute('POST', '/stats/log', ['Kapps\Controller\Stats\Log', 'log']);
 
 
 
@@ -136,6 +139,8 @@ $dispatcher = FastRoute\simpleDispatcher(function(FastRoute\RouteCollector $r) {
 	$r->addRoute('GET', '/users/get', ['Kapps\Controller\Users\Users', 'get_users']);
 	$r->addRoute('GET', '/users/company/get/{id}', ['Kapps\Controller\Users\Users', 'get_company_users']);
 	$r->addRoute('GET', '/user/get/{id:\d+}', ['Kapps\Controller\Users\Users', 'get_user']);
+	
+	$r->addRoute('POST', '/myprofile/update', ['Kapps\Controller\Users\MyProfile', 'update']);
 
 
 	// Users: Admin
