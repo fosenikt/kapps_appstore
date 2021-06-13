@@ -295,7 +295,7 @@ class Images extends Db
 	public function set_primary_image($id, $image)
 	{
 		// Check if user has access to app this file is linked to
-		if (!$this->chk_app_access($p['app_id'])) {
+		if (!$this->chk_app_access($id)) {
 			return array('status' => 'error', 'message' => 'Access denied');
 		}
 
