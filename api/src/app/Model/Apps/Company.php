@@ -74,7 +74,7 @@ class Company extends Db
 
 
 	/**
-	 * Get apps for company
+	 * Get apps for company (aka. my company apps)
 	 * 
 	 * Security: Checks if logged in user har same company as app
 	 * 
@@ -100,6 +100,53 @@ class Company extends Db
 				  INNER JOIN users AS UC ON A.created_by = UC.id
 				  INNER JOIN users AS UE ON A.updated_by = UE.id
 				  WHERE A.company_id='{$this->thisUser['customer']['public_id']}'
+				  ORDER BY A.title ASC";
+		$db = Db::getInstance();
+		$result = $db->query($query);
+
+		if ($result->num_rows > 0) {
+			while ($row = $result->fetch_array()) {
+				$r[] = $this->output($row);
+			}
+		}
+
+		return $r;
+	}
+
+
+
+
+
+	
+
+
+
+
+
+
+	/**
+	 * Get published (public) apps for company
+	 * 
+	 * Security: Checks if logged in user har same company as app
+	 * 
+	 * @author Robert Andresen <ra@fosenikt.no>
+	 * 
+	 * @return 	Array    $r     Array with app-data (see outout)
+	 */
+	public function get_published_apps($id)
+	{
+		$r = array(); // Declare return-array
+
+		// Query apps
+		$query = "SELECT A.*,
+						 T.title AS type_title, T.fa_icon AS type_icon,
+						 UC.firstname AS uc_firstname, UC.lastname AS uc_lastname, UC.mail AS uc_mail,
+						 UE.firstname AS ue_firstname, UE.lastname AS ue_lastname, UE.mail AS ue_mail
+				  FROM apps AS A
+				  INNER JOIN app_types AS T ON A.type_id = T.id
+				  INNER JOIN users AS UC ON A.created_by = UC.id
+				  INNER JOIN users AS UE ON A.updated_by = UE.id
+				  WHERE A.company_id='$id' AND A.status LIKE 'published'
 				  ORDER BY A.title ASC";
 		$db = Db::getInstance();
 		$result = $db->query($query);

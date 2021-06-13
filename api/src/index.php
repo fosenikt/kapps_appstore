@@ -88,6 +88,7 @@ $dispatcher = FastRoute\simpleDispatcher(function(FastRoute\RouteCollector $r) {
 
 	// App: Companies
 	$r->addRoute('GET', '/company/apps', ['Kapps\Controller\Apps\Company', 'get_apps']);
+	$r->addRoute('GET', '/company/published/apps/{id}', ['Kapps\Controller\Apps\Company', 'get_published_apps']);
 	$r->addRoute('GET', '/company/app/{id:\d+}', ['Kapps\Controller\Apps\Company', 'get_app']);
 
 

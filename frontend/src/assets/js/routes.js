@@ -78,6 +78,20 @@ page('/company/myapps', function() {
 	})
 });
 
+page('/company/apps/:id', function(ctx) {
+	page_switch();
+
+	remote.rpc(config.api_url+'/company/get/'+ctx.params.id).then(response => {
+		console.log(response);
+		template.load_page('/components/Apps/company.jsr', '#page-company-apps-'+ctx.params.id, response);
+	})
+
+	.catch((err) => {
+		notification.error('En feil oppstod under henting av template');
+		console.log(err);
+	});
+});
+
 
 
 

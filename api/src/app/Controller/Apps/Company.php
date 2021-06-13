@@ -15,4 +15,10 @@ class Company {
 		return $obj->get_apps();
 	}
 
+	public function get_published_apps($id)
+	{		
+		$obj = new \Kapps\Model\Apps\Company();
+		return $obj->get_published_apps($id);
+	}
+
 }

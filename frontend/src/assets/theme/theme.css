@@ -551,6 +551,10 @@ form section {
 	color:#fff;
 	border: 0px solid red;
 	background: linear-gradient(to bottom, transparent 0%, #4b4b4b 100%);
+	padding: 50px 24px 0px 24px !important;
+	white-space: nowrap;
+	overflow: hidden;
+	text-overflow: ellipsis;
 	/* -webkit-background-clip: text;
 	-webkit-text-fill-color: transparent; */
 }

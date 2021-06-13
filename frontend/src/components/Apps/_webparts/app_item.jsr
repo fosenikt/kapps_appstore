@@ -7,10 +7,20 @@
 				</a>
 			</div>
 			<div class="card-content">
-				{{>short_description}}
+				{{if short_description}}
+					{{>short_description}}
+				{{else}}
+					<i>Ingen beskrivelse</i>
+				{{/if}}
+
+				<!-- <div>
+					<img style="max-height:18px;" src="{{>company.logo.thumb}}" alt="Company logo"> {{>company.title}}
+				</div> -->
 			</div>
 			<div class="card-action">
-				<a href="/app/edit/{{>id}}">Edit</a>
+				<a href="/company/apps/{{>company.public_id}}">
+					<img style="max-height:18px; vertical-align:sub;" src="{{>company.logo.thumb}}" alt="Company logo"> {{>company.title}}
+				</a>
 			</div>
 		</div>
 	</div>
