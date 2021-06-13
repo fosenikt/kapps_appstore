@@ -105,6 +105,9 @@ $dispatcher = FastRoute\simpleDispatcher(function(FastRoute\RouteCollector $r) {
 	$r->addRoute('POST', '/company/logo/upload', ['Kapps\Controller\Companies\Logo', 'upload']);
 	$r->addRoute('GET', '/companies/search/{q}', ['Kapps\Controller\Companies\Search', 'companies']);
 
+	// Companies: Employees
+	$r->addRoute('GET', '/company/employees/{id}', ['Kapps\Controller\Companies\Employees', 'get_employees']);
+
 
 	// Type
 	$r->addRoute('GET', '/types/get', ['Kapps\Controller\Types\Types', 'get_types']);

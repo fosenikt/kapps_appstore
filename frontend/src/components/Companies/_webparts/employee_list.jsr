@@ -1,0 +1,32 @@
+<div class="employee-item item-select icon-lg">
+	<div class="icon">
+		<div class="avatar-circle" style="background-color:{{>color}};">{{>initials}}</div>
+	</div>
+
+	<div class="info">
+		<div class="title">
+			<a href="/users/profile/{{>id}}">
+				{{if firstname}}
+					{{>firstname}} {{>lastname}}
+				{{else}}
+					<i>Navn mangler</i>
+				{{/if}}
+			</a>
+		</div>
+
+		<div class="description">
+			{{if company_role}}
+				{{>company_role}} &nbsp; &nbsp;
+			{{/if}}
+
+			{{if mail}}
+				<i class="fal fa-envelope"></i> <a href="mailto:{{>mail}}">{{>mail}}</a> &nbsp; &nbsp;
+			{{/if}}
+
+			{{if mobile}}
+				<i class="fal fa-mobile"></i> <a href="sip:{{>mobile}}">{{>mobile}}</a> &nbsp; &nbsp;
+			{{/if}}
+		</div>
+	</div>
+</div>
+

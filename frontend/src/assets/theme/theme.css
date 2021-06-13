@@ -660,7 +660,7 @@ form section {
 
 /* Item select row with icon
 --------------------------------------------------------------------------- */
-a.item-select {
+.item-select {
 	display: flex;
 	flex-direction: row;
 	width: 100%;
@@ -671,46 +671,51 @@ a.item-select {
 	color: var(--main-text-color);
 }
 
-a.item-select .icon {
+.item-select .icon {
 	flex: 0 0 80px;
 	font-size: 2.5rem;
 	text-align: center;
 }
-a.item-select .info {
+.item-select .info {
 	flex: 1 1 auto;
 }
-a.item-select .info .title {
+.item-select .info .title {
 	font-size: 1.3rem;
 }
-a.item-select .info .description {
+.item-select .info .description {
 	margin-top:8px;
 	font-size: 0.8rem;
 	color: var(--muted-text-color);
 }
-a.item-select .info .owner {
+.item-select .info .owner {
 	margin-top:8px;
 	font-size: 0.8rem;
 	color: var(--muted-text-color);
 }
 
-a.item-select:hover {
+.item-select:hover {
 	border: 3px solid #308aff;
 }
 
-a.item-select .info .owner img {
+.item-select .info .owner img {
 	max-height: 20px;
 	vertical-align: bottom;
 }
 
-a.item-select .icon img {
+.item-select .icon img {
 	max-width: 70px;
 }
 
 
 /* Large icon/image */
-a.item-select.icon-lg .icon { flex: 0 0 150px; }
-a.item-select.icon-lg .icon img { max-width: 110px; }
+.item-select.icon-lg .icon { flex: 0 0 150px; }
+.item-select.icon-lg .icon img { max-width: 110px; }
 
+.item-select .icon .avatar-circle {
+	width: 60px;
+	height: 60px;
+	line-height: 60px;
+}
 
 
 

@@ -211,14 +211,16 @@ class Users extends Db
 
 
 	/**
-	 * Get all users
+	 * Create initials
 	 * 
 	 * Security: None (backend only)
 	 * 
 	 * @author Robert Andresen <ra@fosenikt.no>
 	 * 
-	 * @param 	Int      $id    App ID
-	 * @return 	Array    $r     Array with app-data (see output)
+	 * @param 	String      $firstname    Firstname
+	 * @param 	String      $lastname     Lastname
+	 * @param 	String      $mail         Mail
+	 * @return 	String                    Initials
 	 */
 	public function create_initials($firstname, $lastname, $mail)
 	{

@@ -248,6 +248,25 @@ page('/company/profile/:id', function(ctx) {
 
 
 
+page('/users/profile/:id', function(ctx) {
+	page_switch();
+
+	remote.rpc(config.api_url+'/user/get/'+ctx.params.id).then(response => {
+		console.log(response);
+		template.load_page('/components/Users/profile.jsr', '#page-user-'+ctx.params.id, response);
+	})
+
+	.catch((err) => {
+		notification.error('En feil oppstod under henting av template');
+		console.log(err);
+	});
+});
+
+
+
+
+
+
 
 page('/search/all', function(ctx) {
 	page_switch();

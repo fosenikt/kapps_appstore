@@ -1,0 +1,20 @@
+<a class="search-item item-select icon-lg" href="/app/{{>id}}">
+	<div class="icon">
+		<img src="{{>primary_image.thumb}}" alt="Product image">
+	</div>
+
+	<div class="info">
+		<div class="title">
+			{{>title}}
+		</div>
+
+		<div class="description">
+			{{>short_description}}
+		</div>
+
+		<div class="owner">
+			<img src="{{>company.logo.thumb}}" alt="Company logo"> <span style="margin-left:8px;">{{>company.name}}</span>
+		</div>
+	</div>
+</a>
+

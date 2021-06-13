@@ -72,7 +72,7 @@
 
 
 
-	<ul class="tabs tab-demo" id="tabs-company-{{>public_id}}">
+	<ul class="tabs tab-demo" id="tabs-company-{{>public_id}}" style="margin-bottom:25px;">
 		<li class="tab"><a class="active" href="#tab-apps-{{>public_id}}">Applikasjoner</a></li>
 		<li class="tab"><a href="#tab-employees-{{>public_id}}">Ansatte</a></li>
 	</ul>
@@ -95,5 +95,64 @@
 <script>
 	var company_tabs = M.Tabs.init(document.getElementById('tabs-company-{{>public_id}}'), {
 
+	});
+
+
+	remote.rpc(config.api_url+'/company/published/apps/{{>public_id}}').then(response => {
+		console.log(response);
+
+		if (response == null || response.length == 0) {
+			document.getElementById('tab-apps-{{>public_id}}').innerHTML = `
+				<div class="noResult">
+					<div>
+						Fant ingen applikasjoner eller tjenester for denne virksomheten...
+					</div>
+
+					<div>
+						Kanskje du har en å <a href="/app/new">dele</a>?
+					</div>
+				</div>
+			`;
+		}
+
+		else {
+			template.load_webpart('/components/Companies/_webparts/app_list.jsr', '#tab-apps-{{>public_id}}', response);
+		}
+	})
+
+	.catch((err) => {
+		notification.error('En feil oppstod under henting av template');
+		console.log(err);
+	});
+
+
+
+
+
+	remote.rpc(config.api_url+'/company/employees/{{>public_id}}').then(response => {
+		console.log(response);
+
+		if (response == null || response.length == 0) {
+			document.getElementById('tab-employees-{{>public_id}}').innerHTML = `
+				<div class="noResult">
+					<div>
+						Fant ingen ansatte for denne virksomheten.
+					</div>
+
+					<div>
+						Det vil kun være innloggede brukere som vises her.
+					</div>
+				</div>
+			`;
+		}
+
+		else {
+			template.load_webpart('/components/Companies/_webparts/employee_list.jsr', '#tab-employees-{{>public_id}}', response);
+		}
+	})
+
+	.catch((err) => {
+		notification.error('En feil oppstod under henting av template');
+		console.log(err);
 	});
 </script>

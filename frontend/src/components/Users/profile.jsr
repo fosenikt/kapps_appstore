@@ -1,0 +1,91 @@
+<div class="container" style="margin-top:35px;">
+
+
+	<div class="row">
+		<div class="col s3" style="text-align:center;">
+			<div class="avatar-circle" style="background-color:{{>color}}; height:160px; width:160px; line-height:160px; font-size:5rem;">{{>initials}}</div>
+		</div>
+		<div class="col s9">
+			<h1 style="margin-top:0px;">
+				{{if firstname}}
+					{{>firstname}} {{>lastname}}
+				{{else}}
+					<i>Navn mangler</i>
+				{{/if}}
+			</h1>
+
+
+			<div class="item-list">
+				<div class="item">
+					<div class="title">
+						Virksomhet
+					</div>
+					<div class="value">
+						{{if customer}}
+							<a href="/company/profile/{{>customer.public_id}}">
+								<img style="height:20px; vertical-align:text-top;" src="{{>customer.logo.thumb}}" alt="Company logo"> {{>customer.title}}
+							</a>
+						{{else}}
+							<i>Ikke oppgitt</i>
+						{{/if}}
+					</div>
+				</div>
+
+				<div class="item">
+					<div class="title">
+						Rolle / Tittel
+					</div>
+					<div class="value">
+						{{if company_role}}
+							{{>company_role}}
+						{{else}}
+							<i>Ikke oppgitt</i>
+						{{/if}}
+					</div>
+				</div>
+
+				<div class="item">
+					<div class="title">
+						E-post
+					</div>
+					<div class="value">
+						{{if mail}}
+							<i class="fal fa-envelope"></i> <a href="mailto:{{>mail}}">{{>mail}}</a>
+						{{else}}
+							<i>Ikke oppgitt</i>
+						{{/if}}
+					</div>
+				</div>
+
+				<div class="item">
+					<div class="title">
+						Mobil
+					</div>
+					<div class="value">
+						{{if mobile}}
+							<i class="fal fa-mobile"></i> <a href="sip:{{>mobile}}">{{>mobile}}</a>
+						{{else}}
+							<i>Ikke oppgitt</i>
+						{{/if}}
+					</div>
+				</div>
+
+				<div class="item">
+					<div class="title">
+						Type
+					</div>
+					<div class="value">
+						{{if type}}
+							{{>type}}
+						{{else}}
+							<i>Ikke oppgitt</i>
+						{{/if}}
+					</div>
+				</div>
+
+			</div> <!-- end item-list -->
+
+		</div>
+	</div>
+
+</div>
