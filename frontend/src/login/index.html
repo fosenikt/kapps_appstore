@@ -61,7 +61,7 @@
 					<div id="login-section-mail" style="padding:20px 35px; display:none;">
 						<form id="form-send-link" action="/auth/login/send" method="POST">
 							<div class="input-field col s6">
-								<input type="email" id="input-mail" name="mail" value="ra@fosenikt.no">
+								<input type="email" id="input-mail" name="mail">
 								<label for="input-mail">Min e-postadresse</label>
 							</div>
 
@@ -174,14 +174,18 @@
 		<div class="modal-content">
 			<h2>Om kApps og Personvern</h2>
 
-			<h3>Om kApps</h3>
 			<p>Du kan lese mer om eksperimentet <a href="https://kapps.no/" target="_blank">Kapps.no her</a>.</p>
 			<p>
 				Kapps AppStore er en katalog over tjenester som offentlige virksomheter har laget selv.
 				Dette kan være alt fra hele applikasjoner, til integrasjoner og dokument som ROS og DPIA.
 			</p>
 			<p>
-				Katalogen baserer seg på selvbetjening, hvor alle har mulighet til å legge inn egne tjenester.
+				Katalogen baserer seg på selvbetjening, hvor alle* har mulighet til å legge inn egne tjenester.
+			</p>
+			<p style="font-size:0.7rem;">
+				<i>* Alle som har en e-post med offentlig domenenavn, som finnes i Kapps-databasen. Så langt ligger tilnærmet 700 offentlige virksomheter inne.
+					 Ta kontakt dersom du ikke får logget inn.
+				</i>
 			</p>
 			
 
@@ -199,24 +203,24 @@
 			<p>
 				Dette skal være en åpen plattform for alle offentlige virksomheter.
 				Som betyr at din brukerprofil, tjenester du legger ut og tilsvarende vil være tilgjengelig for andre i plattformen 
-				(altså innloggede brukere).
+				(altså andre innloggede brukere).
 			</p>
 
 			<h4>Statistikk</h4>
 			<p>
-				Det vil loggføres internt statistikk på hvilke tjenester man klikker på og tilsvarende.
+				Det vil loggføres enkel internt statistikk på hvilke tjenester man klikker på. Formålet er å vise "Mest populær", "Sist settpå" og lignende.
 			</p>
 
 			<h4>Ekstern deling av data</h4>
 			<p>
-				Det vil ikke selges eller gis ut data om brukere. Det vurderes å tillate åpen deling av de offentlige virksomhetene,
-				for gjenbruk hos andre.
+				Det vil ikke selges eller gis ut data om brukere til tredjepart. Det finnes API som kan brukes med din egen bruker, basert på dine rettigheter.
+				Det kan vurderes åpne API-er for data som er offentlig tilgjengelig (f.eks. virksomheter), men ikke data som kan knyttes mot deg som person.
 			</p>
 
 
 		</div>
 		<div class="modal-footer">
-			<a href="#!" class="modal-close waves-effect waves-green btn-flat">Lukk</a>
+			<a href="#!" class="modal-close waves-effect waves-green btn green">Godta</a>
 		</div>
 	</div>
 
@@ -227,7 +231,16 @@
 	<script type="text/javascript">
 
 		var modal_create_user = M.Modal.init(document.getElementById('modal-create-user'), {});
-		var modal_about_privacy = M.Modal.init(document.getElementById('modal-about-privacy'), {});
+		var modal_about_privacy = M.Modal.init(document.getElementById('modal-about-privacy'), {
+			dismissible: false,
+			onCloseEnd: function (modal, trigger) {
+				localStorage.setItem('modal_privacy_read', '1');
+			}
+		});
+
+		if (localStorage.getItem("modal_privacy_read") === null) {
+			modal_about_privacy.open();
+		}
 
 
 		// If token exist in URL
