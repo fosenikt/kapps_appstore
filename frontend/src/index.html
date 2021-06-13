@@ -107,24 +107,6 @@
 		</div>
 
 
-		<!-- <div class="" style="margin:0px 25px;">
-			
-			<a href="#" data-target="mobile-sidenav" class="sidenav-trigger">
-				<i class="fas fa-bars"></i>
-			</a>
-			<ul id="nav-mobile" class="left hide-on-med-and-down">
-				
-				
-			</ul>
-			<ul id="nav-mobile" class="right hide-on-med-and-down">
-				<li><a href="/apps">Apps</a></li>
-				<li><a href="https://rammeverk.kapps.no">Rammeverk</a></li>
-				<li><a href="https://kapps.no">Kapps.no</a></li>
-				
-			</ul>
-		</div>
-		</div>
-		-->
 
 		 <!-- Dropdown Structure -->
 		<ul id="dropdown-user" class="dropdown-content" style="min-width:300px;">
@@ -155,30 +137,11 @@
 	<ul class="sidenav" id="nav-menu">
 		<li>
 			<div class="user-view">
-				<div class="background">
-					<img src="/assets/images/wp/wallpaper_004.jpg">
-				</div>
+				
 				<a href="#user"><img src="/assets/images/logo/Kapps_no.png" alt="logo" style="max-height: 50px;"></a>
 				<div class="name" style="padding-bottom:25px; font-weight:600; font-size:1.2rem;">Kapps.no</div>
 			</div>
 		</li>
-
-		<!-- <li>
-			<div class="app-search sidebar-search" style="padding:10px 10px;">
-				<form id="nav-search" action="/search/all" method="POST">
-					<div class="search-container">
-						<div class="search-input">
-							<input type="text" class="input-app-search" id="input-nav-search" name="q" placeholder="Søk etter tjeneste...">
-						</div>
-						<div class="search-btn">
-							<button type="submit">
-								<i class="fas fa-search"></i>
-							</button>
-						</div>
-					</div>
-				</form>
-			</div>
-		</li> -->
 
 		<li>
 			<a href="/search/all">
@@ -448,29 +411,6 @@
 			var q = formData.get('q');
 
 			page('/search/all?q=' + q);
-
-			/* var thisForm = document.getElementById(e.target.getAttribute("id"));
-			var formData = new FormData(e.target);
-			var formAction = e.target.getAttribute("action");
-
-			remote.rpc_post(config.api_url+formAction, formData).then(response => {			
-				console.log(response);
-				if (response.status == 'success') {
-					notification.success('Virksomhet lagret'); // Notification
-					thisForm.reset();
-
-					if (document.getElementById('page-admin-companies-new')) {
-						document.getElementById('page-admin-companies-new').remove();
-					}
-
-					page('/admin/company/' + response.public_id);
-				}
-			})
-
-			.catch((err) => {
-				console.log(err);
-			}); */
-
 			return false;
 		});
 	</script>
