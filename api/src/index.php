@@ -132,6 +132,9 @@ $dispatcher = FastRoute\simpleDispatcher(function(FastRoute\RouteCollector $r) {
 	
 	// Stats
 	$r->addRoute('POST', '/stats/log', ['Kapps\Controller\Stats\Log', 'log']);
+	$r->addRoute('GET', '/stats/apps/count/published', ['Kapps\Controller\Stats\Stats', 'num_published']);
+	$r->addRoute('GET', '/stats/apps/latest', ['Kapps\Controller\Stats\Stats', 'last_published']);
+	$r->addRoute('GET', '/stats/apps/popular', ['Kapps\Controller\Stats\Stats', 'most_popular_apps']);
 
 
 

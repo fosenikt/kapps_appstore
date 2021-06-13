@@ -836,6 +836,18 @@ form section {
 
 
 
+
+/* Bullet list
+--------------------------------------------------------------------------- */
+ul.bullets {
+}
+
+ul.bullets li {
+	list-style-type: disc;
+	margin-left:25px;
+}
+
+
 /* 
 
 

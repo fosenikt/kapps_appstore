@@ -10,7 +10,9 @@ class Utils
 
 	public function __construct()
 	{
-
+		$this->image_base_url = '//'.URL.'/data/apps/';
+		$this->image_base_path = '/var/www/html/data/apps/';
+		$this->image_none = '//'.FRONTEND_HOST.'/assets/images/icons/rpa_default.png';
 	}
 
 
