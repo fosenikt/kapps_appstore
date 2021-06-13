@@ -15,11 +15,9 @@
 
 <script>
 	remote.rpc(config.api_url+'/apps/get'+window.location.search).then(response => {
-		if (response != null) {
-			template.load_webpart('/components/Apps/_webparts/app_item.jsr', '#apps-by-type', response);
-		}
+		console.log(response);
 
-		else {
+		if (response == null || response.length == 0) {
 			document.getElementById('apps-by-type').innerHTML = `
 				<div class="noResult">
 					<div>
@@ -31,6 +29,10 @@
 					</div>
 				</div>
 			`;
+		}
+
+		else {
+			template.load_webpart('/components/Apps/_webparts/app_item.jsr', '#apps-by-type', response);
 		}
 	})
 

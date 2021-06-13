@@ -10,6 +10,9 @@
 				</p>
 
 				<div style="margin-top:25px;">
+					<a href="/apps/get?type=1" class="btn waves-effect waves-light btn-large green">
+						Jeg vil se
+					</a>  &nbsp; 
 					<a href="/app/new" class="btn waves-effect waves-light btn-large blue">
 						Jeg vil dele
 					</a>
