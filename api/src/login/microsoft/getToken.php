@@ -95,8 +95,14 @@ $token = $auth->auth_o365_user($profile, $json_tokens);
 /**
  * Redirect user back to login-page for local auth and redirect into app
  */
-if (!empty($token)) {
-	header('Location: https://'.FRONTEND_HOST.'/login/?login=success&token='.$token.'&autologin=0&redir='.urlencode($_SESSION['redir']));
+if (isset($_SESSION['redir']) && !empty($_SESSION['redir'])) {
+	$redir = $_SESSION['redir'];
 } else {
-	header('Location: https://'.FRONTEND_HOST.'/login/?login=error&error=1&redir='.urlencode($_SESSION['redir']));
+	$redir = '';
+}
+
+if (!empty($token)) {
+	header('Location: https://'.FRONTEND_HOST.'/login/?login=success&token='.$token.'&autologin=0&redir='.urlencode($redir));
+} else {
+	header('Location: https://'.FRONTEND_HOST.'/login/?login=error&error=1&redir='.urlencode($redir));
 }

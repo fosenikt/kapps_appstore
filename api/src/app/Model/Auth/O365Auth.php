@@ -89,8 +89,8 @@ class O365Auth extends db
 		$token = $this->Utils->create_token($payload);
 
 		// Set O365 token in local DB
-		$query = "UPDATE users SET o365_token='". json_encode($tokens) ."', customer_id='{$customer['id']}' WHERE id='$user_id'";
-		$result = $db->query($query);
+		//$query = "UPDATE users SET o365_token='". json_encode($tokens) ."', customer_id='{$customer['id']}' WHERE id='$user_id'";
+		//$result = $db->query($query);
 
 		// Add event
 		$query = "INSERT INTO event SET user_id='$user_id', domain='Auth', event_type='GuiLogin'";
@@ -146,7 +146,7 @@ class O365Auth extends db
 		$db->query("SET NAMES 'utf8mb4'");
 
 
-		$get_company = $this->Login->get_company_by_mail($mail);
+		$get_company = $this->Login->get_company_by_mail($profile['userPrincipalName']);
 		if ($get_company == null) {
 			return array('status' => 'error', 'No company matching users e-mail');
 		} else {
