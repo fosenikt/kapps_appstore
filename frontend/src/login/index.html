@@ -80,6 +80,17 @@
 							</div>
 
 							<div style="margin-top:45px;">
+								<a class="waves-effect waves-light btn white" id="btn-o365-login" href="" style="color:black;">
+									<img style="height:25px; vertical-align:middle;" src="../assets/images/icons/office_logo.svg" alt="logo" /> Logg på med Office365
+								</a>
+
+								<script type="text/javascript">
+									let btn_o365_login = document.getElementById('btn-o365-login');
+									btn_o365_login.setAttribute('href', config.api_url + '/login/microsoft/signin.php');
+								</script>
+							</div>
+
+							<div style="margin-top:15px;">
 								<a class="modal-trigger" href="#modal-create-user">Opprett bruker?</a><br />
 								<a class="modal-trigger" href="#modal-about-privacy">Om kApps og personvern</a><br />
 							</div>

@@ -38,7 +38,7 @@ require_once('../../vendor/autoload.php');
  * 
  * )
  */
-$authController = new FIP\Model\Auth\Microsoft\AuthController(); // Used to get O365 token
+$authController = new Kapps\Model\Auth\Microsoft\AuthController(); // Used to get O365 token
 $getToken = $authController->gettoken();
 
 $json_tokens = json_decode(json_encode($getToken), true);
@@ -66,7 +66,7 @@ $array = (array)$getToken;
  *)
  * 
  */
-$outlook = new FIP\Model\Auth\Microsoft\OutlookController; // Used to get profile
+$outlook = new Kapps\Model\Auth\Microsoft\OutlookController; // Used to get profile
 $profile = $outlook->me();
 
 
@@ -76,7 +76,7 @@ $profile = $outlook->me();
 /**
  * Get users profile photo
  */
-$photo = new FIP\Model\Auth\Microsoft\Photo; // Used to get users profile picture
+$photo = new Kapps\Model\Auth\Microsoft\Photo; // Used to get users profile picture
 $get_photo = $photo->fetch_photo($profile['userPrincipalName']);
 
 
@@ -86,7 +86,7 @@ $get_photo = $photo->fetch_photo($profile['userPrincipalName']);
 /**
  * Validate login locally and create a local JWT token
  */
-$auth = new FIP\Model\Auth\O365Auth; // Used to create a local token
+$auth = new Kapps\Model\Auth\O365Auth; // Used to create a local token
 $token = $auth->auth_o365_user($profile, $json_tokens);
 
 
