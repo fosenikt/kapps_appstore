@@ -126,19 +126,21 @@
 
 							<div class="feedback" id="login-section-mail-feedback"></div>
 
-							<div>
-								<button type="submit" class="waves-effect waves-light blue btn">
-									Send kode
-								</button>
+							<div class="row">
+								<div class="col s6" style="text-align:left; padding-top:6px;">
+									<a href="javascript:show_enter_code();">
+										Har kode?
+									</a>
+								</div>
+
+								<div class="col s6" style="text-align:right;">
+									<button type="submit" class="waves-effect waves-light blue btn">
+										Send kode
+									</button>
+								</div>
 							</div>
 
-							<div class="form-sublink">
-								<a href="javascript:show_enter_code();">
-									Jeg har en kode
-								</a>
-							</div>
-
-							<div style="margin-top:45px;">
+							<div style="margin-top:85px;">
 								<a class="waves-effect waves-light btn white" id="btn-o365-login" href="" style="color:black;">
 									<img style="height:25px; vertical-align:middle;" src="../assets/images/icons/office_logo.svg" alt="logo" /> Logg på med Office365
 								</a>
@@ -451,6 +453,20 @@
 
 			return false;
 		});
+
+
+
+
+
+
+
+		if (getParameterByName('error') != '' && getParameterByName('error') != null) {
+			if (getParameterByName('error') == 50) {
+				msg_status('error', 'Generell feil. Prøv gjerne innlogging med e-post og engangskode.');
+			} else {
+				msg_status('error', 'Generell feil. Prøv gjerne innlogging med e-post og engangskode.');
+			}
+		}
 
 
 
