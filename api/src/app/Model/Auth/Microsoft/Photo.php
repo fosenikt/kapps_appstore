@@ -48,7 +48,7 @@ class Photo extends db
 		} else {
 			$response_data = json_decode($response, true);
 
-			if ($response_data['error']) {
+			if (is_array($response_data) && isset($response_data['error'])) {
 				return array('status' => 'error', 'message' => 'Graph API error', 'error' => $response_data['error']);
 			}
 

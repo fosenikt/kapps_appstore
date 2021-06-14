@@ -62,8 +62,14 @@ class O365Auth extends db
 
 
 		// Check if user is found by O365 ID
-		$query = "SELECT id FROM users WHERE (o365_id LIKE '{$profile['id']}' || mail LIKE '{$profile['userPrincipalName']}')";
+		$query = "SELECT id FROM users WHERE o365_id LIKE '{$profile['id']}' OR mail LIKE '{$profile['userPrincipalName']}'";
+		error_log($query);
 		$result = $db->query($query);
+
+		if (!$result) {
+			error_log('Query to check for existing user failed');
+			error_log($db->error);
+		}
 
 		if ($result->num_rows == 0) {
 			$user_id = $this->create_user($profile);
@@ -116,7 +122,7 @@ class O365Auth extends db
 			return false;
 		}
 
-		$query = "UPDATE users SET o365_id='{$profile['id']}', firstname='{$profile['givenName']}', lastname='{$profile['surname']}', mail='{$profile['userPrincipalName']}' WHERE o365_id='{$profile['id']}'";
+		$query = "UPDATE users SET o365_id='{$profile['id']}', firstname='{$profile['givenName']}', lastname='{$profile['surname']}' WHERE o365_id='{$profile['id']}'";
 		error_log($query);
 		$db = Db::getInstance();
 		$result = $db->query($query);
