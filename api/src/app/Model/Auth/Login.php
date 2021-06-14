@@ -341,7 +341,7 @@ class Login extends Db
 	 * @param   String   $mail   Users e-mail
 	 * @return  Array            Simple company-array
 	 */
-	private function get_company_by_mail($mail)
+	public function get_company_by_mail($mail)
 	{
 
 		list($user, $domain) = explode('@', $mail);

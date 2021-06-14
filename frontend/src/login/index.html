@@ -39,6 +39,65 @@
 		}
 
 		var logging_in = false;
+
+
+
+		// Get URL parameters
+		function getParameterByName(name, url) {
+			if (!url) url = window.location.href;
+			name = name.replace(/[\[\]]/g, '\\$&');
+			var regex = new RegExp('[?&]' + name + '(=([^&#]*)|&|#|$)'),
+			results = regex.exec(url);
+			if (!results) return null;
+			if (!results[2]) return '';
+			return decodeURIComponent(results[2].replace(/\+/g, ' '));
+		}
+
+
+		// If token exist in URL
+		// Get user with API request
+		// Redirect if user is found
+		if (getParameterByName('token') != '' && getParameterByName('token') != null) {
+
+			// Set login in progress
+			logging_in = true;
+
+			// Store token in local storage
+			localStorage.setItem("user_token", getParameterByName('token'));
+			
+			// Check logged in user from API
+			remote.rpc('https:' + config.api_url + '/user/me').then(response => {
+				// If no response
+				if (response == null || response == undefined || response == 0 || response == false) {
+					console.log('No response from '+config.api_url+'/user/me, redirecting to login-page.');
+					localStorage.removeItem("user_token");
+					window.location.replace(config.login_url + '?error=50&autologin=0');
+				}
+
+				// If error in response
+				else if (response.status == 'error') {
+					localStorage.removeItem("user_token");
+					window.location.replace(config.login_url + '?error=' + response.error_id + '&autologin=0');
+				}
+
+				// Else: Login OK
+				else {
+					//localStorage.setItem("user_access", response.access);
+					localStorage.setItem('user', JSON.stringify(response));
+
+					if (getParameterByName('redir') != null && getParameterByName('redir') != '') {
+						window.location.replace(getParameterByName('redir'));
+					} else {
+						window.location.replace("../");
+					}
+
+				}
+			}).catch((err) => {
+				console.log('API-frontend error on /user/me, redirecting to login-page.');
+				//localStorage.removeItem("user_token");
+				//window.location.replace(config.login_url + '?error=51&autologin=0');
+			});
+		}
 	</script>
 	
 	

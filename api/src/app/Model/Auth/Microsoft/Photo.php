@@ -9,8 +9,8 @@ class Photo extends db
 
 	public function __construct()
 	{
-		$this->img_url = URL.'/upload/profilepictures/';
-		$this->img_path = $_SERVER['DOCUMENT_ROOT'].'/upload/profilepictures/';
+		$this->img_url = URL.'/data/profilepictures/';
+		$this->img_path = $_SERVER['DOCUMENT_ROOT'].'/data/profilepictures/';
 
 		$this->debug = true;
 	}
