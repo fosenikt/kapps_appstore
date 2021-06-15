@@ -57,7 +57,7 @@
 			</div>
 			<div style="padding:8px;">
 				<a href="#" class="btn-modal-image-manager">
-					<i class="fas fa-fw fa-images"></i> Vis bilder
+					<i class="fas fa-fw fa-images"></i> Administrer bilder
 				</a>
 			</div>
 
@@ -93,7 +93,47 @@
 					</a>			
 				{{/if}}
 			</div>
+
+
+			
+
+
+			<h4 style="margin-top:35px;">Lisens</h4>
+			<div style="padding:0px 10px 10px 10px; font-size:0.8rem;">
+				<i class="fal fa-file-certificate"></i> <a href="{{>license.link}}" target="_blank">{{>license.title}}</a>
+			</div>
+
+			<h4 style="margin-top:35px;">Kildekode</h4>
+			<div style="padding:0px 10px 10px 10px; font-size:0.8rem;">
+				{{if link_source_code}}
+					<i class="fal fa-external-link"></i> <a href="{{>link_source_code}}" target="_blank">{{>link_source_code}}</a>
+				{{else}}
+					<i>Ingen kildekode lenke lagt til...</i>
+				{{/if}}
+			</div>
+
+
+			<h4 style="margin-top:35px;">Tags</h4>
+			{{if tags}}
+				{{if tags.array}}
+					{{props tags.array}}
+						<span class="badge tags">{{:prop}}</span>
+					{{/props}}
+				{{else}}
+					<div style="padding:0px 10px 10px 10px; font-size:0.8rem;">
+						<i>
+							Denne tjenesten har ingen tag-er.<br />
+							<a data-target="sidebar-app-details-{{>id}}" class="sidenav-trigger" style="cursor: pointer;">Legg til</a> noen for å gjøre den mer søkbar.
+						</i>
+					</div>
+				{{/if}}
+			{{/if}}
 		</div>
+
+
+
+
+
 		<div class="col s12 l8">
 
 			<section>
@@ -261,7 +301,7 @@
 					</div>
 				</div>
 
-				<section class="input-box">
+				<!-- <section class="input-box">
 					<h4>Leveringsmetode</h4>
 					<div class="help">
 						<i class="fas fa-info-circle"></i> Hvordan skal applikasjonen leveres til mottaker.
@@ -270,7 +310,7 @@
 					<div class="col s12" id="app-new-delivery-methods">
 						Delivery methods
 					</div>
-				</section>
+				</section> -->
 
 				<div class="input-box">
 					<label>Tags</label>
@@ -292,11 +332,11 @@
 
 			</div>
 			<div class="modal-footer">
-				<div class="row">
-					<div class="col s6" style="text-align:left;">
+				<div class="row" style="margin-top:25px;">
+					<!-- <div class="col s6" style="text-align:left;">
 						<a href="#!" class="modal-close waves-effect waves-green btn-flat">Avbryt</a>
-					</div>
-					<div class="col s6" style="text-align:right;">
+					</div> -->
+					<div class="col s12" style="text-align:right;">
 						<button type="submit" class="waves-effect waves-light btn">Lagre</button>
 					</div>
 				</div>
@@ -807,7 +847,7 @@
 				}
 			}
 
-			target.value = '{{>license_id}}'; // Set selected item
+			target.value = '{{>license.id}}'; // Set selected item
 			var instances = M.FormSelect.init(target, {});
 		})
 
@@ -850,7 +890,6 @@
 				}
 			}
 
-			//var instances = M.FormSelect.init(target, {});
 		})
 
 		.catch((err) => {
@@ -1153,6 +1192,6 @@
 
 	// Init
 	app_edit_licenses_get();
-	app_new_delivery_methods();
+	//app_new_delivery_methods();
 	get_tags('{{>tags.string}}');
 </script>

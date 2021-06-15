@@ -386,6 +386,13 @@ h4 {
 	padding: 5px 5px !important;
 }
 
+.badge.tags {
+	background-color: blue;
+	float:left;
+	margin-left:0px;
+	margin-right:5px;
+}
+
 table .tdcenter { text-align:center; }
 
 

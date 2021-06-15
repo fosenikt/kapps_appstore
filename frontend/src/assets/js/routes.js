@@ -57,6 +57,7 @@ page('/app/edit/:id', function(ctx) {
 	page_switch();
 
 	remote.rpc(config.api_url+'/app/get/'+ctx.params.id).then(response => {
+		console.log(response);
 		template.load_page('/components/Apps/edit.jsr', '#page-app-edit-'+ctx.params.id, response);
 	})
 

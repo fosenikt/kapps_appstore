@@ -50,11 +50,13 @@ class Apps extends Db
 		$query = "SELECT A.*,
 						 T.title AS type_title, T.fa_icon AS type_icon,
 						 UC.firstname AS uc_firstname, UC.lastname AS uc_lastname, UC.mail AS uc_mail,
-						 UE.firstname AS ue_firstname, UE.lastname AS ue_lastname, UE.mail AS ue_mail
+						 UE.firstname AS ue_firstname, UE.lastname AS ue_lastname, UE.mail AS ue_mail,
+						 L.title AS license_title, L.link AS license_link
 				  FROM apps AS A
 				  INNER JOIN app_types AS T ON A.type_id = T.id
 				  INNER JOIN users AS UC ON A.created_by = UC.id
 				  INNER JOIN users AS UE ON A.updated_by = UE.id
+				  INNER JOIN licenses AS L ON A.license_id = L.id
 				  WHERE A.id='$id' AND (A.status LIKE 'published' OR A.company_id='{$this->thisUser['customer']['public_id']}')";
 		$db = Db::getInstance();
 		$result = $db->query($query);
@@ -108,11 +110,13 @@ class Apps extends Db
 		$query = "SELECT A.*,
 						 T.title AS type_title, T.fa_icon AS type_icon,
 						 UC.firstname AS uc_firstname, UC.lastname AS uc_lastname, UC.mail AS uc_mail,
-						 UE.firstname AS ue_firstname, UE.lastname AS ue_lastname, UE.mail AS ue_mail
+						 UE.firstname AS ue_firstname, UE.lastname AS ue_lastname, UE.mail AS ue_mail,
+						 L.title AS license_title, L.link AS license_link
 				  FROM apps AS A
 				  INNER JOIN app_types AS T ON A.type_id = T.id
 				  INNER JOIN users AS UC ON A.created_by = UC.id
 				  INNER JOIN users AS UE ON A.updated_by = UE.id
+				  INNER JOIN licenses AS L ON A.license_id = L.id
 				  $qWhere";
 		$db = Db::getInstance();
 		$result = $db->query($query);
@@ -248,7 +252,11 @@ class Apps extends Db
 				'icon' => $data['type_icon'],
 			),
 			'delivery_id' => $data['delivery_id'],
-			'license_id' => $data['license_id'],
+			'license' => array(
+				'id' => $data['license_id'],
+				'title' => $data['license_title'],
+				'link' => $data['license_link']
+			),
 			'tags' => array(
 				'array' => $tags,
 				'string' => $data['tags'],

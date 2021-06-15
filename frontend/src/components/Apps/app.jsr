@@ -45,7 +45,39 @@
 					</div>
 				</div>
 			</div>
+
+			
+
+
+			<div>
+				<h4 style="margin-top:45px;">Lisens</h4>
+				<div style="padding:0px 10px 10px 10px; font-size:0.8rem;">
+					<i class="fal fa-file-certificate"></i> <a href="{{>license.link}}" target="_blank">{{>license.title}}</a>
+				</div>
+			</div>
+
+			{{if link_source_code}}
+				<h4 style="margin-top:35px;">Kildekode</h4>
+				<div style="padding:0px 10px 10px 10px; font-size:0.8rem;">
+					<i class="fal fa-external-link"></i> <a href="{{>link_source_code}}" target="_blank">{{>link_source_code}}</a>
+				</div>
+			{{/if}}
+
+			{{if tags}}
+				{{if tags.array}}
+					<h4 style="margin-top:35px;">Tags</h4>
+					<div>	
+						{{props tags.array}}
+							<span class="badge tags">{{:prop}}</span>
+						{{/props}}
+					</div>
+				{{/if}}
+			{{/if}}
 		</div>
+
+
+
+
 		<div class="col s12 l8">
 
 			<section>
