@@ -38,13 +38,15 @@ class Employees extends Db
 		$r = null;
 		$db = Db::getInstance();
 
+		$status = 'active';
+
 		// Prepare SQL
 		if ($stmt = $db->prepare('SELECT U.* 
 							      FROM users AS U
 								  INNER JOIN company AS C ON C.id = U.customer_id
-								  WHERE C.public_id LIKE ?')) {
+								  WHERE C.public_id LIKE ? AND U.status LIKE ?')) {
 			// Bind parameters (s = string, i = int, b = blob, etc), in our case the username is a string so we use "s"
-			$stmt->bind_param('s', $id);
+			$stmt->bind_param('ss', $id, $status);
 			$stmt->execute();
 		}
 
