@@ -127,8 +127,9 @@ $dispatcher = FastRoute\simpleDispatcher(function(FastRoute\RouteCollector $r) {
 
 
 	// Search
-	$r->addRoute('POST', '/search/all', ['Kapps\Controller\Search\Search', 'apps']);
+	$r->addRoute('POST', '/search/all', ['Kapps\Controller\Search\Search', 'all']);
 	$r->addRoute('POST', '/search/apps', ['Kapps\Controller\Search\Search', 'apps']);
+	$r->addRoute('POST', '/search/companies', ['Kapps\Controller\Search\Search', 'companies']);
 	
 	// Stats
 	$r->addRoute('POST', '/stats/log', ['Kapps\Controller\Stats\Log', 'log']);

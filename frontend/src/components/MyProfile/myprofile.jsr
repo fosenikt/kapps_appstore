@@ -2,80 +2,91 @@
 
 	<div class="row">
 		<div class="col s8">
-			<h1>Min profil</h1>
+			<h1 style="margin-bottom:10px;">Min profil</h1>
+
+			<div class="breadcrumbs" style="margin-left:15px; margin-bottom:35px;">
+				<a href="/" class="breadcrumb">Hjem</a>
+				<a href="#!" class="breadcrumb">Min profil</a>
+			</div>
 		</div>
 		<div class="col s4" style="text-align:right; padding:40px 8px;">
 			<a class="waves-effect waves-light btn blue" href="/myprofile/edit">Rediger min profil</a>
 		</div>
 	</div>
 
-	<div class="item-list">
-		<div class="item">
-			<div class="title">
-				Fornavn
-			</div>
-			<div class="value">
-				{{if firstname}}
-					{{>firstname}}
-				{{else}}
-					<i>Ikke oppgitt</i>
-				{{/if}}
-			</div>
-		</div>
 
-		<div class="item">
-			<div class="title">
-				Etternavn
-			</div>
-			<div class="value">
-				{{if lastname}}
-					{{>lastname}}
-				{{else}}
-					<i>Ikke oppgitt</i>
-				{{/if}}
-			</div>
-		</div>
+	<div class="row">
+		<div class="col s12">
+			<div class="item-list">
+				<div class="item">
+					<div class="title">
+						Fornavn
+					</div>
+					<div class="value">
+						{{if firstname}}
+							{{>firstname}}
+						{{else}}
+							<i>Ikke oppgitt</i>
+						{{/if}}
+					</div>
+				</div>
 
-		<div class="item">
-			<div class="title">
-				E-post
-			</div>
-			<div class="value">
-				{{>mail}}
-			</div>
-		</div>
+				<div class="item">
+					<div class="title">
+						Etternavn
+					</div>
+					<div class="value">
+						{{if lastname}}
+							{{>lastname}}
+						{{else}}
+							<i>Ikke oppgitt</i>
+						{{/if}}
+					</div>
+				</div>
 
-		<div class="item">
-			<div class="title">
-				Mobil
-			</div>
-			<div class="value">
-				{{if mobile}}
-					{{>mobile}}
-				{{else}}
-					<i>Ikke oppgitt</i>
-				{{/if}}
-			</div>
-		</div>
+				<div class="item">
+					<div class="title">
+						E-post
+					</div>
+					<div class="value">
+						{{>mail}}
+					</div>
+				</div>
 
-		<div class="item">
-			<div class="title">
-				Rolle / tittel
+				<div class="item">
+					<div class="title">
+						Mobil
+					</div>
+					<div class="value">
+						{{if mobile}}
+							{{>mobile}}
+						{{else}}
+							<i>Ikke oppgitt</i>
+						{{/if}}
+					</div>
+				</div>
+
+				<div class="item">
+					<div class="title">
+						Rolle / tittel
+					</div>
+					<div class="value">
+						{{if company_role}}
+							{{>company_role}}
+						{{else}}
+							<i>Ikke oppgitt</i>
+						{{/if}}
+					</div>
+				</div>
 			</div>
-			<div class="value">
-				{{if company_role}}
-					{{>company_role}}
-				{{else}}
-					<i>Ikke oppgitt</i>
-				{{/if}}
-			</div>
+
+
+
+			<h3 style="margin-top:60px;">Min virksomhet</h3>
+			<div id="myprofile-company" style="border:1px solid #eaeaea; padding:25px; border-radius:8px;"></div>
+
 		</div>
 	</div>
-
-
-
-	<h3 style="margin-top:60px;">Min virksomhet</h3>
-	<div id="myprofile-company" style="border:1px solid #eaeaea; padding:25px; border-radius:8px;"></div>
 
 </div>
 

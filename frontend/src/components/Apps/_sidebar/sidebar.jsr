@@ -1,4 +1,4 @@
-<div class="sidebar-content">
+<div class="sidebar-content" id="app-sidebar-categories">
 	<!-- <div class="sidebar-header">
 		<div class="title">
 			Administrasjon
@@ -6,24 +6,49 @@
 	</div> -->
 
 
-	<a class="nav-item" href="/apps/get?type=1">
+	<a class="nav-item" id="apps-sidebar-category-1" href="/apps/get?type=1">
 		<i class="fal fa-fw fa-browser"></i> Applikasjoner
 	</a>
 
-	<a class="nav-item" href="/apps/get?type=3">
+	<a class="nav-item" id="apps-sidebar-category-3" href="/apps/get?type=3">
 		<i class="fal fa-fw fa-user-robot"></i> RPA (Robotic Process Automation)
 	</a>
 
-	<a class="nav-item" href="/apps/get?type=2">
+	<a class="nav-item" id="apps-sidebar-category-2" href="/apps/get?type=2">
 		<i class="fal fa-fw fa-chart-network"></i> Integrasjoner
 	</a>
 
-	<a class="nav-item" href="/apps/get?type=4">
+	<a class="nav-item" id="apps-sidebar-category-4" href="/apps/get?type=4">
 		<i class="fal fa-fw fa-book"></i> Dokumenter
 	</a>
 
-	<a class="nav-item" href="/apps/get?type=5">
+	<a class="nav-item" id="apps-sidebar-category-5" href="/apps/get?type=5">
 		<i class="fal fa-fw fa-code"></i> Skript
 	</a>
 
 </div>
+
+
+<script>
+	/* function getParameterByName(name, url) {
+		if (!url) url = window.location.href;
+		name = name.replace(/[\[\]]/g, '\\$&');
+		var regex = new RegExp('[?&]' + name + '(=([^&#]*)|&|#|$)'),
+		results = regex.exec(url);
+		if (!results) return null;
+		if (!results[2]) return '';
+		return decodeURIComponent(results[2].replace(/\+/g, ' '));
+	} */
+	console.log(getParameterByName('type'));
+
+	if (getParameterByName('type') != null) {
+		document.getElementById('app-sidebar-categories').querySelectorAll('.nav-item').forEach(function(item) {
+			console.log(item);
+			item.classList.remove("active");
+		});
+		
+		console.log('apps-sidebar-category-'+getParameterByName('type'));
+
+		document.getElementById('apps-sidebar-category-'+getParameterByName('type')).classList.add("active");
+	}
+</script>

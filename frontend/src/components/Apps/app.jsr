@@ -2,7 +2,13 @@
 
 	<div class="row">
 		<div class="col s8">
-			<h1>{{>title}}</h1>
+			<h1 style="margin-bottom:10px;">{{>title}}</h1>
+
+			<div class="breadcrumbs">
+				<a href="/" class="breadcrumb">Hjem</a>
+				<a href="/apps/get?type={{>type.id}}" class="breadcrumb">{{>type.title}}</a>
+				<a href="#!" class="breadcrumb">{{>title}}</a>
+			</div>
 			<p>{{>short_description}}</p>
 		</div>
 		<div class="col s4" style="text-align:right;">

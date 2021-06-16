@@ -1,20 +1,54 @@
-<a class="search-item item-select icon-lg" href="/app/{{>id}}">
-	<div class="icon">
-		<img src="{{>primary_image.thumb}}" alt="Product image">
-	</div>
+<h2>Tjenester</h2>
 
-	<div class="info">
-		<div class="title">
-			{{>title}}
-		</div>
+{{if apps}}
+	{{for apps}}
+		<a class="search-item item-select icon-lg" href="/app/{{>id}}">
+			<div class="icon">
+				<img src="{{>primary_image.thumb}}" alt="Product image">
+			</div>
 
-		<div class="description">
-			{{>short_description}}
-		</div>
+			<div class="info">
+				<div class="title">
+					{{>title}}
+				</div>
 
-		<div class="owner">
-			<img src="{{>company.logo.thumb}}" alt="Company logo"> <span style="margin-left:8px;">{{>company.name}}</span>
-		</div>
-	</div>
-</a>
+				<div class="description">
+					{{>short_description}}
+				</div>
 
+				<div class="owner">
+					<img src="{{>company.logo.thumb}}" alt="Company logo"> <span style="margin-left:8px;">{{>company.name}}</span>
+				</div>
+			</div>
+		</a>
+	{{/for}}
+{{else}}
+	<i>Fant ingen tjenester basert på dine søkekriterier...</i>
+{{/if}}
+
+
+
+
+<h2 style="margin-top:80px;">Virksomheter</h2>
+
+{{if companies}}
+	{{for companies}}
+		<a class="search-item item-select icon-lg" href="/company/profile/{{>public_id}}">
+			<div class="icon">
+				<img style="max-height:100px;" src="{{>logo.thumb}}" alt="Company logo image">
+			</div>
+
+			<div class="info">
+				<div class="title">
+					{{>title}}
+				</div>
+
+				<div class="description">
+					{{>type}}
+				</div>
+			</div>
+		</a>
+	{{/for}}
+{{else}}
+	<i>Fant ingen virksomheter basert på dine søkekriterier...</i>
+{{/if}}

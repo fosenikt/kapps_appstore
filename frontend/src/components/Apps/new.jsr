@@ -1,5 +1,10 @@
 <div class="container">
-	<h1>Jeg ønsker å dele...</h1>
+	<h1 style="margin-bottom:10px;">Jeg ønsker å dele...</h1>
+
+	<div class="breadcrumbs" style="margin-left:15px; margin-bottom:35px;">
+		<a href="/" class="breadcrumb">Hjem</a>
+		<a href="#!" class="breadcrumb">Del tjeneste</a>
+	</div>
 
 
 	<form id="form-app-new" action="/app/new" method="POST" enctype="multipart/form-data">

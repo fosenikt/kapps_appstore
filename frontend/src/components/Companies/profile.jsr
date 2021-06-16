@@ -1,5 +1,9 @@
 <div class="container" style="margin-top:35px;">
 
+	<div class="breadcrumbs" style="margin-left:15px; margin-bottom:35px;">
+		<a href="/" class="breadcrumb">Hjem</a>
+		<a href="#!" class="breadcrumb">{{>title}}</a>
+	</div>
 
 	<div class="row">
 		<div class="col s3" style="text-align:left;">

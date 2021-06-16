@@ -20,10 +20,27 @@ class Search extends Db
 
 
 
+	public function all($q, $limit=10)
+	{
+		$r = array(
+			'apps' => null,
+			'companies' => null
+		);
+
+		$r['apps'] = $this->apps($q, $limit);
+		$r['companies'] = $this->companies($q, $limit);
+
+		return $r;
+	}
+
+
+
+
+
 	public function apps($q, $limit=10)
 	{
 
-		$r = array();
+		$r = null;
 		$db = Db::getInstance();
 
 
@@ -91,7 +108,77 @@ class Search extends Db
 		}
 
 		return $r;
+	}
 
+
+
+
+
+
+	public function companies($q, $limit=10)
+	{
+
+		$r = null;
+		$db = Db::getInstance();
+
+
+		// Check for content in search-string, and split each words into an array
+		if (strlen($q) > 1)
+			$qarr = explode(" ", $q);
+
+		$query = "SELECT * FROM company AS C";
+
+		// Set counter to 0
+		$t = 0;
+
+		// Count words in search-string
+		$n = count($qarr);
+		
+		// Loop each words and build the query to search for each word
+		if (strlen($q) > 1) {
+			$query .= " WHERE ";
+
+			foreach($qarr as $so) {
+			  $query .= "(
+			  	        C.domain LIKE '%$so%' OR 
+			  	        C.title LIKE '%$so%' OR 
+			  	        C.org_numb LIKE '%$so%'
+			  	       ) ";
+			  
+				
+				// Add AND to earch word
+				if($t++ < $n - 1)
+				{
+					$query .= "AND ";
+				}
+			}
+		}
+		
+		// End search string
+		$query .= " ORDER BY C.title ASC";
+		$query .= " LIMIT $limit";
+
+
+		$result = $db->query($query);
+		$numRows = $result->num_rows;
+
+		while ($row = $result->fetch_array()) {
+			
+
+			$r[] = array(
+				'public_id' => $row['public_id'],
+				'title' => $row['title'],
+				'county' => $row['county'],
+				'type_id' => $row['type_id'],
+				'org_numb' => $row['org_numb'],
+				'website' => $row['website'],
+				'domain' => $row['domain'],
+				'type' => $row['type'],
+				'logo' => $this->get_company_logo($row['logo']),
+			);
+		}
+
+		return $r;
 	}
 
 

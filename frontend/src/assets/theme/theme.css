@@ -10,8 +10,8 @@
 	--font-color-left: #838898;
 	--font-color-right: #84858e;
 
-	--link-color-left: #007bff;
-	--link-color-right: #007bff;
+	--link-color: #007bff;
+	--link-color-hover: #007bff;
 
 	--input-text-color: #515151;
 
@@ -141,6 +141,11 @@ nav#nav-header .nav-wrapper .tools { text-align:right; padding-right:15px; paddi
     box-sizing:inherit;
     -webkit-transition: none;
     transition: none;
+}
+.app-search .search-container .search-input input:focus {
+	border-bottom: 0px;
+    /* -webkit-box-shadow: 0 1px 0 0 #26a69a; */
+    /* box-shadow: 0 1px 0 0 #26a69a; */
 }
 
 .app-search .search-container .search-btn button {
@@ -297,6 +302,10 @@ nav#nav-header .page-logo img {
 
 .page-nav-sidebar .sidebar-content a.nav-item:hover {
 	background-color:var(--sidebar-link-bg-hover-color); color:var(--main-link-hover-color);
+}
+
+.page-nav-sidebar .sidebar-content a.nav-item.active {
+	background-color: #4287f5; color:#fff;
 }
 
 
@@ -803,7 +812,7 @@ form section {
 
 .tabs .tab a:hover, .tabs .tab a.active {
     background-color: transparent;
-    color: var(--link-color-left);
+    color: var(--link-color);
 }
 
 .tabs .tab a:focus, .tabs .tab a:focus.active {
@@ -825,7 +834,7 @@ form section {
 }
 
 .tabs .indicator {
-	background-color: var(--link-color-left);
+	background-color: var(--link-color);
 } /*Color of underline*/
 
 
@@ -854,10 +863,23 @@ ul.bullets li {
 	margin-left:25px;
 }
 
+/* Breadbrumbs
+--------------------------------------------------------------------------- */
+.breadcrumbs, .breadcrumbs a, .breadcrumb:last-child {
+	color: var(--main-text-color);
+	font-size: 0.8rem;
+}
+.breadcrumbs a:hover {
+	color: var(--link-color-hover)
+}
+
+.breadcrumb:before {
+	color: var(--main-text-color);
+	vertical-align: bottom;
+	font-size: 0.8rem;
+}
 
 /* 
-
-
 .wrapper-content {
   display: block;
   width: 200px;
