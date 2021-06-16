@@ -22,4 +22,8 @@
 		<i class="fal fa-fw fa-book"></i> Dokumenter
 	</a>
 
+	<a class="nav-item" href="/apps/get?type=5">
+		<i class="fal fa-fw fa-code"></i> Skript
+	</a>
+
 </div>

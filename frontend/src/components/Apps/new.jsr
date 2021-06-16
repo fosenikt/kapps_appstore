@@ -68,6 +68,21 @@
 				</div>
 			</a>
 
+			<a class="share-option" href="javascript:appNewSelectType(5)">
+				<div class="logo">
+					<i class="fal fa-code"></i>
+				</div>
+
+				<div class="info">
+					<div class="title">
+						Skript
+					</div>
+					<div class="description">
+						Små individuelle skript-snutter (F.eks. PowerShell, Azure og lignende)
+					</div>
+				</div>
+			</a>
+
 
 			<div class="help" style="padding:15px;">
 				<i class="fas fa-info-circle"></i> (Påkrevd) Overordnet kategori for applikasjon/tjeneste.
