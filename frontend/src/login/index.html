@@ -145,6 +145,10 @@
 									<img style="height:25px; vertical-align:middle;" src="../assets/images/icons/office_logo.svg" alt="logo" /> Logg på med Office365
 								</a>
 
+								<div style="color:red; font-size:11px; margin-top:8px; margin-bottom:25px;">
+									Vi jobber med å få O365 innloggingen verifisert hos Microsoft!
+								</div>
+
 								<script type="text/javascript">
 									let btn_o365_login = document.getElementById('btn-o365-login');
 									btn_o365_login.setAttribute('href', config.api_url + '/login/microsoft/signin.php');
@@ -246,9 +250,13 @@
 		<div class="modal-content">
 			<h2>Om kApps og Personvern</h2>
 
+			<div style="background-color:#fff4d6; border:1px solid #e6ce8e; padding:10px; margin-bottom:10px; border-radius:8px;">
+				<b>Oppdatert 18.06.2021:</b> Tilpasset personvernerklæringen litt da enkelte leverandører har vist interesse for å dele.
+			</div>
+
 			<p>Du kan lese mer om eksperimentet <a href="https://kapps.no/" target="_blank">Kapps.no her</a>.</p>
 			<p>
-				Kapps AppStore er en katalog over tjenester som offentlige virksomheter har laget selv.
+				Kapps AppStore er en katalog over tjenester rettet mot offentlige virksomheter.
 				Dette kan være alt fra hele applikasjoner, til integrasjoner og dokument som ROS og DPIA.
 			</p>
 			<p>
@@ -264,14 +272,24 @@
 			<h3>Personvern</h3> 
 
 			<p>
-				Ved innlogging lagres kun din <b>e-postadresse</b>, sammen med <b>IP-adresse</b> og <b>nettleser (User-agent)</b>.
+				Ved innlogging med e-post lagres din <b>e-postadresse</b>, sammen med <b>IP-adresse</b> og <b>nettleser (User-agent)</b>.
+			</p>
+
+			<p>
+				Innlogging med andre tjenester som O365 vil hente grunnleggende informasjon som fornavn, etternavn, tittel og evt. profilbilde.
 			</p>
 
 			<p>
 				Videre kan du fylle ut brukerprofilen din med <b>fornavn</b>, <b>etternavn</b> og <b>mobilnummer</b>.
 			</p>
 
-			<h4>Åpent plattform</h4>
+			<p style="font-size:11px; color:red; font-style:italic;">
+				Pr. 18.06.2021 er ikke O365-innloggingen verifisert hos Microsoft enda (jobber med det), 
+				så den vil kun fungere dersom du er bruker eller gjest i Fosen sin tenant (Indre Fosen, Åfjord, Ørland eller Osen).
+			</p>
+			
+
+			<h4>Åpen plattform</h4>
 			<p>
 				Dette skal være en åpen plattform for alle offentlige virksomheter.
 				Som betyr at din brukerprofil, tjenester du legger ut og tilsvarende vil være tilgjengelig for andre i plattformen 
@@ -281,6 +299,11 @@
 			<h4>Statistikk</h4>
 			<p>
 				Det vil loggføres enkel internt statistikk på hvilke tjenester man klikker på. Formålet er å vise "Mest populær", "Sist settpå" og lignende.
+			</p>
+
+			<h4>Leverandører</h4>
+			<p>
+				Leverandører som i hovedsak utvikler mot offentlige virksomheter og har lyst til å dele, kan få tilgang på forespørsel.
 			</p>
 
 			<h4>Ekstern deling av data</h4>
@@ -306,11 +329,11 @@
 		var modal_about_privacy = M.Modal.init(document.getElementById('modal-about-privacy'), {
 			dismissible: false,
 			onCloseEnd: function (modal, trigger) {
-				localStorage.setItem('modal_privacy_read', '1');
+				localStorage.setItem('modal_privacy_read_20210618', '1');
 			}
 		});
 
-		if (localStorage.getItem("modal_privacy_read") === null) {
+		if (localStorage.getItem("modal_privacy_read_20210618") === null) {
 			modal_about_privacy.open();
 		}
 
