@@ -1,3 +1,12 @@
+/**
+ * Sidebar for pages (e.g. menu)
+ * 
+ * Note: This is bad code that is very poorly thought out.
+ * 		 The close sidebar is appended to each page, and sidebar
+ * 		 lives outside the page itself. Meaning we need to do a lot
+ * 		 of checks and loops.
+ */
+
 let SidebarNav = function() {
 
 	let plugin = this;
@@ -31,6 +40,7 @@ let SidebarNav = function() {
 
 	plugin.open_sidebar = function(sidebar_data_id) 
 	{
+		console.log('Open sidebar');
 
 		var sidebarElm = document.getElementById("nav-sidebar");
 
@@ -45,7 +55,42 @@ let SidebarNav = function() {
 		sidebarElm.style.width = "270px";
 		document.getElementById("main").style.marginLeft = "270px";
 
+		if (window.innerWidth <= 768) {
+			document.getElementById("main").style.marginRight = "-270px";
+		}
+
 		document.getElementById("nav-sidebar").style.display = "block";
+
+
+
+		// Loop pages
+		if (window.innerWidth <= 768) {
+			setTimeout(function(){
+				document.querySelectorAll('.page-item').forEach(function(page) {
+					
+					// Check for visible page
+					if (page.style.display === 'block') {
+						
+						// Check if page has close-sidebar
+						// Append if not
+						if(!page.getElementsByClassName('close-sidebar')[0]) {
+							var a = document.createElement('a');
+							a.className = 'close-sidebar';
+							a.innerHTML = '<i class="fas fa-chevron-left"></i>';
+							a.href = "javascript:nav_sidebar.toggle()";
+							page.appendChild(a)
+						}
+					}
+				});
+
+				document.querySelectorAll('.close-sidebar').forEach(function(togglesidebar) {
+					togglesidebar.innerHTML = `<i class="fas fa-chevron-left"></i>`;
+				});
+			}, 200);
+		}
+
+		
+
 		return true;
 	}
 
@@ -56,8 +101,23 @@ let SidebarNav = function() {
 	{
 		document.getElementById("nav-sidebar").style.width = "0";
 		document.getElementById("main").style.marginLeft= "0px";
+		document.getElementById("main").style.marginRight= "0px";
 
 		document.getElementById("nav-sidebar").style.display = "none";
+
+		document.querySelectorAll('.close-sidebar').forEach(function(togglesidebar) {
+			togglesidebar.innerHTML = `<i class="fas fa-chevron-right"></i>`;
+		});
+	}
+
+
+	plugin.toggle = function() 
+	{
+		if (plugin.is_open() == true) {
+			plugin.close_sidebar();
+		} else {
+			plugin.open_sidebar();
+		}
 	}
 
 
@@ -67,6 +127,12 @@ let SidebarNav = function() {
 	{
 		var template = new Template();
 		template.load_webpart(template_file, '#nav-sidebar', '');
+
+		setTimeout(function(){
+			if (window.innerWidth <= 768) {
+				plugin.close_sidebar();
+			}
+		}, 300);
 	}
 
 }

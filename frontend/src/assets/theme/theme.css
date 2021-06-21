@@ -233,8 +233,25 @@ nav#nav-header .page-logo img {
 /* Main page content
 --------------------------------------------------------------------------- */
 
+#main .page-item { position: relative; }
 #main .page-item .page-content.page-padding { padding:0px 35px 35px 35px; }
 #main .page-item .page-top-space { margin-top:45px; }
+#main .page-item .close-sidebar {
+	position: absolute;
+    z-index: 99;
+    top: 0;
+    left: 0;
+    margin-top: -30px;
+    border-top-right-radius: 8px;
+    border-bottom-right-radius: 8px;
+    /* background-color: var(--sidebar-bg); */
+    background-color: #ededed;
+	color: var(--main-text-color);
+	font-size: 1.5rem;
+	padding:8px 8px;
+}
+
+
 
 
 
@@ -550,6 +567,7 @@ form section {
 .apps-list .card-action {
 	border-bottom-left-radius: 8px !important;
 	border-bottom-right-radius: 8px !important;
+	font-size: 0.8rem;
 }
 .apps-list .card-image {
 	height: 200px;
@@ -559,6 +577,8 @@ form section {
 	height: 200px;
 	background-size: cover;
   	background-position: center center;
+	border-top-left-radius: 8px !important;
+	border-top-right-radius: 8px !important;
 }
 
 
@@ -581,13 +601,21 @@ form section {
 }
 
 .apps-list .card-content {
-	min-height: 68px;
+	min-height: 30px;
+	font-size: 0.9rem;
+	padding:18px;
+	white-space: nowrap;
+	overflow: hidden;
+	text-overflow: ellipsis;
 }
 
 
 .apps-list .app-card-outer {
 	vertical-align: top;
 }
+
+.apps-list a.app-card-outer {}
+.apps-list a.app-card-outer:hover .card { box-shadow: 0px 0px 0px 1px var(--link-color-hover); }
 
 .apps-list .app-card {
 	margin:5px 5px 20px 5px;
@@ -596,26 +624,31 @@ form section {
 /* Extra small devices (phones, 600px and down) */
 @media only screen and (max-width: 600px) {
 	.apps-list .app-card-outer { display: block; width:100%; }
+	.page-nav-sidebar { display:none; }
 }
 
 /* Small devices (portrait tablets and large phones, 600px and up) */
 @media only screen and (min-width: 600px) {
 	.apps-list .app-card-outer { display: inline-block; width: calc((100% / 2) - 3px); }
+	.page-nav-sidebar { display:none; }
 }
 
 /* Medium devices (landscape tablets, 768px and up) */
 @media only screen and (min-width: 768px) {
 	.apps-list .app-card-outer { display: inline-block; width: calc((100% / 3) - 3px); }
+	.page-nav-sidebar { display:block; }
 }
 
 /* Large devices (laptops/desktops, 992px and up) */
 @media only screen and (min-width: 992px) {
 	.apps-list .app-card-outer { display: inline-block; width: calc((100% / 3) - 3px); }
+	.page-nav-sidebar { display:block; }
 }
 
 /* Extra large devices (large laptops and desktops, 1200px and up) */
 @media only screen and (min-width: 1200px) {
 	.apps-list .app-card-outer { display: inline-block; width: calc((100% / 3) - 5px); }
+	.page-nav-sidebar { display:block; }
 }
 
 
