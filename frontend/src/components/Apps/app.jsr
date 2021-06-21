@@ -1,3 +1,6 @@
+<script src="/assets/lib/prism/prism.js"></script>
+<link rel="stylesheet" href="/assets/lib/prism/prism.css">
+
 <div class="container page-top-space application-view">
 
 	<div class="row">

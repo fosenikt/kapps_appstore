@@ -519,6 +519,11 @@ form section {
 	padding:15px;
 }
 
+/* Overwrite materializecss hidden select for tinymce tox-modal (e.g. select code-language) */
+.tox-dialog-wrap select {
+	display: block;
+}
+
 
 
 
