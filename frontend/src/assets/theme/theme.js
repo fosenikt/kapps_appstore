@@ -58,13 +58,16 @@ let Template = function() {
 
 			// If force reload, delete target and recreate
 			if (force_reload == true) {
-				$(target).remove;
+				if (document.getElementById(without_hash)) {
+					document.getElementById(without_hash).remove();
+				}
 				var element = null;
 			}
 
 			else {
 				var element =  document.getElementById(without_hash);
 			}
+			
 
 			// If target container does not exist
 			if (typeof(element) == 'undefined' || element == null)
