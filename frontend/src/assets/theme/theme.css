@@ -614,7 +614,7 @@ form section {
 	vertical-align: top;
 }
 
-.apps-list a.app-card-outer {}
+
 .apps-list a.app-card-outer:hover .card { box-shadow: 0px 0px 0px 1px var(--link-color-hover); }
 
 .apps-list .app-card {
@@ -636,19 +636,19 @@ form section {
 /* Medium devices (landscape tablets, 768px and up) */
 @media only screen and (min-width: 768px) {
 	.apps-list .app-card-outer { display: inline-block; width: calc((100% / 3) - 3px); }
-	.page-nav-sidebar { display:block; }
+	.page-nav-sidebar { display:none; }
 }
 
 /* Large devices (laptops/desktops, 992px and up) */
 @media only screen and (min-width: 992px) {
 	.apps-list .app-card-outer { display: inline-block; width: calc((100% / 3) - 3px); }
-	.page-nav-sidebar { display:block; }
+	.page-nav-sidebar { display:none; }
 }
 
 /* Extra large devices (large laptops and desktops, 1200px and up) */
 @media only screen and (min-width: 1200px) {
 	.apps-list .app-card-outer { display: inline-block; width: calc((100% / 3) - 5px); }
-	.page-nav-sidebar { display:block; }
+	.page-nav-sidebar { display:none; }
 }
 
 
