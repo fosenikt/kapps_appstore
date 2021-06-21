@@ -166,7 +166,7 @@ class Access extends Db
 	 * 
 	 * @return   Boolean                True is admin, false is not
 	 */
-	private function isAdmin()
+	public function isAdmin()
 	{
 		$db = Db::getInstance();
 		$user_id = $this->thisUser['id'];

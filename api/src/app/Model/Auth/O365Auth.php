@@ -151,6 +151,8 @@ class O365Auth extends db
 		$db->set_charset("utf8mb4");
 		$db->query("SET NAMES 'utf8mb4'");
 
+		$status = 'active';
+
 
 		$get_company = $this->Login->get_company_by_mail($profile['userPrincipalName']);
 		if ($get_company == null) {
@@ -161,12 +163,12 @@ class O365Auth extends db
 
 		$status = 'active';
 
-		$stmt = $db->prepare("INSERT INTO users SET o365_id=?, customer_id=?, firstname=?, lastname=?, mail=?, mobile=?, company_role=?");
+		$stmt = $db->prepare("INSERT INTO users SET o365_id=?, customer_id=?, firstname=?, lastname=?, mail=?, mobile=?, company_role=?, status=?");
 		if ($stmt === false) {
 			return array('status' => 'error', 'error' => $db->error);
 		}
 
-		$result = $stmt->bind_param("sisssss", $profile['id'], $company_id, $profile['givenName'], $profile['lastname'], $profile['userPrincipalName'], $profile['mobilePhone'], $profile['jobTitle']);
+		$result = $stmt->bind_param("sissssss", $profile['id'], $company_id, $profile['givenName'], $profile['lastname'], $profile['userPrincipalName'], $profile['mobilePhone'], $profile['jobTitle'], $status);
 
 		if ( false===$result ) {
 			error_log($stmt->error);
