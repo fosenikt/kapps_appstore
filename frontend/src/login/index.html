@@ -145,10 +145,6 @@
 									<img style="height:25px; vertical-align:middle;" src="../assets/images/icons/office_logo.svg" alt="logo" /> Logg på med Office365
 								</a>
 
-								<!-- <div style="color:red; font-size:11px; margin-top:8px; margin-bottom:25px;">
-									Vi jobber med å få O365 innloggingen verifisert hos Microsoft!
-								</div> -->
-
 								<script type="text/javascript">
 									let btn_o365_login = document.getElementById('btn-o365-login');
 									btn_o365_login.setAttribute('href', config.api_url + '/login/microsoft/signin.php');
@@ -485,7 +481,7 @@
 
 		if (getParameterByName('error') != '' && getParameterByName('error') != null) {
 			if (getParameterByName('error') == 50) {
-				msg_status('warning', 'Generell feil. Prøv på nytt eller prøv gjerne innlogging med e-post og engangskode. (Feilkode: 50)');
+				msg_status('warning', 'Generell feil. Kan skyldes førstegangs pålogging. Prøv på nytt eller prøv gjerne innlogging med e-post og engangskode om feilen vedvarer.');
 			} else {
 				msg_status('error', 'Generell feil. Prøv gjerne innlogging med e-post og engangskode.');
 			}
