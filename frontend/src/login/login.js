@@ -28,6 +28,10 @@ function msg_status(type, msg)
 			//const element = document.querySelector('.my-element');
 			feedback[i].classList.add('animate__animated', 'animate__shakeX');
 		}
+		else if (type == 'warning') {
+			feedback[i].innerHTML = '<div class="alert warning"><i class="fas fa-check"></i> '+msg+'</div>';
+			feedback[i].classList.add('animate__animated', 'animate__shakeY');
+		}
 		else if (type == 'success') {
 			feedback[i].innerHTML = '<div class="alert success"><i class="fas fa-check"></i> '+msg+'</div>';
 			feedback[i].classList.add('animate__animated', 'animate__shakeY');
