@@ -1,5 +1,7 @@
 <div class="container page-top-space">
 
+	
+
 	<!-- <h1>Applikasjoner</h1> -->
 
 	<!-- <a class="waves-effect waves-light btn" href="/app/new">
@@ -12,6 +14,10 @@
 	</div>
 
 </div>
+
+<!-- <a class="close-sidebar" href="javascript:nav_sidebar.toggle()">
+	<i class="fas fa-chevron-left"></i>
+</a> -->
 
 <script>
 	remote.rpc(config.api_url+'/apps/get'+window.location.search).then(response => {

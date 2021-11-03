@@ -1,4 +1,8 @@
 <div class="page-content page-padding">
+	<a class="close-sidebar" href="javascript:nav_sidebar.toggle()">
+		<i class="fas fa-chevron-left"></i>
+	</a>
+	
 	<h1>Administrasjon</h1>
 
 	<div class="tiles">

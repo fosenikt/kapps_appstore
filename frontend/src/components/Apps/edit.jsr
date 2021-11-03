@@ -1,3 +1,6 @@
+<script src="/assets/lib/prism/prism.js"></script>
+<link rel="stylesheet" href="/assets/lib/prism/prism.css">
+
 {{if status == 'draft'}}
 	<div id="app-header-alert-{{>id}}" class="alert alert-info alert-header">
 		<div class="row">
@@ -128,6 +131,7 @@
 					</div>
 				{{/if}}
 			{{/if}}
+			<div style="height:80px;">&nbsp;</div>
 		</div>
 
 
@@ -912,7 +916,29 @@
 			'media template codesample table charmap hr pagebreak nonbreaking anchor',
 			'toc insertdatetime advlist lists wordcount imagetools textpattern noneditable help charmap quickbars emoticons'
 		],
+		codesample_languages: [
+			{text: 'HTML/XML', value: 'markup'},
+			{text: 'JavaScript', value: 'javascript'},
+			{text: 'TypeScript', value: 'typescript'},
+			{text: 'CSS', value: 'css'},
+			{text: 'PHP', value: 'php'},
+			{text: 'Ruby', value: 'ruby'},
+			{text: 'Python', value: 'python'},
+			{text: 'Java', value: 'java'},
+			{text: 'C', value: 'c'},
+			{text: 'C#', value: 'csharp'},
+			{text: 'C++', value: 'cpp'},
+			{text: 'PowerShell', value: 'powershell'},
+			{text: 'XML', value: 'xml-doc'},
+			{text: 'Visual Basic', value: 'visual-basic'},
+			{text: 'Regex', value: 'regex'},
+			{text: 'Markdown', value: 'markdown'},
+			{text: 'CSV', value: 'csv'},
+			{text: 'JSON', value: 'json'},
+			{text: 'ini', value: 'ini'}
+		],
 		toolbar: 'undo redo | bold italic underline strikethrough | fontselect fontsizeselect formatselect | alignleft aligncenter alignright alignjustify | outdent indent |  numlist bullist | forecolor backcolor removeformat | charmap emoticons quicktable | fullscreen | insertfile image media template link anchor codesample',
+		codesample_global_prismjs: true,
 		
 		/* //without images_upload_url set, Upload tab won't show up
   		images_upload_url: 'postAcceptor.php',
