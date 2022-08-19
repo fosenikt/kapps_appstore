@@ -1,0 +1,27 @@
+[PHP]
+; Log error in console
+log_errors = on
+
+; Display error in browser
+display_errors = on
+
+; Error reporting
+error_reporting = E_ALL
+
+; Output errors to console
+error_log = /dev/stderr
+
+
+; Parameters for fileupload
+max_execution_time = 300
+max_file_uploads = 299
+memory_limit = 256M
+upload_max_filesize = 199M
+post_max_size = 199M
+max_input_vars = 3000
+
+
+[Date]
+; Defines the default timezone used by the date functions
+; https://php.net/date.timezone
+date.timezone = "Europe/Oslo"

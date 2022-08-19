@@ -1,0 +1,20 @@
+; Log error in console
+log_errors = on
+
+; Display error in browser
+display_errors = off
+
+; Error reporting
+error_reporting = E_ALL & ~E_DEPRECATED & ~E_STRICT
+
+; Output errors to console
+error_log = /dev/stderr
+
+
+; Parameters for fileupload
+max_execution_time = 300
+max_file_uploads = 299
+memory_limit = 256M
+upload_max_filesize = 199M
+post_max_size = 199M
+max_input_vars = 3000

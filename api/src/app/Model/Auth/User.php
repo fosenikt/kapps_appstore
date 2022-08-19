@@ -163,7 +163,6 @@ class User extends Db
 
 		// If all checks are passed, return true.
 		$_SESSION['user_validated'] = $user_id;
-		error_log('User validated by a lot of checks');
 		return array('status' => 'success');
 	}
 

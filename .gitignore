@@ -18,10 +18,8 @@ _old_*
 */node_modules*/
 package-lock.json
 composer.lock
-docker-compose.yaml
-docker-compose.prod.yaml
-docker-compose.dev.yaml
 /frontend/src/config.js
+.env
 
 
 # Kubernetes #

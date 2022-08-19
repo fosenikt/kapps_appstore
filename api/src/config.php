@@ -4,9 +4,9 @@ session_start();
 
 
 /** PHP settings */
-date_default_timezone_set('Europe/Oslo');
+//date_default_timezone_set('Europe/Oslo');
 setlocale(LC_ALL, 'no_Nb');
-error_reporting(E_ALL ^ E_NOTICE);
+//error_reporting(E_ALL ^ E_NOTICE);
 
 
 /** Database */

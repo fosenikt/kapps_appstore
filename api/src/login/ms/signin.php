@@ -18,4 +18,5 @@ if (isset($_SERVER['HTTP_REFERER']) && !empty($_SERVER['HTTP_REFERER'])) {
 }
 
 //header('Location: ' . $signin . '&redir=' . $_SERVER['HTTP_REFERER']);
+error_log("Redirect to $signin");
 header('Location: ' . $signin);

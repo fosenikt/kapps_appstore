@@ -256,7 +256,7 @@ switch ($routeInfo[0]) {
 
 
 		// Call class
-		error_log('API CALL... Class: ' . $className . ', Method: ' . $method);
+		//error_log('API CALL... Class: ' . $className . ', Method: ' . $method);
 		$result = call_user_func_array(array(new $className, $method), $vars);
 		output($result);
 

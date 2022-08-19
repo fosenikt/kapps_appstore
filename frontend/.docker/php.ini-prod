@@ -1,0 +1,11 @@
+; Log error in console
+log_errors = on
+
+; Display error in browser
+display_errors = off
+
+; Error reporting
+error_reporting = E_ALL
+
+; Output errors to console
+error_log = /dev/stderr

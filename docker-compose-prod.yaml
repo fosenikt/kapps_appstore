@@ -1,0 +1,109 @@
+version: '3.2'
+services:
+
+  ## FRONTEND
+  kapps-appstore-frontend:
+    container_name: kapps-appstore-frontend
+    image: fosenikt/kapps-appstore-frontend:latest
+    restart: always
+    ports:
+      - "8070:80"
+    volumes:
+      - "/etc/timezone:/etc/timezone:ro"
+      - "/etc/localtime:/etc/localtime:ro"
+      - ./frontend/.docker/php.ini-prod:/usr/local/etc/php/php.ini
+    environment:
+        - VIRTUAL_HOST=${FRONTEND_HOST}
+        - API_URL=${BACKEND_HOST}
+        - LETSENCRYPT_HOST=${FRONTEND_HOST}
+        - LETSENCRYPT_EMAIL=${LETSENCRYPT_EMAIL}
+    networks:
+      - default
+
+  ## API
+  kapps-appstore-api:
+    container_name: kapps-appstore-api
+    image: fosenikt/kapps-appstore-api:latest
+    restart: always
+    ports:
+      - "8071:80"
+    volumes:
+#      - kapps-appstore-api-vendor:/var/www/html/vendor/
+#      - kapps-appstore-api-db:/var/www/html/db
+      - kapps-appstore-data:/var/www/html/data
+      - "/etc/timezone:/etc/timezone:ro"
+      - "/etc/localtime:/etc/localtime:ro"
+      - ./api/.docker/php.ini-prod:/usr/local/etc/php/php.ini
+    environment:
+        - VIRTUAL_HOST=${BACKEND_HOST}
+        - LETSENCRYPT_HOST=${BACKEND_HOST}
+        - LETSENCRYPT_EMAIL=${LETSENCRYPT_EMAIL}
+        - FRONTEND_HOST=${FRONTEND_HOST}
+        - DB_NAME=${DB_NAME}
+        - DB_USER=${DB_USER}
+        - DB_PASSWORD=${DB_PASSWORD}
+        - DB_HOST=${DB_HOST}
+        - DB_PORT=${DB_PORT}
+        - MEMCACHED_HOST=${MEMCACHED_HOST}
+        - MEMCACHED_PORT=${MEMCACHED_PORT}
+        - O365_TENANT_ID=${O365_TENANT_ID}
+        - O365_APP_ID=${O365_APP_ID}
+        - O365_APP_SECRET=${O365_APP_SECRET}
+        - JWT_ISSUER=${JWT_ISSUER}
+        - JWT_SECRET=${JWT_SECRET}
+        - UPLOAD_FOLDER=${UPLOAD_FOLDER}
+        - IPGEOLOCATION_API_KEY=${IPGEOLOCATION_API_KEY}
+        - SMTP_HOST=${SMTP_HOST}
+        - SMTP_USERNAME=${SMTP_USERNAME}
+        - SMTP_PASSWORD=${SMTP_PASSWORD}
+        - SMTP_PORT=${SMTP_PORT}
+        - SMTP_SENDER_MAIL=${SMTP_SENDER_MAIL}
+        - SMTP_SENDER_NAME=${SMTP_SENDER_NAME}
+    networks:
+      - default
+
+#  kapps-appstore-composer:
+#    container_name: kapps-appstore-composer
+#    image: composer:latest
+#    command: sh -c "composer install --ignore-platform-reqs"
+#    volumes:
+#      - kapps-appstore-api:/app
+#    depends_on:
+#      - kapps-appstore-api
+
+
+  ## Memcached
+  kapps-appstore-memcached:
+    container_name: kapps-appstore-memcached
+    image: memcached:latest
+    restart: always
+    ports:
+        - "8034:${MEMCACHED_PORT}"
+    networks:
+      - default
+
+  ## Scheduler
+  kapps-appstore-scheduler:
+    container_name: kapps-appstore-scheduler
+    image: fosenikt/kapps-appstore-scheduler:latest
+    restart: always
+    volumes:
+      - "/etc/timezone:/etc/timezone:ro"
+      - "/etc/localtime:/etc/localtime:ro"
+    environment:
+      - API_URL=${SCHEDULE_BACKEND}
+      - TOKEN=${SCHEDULE_TOKEN}
+      - CRON_SCHEDULE=* * * * *
+      - CRON_COMMAND=php /var/www/html/run.php
+    networks:
+      - default
+
+## VOLUMES
+volumes:
+    kapps-appstore-api-db:
+    kapps-appstore-data:
+
+networks:
+  default:
+    external:
+      name: webproxy

@@ -1,0 +1,169 @@
+version: '3.2'
+services:
+
+  ## FRONTEND
+  kapps-appstore-frontend:
+    container_name: kapps-appstore-frontend
+    build:
+      context: ./frontend/
+      dockerfile: .docker/Dockerfile
+    restart: always
+    ports:
+      - "8030:80"
+    volumes:
+      - type: bind
+        source: ./frontend/src
+        target: /var/www/html
+        bind:
+          propagation: shared
+      - "/etc/timezone:/etc/timezone:ro"
+      - "/etc/localtime:/etc/localtime:ro"
+      - ./frontend/.docker/php.ini-dev:/usr/local/etc/php/php.ini
+    environment:
+        - VIRTUAL_HOST=${FRONTEND_HOST}
+        - API_URL=${BACKEND_HOST}
+    networks:
+      - default
+
+  ## API
+  kapps-appstore-api:
+    container_name: kapps-appstore-api
+    build:
+      context: ./api/
+      dockerfile: .docker/Dockerfile
+    #command: sh -c "composer install"
+    restart: always
+    ports:
+      - "8031:80"
+    volumes:
+      - type: bind
+        source: ./api/src
+        target: /var/www/html
+        bind:
+          propagation: shared
+#      - kapps-appstore-api-db:/var/www/html/db
+      - "/etc/timezone:/etc/timezone:ro"
+      - "/etc/localtime:/etc/localtime:ro"
+      - ./api/.docker/php.ini-dev:/usr/local/etc/php/php.ini
+    environment:
+        - VIRTUAL_HOST=${BACKEND_HOST}
+        - FRONTEND_HOST=${FRONTEND_HOST}
+        - DB_NAME=${DB_NAME}
+        - DB_USER=${DB_USER}
+        - DB_PASSWORD=${DB_PASSWORD}
+        - DB_HOST=${DB_HOST}
+        - MEMCACHED_HOST=${MEMCACHED_HOST}
+        - MEMCACHED_PORT=${MEMCACHED_PORT}
+        - O365_TENANT_ID=${O365_TENANT_ID}
+        - O365_APP_ID=${O365_APP_ID}
+        - O365_APP_SECRET=${O365_APP_SECRET}
+        - JWT_ISSUER=${JWT_ISSUER}
+        - JWT_SECRET=${JWT_SECRET}
+        - UPLOAD_FOLDER=${UPLOAD_FOLDER}
+        - IPGEOLOCATION_API_KEY=${IPGEOLOCATION_API_KEY}
+        - SMTP_HOST=${SMTP_HOST}
+        - SMTP_USERNAME=${SMTP_USERNAME}
+        - SMTP_PASSWORD=${SMTP_PASSWORD}
+        - SMTP_PORT=${SMTP_PORT}
+        - SMTP_SENDER_MAIL=${SMTP_SENDER_MAIL}
+        - SMTP_SENDER_NAME=${SMTP_SENDER_NAME}
+    networks:
+      - default
+
+  kapps-appstore-composer:
+    container_name: kapps-appstore-composer
+    image: composer:latest
+    #command: ["composer", "install --ignore-platform-reqs"]
+    command: sh -c "composer install --ignore-platform-reqs"
+    volumes:
+      - type: bind
+        source: ./api/src
+        target: /app
+        bind:
+          propagation: shared
+    depends_on:
+      - kapps-appstore-api
+
+
+  ## Database
+  kapps-appstore-db:
+    container_name: kapps-appstore-db
+    build:
+      context: ./db/
+      dockerfile: ./Dockerfile
+    restart: always
+    command: --default-authentication-plugin=mysql_native_password
+    restart: always
+    environment:
+      MYSQL_DATABASE: ${DB_NAME}
+      # So you don't have to use root, but you can if you like
+      MYSQL_USER: ${DB_USER}
+      # You can use whatever password you like
+      MYSQL_PASSWORD: ${DB_PASSWORD}
+      # Password for root access
+      MYSQL_ROOT_PASSWORD: ${DB_PASSWORD}
+      TZ: Europe/Oslo
+    ports:
+      # <Port exposed> : < MySQL Port running inside container>
+      - '8033:3306'
+      # Where our data will be persisted
+    volumes:
+      - ./db:/docker-entrypoint-initdb.d
+      - kapps-appstore-db:/var/lib/mysql
+      - "/etc/timezone:/etc/timezone:ro"
+      - "/etc/localtime:/etc/localtime:ro"
+
+  ## PHPmyadmin
+  kapps-appstore-phpmyadmin:
+    container_name: kapps-appstore-phpmyadmin
+    image: phpmyadmin/phpmyadmin
+    links:
+      - kapps-appstore-db
+    environment:
+      PMA_HOST: ${PHPMYADMIN_HOST}
+      PMA_PORT: 3306
+      UPLOAD_LIMIT: ${PHPMYADMIN_UPLOAD_LIMIT}
+    ports:
+      - '8032:80'
+    volumes: 
+      - /sessions
+
+  ## Memcached
+  kapps-appstore-memcached:
+    container_name: kapps-appstore-memcached
+    image: memcached:latest
+    restart: always
+    ports:
+        - "8034:11211"
+    networks:
+      - default
+
+  ## Scheduler
+  kapps-appstore-scheduler:
+#    container_name: fipo-timebank-scheduler
+#    image: fosenikt/fipo-timebank-scheduler:latest
+    container_name: kapps-appstore-scheduler
+    build:
+      context: ./scheduler/
+      dockerfile: .docker/Dockerfile
+    restart: always
+    volumes:
+      - "/etc/timezone:/etc/timezone:ro"
+      - "/etc/localtime:/etc/localtime:ro"
+    environment:
+      - API_URL=${SCHEDULE_BACKEND}
+      - TOKEN=${SCHEDULE_TOKEN}
+      - CRON_SCHEDULE=* * * * *
+      - CRON_COMMAND=php /var/www/html/run.php
+    networks:
+      - default
+
+## VOLUMES
+volumes:
+    kapps-appstore-db:
+    kapps-appstore-upload:
+
+networks:
+  default:
+    external:
+      name: webproxy
