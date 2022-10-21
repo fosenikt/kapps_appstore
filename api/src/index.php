@@ -187,9 +187,9 @@ $uri = rawurldecode($uri);
 $routeInfo = $dispatcher->dispatch($httpMethod, $uri);
 
 // Get class and method from route
-$className = $routeInfo[1][0];
-$method = $routeInfo[1][1];
-$vars = $routeInfo[2];
+//$className = $routeInfo[1][0];
+//$method = $routeInfo[1][1];
+//$vars = $routeInfo[2];
 
 
 switch ($routeInfo[0]) {

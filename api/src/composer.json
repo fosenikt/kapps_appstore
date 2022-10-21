@@ -4,7 +4,7 @@
         "rbdwllr/reallysimplejwt": "^2.0",
         "nikic/fast-route": "^1.3",
         "league/oauth2-client": "^2.0",
-		"microsoft/microsoft-graph": "^1.3",
+		"microsoft/microsoft-graph": "^1.0",
 		"vlucas/phpdotenv": "^3.2",
         "johngrogg/ics-parser": "^2",
         "ezyang/htmlpurifier": "^4.10",
