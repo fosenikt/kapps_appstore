@@ -55,7 +55,7 @@ define('SMTP_SENDER_NAME', getenv("SMTP_SENDER_NAME"));
 define('O365_TENANT_ID', getenv("O365_TENANT_ID"));
 define('O365_APP_ID', getenv("O365_APP_ID"));
 define('O365_APP_PASSWORD', getenv("O365_APP_SECRET"));
-define('O365_REDIRECT_URI', 'https://'.getenv("VIRTUAL_HOST").'/login/ms/getToken.php');
+define('O365_REDIRECT_URI', 'https://'.getenv("VIRTUAL_HOST").'/login/microsoft/getToken.php');
 define('O365_SCOPES', 'openid profile offline_access User.Read');
 define('O365_AUTHORIZE_ENDPOINT', 'https://login.microsoftonline.com/common/oauth2/v2.0/authorize');
 define('O365_TOKEN_ENDPOINT', 'https://login.microsoftonline.com/common/oauth2/v2.0/token');
