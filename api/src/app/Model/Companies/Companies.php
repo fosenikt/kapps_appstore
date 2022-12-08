@@ -214,6 +214,13 @@ class Companies extends Db
 	 */
 	public function get_logo($filename)
 	{
+		if (empty($filename)) {
+			return array(
+				'image' => '/assets/images/icons/building.svg',
+				'thumb' => '/assets/images/icons/building.svg'
+			);
+		}
+
 		$exp = explode('.', $filename);
 		$ext = strtolower(end($exp));
 
