@@ -122,12 +122,14 @@
 				</section>
 			{{/if}}
 
+			{{if installation}}
 			<section style="margin-top:50px;">
 				<h2>Installasjonsveiledning</h2>
 				<div id="app-installation-{{>id}}">
 					{{:installation}}
 				</div>
 			</section>
+			{{/if}}
 
 		</div>
 	</div>

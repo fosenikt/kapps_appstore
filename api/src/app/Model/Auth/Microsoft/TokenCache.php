@@ -52,7 +52,7 @@ class TokenCache {
 
         return $newToken->getToken();
       }
-      catch (League\OAuth2\Client\Provider\Exception\IdentityProviderException $e) {
+      catch (\League\OAuth2\Client\Provider\Exception\IdentityProviderException $e) {
         return '';
       }
     }

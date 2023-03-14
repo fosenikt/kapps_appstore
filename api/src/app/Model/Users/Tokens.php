@@ -11,6 +11,9 @@ use \Kapps\Model\Auth\User as AuthUser;
  */
 class Tokens extends Db
 {
+	private $Utils;
+	private $AuthUser;
+	private $me;
 
 	public function __construct()
 	{

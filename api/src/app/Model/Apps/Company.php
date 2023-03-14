@@ -11,6 +11,13 @@ use \Kapps\Model\Companies\Companies;
  */
 class Company extends Db
 {
+	private $Images;
+	private $Companies;
+	private $AuthUser;
+	private $thisUser;
+	private $image_base_url;
+	private $image_base_path;
+	private $image_none;
 
 	public function __construct()
 	{

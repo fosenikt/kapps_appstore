@@ -10,6 +10,7 @@ use \Kapps\Model\Utils\AlphaID;
  */
 class Companies extends Db
 {
+	private $AlphaID;
 
 	/**
 	 * summary

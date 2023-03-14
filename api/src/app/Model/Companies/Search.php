@@ -10,6 +10,7 @@ use \Kapps\Model\Companies\Companies;
  */
 class Search extends Db
 {
+	private $Companies;
 
 	/**
 	 * summary

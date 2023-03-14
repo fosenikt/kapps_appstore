@@ -10,6 +10,9 @@ use \Kapps\Model\Auth\User as AuthUser;
 class Event extends db
 {
 
+	private $AuthUser;
+	private $thisUser;
+
 	public function __construct()
 	{
 		$this->AuthUser = new AuthUser;

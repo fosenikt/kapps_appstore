@@ -7,6 +7,10 @@ use Kapps\Model\Auth\Microsoft\TokenCache;
 class Photo extends db
 {
 
+	private $img_url;
+	private $img_path;
+	private $debug;
+
 	public function __construct()
 	{
 		$this->img_url = URL.'/data/profilepictures/';

@@ -9,6 +9,8 @@ use \Kapps\Model\Auth\User as AuthUser;
  */
 class Access extends Db
 {
+	private $AuthUser;
+	private $thisUser;
 
 	public function __construct()
 	{

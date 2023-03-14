@@ -3,30 +3,33 @@
 namespace Kapps\Model\Auth\Microsoft;
 
 use \Kapps\Model\General\Db;
+use \Kapps\Model\Auth\User as AuthUser;
 use \Kapps\Model\Auth\Microsoft\TokenCache;
 
 class Token extends db {
 
+	private $AuthUser;
+	private $thisUser;
+
     /*Properties*/
-    protected $accessToken = 'test';
-    protected $expires;
-    protected $refreshToken;
-    //var $resourceOwnerId;
-    protected $values=array();
+    public $accessToken = 'test';
+    public $expires;
+    public $refreshToken;
+    public $values=array();
 
 
 
     function __construct()
 	{
-        $this->User = new \Kapps\Model\Auth\User();
-		$this->thisUser = $this->User->get_loggedin_user();
+		$this->AuthUser = new AuthUser;
+		$this->thisUser = $this->AuthUser->me();
 
         $this->fetch_token();
 
-        $this->$accessToken = $accessToken;
-        $this->$expires = $expires;
-        $this->$refreshToken = $refreshToken;
-        $this->$values = $values;
+        $this->accessToken = $accessToken;
+        $this->expires = $expires;
+        $this->refreshToken = $refreshToken;
+        $this->values = $values;
 	}
 
     private function set_access_token($accessToken) {
@@ -116,7 +119,7 @@ class Token extends db {
 
                 return $newToken->getToken();
             }
-            catch (League\OAuth2\Client\Provider\Exception\IdentityProviderException $e) {
+            catch (\League\OAuth2\Client\Provider\Exception\IdentityProviderException $e) {
                 return '';
             }
         }

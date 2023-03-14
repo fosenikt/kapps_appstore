@@ -1,7 +1,7 @@
 #Get Composer
 FROM composer:2.0 as vendor
 
-FROM php:8.1-apache
+FROM php:8.2-apache
 
 RUN apt-get update && apt-get install -y \
 		libldap2-dev \

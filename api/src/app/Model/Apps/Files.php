@@ -10,6 +10,11 @@ use \Kapps\Model\Auth\User as AuthUser;
  */
 class Files extends Db
 {
+	private $Event;
+	private $AuthUser;
+	private $thisUser;
+	private $file_base_path;
+	private $file_base_url;
 
 	public function __construct()
 	{
@@ -78,7 +83,7 @@ class Files extends Db
 					'title' => 'Merchandise: Could not create directory',
 					'message' => "Klarte ikke å opprette mappe",
 					'severity' => 'high',
-					'event_data' => array('params' => $p, 'files' => $files, 'target_base_dir' => $target_base_dir, 'target_thumb_dir' => $target_thumb_dir),
+					'event_data' => array('params' => $p, 'files' => $files, 'target_base_dir' => $target_base_dir),
 				));
 			}
 		}

@@ -8,6 +8,9 @@ use \Kapps\Model\General\Db;
  */
 class Search extends Db
 {
+	private $image_base_url;
+	private $image_base_path;
+	private $image_none;
 
 	public function __construct()
 	{

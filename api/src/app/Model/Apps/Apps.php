@@ -12,6 +12,14 @@ use \Kapps\Model\Auth\User as AuthUser;
  */
 class Apps extends Db
 {
+	private $Images;
+	private $Companies;
+	private $Files;
+	private $AuthUser;
+	private $thisUser;
+	private $image_base_url;
+	private $image_base_path;
+	private $image_none;
 
 	public function __construct()
 	{

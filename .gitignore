@@ -1,5 +1,7 @@
 /_*
-/data
+/api/src/data/apps/*
+/api/src/data/files/*
+/api/src/data/profilepictures/*
 /vendor
 /tmp
 /_old*

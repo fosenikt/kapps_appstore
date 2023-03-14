@@ -10,6 +10,7 @@ use \Kapps\Model\Companies\Access;
  */
 class Update extends Db
 {
+	private $Access;
 
 	/**
 	 * summary

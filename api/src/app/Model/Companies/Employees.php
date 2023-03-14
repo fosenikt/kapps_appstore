@@ -10,6 +10,7 @@ use \Kapps\Model\General\Colors;
  */
 class Employees extends Db
 {
+	private $Colors;
 
 	/**
 	 * summary

@@ -63,8 +63,6 @@ class User extends Db
 
 			if ($numRows > 0) {
 				$row = $result->fetch_array();
-
-
 				// Logged in user is queried by many classes... Switching customer causes mysql to crash with to many connections.
 				//error_log('get_loggedin_user 1');
 				if (empty($row['customer_id'])) {

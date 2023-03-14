@@ -10,6 +10,8 @@ use \Kapps\Model\Apps\Utils;
  */
 class Stats extends Db
 {
+	private $Apps;
+	private $Utils;
 
 	public function __construct()
 	{

@@ -6,6 +6,7 @@ use \Gumlet\ImageResize;
 
 class Upload
 {
+	private $Event;
 
 	public function __construct()
 	{

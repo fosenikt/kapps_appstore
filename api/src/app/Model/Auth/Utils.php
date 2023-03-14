@@ -195,7 +195,8 @@ class Utils extends Db
 		if (isset($p['user_id'])) {
 			$user_id = $p['user_id'];
 		} else {
-			$user_id = $this->thisUser['id'];
+			//$user_id = $this->thisUser['id'];
+			$user_id = 0;
 		}
 
 		if (isset($p['domain'])) {

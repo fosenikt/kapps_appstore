@@ -10,6 +10,12 @@ use \Kapps\Model\Auth\User as AuthUser;
  */
 class Images extends Db
 {
+	private $Event;
+	private $AuthUser;
+	private $thisUser;
+	private $image_base_path;
+	private $image_base_url;
+	private $image_none;
 
 	public function __construct()
 	{
@@ -546,7 +552,7 @@ class Images extends Db
 			$this->Event->add(array(
 				'domain' => 'apps',
 				'event_type' => 'ImageDelete',
-				'entity_id' => $merc_id,
+				'entity_id' => $app_id,
 				'entity_tag' => 'app-'.$app_id,
 				'event_data' => array('filename' => $filename),
 			));
@@ -557,7 +563,7 @@ class Images extends Db
 				'title' => 'Could not delete image',
 				'message' => 'File error',
 				'severity' => 'high',
-				'event_data' => array('status' => 'error', 'merc_id' => $merc_id, 'filename' => $filename),
+				'event_data' => array('status' => 'error', 'app_id' => $app_id, 'filename' => $filename),
 			));
 		}
 	}

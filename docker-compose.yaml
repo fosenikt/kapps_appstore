@@ -2,12 +2,12 @@ version: '3.2'
 services:
 
   ## FRONTEND
-  kapps-appstore-frontend:
+  frontend:
     container_name: kapps-appstore-frontend
     build:
       context: ./frontend/
       dockerfile: .docker/Dockerfile
-    restart: always
+    restart: on-failure
     ports:
       - "8030:80"
     volumes:
@@ -18,21 +18,20 @@ services:
           propagation: shared
       - "/etc/timezone:/etc/timezone:ro"
       - "/etc/localtime:/etc/localtime:ro"
-      - ./frontend/.docker/php.ini-dev:/usr/local/etc/php/php.ini
     environment:
         - VIRTUAL_HOST=${FRONTEND_HOST}
+        - SELF_SIGNED_HOST=${FRONTEND_HOST}
         - API_URL=${BACKEND_HOST}
     networks:
       - default
 
   ## API
-  kapps-appstore-api:
+  api:
     container_name: kapps-appstore-api
     build:
       context: ./api/
       dockerfile: .docker/Dockerfile
-    #command: sh -c "composer install"
-    restart: always
+    restart: on-failure
     ports:
       - "8031:80"
     volumes:
@@ -41,12 +40,11 @@ services:
         target: /var/www/html
         bind:
           propagation: shared
-#      - kapps-appstore-api-db:/var/www/html/db
       - "/etc/timezone:/etc/timezone:ro"
       - "/etc/localtime:/etc/localtime:ro"
-      - ./api/.docker/php.ini-dev:/usr/local/etc/php/php.ini
     environment:
         - VIRTUAL_HOST=${BACKEND_HOST}
+        - SELF_SIGNED_HOST=${BACKEND_HOST}
         - FRONTEND_HOST=${FRONTEND_HOST}
         - DB_NAME=${DB_NAME}
         - DB_USER=${DB_USER}
@@ -69,21 +67,6 @@ services:
         - SMTP_SENDER_NAME=${SMTP_SENDER_NAME}
     networks:
       - default
-
-  kapps-appstore-composer:
-    container_name: kapps-appstore-composer
-    image: composer:latest
-    #command: ["composer", "install --ignore-platform-reqs"]
-    command: sh -c "composer install --ignore-platform-reqs"
-    volumes:
-      - type: bind
-        source: ./api/src
-        target: /app
-        bind:
-          propagation: shared
-    depends_on:
-      - kapps-appstore-api
-
 
   ## Database
   kapps-appstore-db:

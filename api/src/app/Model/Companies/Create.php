@@ -10,6 +10,7 @@ use \Kapps\Model\Companies\Access;
  */
 class Create extends Db
 {
+	private $Access;
 
 	/**
 	 * summary

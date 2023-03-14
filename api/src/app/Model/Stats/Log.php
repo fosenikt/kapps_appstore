@@ -10,6 +10,9 @@ use \Kapps\Model\Apps\Utils;
  */
 class Log extends Db
 {
+	private $Utils;
+	private $AuthUser;
+	private $me;
 
 	public function __construct()
 	{

@@ -11,6 +11,10 @@ use \Kapps\Model\Auth\User as AuthUser;
  */
 class Admin extends Db
 {
+	private $Companies;
+	private $Colors;
+	private $AuthUser;
+	private $me;
 
 	public function __construct()
 	{

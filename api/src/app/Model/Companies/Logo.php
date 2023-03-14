@@ -12,6 +12,10 @@ use \Gumlet\ImageResize;
  */
 class Logo extends Db
 {
+	private $AuthUser;
+	private $me;
+	private $Event;
+	private $Access;
 
 	public function __construct()
 	{

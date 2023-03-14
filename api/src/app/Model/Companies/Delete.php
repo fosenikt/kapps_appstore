@@ -10,6 +10,7 @@ use \Kapps\Model\Companies\Access;
  */
 class Delete extends Db
 {
+	private $Access;
 
 	/**
 	 * summary

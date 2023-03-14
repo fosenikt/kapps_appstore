@@ -115,7 +115,7 @@ $dispatcher = FastRoute\simpleDispatcher(function(FastRoute\RouteCollector $r) {
 
 	// License
 	$r->addRoute('GET', '/licenses/get', ['Kapps\Controller\Licenses\Licenses', 'get_licenses']);
-	$r->addRoute('GET', '/license/get/{id:\d+}', ['Kapps\Controller\Licenses\Licenses', 'get_licenses']);
+	$r->addRoute('GET', '/license/get/{id:\d+}', ['Kapps\Controller\Licenses\Licenses', 'get_license']);
 
 
 	// Delivery

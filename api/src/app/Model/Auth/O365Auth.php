@@ -15,6 +15,9 @@ use ReallySimpleJWT\Token;
  */
 class O365Auth extends db
 {
+	private $Login;
+	private $Utils;
+	
 	public function __construct()
 	{
 		$this->Login = new Login();

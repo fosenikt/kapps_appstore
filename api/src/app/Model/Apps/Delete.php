@@ -10,6 +10,9 @@ use \Kapps\Model\Auth\User as AuthUser;
  */
 class Delete extends Db
 {
+	private $Apps;
+	private $AuthUser;
+	private $thisUser;
 
 	public function __construct()
 	{

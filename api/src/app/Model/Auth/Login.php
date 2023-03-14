@@ -13,8 +13,14 @@ use \Kapps\Model\Auth\Utils;
 class Login extends Db
 {
 
+	private $db;
+	private $Send;
+	private $Utils;
+
 	public function __construct()
 	{
+		$this->db = Db::getInstance();
+
 		$this->Send = new Send();
 		$this->Utils = new Utils();
 	}
@@ -129,8 +135,6 @@ class Login extends Db
 
 
 
-		$db = Db::getInstance();
-
 		$get_user = $this->get_user_id_by_mail($mail);
 		$user_id = $get_user['id'];
 
@@ -142,7 +146,7 @@ class Login extends Db
 
 
 		// Prepare our SQL, preparing the SQL statement will prevent SQL injection.
-		if ($stmt = $db->prepare('SELECT user_id FROM login_keys WHERE user_id=? AND pincode=? LIMIT 1')) {
+		if ($stmt = $this->db->prepare('SELECT user_id FROM login_keys WHERE user_id=? AND pincode=? LIMIT 1')) {
 			// Bind parameters (s = string, i = int, b = blob, etc), in our case the username is a string so we use "s"
 			$stmt->bind_param('si', $user_id, $code);
 			$stmt->execute();
@@ -180,14 +184,12 @@ class Login extends Db
 	 */
 	public function validate_hash($user_id, $hash)
 	{
-		$db = Db::getInstance();
-
 		if (empty($user_id) || empty($hash)) {
 			return array('status' => 'error', 'message' => 'Inputs missing');
 		}
 
 		// Prepare our SQL, preparing the SQL statement will prevent SQL injection.
-		if ($stmt = $db->prepare('SELECT user_id status FROM login_keys WHERE hash LIKE ? AND user_id=? LIMIT 1')) {
+		if ($stmt = $this->db->prepare('SELECT user_id status FROM login_keys WHERE hash LIKE ? AND user_id=? LIMIT 1')) {
 			// Bind parameters (s = string, i = int, b = blob, etc), in our case the username is a string so we use "s"
 			$stmt->bind_param('si', $hash, $user_id);
 			$stmt->execute();
@@ -229,8 +231,7 @@ class Login extends Db
 		$last_part = end($parts);
 
 		$query = "SELECT domain FROM company WHERE (domain LIKE '$domain' OR domain LIKE '$last_part')";
-		$db = Db::getInstance();
-		$result = $db->query($query);
+		$result = $this->db->query($query);
 
 		if ($result->num_rows == 0) {
 			return false;
@@ -251,9 +252,8 @@ class Login extends Db
 	 */
 	private function create_user($mail)
 	{
-		$db = Db::getInstance();
-		$db->set_charset("utf8mb4");
-		$db->query("SET NAMES 'utf8mb4'");
+		$this->db->set_charset("utf8mb4");
+		$this->db->query("SET NAMES 'utf8mb4'");
 
 
 		$get_company = $this->get_company_by_mail($mail);
@@ -265,9 +265,9 @@ class Login extends Db
 
 		$status = 'active';
 
-		$stmt = $db->prepare("INSERT INTO users SET customer_id=?, mail=?, status=?");
+		$stmt = $this->db->prepare("INSERT INTO users SET customer_id=?, mail=?, status=?");
 		if ($stmt === false) {
-			return array('status' => 'error', 'error' => $db->error);
+			return array('status' => 'error', 'error' => $this->db->error);
 		}
 
 		$result = $stmt->bind_param("iss", $company_id, $mail, $status);
@@ -299,10 +299,11 @@ class Login extends Db
 	 */
 	private function get_user_id_by_mail($mail)
 	{
-		$db = Db::getInstance();
+		$user_id = 0;
+		$status = '';
 
 		// Prepare our SQL, preparing the SQL statement will prevent SQL injection.
-		if ($stmt = $db->prepare('SELECT id, mail, status FROM users WHERE mail LIKE ? LIMIT 1')) {
+		if ($stmt = $this->db->prepare('SELECT id, mail, status FROM users WHERE mail LIKE ? LIMIT 1')) {
 			// Bind parameters (s = string, i = int, b = blob, etc), in our case the username is a string so we use "s"
 			$stmt->bind_param('s', $mail);
 			$stmt->execute();
@@ -344,15 +345,21 @@ class Login extends Db
 	public function get_company_by_mail($mail)
 	{
 
+		$id = 0;
+		$public_id = '';
+		$title = '';
+		$logo = '';
+		$access = '';
+
 		list($user, $domain) = explode('@', $mail);
 		$parts = explode('.', $domain);
-		$last_part = end($parts);
+		//$last_part = end($parts);
 
 
-		$db = Db::getInstance();
+		
 
 		// Prepare our SQL, preparing the SQL statement will prevent SQL injection.
-		if ($stmt = $db->prepare('SELECT id, public_id, domain, title, logo, access FROM company WHERE domain LIKE ? LIMIT 1')) {
+		if ($stmt = $this->db->prepare('SELECT id, public_id, domain, title, logo, access FROM company WHERE domain LIKE ? LIMIT 1')) {
 			// Bind parameters (s = string, i = int, b = blob, etc), in our case the username is a string so we use "s"
 			$stmt->bind_param('s', $domain);
 			$stmt->execute();
@@ -397,9 +404,6 @@ class Login extends Db
 			return array('status' => 'error', 'message' => 'User ID missing');
 		}
 
-		// Create DB instance
-		$db = Db::getInstance();
-
 
 		// Delete users old login codes
 		$this->delete_users_login_codes($user_id);
@@ -413,12 +417,12 @@ class Login extends Db
 		$hash = hash('sha256', $this->generateRandomString(15));
 
 		// Prepare our SQL, preparing the SQL statement will prevent SQL injection.
-		if ($stmt = $db->prepare('INSERT INTO login_keys SET time_expires=?, user_id=?, pincode=?, hash=?')) {
+		if ($stmt = $this->db->prepare('INSERT INTO login_keys SET time_expires=?, user_id=?, pincode=?, hash=?')) {
 			// Bind parameters (s = string, i = int, b = blob, etc), in our case the username is a string so we use "s"
 			$stmt->bind_param('siis', $time_expires, $user_id, $pin_code, $hash);
 			
 			if (!$stmt) {
-				return array('status' => 'error', 'message' => $db->error);
+				return array('status' => 'error', 'message' => $this->db->error);
 			}
 
 			if (!$stmt->execute()) {
@@ -448,16 +452,13 @@ class Login extends Db
 	 */
 	private function delete_users_login_codes($user_id)
 	{
-		// Create DB instance
-		$db = Db::getInstance();
-
 		// Prepare our SQL, preparing the SQL statement will prevent SQL injection.
-		if ($stmt = $db->prepare('DELETE FROM login_keys WHERE user_id=?')) {
+		if ($stmt = $this->db->prepare('DELETE FROM login_keys WHERE user_id=?')) {
 			// Bind parameters (s = string, i = int, b = blob, etc), in our case the username is a string so we use "s"
 			$stmt->bind_param('i', $user_id);
 			
 			if (!$stmt) {
-				return array('status' => 'error', 'message' => $db->error);
+				return array('status' => 'error', 'message' => $this->db->error);
 			}
 
 			if (!$stmt->execute()) {
@@ -487,13 +488,10 @@ class Login extends Db
 	 */
 	private function delete_expired_login_codes()
 	{
-		// Create DB instance
-		$db = Db::getInstance();
-
 		// Prepare our SQL, preparing the SQL statement will prevent SQL injection.
-		if ($stmt = $db->prepare('DELETE FROM login_keys WHERE time_expires < NOW()')) {			
+		if ($stmt = $this->db->prepare('DELETE FROM login_keys WHERE time_expires < NOW()')) {			
 			if (!$stmt) {
-				return array('status' => 'error', 'message' => $db->error);
+				return array('status' => 'error', 'message' => $this->db->error);
 			}
 
 			if (!$stmt->execute()) {

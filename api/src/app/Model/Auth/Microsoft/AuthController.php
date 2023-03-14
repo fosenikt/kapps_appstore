@@ -83,7 +83,7 @@ class AuthController
 				return $accessToken;
 				//return $tokens;
 			}
-			catch (League\OAuth2\Client\Provider\Exception\IdentityProviderException $e) {
+			catch (\League\OAuth2\Client\Provider\Exception\IdentityProviderException $e) {
 				exit('ERROR getting tokens: '.$e->getMessage());
 			}
 			exit();

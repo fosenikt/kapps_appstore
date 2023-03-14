@@ -9,6 +9,8 @@ use \Kapps\Model\Auth\User as AuthUser;
  */
 class MyProfile extends Db
 {
+	private $AuthUser;
+	private $me;
 
 	public function __construct()
 	{

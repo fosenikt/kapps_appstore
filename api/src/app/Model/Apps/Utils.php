@@ -7,6 +7,9 @@ namespace Kapps\Model\Apps;
  */
 class Utils
 {
+	private $image_base_url;
+	private $image_base_path;
+	private $image_none;
 
 	public function __construct()
 	{
