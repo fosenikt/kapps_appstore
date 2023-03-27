@@ -53,6 +53,7 @@ RUN docker-php-ext-install -j$(nproc) iconv
 #RUN php -r "readfile('http://getcomposer.org/installer');" | php -- --install-dir=/usr/bin/ --filename=composer;
 
 COPY ./.docker/vhost.conf /etc/apache2/sites-available/000-default.conf
+COPY ./.docker/php.ini /usr/local/etc/php/php.ini
 
 RUN a2enmod rewrite
 RUN a2enmod ssl
