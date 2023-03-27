@@ -75,7 +75,14 @@ class O365Auth extends db
 		}
 
 		if ($result->num_rows == 0) {
-			$user_id = $this->create_user($profile);
+			$user_create = $this->create_user($profile);
+			if (is_array($user_create) && $user_create['status'] == 'success') {
+				$user_id = $user_create['id'];
+			} else {
+				error_log('Error creating user');
+				error_log(json_encode($user_create));
+				return false;
+			}
 		}
 
 		else {
