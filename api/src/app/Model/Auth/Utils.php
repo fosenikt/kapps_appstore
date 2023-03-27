@@ -135,7 +135,19 @@ class Utils extends Db
 	private function store_user_session($payload, $token, $expires, $title='')
 	{
 
-		$user_id = $payload;
+		// Some issues in prod-env with payload
+		// Solution: Make som extra checks
+		if (is_array($payload)) {
+			if (isset($payload['user_id'])) {
+				$user_id = $payload['user_id'];
+			} else {
+				$user_id = 0;
+				error_log('No user_id found in payload');
+			}
+		} else {
+			$user_id = $payload;
+		}
+		
 
 		if (empty($user_id)) {
 			error_log('Token: Could not store user session in database. Empty or no user parameter provided.');
