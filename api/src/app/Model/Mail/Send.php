@@ -1,7 +1,7 @@
 <?php
 namespace Kapps\Model\Mail;
 
-use \Kapps\Model\General\Db;
+use Kapps\Model\Database\Db;
 use \PHPMailer\PHPMailer\PHPMailer;
 use \PHPMailer\PHPMailer\SMTP;
 use \PHPMailer\PHPMailer\Exception;
@@ -9,19 +9,19 @@ use \PHPMailer\PHPMailer\Exception;
 /**
  * summary
  */
-class Send extends Db
+class Send
 {
+	private $db;
 
-	public function __construct() {}
+	public function __construct() {
+		$this->db = Db::getInstance();
+	}
 
 
 	public function send()
 	{
-		//error_log('Sending out e-mails');
-		$db = Db::getInstance();
-
 		// Prepare our SQL, preparing the SQL statement will prevent SQL injection.
-		if ($stmt = $db->prepare('SELECT id, recipient, subject, body FROM mail_out')) {
+		if ($stmt = $this->db->prepare('SELECT id, recipient, subject, body FROM mail_out')) {
 			// Bind parameters (s = string, i = int, b = blob, etc), in our case the username is a string so we use "s"
 			$stmt->execute();
 		}
@@ -53,13 +53,9 @@ class Send extends Db
 
 	public function insert_mail($to, $subject, $body)
 	{
-		$db = Db::getInstance();
-		$db->set_charset("utf8mb4");
-		$db->query("SET NAMES 'utf8mb4'");
-
-		$stmt = $db->prepare("INSERT INTO mail_out SET recipient=?, subject=?, body=?");
+		$stmt = $this->db->prepare("INSERT INTO mail_out SET recipient=?, subject=?, body=?");
 		if ($stmt === false) {
-			return array('status' => 'error', 'error' => $db->error);
+			return array('status' => 'error', 'error' => $this->db->error);
 		}
 
 		$result = $stmt->bind_param("sss", $to, $subject, $body);
@@ -86,12 +82,10 @@ class Send extends Db
 
 	private function delete_mail($id)
 	{
-		$db = Db::getInstance();
-
-		$stmt = $db->prepare("DELETE FROM mail_out WHERE id=?");
+		$stmt = $this->db->prepare("DELETE FROM mail_out WHERE id=?");
 		if ($stmt === false) {
 			error_log('ERROR: Could not delete email with ID: '.$id.'. ErrorID:1');
-			return array('status' => 'error', 'error' => $db->error);
+			return array('status' => 'error', 'error' => $this->db->error);
 		}
 
 		$result = $stmt->bind_param("i", $id);

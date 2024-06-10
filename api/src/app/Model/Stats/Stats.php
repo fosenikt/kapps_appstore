@@ -1,21 +1,24 @@
 <?php
 namespace Kapps\Model\Stats;
 
-use \Kapps\Model\General\Db;
-use \Kapps\Model\Apps\Apps;
+use Kapps\Model\Database\Db;
+use \Kapps\Model\Apps\Get as AppsGet;
 use \Kapps\Model\Apps\Utils;
 
 /**
  * summary
  */
-class Stats extends Db
+class Stats
 {
+	private $db;
 	private $Apps;
 	private $Utils;
 
 	public function __construct()
 	{
-		$this->Apps = new Apps;
+		$this->db = Db::getInstance();
+
+		$this->Apps = new AppsGet;
 		$this->Utils = new Utils;
 	}
 
@@ -24,8 +27,7 @@ class Stats extends Db
 	public function num_published()
 	{
 		$query = "SELECT id FROM apps WHERE status LIKE 'published'";
-		$db = Db::getInstance();
-		$result = $db->query($query);
+		$result = $this->db->query($query);
 
 		return $result->num_rows;
 	}
@@ -41,8 +43,7 @@ class Stats extends Db
 				  WHERE A.status LIKE 'published' 
 				  ORDER BY A.time_created DESC 
 				  LIMIT 5";
-		$db = Db::getInstance();
-		$result = $db->query($query);
+		$result = $this->db->query($query);
 
 		if ($result->num_rows > 0) {
 			while ($row = $result->fetch_array()) {
@@ -79,8 +80,7 @@ class Stats extends Db
 				  GROUP BY entity_id
 				  ORDER BY COUNT(*) DESC
 				  LIMIT 5";
-		$db = Db::getInstance();
-		$result = $db->query($query);
+		$result = $this->db->query($query);
 
 		if ($result->num_rows > 0) {
 			while ($row = $result->fetch_array()) {
@@ -113,8 +113,7 @@ class Stats extends Db
 				  WHERE A.status LIKE 'published' AND A.id='$id'
 				  ORDER BY A.time_created DESC 
 				  LIMIT 5";
-		$db = Db::getInstance();
-		$result = $db->query($query);
+		$result = $this->db->query($query);
 
 		if ($result->num_rows > 0) {
 			while ($row = $result->fetch_array()) {

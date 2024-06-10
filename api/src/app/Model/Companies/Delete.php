@@ -1,15 +1,16 @@
 <?php
 namespace Kapps\Model\Companies;
 
-use \Kapps\Model\General\Db;
+use Kapps\Model\Database\Db;
 use \Kapps\Model\Companies\Access;
 
 
 /**
  * summary
  */
-class Delete extends Db
+class Delete
 {
+	private $db;
 	private $Access;
 
 	/**
@@ -17,6 +18,7 @@ class Delete extends Db
 	 */
 	public function __construct()
 	{
+		$this->db = Db::getInstance();
 		$this->Access = new Access();
 	}
 
@@ -29,17 +31,14 @@ class Delete extends Db
 			return array('status' => 'error', 'message' => 'Access denied');
 		}
 
-		// Create DB instance
-		$db = Db::getInstance();
-
 		// Prepare our SQL, preparing the SQL statement will prevent SQL injection.
-		if ($stmt = $db->prepare('DELETE FROM company WHERE public_id=?')) {
+		if ($stmt = $this->db->prepare('DELETE FROM company WHERE public_id=?')) {
 			// Bind parameters (s = string, i = int, b = blob, etc), in our case the username is a string so we use "s"
 			$stmt->bind_param('s', $public_id);
 			//$stmt->execute();
 
 			if (!$stmt) {
-				return array('status' => 'error', 'message' => $db->error);
+				return array('status' => 'error', 'message' => $this->db->error);
 			}
 
 			if (!$stmt->execute()) {

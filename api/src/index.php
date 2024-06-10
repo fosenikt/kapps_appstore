@@ -1,15 +1,18 @@
 <?php
 require_once('config.php');
 require_once('vendor/autoload.php');
-require_once('./app/autoload.php');
-require_once('./functions.php');
-
-
-//ini_set('max_execution_time', '0'); //300 seconds = 5 minutes
-//set_time_limit(0);
 
 cors();
 header('Content-Type: application/json');
+
+/**
+ * @OA\Info(
+ *     title="Kapps API",
+ *     version="2.0.0",
+ *     description="API for KommuneApplications (Kapps)"
+ * )
+ */
+
 
 /**
  *  An example CORS-compliant method.  It will allow any GET, POST, or OPTIONS requests from any
@@ -65,15 +68,23 @@ $dispatcher = FastRoute\simpleDispatcher(function(FastRoute\RouteCollector $r) {
 
 
 	// Application
-	$r->addRoute('GET', '/app/get/{id:\d+}', ['Kapps\Controller\Apps\Apps', 'get_app']);
-	$r->addRoute('GET', '/apps/get', ['Kapps\Controller\Apps\Apps', 'get_apps']);
+	$r->addRoute('GET', '/app/get/{id:\d+}', ['Kapps\Controller\Apps\Get', 'get_app']);
+	$r->addRoute('GET', '/apps/get', ['Kapps\Controller\Apps\Get', 'get_apps']);
 	$r->addRoute('POST', '/app/new', ['Kapps\Controller\Apps\Create', 'add']);
-	$r->addRoute('POST', '/app/update/desc', ['Kapps\Controller\Apps\Create', 'update_description']);
-	$r->addRoute('POST', '/app/update/install', ['Kapps\Controller\Apps\Create', 'update_installation']);
-	$r->addRoute('POST', '/app/update/details', ['Kapps\Controller\Apps\Create', 'update_details']);
-	$r->addRoute('GET', '/app/publish/{id:\d+}', ['Kapps\Controller\Apps\Publish', 'publish']);
-	$r->addRoute('GET', '/app/unpublish/{id:\d+}', ['Kapps\Controller\Apps\Publish', 'unpublish']);
-	$r->addRoute('GET', '/app/delete/{id:\d+}', ['Kapps\Controller\Apps\Delete', 'delete']);
+	$r->addRoute('POST', '/app/update/desc', ['Kapps\Controller\Apps\Update', 'update_description']);
+	$r->addRoute('POST', '/app/update/install', ['Kapps\Controller\Apps\Update', 'update_installation']);
+	$r->addRoute('POST', '/app/update/details', ['Kapps\Controller\Apps\Update', 'update_details']);
+	$r->addRoute('GET', '/app/publish/{id:\d+}', ['Kapps\Controller\Apps\Update', 'publish']);
+	$r->addRoute('GET', '/app/unpublish/{id:\d+}', ['Kapps\Controller\Apps\Update', 'unpublish']);
+	$r->addRoute(['DELETE', 'GET'], '/app/delete/{id:\d+}', ['Kapps\Controller\Apps\Delete', 'delete']);
+
+	// App: Companies
+	$r->addRoute('GET', '/company/apps', ['Kapps\Controller\Apps\Get', 'get_company_apps']);
+	$r->addRoute('GET', '/company/published/apps/{id}', ['Kapps\Controller\Apps\Get', 'get_company_apps']);
+	$r->addRoute('GET', '/company/app/{id:\d+}', ['Kapps\Controller\Apps\Get', 'get_company_app']);
+
+
+
 
 	// App: Images
 	$r->addRoute('POST', '/app/images/upload', ['Kapps\Controller\Apps\Images', 'upload']);
@@ -86,36 +97,36 @@ $dispatcher = FastRoute\simpleDispatcher(function(FastRoute\RouteCollector $r) {
 	
 
 
-	// App: Companies
-	$r->addRoute('GET', '/company/apps', ['Kapps\Controller\Apps\Company', 'get_apps']);
-	$r->addRoute('GET', '/company/published/apps/{id}', ['Kapps\Controller\Apps\Company', 'get_published_apps']);
-	$r->addRoute('GET', '/company/app/{id:\d+}', ['Kapps\Controller\Apps\Company', 'get_app']);
+	
 
 
 
 	// Companies
-	$r->addRoute('GET', '/companies/get', ['Kapps\Controller\Companies\Companies', 'get_companies']);
-	$r->addRoute('GET', '/companies/simplelist/get', ['Kapps\Controller\Companies\Companies', 'get_companies_simple']);
-	$r->addRoute('GET', '/company/get/{id}', ['Kapps\Controller\Companies\Companies', 'get_company']);
+	$r->addRoute('GET', '/companies/get', ['Kapps\Controller\Companies\Get', 'get_companies']);
+	$r->addRoute('GET', '/companies/simplelist/get', ['Kapps\Controller\Get\Companies', 'get_companies_simple']);
+	$r->addRoute('GET', '/company/get/{id}', ['Kapps\Controller\Companies\Get', 'get_company']);
+	$r->addRoute('GET', '/company/counties/get', ['Kapps\Controller\Companies\Get', 'get_counties']);
 	$r->addRoute('POST', '/company/create', ['Kapps\Controller\Companies\Create', 'create']);
 	$r->addRoute('POST', '/company/update', ['Kapps\Controller\Companies\Update', 'update']);
-	$r->addRoute('GET', '/company/delete/{id}', ['Kapps\Controller\Companies\Delete', 'delete']);
-	$r->addRoute('GET', '/company/counties/get', ['Kapps\Controller\Companies\County', 'get_counties']);
-	$r->addRoute('GET', '/company/municipalities/get', ['Kapps\Controller\Companies\Municipality', 'get_municipalities']);
-	$r->addRoute('POST', '/company/logo/upload', ['Kapps\Controller\Companies\Logo', 'upload']);
-	$r->addRoute('GET', '/companies/search/{q}', ['Kapps\Controller\Companies\Search', 'companies']);
+	$r->addRoute(['DELETE', 'GET'], '/company/delete/{id}', ['Kapps\Controller\Companies\Delete', 'delete']);
+	$r->addRoute('GET', '/companies/search/{q}', ['Kapps\Controller\Search\Search', 'companies_get']);
+	
+	$r->addRoute('POST', '/company/logo/upload', ['Kapps\Controller\Upload\Upload', 'upload_company_logo']);
 
 	// Companies: Employees
-	$r->addRoute('GET', '/company/employees/{id}', ['Kapps\Controller\Companies\Employees', 'get_employees']);
+	$r->addRoute('GET', '/company/employees/{company_id}', ['Kapps\Controller\Employees\Get', 'get_employees']);
+
+	$r->addRoute('GET', '/company/municipalities/get', ['Kapps\Controller\Municipality\Get', 'get_municipalities']);
+
 
 
 	// Type
-	$r->addRoute('GET', '/types/get', ['Kapps\Controller\Types\Types', 'get_types']);
+	$r->addRoute('GET', '/types/get', ['Kapps\Controller\Types\Get', 'get_types']);
 
 
 	// License
-	$r->addRoute('GET', '/licenses/get', ['Kapps\Controller\Licenses\Licenses', 'get_licenses']);
-	$r->addRoute('GET', '/license/get/{id:\d+}', ['Kapps\Controller\Licenses\Licenses', 'get_license']);
+	$r->addRoute('GET', '/licenses/get', ['Kapps\Controller\Licenses\Get', 'get_licenses']);
+	$r->addRoute('GET', '/license/get/{id:\d+}', ['Kapps\Controller\Licenses\Get', 'get_license']);
 
 
 	// Delivery
@@ -140,22 +151,22 @@ $dispatcher = FastRoute\simpleDispatcher(function(FastRoute\RouteCollector $r) {
 
 
 	// Users
-	$r->addRoute('GET', '/users/get', ['Kapps\Controller\Users\Users', 'get_users']);
-	$r->addRoute('GET', '/users/company/get/{id}', ['Kapps\Controller\Users\Users', 'get_company_users']);
-	$r->addRoute('GET', '/user/get/{id:\d+}', ['Kapps\Controller\Users\Users', 'get_user']);
+	$r->addRoute('GET', '/users/get', ['Kapps\Controller\Users\Get', 'get_users']);
+	$r->addRoute('GET', '/users/company/get/{id}', ['Kapps\Controller\Users\Get', 'get_company_users']);
+	$r->addRoute('GET', '/user/get/{id:\d+}', ['Kapps\Controller\Users\Get', 'get_user']);
 	
-	$r->addRoute('POST', '/myprofile/update', ['Kapps\Controller\Users\MyProfile', 'update']);
+	$r->addRoute('POST', '/myprofile/update', ['Kapps\Controller\Users\Update', 'update_profile']);
 
 
 	// Users: Admin
-	$r->addRoute('POST', '/admin/user/create', ['Kapps\Controller\Users\Admin', 'create_user']);
-	$r->addRoute('POST', '/admin/user/update', ['Kapps\Controller\Users\Admin', 'update_user']);
-	$r->addRoute('GET', '/admin/user/delete/{id:\d+}', ['Kapps\Controller\Users\Admin', 'delete_user']);
+	$r->addRoute('POST', '/admin/user/create', ['Kapps\Controller\Users\Create', 'create_user']);
+	$r->addRoute('POST', '/admin/user/update', ['Kapps\Controller\Users\Update', 'update_user']);
+	$r->addRoute(['DELETE', 'GET'], '/admin/user/delete/{id:\d+}', ['Kapps\Controller\Users\Delete', 'delete_user']);
 
 	// Users: Sessions/Tokens
 	$r->addRoute('POST', '/admin/user/token/create', ['Kapps\Controller\Users\Tokens', 'create_token']);
 	$r->addRoute('GET', '/admin/user/token/get/{id:\d+}', ['Kapps\Controller\Users\Tokens', 'get_tokens']);
-	$r->addRoute('GET', '/admin/user/token/delete/{id:\d+}', ['Kapps\Controller\Users\Tokens', 'delete_token']);
+	$r->addRoute(['DELETE', 'GET'], '/admin/user/token/delete/{id:\d+}', ['Kapps\Controller\Users\Tokens', 'delete_token']);
 });
 
 
@@ -183,13 +194,7 @@ if (false !== $pos = strpos($uri, '?')) {
 }
 $uri = rawurldecode($uri);
 
-
 $routeInfo = $dispatcher->dispatch($httpMethod, $uri);
-
-// Get class and method from route
-//$className = $routeInfo[1][0];
-//$method = $routeInfo[1][1];
-//$vars = $routeInfo[2];
 
 
 switch ($routeInfo[0]) {
@@ -226,37 +231,9 @@ switch ($routeInfo[0]) {
 			} else {
 				error_log('API HANDLER: No data in array');
 			}
-		} else {
-			//error_log('API HANDLER: No content in php://input'); // not exists
 		}
-
-
-
-		// Validate user if not login
-		if (
-			   substr($uri, 0, 11) != '/auth/login' 
-			&& substr($uri, 0, 13) != '/weather/' 
-			&& substr($uri, 0, 12) != '/rss/get' 
-		) {
-			//error_log('Validating user for ' . $uri);
-
-			$val = new \Kapps\Model\Auth\User;
-			$validate = $val->validate_login();
-			if (!$validate || $validate['status'] == 'error') {
-				header('HTTP/1.0 403 Forbidden');
-				error_log('[Request] ' . $validate['message']);
-				output($validate);
-				die();
-			}
-		}
-
-		else {
-			//error_log('Not validate for ' . $uri);
-		}
-
 
 		// Call class
-		//error_log('API CALL... Class: ' . $className . ', Method: ' . $method);
 		$result = call_user_func_array(array(new $className, $method), $vars);
 		output($result);
 

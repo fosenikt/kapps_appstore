@@ -1,17 +1,17 @@
 <?php
 namespace Kapps\Model\Apps;
 
-use \Kapps\Model\General\Db;
-use \Kapps\Model\General\Event;
+use Kapps\Model\Database\Db;
+use \Kapps\Model\Events\Event;
 use \Kapps\Model\Auth\User as AuthUser;
 
 /**
  * summary
  */
-class Images extends Db
+class Images
 {
+	private $db;
 	private $Event;
-	private $AuthUser;
 	private $thisUser;
 	private $image_base_path;
 	private $image_base_url;
@@ -19,10 +19,10 @@ class Images extends Db
 
 	public function __construct()
 	{
-		$this->Event = new Event();
+		$this->db = Db::getInstance();
+		$this->thisUser = (new AuthUser())->me();
 
-		$this->AuthUser = new AuthUser;
-		$this->thisUser = $this->AuthUser->me();
+		$this->Event = new Event();
 
 		$this->image_base_path = $_SERVER['DOCUMENT_ROOT'].'/data/apps/';
 		$this->image_base_url = '//'.URL.'/data/apps/';
@@ -50,7 +50,7 @@ class Images extends Db
 	{
 		// Check if app id exist in parameters
 		if (!isset($p['app_id']) || empty($p['app_id'])) {
-			return $this->Event->error(array(
+			return (new Event())->error(array(
 				'title' => 'App: No app ID provided for image upload',
 				'message' => "Ingen app ID",
 				'severity' => 'high',
@@ -113,7 +113,7 @@ class Images extends Db
 
 		
 		// Set new object to upload file
-		$upload = new \Kapps\Model\General\Upload;
+		$upload = new \Kapps\Model\Upload\Upload;
 
 
 		// If multiple files
@@ -221,7 +221,7 @@ class Images extends Db
 	public function get_primary_image($id)
 	{
 		$query = "SELECT primary_image FROM apps WHERE id='$id'";
-		$result = Db::getInstance()->query($query);
+		$result = $this->db->query($query);
 
 		// If merchandise not found, return false
 		if ($result->num_rows == 0) {
@@ -308,8 +308,7 @@ class Images extends Db
 
 		// Query
 		$query = "UPDATE apps SET primary_image='$image' WHERE id='$id'";
-		$db = Db::getInstance();
-		$result = $db->query($query);
+		$result = $this->db->query($query);
 
 
 		// If query = OK
@@ -328,7 +327,7 @@ class Images extends Db
 				'title' => 'Could not set primary image',
 				'message' => 'DB error',
 				'severity' => 'high',
-				'event_data' => array('id' => $id, 'image' => $image, 'db_error' => $db->error),
+				'event_data' => array('id' => $id, 'image' => $image, 'db_error' => $this->db->error),
 			));
 		}
 	}
@@ -588,8 +587,7 @@ class Images extends Db
 	public function chk_app_access($app_id)
 	{
 		$query = "SELECT id FROM apps WHERE id='$app_id' AND company_id='{$this->thisUser['customer']['public_id']}'";
-		$db = Db::getInstance();
-		$result = $db->query($query);
+		$result = $this->db->query($query);
 
 		if ($result->num_rows > 0) {
 			return true;

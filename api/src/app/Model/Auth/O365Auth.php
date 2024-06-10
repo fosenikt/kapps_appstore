@@ -1,7 +1,7 @@
 <?php
 namespace Kapps\Model\Auth;
 
-use \Kapps\Model\General\Db;
+use Kapps\Model\Database\Db;
 use \Kapps\Model\Auth\Token as AuthToken;
 use \Kapps\Model\Auth\Login;
 use ReallySimpleJWT\TokenBuilder;
@@ -13,13 +13,15 @@ use ReallySimpleJWT\Token;
 /**
  * Local login auth
  */
-class O365Auth extends db
+class O365Auth
 {
+	private $db;
 	private $Login;
 	private $Utils;
 	
 	public function __construct()
 	{
+		$this->db = Db::getInstance();
 		$this->Login = new Login();
 		$this->Utils = new Utils();
 	}
@@ -43,35 +45,13 @@ class O365Auth extends db
 	 */
 	public function auth_o365_user($profile, $tokens)
 	{
-		$r = array();
-
-		$db = Db::getInstance();
-
-
-		// Check if it's first time login after setup
-		// Create user in database if no users exist in database
-		/* $query = "SELECT id FROM users";
-		$db = Db::getInstance();
-		$result = $db->query($query);
-
-		if ($result->num_rows == 0) {
-			$create = new Create();
-			$create->create_user(array(
-				'o365_id' => $profile['id'],
-				'mail' => $profile['userPrincipalName']
-			));
-		} */
-
-
-
 		// Check if user is found by O365 ID
 		$query = "SELECT id FROM users WHERE o365_id LIKE '{$profile['id']}' OR mail LIKE '{$profile['userPrincipalName']}'";
-		error_log($query);
-		$result = $db->query($query);
+		$result = $this->db->query($query);
 
 		if (!$result) {
 			error_log('Query to check for existing user failed');
-			error_log($db->error);
+			error_log($this->db->error);
 		}
 
 		if ($result->num_rows == 0) {
@@ -110,7 +90,7 @@ class O365Auth extends db
 
 		// Add event
 		$query = "INSERT INTO event SET user_id='$user_id', domain='Auth', event_type='GuiLogin'";
-		$result = $db->query($query);
+		$result = $this->db->query($query);
 
 		return $token;
 	}
@@ -133,9 +113,7 @@ class O365Auth extends db
 		}
 
 		$query = "UPDATE users SET o365_id='{$profile['id']}', firstname='{$profile['givenName']}', lastname='{$profile['surname']}' WHERE o365_id='{$profile['id']}'";
-		error_log($query);
-		$db = Db::getInstance();
-		$result = $db->query($query);
+		$result = $this->db->query($query);
 
 		if ($result) {
 			return true;
@@ -157,10 +135,6 @@ class O365Auth extends db
 	 */
 	private function create_user($profile)
 	{
-		$db = Db::getInstance();
-		$db->set_charset("utf8mb4");
-		$db->query("SET NAMES 'utf8mb4'");
-
 		$status = 'active';
 
 
@@ -173,9 +147,9 @@ class O365Auth extends db
 
 		$status = 'active';
 
-		$stmt = $db->prepare("INSERT INTO users SET o365_id=?, customer_id=?, firstname=?, lastname=?, mail=?, mobile=?, company_role=?, status=?");
+		$stmt = $this->db->prepare("INSERT INTO users SET o365_id=?, customer_id=?, firstname=?, lastname=?, mail=?, mobile=?, company_role=?, status=?");
 		if ($stmt === false) {
-			return array('status' => 'error', 'error' => $db->error);
+			return array('status' => 'error', 'error' => $this->db->error);
 		}
 
 		$result = $stmt->bind_param("sissssss", $profile['id'], $company_id, $profile['givenName'], $profile['lastname'], $profile['userPrincipalName'], $profile['mobilePhone'], $profile['jobTitle'], $status);

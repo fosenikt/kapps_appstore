@@ -1,7 +1,7 @@
 <?php
 namespace Kapps\Model\Users;
 
-use \Kapps\Model\General\Db;
+use Kapps\Model\Database\Db;
 use \Kapps\Model\Auth\Utils;
 use \Kapps\Model\Auth\User as AuthUser;
 
@@ -9,18 +9,18 @@ use \Kapps\Model\Auth\User as AuthUser;
 /**
  * summary
  */
-class Tokens extends Db
+class Tokens
 {
+	private $db;
 	private $Utils;
-	private $AuthUser;
 	private $me;
 
 	public function __construct()
 	{
+		$this->db = Db::getInstance();
 		$this->Utils = new Utils();
 
-		$this->AuthUser = new AuthUser;
-		$this->me = $this->AuthUser->me();
+		$this->me = (new AuthUser())->me();
 	}
 
 
@@ -88,10 +88,9 @@ class Tokens extends Db
 
 
 		$r = null;
-		$db = Db::getInstance();
 
 		// Prepare our SQL, preparing the SQL statement will prevent SQL injection.
-		if ($stmt = $db->prepare('SELECT * FROM user_sessions WHERE user_id=? ORDER BY time_last_active DESC, time_created DESC')) {
+		if ($stmt = $this->db->prepare('SELECT * FROM user_sessions WHERE user_id=? ORDER BY time_last_active DESC, time_created DESC')) {
 			// Bind parameters (s = string, i = int, b = blob, etc), in our case the username is a string so we use "s"
 			$stmt->bind_param('i', $user_id);
 			$stmt->execute();
@@ -147,17 +146,14 @@ class Tokens extends Db
 		}
 
 
-		// Create DB instance
-		$db = Db::getInstance();
-
 		// Prepare our SQL, preparing the SQL statement will prevent SQL injection.
-		if ($stmt = $db->prepare('DELETE FROM user_sessions WHERE id=?')) {
+		if ($stmt = $this->db->prepare('DELETE FROM user_sessions WHERE id=?')) {
 			// Bind parameters (s = string, i = int, b = blob, etc), in our case the username is a string so we use "s"
 			$stmt->bind_param('i', $id);
 			//$stmt->execute();
 
 			if (!$stmt) {
-				return array('status' => 'error', 'message' => $db->error);
+				return array('status' => 'error', 'message' => $this->db->error);
 			}
 
 			if (!$stmt->execute()) {

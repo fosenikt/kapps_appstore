@@ -1,17 +1,16 @@
 <?php
 namespace Kapps\Model\Auth;
 
-use \Kapps\Model\General\Db;
-use \Kapps\Model\General\Session;
+use Kapps\Model\Database\Db;
 use ReallySimpleJWT\TokenBuilder;
 use ReallySimpleJWT\Token;
 
 /**
  * summary
  */
-class Utils extends Db
+class Utils
 {
-
+	private $db;
 	private $token_expires = 48; // Hours 
 	private $token_renew_expires = 120; // Minutes
 
@@ -19,7 +18,9 @@ class Utils extends Db
 	/**
 	 * summary
 	 */
-	public function __construct() {}
+	public function __construct() {
+		$this->db = Db::getInstance();
+	}
 
 
 
@@ -134,7 +135,6 @@ class Utils extends Db
 
 	private function store_user_session($payload, $token, $expires, $title='')
 	{
-
 		// Some issues in prod-env with payload
 		// Solution: Make som extra checks
 		if (is_array($payload)) {
@@ -147,25 +147,17 @@ class Utils extends Db
 		} else {
 			$user_id = $payload;
 		}
-		
 
 		if (empty($user_id)) {
 			error_log('Token: Could not store user session in database. Empty or no user parameter provided.');
 			return array('status' => 'error', 'message' => 'missing_parameter', 'error' => 'No user ID provided');
-		}
-
-		elseif (empty($token)) {
+		} elseif (empty($token)) {
 			error_log('Token: Could not store user session in database. Empty or no token parameter provided.');
 			return array('status' => 'error', 'message' => 'missing_parameter', 'error' => 'No token provided');
-		}
-
-		elseif (empty($expires)) {
+		} elseif (empty($expires)) {
 			error_log('Token: Could not store user session in database. Empty or no expire parameter provided.');
 			return array('status' => 'error', 'message' => 'missing_parameter', 'error' => 'No expire provided');
 		}
-
-
-
 
 		if (isset($_SERVER['HTTP_X_REAL_IP']) && !empty($_SERVER['HTTP_X_REAL_IP'])) {
 			$ip_address = $_SERVER['HTTP_X_REAL_IP'];
@@ -173,24 +165,44 @@ class Utils extends Db
 			$ip_address = $_SERVER['REMOTE_ADDR'];
 		}
 
+		if (isset($_SERVER['HTTP_USER_AGENT']) && !empty($_SERVER['HTTP_USER_AGENT'])) {
+			$user_agent = $_SERVER['HTTP_USER_AGENT'];
+		} else {
+			$user_agent = null;
+		}
+
+		// Check if the token already exists in the database
+		if ($stmt = $this->db->prepare('SELECT id FROM user_sessions WHERE token=? LIMIT 1')) {
+			$stmt->bind_param('s', $token);
+			$stmt->execute();
+			$stmt->store_result();
+			if ($stmt->num_rows > 0) {
+				// Token already exists, generate a new one
+				error_log('Token already exists. Generating a new token.');
+				$token = Token::create($user_id, JWT_SECRET, strtotime($expires), JWT_ISSUER);
+				return $this->store_user_session($payload, $token, $expires, $title);
+			}
+			$stmt->close();
+		}
+
 		$query = "INSERT INTO user_sessions SET
 					user_id='$user_id',
 					title='$title',
 					token='$token',
 					time_expires='$expires',
-					user_agent='{$_SERVER['HTTP_USER_AGENT']}', 
+					user_agent='$user_agent', 
 					ip_address='$ip_address'";
-		$db = Db::getInstance();
-		$result = $db->query($query);
+		$result = $this->db->query($query);
 
 		if ($result) {
 			error_log('Token: Stored in user_sessions for user: ' . $user_id);
 			return array('status' => 'success');
 		} else {
 			error_log('Token: Could not store user session in database, for userID: ' . $user_id);
-			return array('status' => 'error', 'message' => 'db_error', 'error' => $db->error);
+			return array('status' => 'error', 'message' => 'db_error', 'error' => $this->db->error);
 		}
 	}
+
 
 
 
@@ -241,18 +253,12 @@ class Utils extends Db
 			$event_data = '';
 		}
 
-		$db = Db::getInstance();
 
-
-
-		$db->set_charset("utf8mb4");
-		$db->query("SET NAMES 'utf8mb4'");
-
-		$stmt = $db->prepare("INSERT INTO event SET 
+		$stmt = $this->db->prepare("INSERT INTO event SET 
 				department_id=?, user_id=?, domain=?, event_type=?, entity_id=?, entity_tag=?, event_data=?");
 		if ($stmt === false) {
 			error_log('Statement false');
-			trigger_error($db->error, E_USER_ERROR);
+			trigger_error($this->db->error, E_USER_ERROR);
 			return;
 		}
 

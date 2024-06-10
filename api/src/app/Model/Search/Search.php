@@ -1,19 +1,22 @@
 <?php
 namespace Kapps\Model\Search;
 
-use \Kapps\Model\General\Db;
+use Kapps\Model\Database\Db;
 
 /**
  * summary
  */
-class Search extends Db
+class Search
 {
+	private $db;
 	private $image_base_url;
 	private $image_base_path;
 	private $image_none;
 
 	public function __construct()
 	{
+		$this->db = Db::getInstance();
+
 		$this->image_base_url = '//'.URL.'/data/apps/';
 		$this->image_base_path = '/var/www/html/data/apps/';
 		$this->image_none = '//'.FRONTEND_HOST.'/assets/images/icons/rpa_default.png';
@@ -44,8 +47,6 @@ class Search extends Db
 	{
 
 		$r = null;
-		$db = Db::getInstance();
-
 
 		// Check for content in search-string, and split each words into an array
 		if (strlen($q) > 1)
@@ -91,7 +92,7 @@ class Search extends Db
 		$query .= " LIMIT $limit";
 
 
-		$result = $db->query($query);
+		$result = $this->db->query($query);
 		$numRows = $result->num_rows;
 
 		while ($row = $result->fetch_array()) {
@@ -122,8 +123,6 @@ class Search extends Db
 	{
 
 		$r = null;
-		$db = Db::getInstance();
-
 
 		// Check for content in search-string, and split each words into an array
 		if (strlen($q) > 1)
@@ -162,7 +161,7 @@ class Search extends Db
 		$query .= " LIMIT $limit";
 
 
-		$result = $db->query($query);
+		$result = $this->db->query($query);
 		$numRows = $result->num_rows;
 
 		while ($row = $result->fetch_array()) {

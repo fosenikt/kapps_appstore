@@ -1,21 +1,21 @@
 <?php
 namespace Kapps\Model\Companies;
 
-use \Kapps\Model\General\Db;
+use Kapps\Model\Database\Db;
 use \Kapps\Model\Auth\User as AuthUser;
 
 /**
  * summary
  */
-class Access extends Db
+class Access
 {
-	private $AuthUser;
+	private $db;
 	private $thisUser;
 
 	public function __construct()
 	{
-		$this->AuthUser = new AuthUser;
-		$this->thisUser = $this->AuthUser->me();
+		$this->db = Db::getInstance();
+		$this->thisUser = (new AuthUser())->me();
 	}
 
 
@@ -68,10 +68,8 @@ class Access extends Db
 	 */
 	private function id2publicID($id)
 	{
-		$db = Db::getInstance();
-
 		// Prepare our SQL, preparing the SQL statement will prevent SQL injection.
-		if ($stmt = $db->prepare('SELECT public_id FROM company WHERE id=?')) {
+		if ($stmt = $this->db->prepare('SELECT public_id FROM company WHERE id=?')) {
 			// Bind parameters (s = string, i = int, b = blob, etc), in our case the username is a string so we use "s"
 			$stmt->bind_param('i', $id);
 			$stmt->execute();
@@ -101,10 +99,8 @@ class Access extends Db
 	 */
 	private function publicId2Id($public_id)
 	{
-		$db = Db::getInstance();
-
 		// Prepare our SQL, preparing the SQL statement will prevent SQL injection.
-		if ($stmt = $db->prepare('SELECT id FROM company WHERE public_id=?')) {
+		if ($stmt = $this->db->prepare('SELECT id FROM company WHERE public_id=?')) {
 			// Bind parameters (s = string, i = int, b = blob, etc), in our case the username is a string so we use "s"
 			$stmt->bind_param('s', $public_id);
 			$stmt->execute();
@@ -134,10 +130,8 @@ class Access extends Db
 	 */
 	private function userIsAdmin($user_id)
 	{
-		$db = Db::getInstance();
-
 		// Prepare our SQL, preparing the SQL statement will prevent SQL injection.
-		if ($stmt = $db->prepare('SELECT admin FROM users WHERE id=?')) {
+		if ($stmt = $this->db->prepare('SELECT admin FROM users WHERE id=?')) {
 			// Bind parameters (s = string, i = int, b = blob, etc), in our case the username is a string so we use "s"
 			$stmt->bind_param('i', $user_id);
 			$stmt->execute();
@@ -170,11 +164,10 @@ class Access extends Db
 	 */
 	public function isAdmin()
 	{
-		$db = Db::getInstance();
 		$user_id = $this->thisUser['id'];
 
 		// Prepare our SQL, preparing the SQL statement will prevent SQL injection.
-		if ($stmt = $db->prepare('SELECT admin FROM users WHERE id=?')) {
+		if ($stmt = $this->db->prepare('SELECT admin FROM users WHERE id=?')) {
 			// Bind parameters (s = string, i = int, b = blob, etc), in our case the username is a string so we use "s"
 			$stmt->bind_param('i', $user_id);
 			$stmt->execute();

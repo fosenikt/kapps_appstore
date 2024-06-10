@@ -1,8 +1,4 @@
 <?php
-ob_start();
-session_start();
-
-
 /** PHP settings */
 //date_default_timezone_set('Europe/Oslo');
 setlocale(LC_ALL, 'no_Nb');
@@ -59,3 +55,12 @@ define('O365_REDIRECT_URI', 'https://'.getenv("VIRTUAL_HOST").'/login/microsoft/
 define('O365_SCOPES', 'openid profile offline_access User.Read');
 define('O365_AUTHORIZE_ENDPOINT', 'https://login.microsoftonline.com/common/oauth2/v2.0/authorize');
 define('O365_TOKEN_ENDPOINT', 'https://login.microsoftonline.com/common/oauth2/v2.0/token');
+
+
+
+/* ---------------------------------------------------------------------------- */
+/* ------------------------ DON'T EDIT BELOW THIS LINE ------------------------ /*
+/* ---------------------------------------------------------------------------- */
+
+// Include function file
+include('functions.php');

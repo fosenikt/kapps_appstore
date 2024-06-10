@@ -1,18 +1,19 @@
 <?php
 namespace Kapps\Model\Auth\Microsoft;
 
-use \Kapps\Model\General\Db;
+use Kapps\Model\Database\Db;
 use Kapps\Model\Auth\Microsoft\TokenCache;
 
-class Photo extends db
+class Photo
 {
-
+	private $db;
 	private $img_url;
 	private $img_path;
 	private $debug;
 
 	public function __construct()
 	{
+		$this->db = Db::getInstance();
 		$this->img_url = URL.'/data/profilepictures/';
 		$this->img_path = $_SERVER['DOCUMENT_ROOT'].'/data/profilepictures/';
 
@@ -155,8 +156,7 @@ class Photo extends db
 		// Save to DB
 		$query = "UPDATE users SET photo='$filename.jpg', last_update='$time_now' WHERE mail LIKE '$upn'";
 		if ($this->debug) error_log($query);
-		$db = Db::getInstance();
-		$result = $db->query($query);
+		$result = $this->db->query($query);
 
 		if ($result) {
 			return true;

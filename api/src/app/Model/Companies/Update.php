@@ -1,15 +1,16 @@
 <?php
 namespace Kapps\Model\Companies;
 
-use \Kapps\Model\General\Db;
+use Kapps\Model\Database\Db;
 use \Kapps\Model\Companies\Access;
 
 
 /**
  * summary
  */
-class Update extends Db
+class Update
 {
+	private $db;
 	private $Access;
 
 	/**
@@ -17,6 +18,7 @@ class Update extends Db
 	 */
 	public function __construct()
 	{
+		$this->db = Db::getInstance();
 		$this->Access = new Access();
 	}
 
@@ -82,17 +84,13 @@ class Update extends Db
 			$type = '';
 		}
 
-
-		// Create DB instance
-		$db = Db::getInstance();
-
 		// Prepare our SQL, preparing the SQL statement will prevent SQL injection.
-		if ($stmt = $db->prepare('UPDATE company SET domain=?, title=?, county=?, type_id=?, org_numb=?, website=?, type=? WHERE public_id=?')) {
+		if ($stmt = $this->db->prepare('UPDATE company SET domain=?, title=?, county=?, type_id=?, org_numb=?, website=?, type=? WHERE public_id=?')) {
 			// Bind parameters (s = string, i = int, b = blob, etc), in our case the username is a string so we use "s"
 			$stmt->bind_param('sssiisss', $domain, $title, $county, $type_id, $org_numb, $website, $type, $public_id);
 
 			if (!$stmt) {
-				return array('status' => 'error', 'message' => $db->error);
+				return array('status' => 'error', 'message' => $this->db->error);
 			}
 
 			if (!$stmt->execute()) {

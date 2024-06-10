@@ -1,16 +1,14 @@
 <?php
 namespace Kapps\Model\Auth;
 
-use \Kapps\Model\General\Db;
+use Kapps\Model\Database\Db;
 use \Kapps\Model\Mail\Send;
 use \Kapps\Model\Auth\Utils;
-//use \ReallySimpleJWT\TokenBuilder;
-//use \ReallySimpleJWT\Token;
 
 /**
  * summary
  */
-class Login extends Db
+class Login
 {
 
 	private $db;

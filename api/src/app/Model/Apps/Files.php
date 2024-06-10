@@ -1,27 +1,27 @@
 <?php
 namespace Kapps\Model\Apps;
 
-use \Kapps\Model\General\Db;
-use \Kapps\Model\General\Event;
+use Kapps\Model\Database\Db;
+use \Kapps\Model\Events\Event;
 use \Kapps\Model\Auth\User as AuthUser;
 
 /**
  * summary
  */
-class Files extends Db
+class Files
 {
+	private $db;
 	private $Event;
-	private $AuthUser;
 	private $thisUser;
 	private $file_base_path;
 	private $file_base_url;
 
 	public function __construct()
 	{
-		$this->Event = new Event();
+		$this->db = Db::getInstance();
 
-		$this->AuthUser = new AuthUser;
-		$this->thisUser = $this->AuthUser->me();
+		$this->Event = new Event();
+		$this->thisUser = (new AuthUser())->me();
 
 		$this->file_base_path = $_SERVER['DOCUMENT_ROOT'].'/data/files/';
 		$this->file_base_url = '//'.URL.'/data/files/';
@@ -98,7 +98,7 @@ class Files extends Db
 
 		
 		// Set new object to upload file
-		$upload = new \Kapps\Model\General\Upload;
+		$upload = new \Kapps\Model\Upload\Upload;
 
 
 		// If multiple files
@@ -237,17 +237,11 @@ class Files extends Db
 	 */
 	private function add_file2db($app_id, $filename, $size, $type, $path)
 	{
-		// Init DB connection and set charset
-		$db = Db::getInstance();
-		$db->set_charset("utf8mb4");
-		$db->query("SET NAMES 'utf8mb4'");
-
-
 		// Prepare query
-		$stmt = $db->prepare("INSERT INTO files SET app_id=?, filename=?, size=?, type=?, path=?");
+		$stmt = $this->db->prepare("INSERT INTO files SET app_id=?, filename=?, size=?, type=?, path=?");
 		if ($stmt === false) {
 			error_log('Statement false');
-			trigger_error($db->error, E_USER_ERROR);
+			trigger_error($this->db->error, E_USER_ERROR);
 			return;
 		}
 
@@ -379,17 +373,14 @@ class Files extends Db
 	 */
 	private function delete_file_from_db($file_id)
 	{
-		// Create DB instance
-		$db = Db::getInstance();
-
 		// Prepare our SQL, preparing the SQL statement will prevent SQL injection.
-		if ($stmt = $db->prepare('DELETE FROM files WHERE id=?')) {
+		if ($stmt = $this->db->prepare('DELETE FROM files WHERE id=?')) {
 			// Bind parameters (s = string, i = int, b = blob, etc), in our case the username is a string so we use "s"
 			$stmt->bind_param('i', $file_id);
 			//$stmt->execute();
 
 			if (!$stmt) {
-				return array('status' => 'error', 'message' => $db->error);
+				return array('status' => 'error', 'message' => $this->db->error);
 			}
 
 			if (!$stmt->execute()) {
@@ -425,10 +416,9 @@ class Files extends Db
 	public function get_file($file_id)
 	{
 		$r = null;
-		$db = Db::getInstance();
 
 		// Prepare our SQL, preparing the SQL statement will prevent SQL injection.
-		if ($stmt = $db->prepare('SELECT * FROM files WHERE id=?')) {
+		if ($stmt = $this->db->prepare('SELECT * FROM files WHERE id=?')) {
 			// Bind parameters (s = string, i = int, b = blob, etc), in our case the username is a string so we use "s"
 			$stmt->bind_param('i', $file_id);
 			$stmt->execute();
@@ -471,10 +461,9 @@ class Files extends Db
 	public function get_app_files($app_id)
 	{
 		$r = null;
-		$db = Db::getInstance();
 
 		// Prepare our SQL, preparing the SQL statement will prevent SQL injection.
-		if ($stmt = $db->prepare('SELECT * FROM files WHERE app_id=?')) {
+		if ($stmt = $this->db->prepare('SELECT * FROM files WHERE app_id=?')) {
 			// Bind parameters (s = string, i = int, b = blob, etc), in our case the username is a string so we use "s"
 			$stmt->bind_param('i', $app_id);
 			$stmt->execute();
@@ -610,8 +599,7 @@ class Files extends Db
 	public function chk_app_access($app_id)
 	{
 		$query = "SELECT id FROM apps WHERE id='$app_id' AND company_id='{$this->thisUser['customer']['public_id']}'";
-		$db = Db::getInstance();
-		$result = $db->query($query);
+		$result = $this->db->query($query);
 
 		if ($result->num_rows > 0) {
 			return true;

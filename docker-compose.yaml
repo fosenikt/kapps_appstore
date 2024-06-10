@@ -1,4 +1,3 @@
-version: '3.2'
 services:
 
   ## FRONTEND
@@ -67,6 +66,54 @@ services:
         - SMTP_SENDER_NAME=${SMTP_SENDER_NAME}
     networks:
       - default
+
+
+  composer-update:
+    build:
+      context: ./api/
+      dockerfile: Dockerfile.test
+    volumes:
+      - ./api:/app
+    working_dir: /app/src
+    command: ["composer", "update"]
+    environment:
+      - COMPOSER_ALLOW_SUPERUSER=1
+    networks:
+      - default
+
+  tests:
+    build:
+      context: ./api/
+      dockerfile: Dockerfile.test
+    volumes:
+      - ./api:/app
+    working_dir: /app
+    entrypoint: ["./src/vendor/bin/phpunit", "--configuration", "/app/tests/phpunit.xml"]
+    environment:
+      - VIRTUAL_HOST=${BACKEND_HOST}
+      - SELF_SIGNED_HOST=${SELF_SIGNED_HOST}
+      - FRONTEND_HOST=${FRONTEND_HOST}
+      - DB_NAME=${DB_NAME}
+      - DB_USER=${DB_USER}
+      - DB_PASSWORD=${DB_PASSWORD}
+      - DB_HOST=${DB_HOST}
+      - O365_TENANT_ID=${O365_TENANT_ID}
+      - O365_APP_ID=${O365_APP_ID}
+      - O365_APP_SECRET=${O365_APP_SECRET}
+      - JWT_ISSUER=${JWT_ISSUER}
+      - JWT_SECRET=${JWT_SECRET}
+      - UPLOAD_FOLDER=${UPLOAD_FOLDER}
+      - IPGEOLOCATION_API_KEY=${IPGEOLOCATION_API_KEY}
+      - SMTP_HOST=${SMTP_HOST}
+      - SMTP_USERNAME=${SMTP_USERNAME}
+      - SMTP_PASSWORD=${SMTP_PASSWORD}
+      - SMTP_PORT=${SMTP_PORT}
+      - SMTP_SENDER_MAIL=${SMTP_SENDER_MAIL}
+      - SMTP_SENDER_NAME=${SMTP_SENDER_NAME}
+    networks:
+      - default
+
+
 
   ## Database
   kapps-appstore-db:
@@ -147,5 +194,5 @@ volumes:
 
 networks:
   default:
-    external:
-      name: webproxy
+    name: webproxy
+    external: true

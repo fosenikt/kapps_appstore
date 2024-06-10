@@ -1,0 +1,2127 @@
+openapi: 3.0.0
+info:
+  title: 'Kapps API'
+  description: 'General API backend for Kapps'
+  contact:
+    name: 'Fosen IKT'
+  version: '1.0'
+servers:
+  -
+    url: 'https://appsapi.kapps.no'
+    description: 'API server'
+  -
+    url: 'https://appsapi.kapps.local'
+    description: 'API server'
+paths:
+  /app/new:
+    post:
+      tags:
+        - Apps
+      summary: 'Add a new app'
+      description: 'Adds a new app. Requires user to be logged in with a bearer token.'
+      operationId: 4c0cf8aafe1a1d24b8d6bd344aa5d76c
+      requestBody:
+        required: true
+        content:
+          multipart/form-data:
+            schema:
+              properties:
+                type_id:
+                  description: 'The ID of the app type'
+                  type: string
+                title:
+                  description: 'The title of the app'
+                  type: string
+                description:
+                  description: 'The description of the app'
+                  type: string
+                installation:
+                  description: 'The installation instructions'
+                  type: string
+                license_id:
+                  description: 'The ID of the license'
+                  type: string
+                link_source_code:
+                  description: 'The link to the source code'
+                  type: string
+              type: object
+      responses:
+        '200':
+          description: 'App added successfully'
+          content:
+            application/json:
+              schema:
+                properties:
+                  status: { type: string, example: success }
+                  page_id: { type: integer, example: 45 }
+                type: object
+        '403':
+          description: 'Access denied'
+        '404':
+          description: 'Not added'
+      security:
+        -
+          bearerAuth: []
+  '/app/delete/{id}':
+    delete:
+      tags:
+        - Apps
+      summary: 'Delete an app'
+      description: 'Deletes an app by its ID. Requires user to be logged in with a bearer token.'
+      operationId: 00e348b45f4fb442eeaf07646b33bd56
+      parameters:
+        -
+          name: id
+          in: path
+          description: 'The ID of the app to delete'
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: 'App deleted successfully'
+          content:
+            application/json:
+              schema:
+                properties:
+                  status: { type: string, example: success }
+                type: object
+        '403':
+          description: 'Access denied'
+        '404':
+          description: 'App not found'
+      security:
+        -
+          bearerAuth: []
+  /app/files/upload:
+    post:
+      tags:
+        - Apps
+      summary: 'Upload files for an app'
+      description: 'Uploads files for a specific app. Requires user to be logged in with a bearer token.'
+      operationId: e6dcaf2ae7cf0c7e9c9501b392ada92f
+      requestBody:
+        required: true
+        content:
+          multipart/form-data:
+            schema:
+              properties:
+                app_id:
+                  description: 'The ID of the app'
+                  type: string
+                files:
+                  type: array
+                  items: { type: string, format: binary }
+              type: object
+      responses:
+        '200':
+          description: 'Files uploaded successfully'
+          content:
+            application/json:
+              schema:
+                properties:
+                  status: { type: string, example: success }
+                type: object
+        '403':
+          description: 'Access denied'
+        '404':
+          description: 'App not found'
+      security:
+        -
+          bearerAuth: []
+  /app/file/delete:
+    post:
+      tags:
+        - Apps
+      summary: 'Delete a file from an app'
+      description: 'Deletes a specific file from an app. Requires user to be logged in with a bearer token.'
+      operationId: bd97d4270f4776542642438995cb51e7
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              properties:
+                app_id:
+                  description: 'The ID of the app'
+                  type: string
+                file_id:
+                  description: 'The ID of the file to delete'
+                  type: string
+              type: object
+      responses:
+        '200':
+          description: 'File deleted successfully'
+          content:
+            application/json:
+              schema:
+                properties:
+                  status: { type: string, example: success }
+                type: object
+        '403':
+          description: 'Access denied'
+        '404':
+          description: 'App or file not found'
+      security:
+        -
+          bearerAuth: []
+  /apps/get:
+    get:
+      tags:
+        - Apps
+      summary: 'Get all apps'
+      description: 'Retrieves all published apps'
+      operationId: 4603bb59a98f0813800eda661970b9bb
+      responses:
+        '200':
+          description: 'Apps retrieved successfully'
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  oneOf: [{ $ref: '#/components/schemas/AppPublic' }, { $ref: '#/components/schemas/AppFull' }]
+        '404':
+          description: 'Apps not found'
+  '/app/get/{id}':
+    get:
+      tags:
+        - Apps
+      summary: 'Get single app'
+      description: 'Retrieves a single app by its ID.'
+      operationId: 2c03a72b6fde41fb2e9ac5ed905f71e9
+      parameters:
+        -
+          name: id
+          in: path
+          description: 'The ID of the app to retrieve'
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: 'App retrieved successfully'
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  oneOf: [{ $ref: '#/components/schemas/AppPublic' }, { $ref: '#/components/schemas/AppFull' }]
+        '404':
+          description: 'Apps not found'
+  '/company/app/{id}':
+    get:
+      tags:
+        - Apps
+      summary: 'Get company app'
+      description: 'Retrieves a single app by its ID for a company. Requires user to be logged in with a bearer token.'
+      operationId: 1fb837eda9846f3d86a78ce3fc909cdf
+      parameters:
+        -
+          name: id
+          in: path
+          description: 'The ID of the app to retrieve'
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: 'App retrieved successfully'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AppFull'
+        '404':
+          description: 'App not found'
+      security:
+        -
+          bearerAuth: []
+  /company/apps:
+    get:
+      tags:
+        - Apps
+      summary: 'Get company apps'
+      description: 'Retrieves all apps for a company. Requires user to be logged in with a bearer token.'
+      operationId: e071c114a2856e6cafb6a724abb6edeb
+      responses:
+        '200':
+          description: 'Apps retrieved successfully'
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/AppFull'
+        '404':
+          description: 'Apps not found'
+      security:
+        -
+          bearerAuth: []
+  '/company/published/apps/{id}':
+    get:
+      tags:
+        - Apps
+      summary: 'Get published company apps'
+      description: 'Retrieves all published apps for a company.'
+      operationId: 9c86da1407ce2c93c5f6a2e94b348df7
+      parameters:
+        -
+          name: id
+          in: path
+          description: 'The ID of the company'
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: 'Published apps retrieved successfully'
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/AppFull'
+        '404':
+          description: 'Apps not found'
+  /app/images/upload:
+    post:
+      tags:
+        - Apps
+      summary: 'Upload images for an app'
+      description: 'Uploads images for a specific app. Requires user to be logged in with a bearer token.'
+      operationId: 5c94ec7d2b4c3ea50b2976f93cb7078e
+      requestBody:
+        required: true
+        content:
+          multipart/form-data:
+            schema:
+              properties:
+                app_id:
+                  description: 'The ID of the app'
+                  type: string
+                images:
+                  type: array
+                  items: { type: string, format: binary }
+              type: object
+      responses:
+        '200':
+          description: 'Images uploaded successfully'
+          content:
+            application/json:
+              schema:
+                properties:
+                  status: { type: string, example: success }
+                type: object
+        '403':
+          description: 'Access denied'
+        '404':
+          description: 'App not found'
+      security:
+        -
+          bearerAuth: []
+  /app/image/primary/set:
+    post:
+      tags:
+        - Apps
+      summary: 'Set primary image for an app'
+      description: 'Sets the primary image for a specific app. Requires user to be logged in with a bearer token.'
+      operationId: e6c9bb3c0a249fe46bacfbfbaf46a1b0
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              properties:
+                id:
+                  description: 'The ID of the app'
+                  type: string
+                image:
+                  description: 'The URL of the image to set as primary'
+                  type: string
+              type: object
+      responses:
+        '200':
+          description: 'Primary image set successfully'
+          content:
+            application/json:
+              schema:
+                properties:
+                  status: { type: string, example: success }
+                type: object
+        '403':
+          description: 'Access denied'
+        '404':
+          description: 'App or image not found'
+      security:
+        -
+          bearerAuth: []
+  /app/images/delete:
+    post:
+      tags:
+        - Apps
+      summary: 'Delete an image from an app'
+      description: 'Deletes a specific image from an app. Requires user to be logged in with a bearer token.'
+      operationId: 2473bc00cbe3931483d90867e37748d5
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              properties:
+                app_id:
+                  description: 'The ID of the app'
+                  type: string
+                filename:
+                  description: 'The filename of the image to delete'
+                  type: string
+              type: object
+      responses:
+        '200':
+          description: 'Image deleted successfully'
+          content:
+            application/json:
+              schema:
+                properties:
+                  status: { type: string, example: success }
+                type: object
+        '403':
+          description: 'Access denied'
+        '404':
+          description: 'App or image not found'
+      security:
+        -
+          bearerAuth: []
+  /app/update/desc:
+    post:
+      tags:
+        - Apps
+      summary: 'Update app description'
+      description: 'Updates the description of an app. Requires user to be logged in with a bearer token.'
+      operationId: 4a0f4448c37f79d83e21bdedba157eec
+      requestBody:
+        required: true
+        content:
+          multipart/form-data:
+            schema:
+              properties:
+                description:
+                  description: 'The new description of the app'
+                  type: string
+                id:
+                  description: 'The ID of the app to update'
+                  type: string
+              type: object
+      responses:
+        '200':
+          description: 'App description updated successfully'
+          content:
+            application/json:
+              schema:
+                properties:
+                  status: { type: string, example: success }
+                type: object
+        '403':
+          description: 'Access denied'
+        '404':
+          description: 'App not found'
+      security:
+        -
+          bearerAuth: []
+  /app/update/install:
+    post:
+      tags:
+        - Apps
+      summary: 'Update app installation instructions'
+      description: 'Updates the installation instructions of an app. Requires user to be logged in with a bearer token.'
+      operationId: d054945bc5b2da93a778a8d01b9ef842
+      requestBody:
+        required: true
+        content:
+          multipart/form-data:
+            schema:
+              properties:
+                installation:
+                  description: 'The new installation instructions'
+                  type: string
+                id:
+                  description: 'The ID of the app to update'
+                  type: string
+              type: object
+      responses:
+        '200':
+          description: 'App installation instructions updated successfully'
+          content:
+            application/json:
+              schema:
+                properties:
+                  status: { type: string, example: success }
+                type: object
+        '403':
+          description: 'Access denied'
+        '404':
+          description: 'App not found'
+      security:
+        -
+          bearerAuth: []
+  /app/update/details:
+    post:
+      tags:
+        - Apps
+      summary: 'Update app details'
+      description: 'Updates the details of an app. Requires user to be logged in with a bearer token.'
+      operationId: db46831bdbd6c0ba449af517af317539
+      requestBody:
+        required: true
+        content:
+          multipart/form-data:
+            schema:
+              properties:
+                title:
+                  description: 'The new title of the app'
+                  type: string
+                short_description:
+                  description: 'The new short description of the app'
+                  type: string
+                license_id:
+                  description: 'The ID of the new license'
+                  type: string
+                tags:
+                  description: 'The new tags for the app'
+                  type: string
+                link_source_code:
+                  description: 'The new source code link'
+                  type: string
+                id:
+                  description: 'The ID of the app to update'
+                  type: string
+              type: object
+      responses:
+        '200':
+          description: 'App details updated successfully'
+          content:
+            application/json:
+              schema:
+                properties:
+                  status: { type: string, example: success }
+                type: object
+        '403':
+          description: 'Access denied'
+        '404':
+          description: 'App not found'
+      security:
+        -
+          bearerAuth: []
+  '/app/publish/{id}':
+    post:
+      tags:
+        - Apps
+      summary: 'Publish an app'
+      description: 'Publishes an app by its ID. Requires user to be logged in with a bearer token.'
+      operationId: 1d6ea2832b275a1e7db96c33a8d1173f
+      parameters:
+        -
+          name: id
+          in: path
+          description: 'The ID of the app to publish'
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: 'App published successfully'
+          content:
+            application/json:
+              schema:
+                properties:
+                  status: { type: string, example: success }
+                type: object
+        '403':
+          description: 'Access denied'
+        '404':
+          description: 'App not found'
+      security:
+        -
+          bearerAuth: []
+  '/app/unpublish/{id}':
+    post:
+      tags:
+        - Apps
+      summary: 'Unpublish an app'
+      description: 'Unpublishes an app by its ID. Requires user to be logged in with a bearer token.'
+      operationId: ea67aba4fc934a445b271ab5dd3b302d
+      parameters:
+        -
+          name: id
+          in: path
+          description: 'The ID of the app to unpublish'
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: 'App unpublished successfully'
+          content:
+            application/json:
+              schema:
+                properties:
+                  status: { type: string, example: success }
+                type: object
+        '403':
+          description: 'Access denied'
+        '404':
+          description: 'App not found'
+      security:
+        -
+          bearerAuth: []
+  /auth/send_login_link:
+    post:
+      tags:
+        - Auth
+      summary: 'Send login link'
+      description: 'Sends a login link to the specified email address'
+      operationId: d4ade359c8bf5b370c79d8257fa86c48
+      requestBody:
+        required: true
+        content:
+          multipart/form-data:
+            schema:
+              properties:
+                mail:
+                  type: string
+                  format: email
+                  example: user@example.com
+              type: object
+      responses:
+        '200':
+          description: 'Login link sent successfully'
+          content:
+            application/json:
+              schema:
+                properties:
+                  status: { type: string, example: success }
+                type: object
+        '400':
+          description: 'Invalid input'
+  /auth/validate_code:
+    post:
+      tags:
+        - Auth
+      summary: 'Validate code'
+      description: "Validates the login code sent to the user's email"
+      operationId: 54b9c594d5cd17cb1b558ff50b71b8ad
+      requestBody:
+        required: true
+        content:
+          multipart/form-data:
+            schema:
+              properties:
+                mail:
+                  type: string
+                  format: email
+                  example: user@example.com
+                code:
+                  type: string
+                  example: '123456'
+              type: object
+      responses:
+        '200':
+          description: 'Code validated successfully'
+          content:
+            application/json:
+              schema:
+                properties:
+                  status: { type: string, example: success }
+                type: object
+        '400':
+          description: 'Invalid code or email'
+  /auth/validate_hash:
+    post:
+      tags:
+        - Auth
+      summary: 'Validate hash'
+      description: 'Validates the login hash for the user'
+      operationId: 1df8bd6be19c482e5439b541f3ee2e44
+      requestBody:
+        required: true
+        content:
+          multipart/form-data:
+            schema:
+              properties:
+                user_id:
+                  type: string
+                  example: '1'
+                hash:
+                  type: string
+                  example: abc123
+              type: object
+      responses:
+        '200':
+          description: 'Hash validated successfully'
+          content:
+            application/json:
+              schema:
+                properties:
+                  status: { type: string, example: success }
+                type: object
+        '400':
+          description: 'Invalid user ID or hash'
+  /auth/me:
+    get:
+      tags:
+        - Auth
+      summary: 'Get current user'
+      description: "Retrieves the current logged-in user's information"
+      operationId: c4163de537c0b5ae81600fd54b934a07
+      responses:
+        '200':
+          description: 'User retrieved successfully'
+          content:
+            application/json:
+              schema:
+                properties:
+                  id: { type: string, example: '1' }
+                  mail: { type: string, example: user@example.com }
+                  customer: { properties: { id: { type: string, example: '10' }, name: { type: string, example: 'Company Name' } }, type: object }
+                  firstname: { type: string, example: John }
+                  lastname: { type: string, example: Doe }
+                  initials: { type: string, example: JD }
+                  mobile: { type: string, example: '+1234567890' }
+                  company_role: { type: string, example: Manager }
+                  admin: { type: boolean, example: true }
+                type: object
+        '401':
+          description: Unauthorized
+      security:
+        -
+          bearerAuth: []
+  /auth/signout:
+    post:
+      tags:
+        - Auth
+      summary: 'Sign out user'
+      description: 'Signs out the current logged-in user'
+      operationId: 3f4fee62f4fda5ac6c0914fbf09acb57
+      responses:
+        '200':
+          description: 'User signed out successfully'
+          content:
+            application/json:
+              schema:
+                properties:
+                  status: { type: string, example: success }
+                type: object
+        '401':
+          description: Unauthorized
+      security:
+        -
+          bearerAuth: []
+  /companies/create:
+    post:
+      tags:
+        - Companies
+      summary: 'Create a new company'
+      description: 'Creates a new company with the provided details'
+      operationId: 0da379561e5cef4563d5674078b8f9b1
+      requestBody:
+        required: true
+        content:
+          multipart/form-data:
+            schema:
+              properties:
+                domain:
+                  type: string
+                  example: example.com
+                title:
+                  type: string
+                  example: 'Example Company'
+                county:
+                  type: string
+                  example: 'County Name'
+                type_id:
+                  type: integer
+                  example: 1
+                org_numb:
+                  type: string
+                  example: '123456789'
+                website:
+                  type: string
+                  example: 'http://www.example.com'
+                type:
+                  type: string
+                  example: LLC
+              type: object
+      responses:
+        '200':
+          description: 'Company created successfully'
+          content:
+            application/json:
+              schema:
+                properties:
+                  status: { type: string, example: success }
+                  public_id: { type: string, example: 8charId }
+                type: object
+        '400':
+          description: 'Invalid input'
+        '403':
+          description: 'Access denied'
+      security:
+        -
+          bearerAuth: []
+  '/company/delete/{id}':
+    delete:
+      tags:
+        - Companies
+      summary: 'Delete a company'
+      description: 'Deletes a company with the specified ID'
+      operationId: 627fc7fec58e8547314c39cfe9a37c29
+      parameters:
+        -
+          name: id
+          in: path
+          required: true
+          schema:
+            type: string
+            example: alphanumeric123
+      responses:
+        '200':
+          description: 'Company deleted successfully'
+          content:
+            application/json:
+              schema:
+                properties:
+                  status: { type: string, example: success }
+                type: object
+        '400':
+          description: 'Invalid ID supplied'
+        '403':
+          description: 'Access denied'
+        '404':
+          description: 'Company not found'
+      security:
+        -
+          bearerAuth: []
+  /companies:
+    get:
+      tags:
+        - Companies
+      summary: 'Get all companies'
+      description: 'Retrieves a list of all companies'
+      operationId: f19bf1d8a4442787d3509990947bcc5b
+      responses:
+        '200':
+          description: 'Companies retrieved successfully'
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  properties: { public_id: { type: string, example: 8charId }, title: { type: string, example: 'Example Company' }, county: { type: string, example: 'County Name' }, type_id: { type: integer, example: 1 }, org_numb: { type: string, example: '123456789' }, website: { type: string, example: 'http://www.example.com' }, domain: { type: string, example: example.com }, type: { type: string, example: LLC }, logo: { type: string, example: 'http://example.com/logo.png' } }
+                  type: object
+        '403':
+          description: 'Access denied'
+      security:
+        -
+          bearerAuth: []
+  /companies/simple:
+    get:
+      tags:
+        - Companies
+      summary: 'Get all companies (simple list)'
+      description: 'Retrieves a simple list of all companies'
+      operationId: 32f79ad9542616b84106c51069d10316
+      responses:
+        '200':
+          description: 'Companies retrieved successfully'
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  properties: { id: { type: integer, example: 1 }, title: { type: string, example: 'Example Company' } }
+                  type: object
+        '403':
+          description: 'Access denied'
+      security:
+        -
+          bearerAuth: []
+  '/companies/{id}':
+    get:
+      tags:
+        - Companies
+      summary: 'Get a company by ID'
+      description: 'Retrieves a company by its ID'
+      operationId: b106cc071cae75fd55562e6cdb04508b
+      parameters:
+        -
+          name: id
+          in: path
+          required: true
+          schema:
+            type: string
+            example: 8charId
+      responses:
+        '200':
+          description: 'Company retrieved successfully'
+          content:
+            application/json:
+              schema:
+                properties:
+                  public_id: { type: string, example: 8charId }
+                  title: { type: string, example: 'Example Company' }
+                  county: { type: string, example: 'County Name' }
+                  type_id: { type: integer, example: 1 }
+                  org_numb: { type: string, example: '123456789' }
+                  website: { type: string, example: 'http://www.example.com' }
+                  domain: { type: string, example: example.com }
+                  type: { type: string, example: LLC }
+                  logo: { type: string, example: 'http://example.com/logo.png' }
+                type: object
+        '403':
+          description: 'Access denied'
+        '404':
+          description: 'Company not found'
+      security:
+        -
+          bearerAuth: []
+  /companies/counties:
+    get:
+      tags:
+        - Companies
+      summary: 'Get all counties'
+      description: 'Retrieves a list of all counties'
+      operationId: cc3c9ad082e3622d9eef3868fb55196c
+      responses:
+        '200':
+          description: 'Counties retrieved successfully'
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  properties: { public_id: { type: string, example: 8charId }, title: { type: string, example: 'County Name' }, county: { type: string, example: 'County Name' }, type_id: { type: integer, example: 1 }, org_numb: { type: string, example: '123456789' }, website: { type: string, example: 'http://www.example.com' }, domain: { type: string, example: example.com }, type: { type: string, example: County }, logo: { type: string, example: 'http://example.com/logo.png' } }
+                  type: object
+        '403':
+          description: 'Access denied'
+      security:
+        -
+          bearerAuth: []
+  /company/update:
+    post:
+      tags:
+        - Companies
+      summary: 'Update a company'
+      description: "Updates a company's information with the provided details"
+      operationId: 388ce22d71640afd29f140167dcfa579
+      requestBody:
+        required: true
+        content:
+          multipart/form-data:
+            schema:
+              properties:
+                public_id:
+                  description: 'The unique public ID of the company'
+                  type: string
+                  example: 8charId
+                domain:
+                  type: string
+                  example: example.com
+                title:
+                  type: string
+                  example: 'Example Company'
+                county:
+                  type: string
+                  example: 'County Name'
+                type_id:
+                  type: integer
+                  example: 1
+                org_numb:
+                  type: string
+                  example: '123456789'
+                website:
+                  type: string
+                  example: 'http://www.example.com'
+                type:
+                  type: string
+                  example: LLC
+              type: object
+      responses:
+        '200':
+          description: 'Company updated successfully'
+          content:
+            application/json:
+              schema:
+                properties:
+                  status: { type: string, example: success }
+                type: object
+        '400':
+          description: 'Invalid input'
+        '403':
+          description: 'Access denied'
+        '404':
+          description: 'Company not found'
+      security:
+        -
+          bearerAuth: []
+  /delivery/methods/get:
+    get:
+      tags:
+        - Delivery
+      summary: 'Get delivery methods'
+      description: 'Retrieves a list of all delivery methods'
+      operationId: 75974913fdacb1a395ed59e50fcb9426
+      responses:
+        '200':
+          description: 'Delivery methods retrieved successfully'
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  properties: { id: { type: integer, example: 1 }, title: { type: string, example: 'Standard Delivery' } }
+                  type: object
+        '403':
+          description: 'Access denied'
+      security:
+        -
+          bearerAuth: []
+  '/company/employees/{company_id}':
+    get:
+      tags:
+        - Employees
+      summary: 'Get employees by company ID'
+      description: 'Retrieves a list of employees for the specified company ID'
+      operationId: 9e3495e4b009527c2530845e4d7a7ac6
+      parameters:
+        -
+          name: company_id
+          in: path
+          required: true
+          schema:
+            type: string
+            example: '12345'
+      responses:
+        '200':
+          description: 'Employees retrieved successfully'
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  properties: { id: { type: integer, example: 1 }, firstname: { type: string, example: John }, lastname: { type: string, example: Doe }, initials: { type: string, example: JD }, mail: { type: string, example: john.doe@example.com }, mobile: { type: string, example: '+1234567890' }, photo: { type: string, example: 'http://example.com/photo.jpg' }, company_role: { type: string, example: Manager }, color: { type: string, example: '#FFFFFF' } }
+                  type: object
+        '403':
+          description: 'Access denied'
+        '404':
+          description: 'Company not found'
+      security:
+        -
+          bearerAuth: []
+  /licenses/get:
+    get:
+      tags:
+        - Licenses
+      summary: 'Get all licenses'
+      description: 'Retrieves all licenses'
+      operationId: a1f4ac4c35642e99daa088110110c7ea
+      responses:
+        '200':
+          description: 'Category retrieved successfully'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/License'
+        '404':
+          description: 'Not found'
+  '/license/get/{id}':
+    get:
+      tags:
+        - Licenses
+      summary: 'Get single license'
+      description: 'Retrieves a single license by its ID.'
+      operationId: 27018249daced28891a744e184ef1c05
+      parameters:
+        -
+          name: id
+          in: path
+          description: 'The ID of the license to retrieve'
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: 'Category retrieved successfully'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/License'
+        '404':
+          description: 'Not found'
+  /mail/send:
+    get:
+      tags:
+        - Mail
+      summary: 'Send emails (GET)'
+      description: 'Triggers sending of emails stored in the database. This can be a login code or similar. This endpoint is typically used internally by a scheduler.'
+      operationId: 77965977523e5c5f72b36250535749a8
+      responses:
+        '200':
+          description: 'Emails processed'
+        '403':
+          description: 'Access denied'
+        '500':
+          description: 'Internal server error'
+      security:
+        -
+          bearerAuth: []
+  /company/municipalities/get:
+    get:
+      tags:
+        - Municipality
+      summary: 'Get municipalities'
+      description: 'Retrieves a list of all municipalities'
+      operationId: 2b4f17a84165b43ad95bd4c449b6e1b3
+      responses:
+        '200':
+          description: 'Municipalities retrieved successfully'
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  properties: { public_id: { type: string, example: 8charId }, title: { type: string, example: 'Example Municipality' }, county: { type: string, example: 'County Name' }, type_id: { type: integer, example: 1 }, org_numb: { type: string, example: '123456789' }, website: { type: string, example: 'http://www.example.com' }, domain: { type: string, example: example.com }, type: { type: string, example: Municipality }, logo: { type: string, example: 'http://example.com/logo.png' } }
+                  type: object
+        '403':
+          description: 'Access denied'
+        '500':
+          description: 'Internal server error'
+      security:
+        -
+          bearerAuth: []
+  /search/all:
+    post:
+      tags:
+        - Search
+      summary: 'Search all'
+      description: 'Searches for both apps and companies with the given query'
+      operationId: 3e6ca841f418182e843e38354793d98e
+      requestBody:
+        required: true
+        content:
+          multipart/form-data:
+            schema:
+              properties:
+                q:
+                  type: string
+                  example: 'search query'
+              type: object
+      responses:
+        '200':
+          description: 'Search results retrieved successfully'
+          content:
+            application/json:
+              schema:
+                properties:
+                  apps: { type: array, items: { properties: { id: { type: integer, example: 1 }, title: { type: string, example: 'App Title' }, short_description: { type: string, example: 'Short description of the app' }, primary_image: { properties: { image: { type: string, example: 'http://example.com/image.jpg' }, thumb: { type: string, example: 'http://example.com/thumb.jpg' } }, type: object }, company: { properties: { public_id: { type: string, example: companyId }, name: { type: string, example: 'Company Name' }, logo: { properties: { image: { type: string, example: 'http://example.com/company_logo.jpg' }, thumb: { type: string, example: 'http://example.com/company_logo_thumb.jpg' } }, type: object } }, type: object } }, type: object } }
+                  companies: { type: array, items: { properties: { public_id: { type: string, example: companyId }, title: { type: string, example: 'Company Title' }, county: { type: string, example: 'County Name' }, type_id: { type: integer, example: 1 }, org_numb: { type: string, example: '123456789' }, website: { type: string, example: 'http://www.company.com' }, domain: { type: string, example: company.com }, type: { type: string, example: LLC }, logo: { properties: { image: { type: string, example: 'http://example.com/company_logo.jpg' }, thumb: { type: string, example: 'http://example.com/company_logo_thumb.jpg' } }, type: object } }, type: object } }
+                type: object
+        '403':
+          description: 'Access denied'
+      security:
+        -
+          bearerAuth: []
+  /search/apps:
+    post:
+      tags:
+        - Search
+      summary: 'Search apps'
+      description: 'Searches for apps with the given query'
+      operationId: e51ab587fc0846077f4a4795768b1bb8
+      requestBody:
+        required: true
+        content:
+          multipart/form-data:
+            schema:
+              properties:
+                q:
+                  type: string
+                  example: 'search query'
+              type: object
+      responses:
+        '200':
+          description: 'Apps retrieved successfully'
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  properties: { id: { type: integer, example: 1 }, title: { type: string, example: 'App Title' }, short_description: { type: string, example: 'Short description of the app' }, primary_image: { properties: { image: { type: string, example: 'http://example.com/image.jpg' }, thumb: { type: string, example: 'http://example.com/thumb.jpg' } }, type: object }, company: { properties: { public_id: { type: string, example: companyId }, name: { type: string, example: 'Company Name' }, logo: { properties: { image: { type: string, example: 'http://example.com/company_logo.jpg' }, thumb: { type: string, example: 'http://example.com/company_logo_thumb.jpg' } }, type: object } }, type: object } }
+                  type: object
+        '403':
+          description: 'Access denied'
+      security:
+        -
+          bearerAuth: []
+  /search/companies:
+    post:
+      tags:
+        - Search
+      summary: 'Search companies'
+      description: 'Searches for companies with the given query'
+      operationId: fe98feb872cb18c430efa8f9aef8dd20
+      requestBody:
+        required: true
+        content:
+          multipart/form-data:
+            schema:
+              properties:
+                q:
+                  type: string
+                  example: 'search query'
+              type: object
+      responses:
+        '200':
+          description: 'Companies retrieved successfully'
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  properties: { public_id: { type: string, example: companyId }, title: { type: string, example: 'Company Title' }, county: { type: string, example: 'County Name' }, type_id: { type: integer, example: 1 }, org_numb: { type: string, example: '123456789' }, website: { type: string, example: 'http://www.company.com' }, domain: { type: string, example: company.com }, type: { type: string, example: LLC }, logo: { properties: { image: { type: string, example: 'http://example.com/company_logo.jpg' }, thumb: { type: string, example: 'http://example.com/company_logo_thumb.jpg' } }, type: object } }
+                  type: object
+        '403':
+          description: 'Access denied'
+      security:
+        -
+          bearerAuth: []
+  '/companies/search/{q}':
+    get:
+      tags:
+        - Search
+      summary: 'Search companies (GET)'
+      description: 'Searches for companies with the given query'
+      operationId: 55e0bc7d849cdab45e5454c06f388d5b
+      parameters:
+        -
+          name: q
+          in: path
+          required: true
+          schema:
+            type: string
+            example: 'search query'
+      responses:
+        '200':
+          description: 'Companies retrieved successfully'
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  properties: { public_id: { type: string, example: companyId }, title: { type: string, example: 'Company Title' }, county: { type: string, example: 'County Name' }, type_id: { type: integer, example: 1 }, org_numb: { type: string, example: '123456789' }, website: { type: string, example: 'http://www.company.com' }, domain: { type: string, example: company.com }, type: { type: string, example: LLC }, logo: { properties: { image: { type: string, example: 'http://example.com/company_logo.jpg' }, thumb: { type: string, example: 'http://example.com/company_logo_thumb.jpg' } }, type: object } }
+                  type: object
+        '403':
+          description: 'Access denied'
+      security:
+        -
+          bearerAuth: []
+  /stats/log:
+    post:
+      tags:
+        - Stats
+      summary: 'Log statistics'
+      description: 'Logs a statistic entry with the given type and entity ID'
+      operationId: 557989d2cdeade75ac042b3aac4fa62c
+      requestBody:
+        required: true
+        content:
+          multipart/form-data:
+            schema:
+              properties:
+                type:
+                  type: string
+                  example: view
+                entity_id:
+                  type: string
+                  example: '123'
+              type: object
+      responses:
+        '200':
+          description: 'Log entry created successfully'
+          content:
+            application/json:
+              schema:
+                properties:
+                  status: { type: string, example: success }
+                type: object
+        '400':
+          description: 'Invalid input'
+        '403':
+          description: 'Access denied'
+        '500':
+          description: 'Internal server error'
+      security:
+        -
+          bearerAuth: []
+  /stats/apps/count/published:
+    get:
+      tags:
+        - Stats
+      summary: 'Get number of published apps'
+      description: 'Retrieves the total number of published apps'
+      operationId: 2e816f3a6c9101bc16e973a36028f4d0
+      responses:
+        '200':
+          description: 'Number of published apps retrieved successfully'
+          content:
+            application/json:
+              schema:
+                type: integer
+              example: 42
+        '403':
+          description: 'Access denied'
+      security:
+        -
+          bearerAuth: []
+  /stats/apps/latest:
+    get:
+      tags:
+        - Stats
+      summary: 'Get latest published apps'
+      description: 'Retrieves a list of the latest published apps'
+      operationId: 20d64d855981631af62e5716df0bae5a
+      responses:
+        '200':
+          description: 'Latest published apps retrieved successfully'
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  properties: { id: { type: integer, example: 1 }, time_created: { type: string, format: date-time, example: '2023-01-01T00:00:00Z' }, title: { type: string, example: 'App Title' }, short_description: { type: string, example: 'Short description of the app' }, primary_image: { properties: { image: { type: string, example: 'http://example.com/image.jpg' }, thumb: { type: string, example: 'http://example.com/thumb.jpg' } }, type: object }, company: { properties: { public_id: { type: string, example: companyId }, name: { type: string, example: 'Company Name' }, logo: { properties: { image: { type: string, example: 'http://example.com/company_logo.jpg' }, thumb: { type: string, example: 'http://example.com/company_logo_thumb.jpg' } }, type: object } }, type: object } }
+                  type: object
+        '403':
+          description: 'Access denied'
+      security:
+        -
+          bearerAuth: []
+  /stats/apps/popular:
+    get:
+      tags:
+        - Stats
+      summary: 'Get most popular apps'
+      description: 'Retrieves a list of the most popular apps'
+      operationId: f2cca4293c0ee55da609fde267ff99ab
+      responses:
+        '200':
+          description: 'Most popular apps retrieved successfully'
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  properties: { id: { type: integer, example: 1 }, time_created: { type: string, format: date-time, example: '2023-01-01T00:00:00Z' }, title: { type: string, example: 'App Title' }, short_description: { type: string, example: 'Short description of the app' }, primary_image: { properties: { image: { type: string, example: 'http://example.com/image.jpg' }, thumb: { type: string, example: 'http://example.com/thumb.jpg' } }, type: object }, company: { properties: { public_id: { type: string, example: companyId }, name: { type: string, example: 'Company Name' }, logo: { properties: { image: { type: string, example: 'http://example.com/company_logo.jpg' }, thumb: { type: string, example: 'http://example.com/company_logo_thumb.jpg' } }, type: object } }, type: object } }
+                  type: object
+        '403':
+          description: 'Access denied'
+      security:
+        -
+          bearerAuth: []
+  /types/get:
+    get:
+      tags:
+        - Types
+      summary: 'Get application types'
+      description: 'Get all application types.'
+      operationId: 2da6278ab28ba94c876cd1b61b69fcc6
+      responses:
+        '200':
+          description: 'Category retrieved successfully'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Type'
+        '404':
+          description: 'Apps not found'
+  /company/logo/upload:
+    post:
+      tags:
+        - Upload
+      summary: 'Upload company logo'
+      description: 'Uploads a logo for a company'
+      operationId: 18dcf2aba4c936d742c5646cccc2a3a9
+      requestBody:
+        required: true
+        content:
+          multipart/form-data:
+            schema:
+              properties:
+                public_id:
+                  description: 'The public ID of the company'
+                  type: string
+                  example: companyId
+                image:
+                  description: 'The company logo image file'
+                  type: string
+                  format: binary
+              type: object
+      responses:
+        '200':
+          description: 'Company logo uploaded successfully'
+          content:
+            application/json:
+              schema:
+                properties:
+                  status: { type: string, example: success }
+                  message: { type: string, example: 'Logo uploaded successfully' }
+                  logo_url: { type: string, example: 'http://example.com/company_logo.jpg' }
+                type: object
+        '400':
+          description: 'Invalid input or image upload failed'
+        '403':
+          description: 'Access denied'
+        '500':
+          description: 'Internal server error'
+      security:
+        -
+          bearerAuth: []
+  /admin/user/create:
+    post:
+      tags:
+        - 'Users Admin'
+      summary: 'Create a new user'
+      description: 'Creates a new user with the provided details'
+      operationId: 47423302be6a0b270ea020daf673bae1
+      requestBody:
+        required: true
+        content:
+          multipart/form-data:
+            schema:
+              properties:
+                firstname:
+                  description: 'First name of the user'
+                  type: string
+                  example: John
+                lastname:
+                  description: 'Last name of the user'
+                  type: string
+                  example: Doe
+                mail:
+                  description: 'Email address of the user'
+                  type: string
+                  example: john.doe@example.com
+                mobile:
+                  description: 'Mobile number of the user'
+                  type: string
+                  example: '+1234567890'
+                company_role:
+                  description: 'Role of the user in the company'
+                  type: string
+                  example: Manager
+                status:
+                  description: 'Status of the user'
+                  type: string
+                  example: active
+                customer_id:
+                  description: 'Customer ID associated with the user'
+                  type: integer
+                  example: 1
+                admin:
+                  description: 'Admin status of the user'
+                  type: boolean
+                  example: true
+              type: object
+      responses:
+        '200':
+          description: 'User created successfully'
+          content:
+            application/json:
+              schema:
+                properties:
+                  status: { type: string, example: success }
+                  id: { type: integer, example: 123 }
+                type: object
+        '400':
+          description: 'Invalid input or user creation failed'
+        '403':
+          description: 'Access denied'
+        '500':
+          description: 'Internal server error'
+      security:
+        -
+          bearerAuth: []
+  '/admin/user/delete/{id}':
+    delete:
+      tags:
+        - 'Users Admin'
+      summary: 'Delete a user'
+      description: 'Deletes a user with the given ID'
+      operationId: 26f5ed6ecaf67d416ef39d05a425070a
+      parameters:
+        -
+          name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+            example: 123
+      responses:
+        '200':
+          description: 'User deleted successfully'
+          content:
+            application/json:
+              schema:
+                properties:
+                  status: { type: string, example: success }
+                  message: { type: string, example: 'User deleted successfully' }
+                type: object
+        '400':
+          description: 'Invalid input or user deletion failed'
+        '403':
+          description: 'Access denied'
+        '404':
+          description: 'User not found'
+        '500':
+          description: 'Internal server error'
+      security:
+        -
+          bearerAuth: []
+  /users/get:
+    get:
+      tags:
+        - 'Users Admin'
+      summary: 'Get all users'
+      description: 'Retrieves a list of all users. This endpoint is only available for admin.'
+      operationId: c54b8dcc3e16b626a94b9e3576a7da44
+      responses:
+        '200':
+          description: 'Users retrieved successfully'
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  properties: { id: { type: integer, example: 1 }, o365_id: { type: string, example: o365id }, customer: { properties: { public_id: { type: string, example: publicId }, domain: { type: string, example: example.com }, title: { type: string, example: 'Company Title' }, logo: { type: string, example: 'http://example.com/logo.png' } }, type: object }, firstname: { type: string, example: John }, lastname: { type: string, example: Doe }, initials: { type: string, example: JD }, mail: { type: string, example: john.doe@example.com }, mobile: { type: string, example: '+1234567890' }, status: { type: string, example: active }, photo: { type: string, example: 'http://example.com/photo.jpg' }, company_role: { type: string, example: Manager }, last_update: { type: string, format: date-time, example: '2023-01-01T00:00:00Z' }, system_user: { type: boolean, example: true }, admin: { type: boolean, example: true }, color: { type: string, example: '#FFFFFF' } }
+                  type: object
+        '403':
+          description: 'Access denied'
+      security:
+        -
+          bearerAuth: []
+  '/user/get/{id}':
+    get:
+      tags:
+        - Users
+      summary: 'Get user by ID'
+      description: 'Retrieves a user by their ID'
+      operationId: 9e0b7709388c27fb11ffc43f36ceab2e
+      parameters:
+        -
+          name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+            example: 1
+      responses:
+        '200':
+          description: 'User retrieved successfully'
+          content:
+            application/json:
+              schema:
+                properties:
+                  id: { type: integer, example: 1 }
+                  customer: { properties: { public_id: { type: string, example: publicId }, domain: { type: string, example: example.com }, title: { type: string, example: 'Company Title' }, logo: { type: string, example: 'http://example.com/logo.png' } }, type: object }
+                  firstname: { type: string, example: John }
+                  lastname: { type: string, example: Doe }
+                  initials: { type: string, example: JD }
+                  mail: { type: string, example: john.doe@example.com }
+                  mobile: { type: string, example: '+1234567890' }
+                  company_role: { type: string, example: Manager }
+                  photo: { type: string, example: 'http://example.com/photo.jpg' }
+                  last_update: { type: string, format: date-time, example: '2023-01-01T00:00:00Z' }
+                  color: { type: string, example: '#FFFFFF' }
+                  admin: { type: boolean, example: true }
+                  status: { type: string, example: active }
+                type: object
+        '403':
+          description: 'Access denied'
+        '404':
+          description: 'User not found'
+      security:
+        -
+          bearerAuth: []
+  '/users/company/get/{id}':
+    get:
+      tags:
+        - Users
+      summary: 'Get users by company ID'
+      description: 'Retrieves a list of users for the specified company ID'
+      operationId: e330ecad3f054ce7454014ef011c9def
+      parameters:
+        -
+          name: id
+          in: path
+          required: true
+          schema:
+            type: string
+            example: companyId
+      responses:
+        '200':
+          description: 'Users retrieved successfully'
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  properties: { id: { type: integer, example: 1 }, firstname: { type: string, example: John }, lastname: { type: string, example: Doe }, initials: { type: string, example: JD }, mail: { type: string, example: john.doe@example.com }, mobile: { type: string, example: '+1234567890' }, photo: { type: string, example: 'http://example.com/photo.jpg' }, company_role: { type: string, example: Manager }, color: { type: string, example: '#FFFFFF' } }
+                  type: object
+        '403':
+          description: 'Access denied'
+      security:
+        -
+          bearerAuth: []
+  /admin/user/token/create:
+    post:
+      tags:
+        - 'Users Admin'
+      summary: 'Create a token'
+      description: 'Creates a token for the specified user'
+      operationId: 9cf7a8e8d94e6fce8df631ac87a67a32
+      requestBody:
+        required: true
+        content:
+          multipart/form-data:
+            schema:
+              properties:
+                user_id:
+                  description: 'User ID'
+                  type: integer
+                  example: 123
+                title:
+                  description: 'Token title'
+                  type: string
+                  example: 'API Access'
+              type: object
+      responses:
+        '200':
+          description: 'Token created successfully'
+          content:
+            application/json:
+              schema:
+                properties:
+                  token: { type: string, example: generated_token_here }
+                type: object
+        '400':
+          description: 'Invalid input or token creation failed'
+        '403':
+          description: 'Access denied'
+        '500':
+          description: 'Internal server error'
+      security:
+        -
+          bearerAuth: []
+  '/admin/user/token/get/{id}':
+    get:
+      tags:
+        - 'Users Admin'
+      summary: 'Get user tokens'
+      description: 'Retrieves tokens for the specified user'
+      operationId: 05cc8fe6022400926c3a91aec01c98dd
+      parameters:
+        -
+          name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+            example: 123
+      responses:
+        '200':
+          description: 'Tokens retrieved successfully'
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  properties: { id: { type: integer, example: 1 }, title: { type: string, example: 'API Access' }, time_created: { type: string, format: date-time, example: '2023-01-01T00:00:00Z' }, time_expires: { type: string, format: date-time, example: '2024-01-01T00:00:00Z' }, time_last_active: { type: string, format: date-time, example: '2023-01-15T12:00:00Z' }, user_agent: { type: string, example: Mozilla/5.0 }, ip_address: { type: string, example: 192.168.1.1 }, status: { type: string, example: active } }
+                  type: object
+        '403':
+          description: 'Access denied'
+        '404':
+          description: 'User not found'
+      security:
+        -
+          bearerAuth: []
+  '/admin/user/token/delete/{id}':
+    get:
+      tags:
+        - 'Users Admin'
+      summary: 'Delete a token (GET)'
+      description: 'Deletes the specified token'
+      operationId: 822db523f2a206007e708efd4a4ddc1e
+      parameters:
+        -
+          name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+            example: 123
+      responses:
+        '200':
+          description: 'Token deleted successfully'
+          content:
+            application/json:
+              schema:
+                properties:
+                  status: { type: string, example: success }
+                type: object
+        '400':
+          description: 'Invalid input or token deletion failed'
+        '403':
+          description: 'Access denied'
+        '404':
+          description: 'Token not found'
+      security:
+        -
+          bearerAuth: []
+    delete:
+      tags:
+        - 'Users Admin'
+      summary: 'Delete a token'
+      description: 'Deletes the specified token'
+      operationId: 44fe17d592d3597e83acdddef0c6c713
+      parameters:
+        -
+          name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+            example: 123
+      responses:
+        '200':
+          description: 'Token deleted successfully'
+          content:
+            application/json:
+              schema:
+                properties:
+                  status: { type: string, example: success }
+                type: object
+        '400':
+          description: 'Invalid input or token deletion failed'
+        '403':
+          description: 'Access denied'
+        '404':
+          description: 'Token not found'
+      security:
+        -
+          bearerAuth: []
+  /admin/user/update:
+    post:
+      tags:
+        - 'Users Admin'
+      summary: 'Update a user'
+      description: "Updates a user's details. This endpoint is only available for admin."
+      operationId: 4b86027e1a9365bf8c7509ef2e2f5023
+      requestBody:
+        required: true
+        content:
+          multipart/form-data:
+            schema:
+              properties:
+                id:
+                  description: 'User ID'
+                  type: integer
+                  example: 123
+                firstname:
+                  description: 'First name of the user'
+                  type: string
+                  example: John
+                lastname:
+                  description: 'Last name of the user'
+                  type: string
+                  example: Doe
+                mail:
+                  description: 'Email address of the user'
+                  type: string
+                  example: john.doe@example.com
+                mobile:
+                  description: 'Mobile number of the user'
+                  type: string
+                  example: '+1234567890'
+                company_role:
+                  description: 'Role of the user in the company'
+                  type: string
+                  example: Manager
+                status:
+                  description: 'Status of the user'
+                  type: string
+                  example: active
+                customer_id:
+                  description: 'Customer ID associated with the user'
+                  type: integer
+                  example: 1
+                admin:
+                  description: 'Admin status of the user'
+                  type: boolean
+                  example: true
+              type: object
+      responses:
+        '200':
+          description: 'User updated successfully'
+          content:
+            application/json:
+              schema:
+                properties:
+                  status: { type: string, example: success }
+                  id: { type: integer, example: 123 }
+                type: object
+        '400':
+          description: 'Invalid input or user update failed'
+        '403':
+          description: 'Access denied'
+        '500':
+          description: 'Internal server error'
+      security:
+        -
+          bearerAuth: []
+  /myprofile/update:
+    post:
+      tags:
+        - Users
+      summary: "Update user's profile"
+      description: 'Updates the profile of the authenticated user'
+      operationId: a9e78ac3cc5bd02a9bdd6bf30f9e0d7a
+      requestBody:
+        required: true
+        content:
+          multipart/form-data:
+            schema:
+              properties:
+                firstname:
+                  description: 'First name of the user'
+                  type: string
+                  example: John
+                lastname:
+                  description: 'Last name of the user'
+                  type: string
+                  example: Doe
+                mail:
+                  description: 'Email address of the user'
+                  type: string
+                  example: john.doe@example.com
+                mobile:
+                  description: 'Mobile number of the user'
+                  type: string
+                  example: '+1234567890'
+                company_role:
+                  description: 'Role of the user in the company'
+                  type: string
+                  example: Manager
+              type: object
+      responses:
+        '200':
+          description: 'Profile updated successfully'
+          content:
+            application/json:
+              schema:
+                properties:
+                  status: { type: string, example: success }
+                type: object
+        '400':
+          description: 'Invalid input or profile update failed'
+        '403':
+          description: 'Access denied'
+        '500':
+          description: 'Internal server error'
+      security:
+        -
+          bearerAuth: []
+components:
+  schemas:
+    DefaultSuccessResponse:
+      properties:
+        status:
+          type: string
+          example: success
+        status_code:
+          type: integer
+          example: 200
+      type: object
+    DefaultBadRequest:
+      properties:
+        status:
+          type: string
+          example: 'Invalid request'
+        status_code:
+          type: integer
+          example: 400
+      type: object
+    DefaultUnauthorized:
+      properties:
+        status:
+          type: string
+          example: 'Not logged in'
+        status_code:
+          type: integer
+          example: 401
+      type: object
+    DefaultForbiddenRequest:
+      properties:
+        status:
+          type: string
+          example: 'Form input missing'
+        status_code:
+          type: integer
+          example: 403
+      type: object
+    DefaultMethodNotAllowed:
+      properties:
+        status:
+          type: string
+          example: 'Method not allowed'
+        status_code:
+          type: integer
+          example: 405
+      type: object
+    AppPublic:
+      properties:
+        id:
+          type: string
+          example: '1'
+        title:
+          type: string
+          example: Helpdesk
+        short_description:
+          type: string
+          example: 'Web-basert helpdesk'
+        primary_image:
+          properties:
+            image:
+              type: string
+              example: 'http://example.com/image.jpg'
+            thumb:
+              type: string
+              example: 'http://example.com/thumb.jpg'
+          type: object
+        type:
+          properties:
+            id:
+              type: string
+              example: '1'
+            title:
+              type: string
+              example: Support
+            icon:
+              type: string
+              example: support_icon
+          type: object
+        tags:
+          properties:
+            array:
+              type: array
+              items:
+                type: string
+            string:
+              type: string
+              example: 'tag1,tag2'
+          type: object
+        status:
+          type: string
+          example: published
+      type: object
+    AppFull:
+      type: object
+      allOf:
+        -
+          $ref: '#/components/schemas/AppPublic'
+        -
+          properties:
+            description:
+              type: string
+              example: 'Denne helpdesken...'
+            time_created:
+              type: string
+              format: date-time
+              example: '2024-05-21T14:56:29Z'
+            time_edited:
+              type: string
+              format: date-time
+              example: '2024-05-21T14:56:29Z'
+            created_by:
+              properties:
+                id:
+                  type: string
+                  example: '1'
+                firstname:
+                  type: string
+                  example: John
+                lastname:
+                  type: string
+                  example: Doe
+                mail:
+                  type: string
+                  example: john.doe@example.com
+              type: object
+            updated_by:
+              properties:
+                id:
+                  type: string
+                  example: '2'
+                firstname:
+                  type: string
+                  example: Jane
+                lastname:
+                  type: string
+                  example: Smith
+                mail:
+                  type: string
+                  example: jane.smith@example.com
+              type: object
+            company:
+              properties:
+                id:
+                  type: string
+                  example: '1'
+                name:
+                  type: string
+                  example: 'Acme Corp'
+              type: object
+            installation:
+              type: string
+              example: 'Installation instructions...'
+            delivery_id:
+              type: string
+              example: '1'
+            license:
+              properties:
+                id:
+                  type: string
+                  example: '1'
+                title:
+                  type: string
+                  example: 'MIT License'
+                link:
+                  type: string
+                  example: 'http://example.com/license'
+              type: object
+            link_source_code:
+              type: string
+              example: 'http://example.com/source_code'
+            files:
+              type: array
+              items:
+                type: object
+            edit_access:
+              type: boolean
+              example: true
+          type: object
+    License:
+      properties:
+        id:
+          type: string
+          example: '1'
+        title:
+          type: string
+          example: 'MIT License'
+        description:
+          type: string
+          example: ''
+        link:
+          type: string
+          example: 'https://choosealicense.com/licenses/mit/'
+        details:
+          properties:
+            permission:
+              type: array
+              items:
+                $ref: '#/components/schemas/LicenseDetail'
+              example:
+                -
+                  id: '1'
+                  type: permission
+                  title: 'Commercial use'
+                  description: 'The licensed material and derivatives may be used for commercial purposes.'
+            condition:
+              type: array
+              items:
+                $ref: '#/components/schemas/LicenseDetail'
+              example:
+                -
+                  id: '7'
+                  type: condition
+                  title: 'License and copyright notice'
+                  description: 'A copy of the license and copyright notice must be included with the licensed material.'
+            limitation:
+              type: array
+              items:
+                $ref: '#/components/schemas/LicenseDetail'
+              example:
+                -
+                  id: '11'
+                  type: limitation
+                  title: Liability
+                  description: 'This license includes a limitation of liability.'
+          type: object
+      type: object
+    Type:
+      properties:
+        id:
+          type: string
+          example: '1'
+        title:
+          type: string
+          example: Applikasjon
+        fa_icon:
+          type: string
+          example: 'fal fa-box-full'
+      type: object
+  securitySchemes:
+    bearerAuth:
+      type: http
+      description: 'JWT Authorization header using the Bearer scheme.'
+      bearerFormat: JWT
+      scheme: bearer
+tags:
+  -
+    name: Apps
+    description: Applications
+  -
+    name: Auth
+    description: 'User validation and authentication'
+  -
+    name: Companies
+    description: 'Companies / Municipalities'
+  -
+    name: Delivery
+    description: 'How the application can be delivered, like SaaS, on-premise, etc...'
+  -
+    name: Employees
+    description: 'Get registered employees / contact persons for application'
+  -
+    name: Licenses
+    description: 'Application licenses'
+  -
+    name: Mail
+    description: 'Handle mail'
+  -
+    name: Municipality
+    description: Municipalities
+  -
+    name: Search
+    description: Search
+  -
+    name: Stats
+    description: Statistics
+  -
+    name: Types
+    description: 'Application types (aka. categories). E.g. Applikasjon, Integrasjon, RPA, Dokument, Skript...'
+  -
+    name: Upload
+    description: 'Upload files'
+  -
+    name: Users
+    description: Users
+  -
+    name: 'Users Admin'
+    description: User-administration

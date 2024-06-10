@@ -1,22 +1,25 @@
 <?php
 namespace Kapps\Model\Apps;
 
-use \Kapps\Model\General\Db;
-use \Kapps\Model\Apps\Apps;
+use Kapps\Model\Database\Db;
+use \Kapps\Model\Apps\Get as AppsGet;
 use \Kapps\Model\Auth\User as AuthUser;
 
 /**
  * summary
  */
-class Delete extends Db
+class Delete
 {
+	private $db;
 	private $Apps;
 	private $AuthUser;
 	private $thisUser;
 
 	public function __construct()
 	{
-		$this->Apps = new Apps;
+		$this->db = Db::getInstance();
+
+		$this->Apps = new AppsGet;
 		$this->AuthUser = new AuthUser;
 		$this->thisUser = $this->AuthUser->me();
 	}
@@ -49,15 +52,12 @@ class Delete extends Db
 
 		// Set status to set
 		$status = 'deleted';
-
-		// Init DB connection
-		$db = Db::getInstance();
 		
 		// Prepare statement
-		$stmt = $db->prepare("UPDATE apps SET updated_by=?, status=? WHERE id=?");
+		$stmt = $this->db->prepare("UPDATE apps SET updated_by=?, status=? WHERE id=?");
 		if ($stmt === false) {
 			error_log('Statement false');
-			trigger_error($db->error, E_USER_ERROR);
+			trigger_error($this->db->error, E_USER_ERROR);
 			return;
 		}
 

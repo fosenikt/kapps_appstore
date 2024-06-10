@@ -2,13 +2,13 @@
 
 namespace Kapps\Model\Auth\Microsoft;
 
-use \Kapps\Model\General\Db;
+use Kapps\Model\Database\Db;
 use \Kapps\Model\Auth\User as AuthUser;
 use \Kapps\Model\Auth\Microsoft\TokenCache;
 
-class Token extends db {
+class Token {
 
-	private $AuthUser;
+	private $db;
 	private $thisUser;
 
     /*Properties*/
@@ -21,8 +21,8 @@ class Token extends db {
 
     function __construct()
 	{
-		$this->AuthUser = new AuthUser;
-		$this->thisUser = $this->AuthUser->me();
+		$this->db = Db::getInstance();
+		$this->thisUser = (new AuthUser())->me();
 
         $this->fetch_token();
 
@@ -58,8 +58,7 @@ class Token extends db {
         $userID = $this->thisUser['id'];
         
         $query = "SELECT * FROM system_users_o365_keys WHERE user_id='$userID'";
-        $db = Db::getInstance();
-		$result = $db->query($query);
+		$result = $this->db->query($query);
         if ($result->num_rows == 0) {
             return array('status' => 'error', 'message' => 'No user/access token found');
         }

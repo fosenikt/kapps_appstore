@@ -1,19 +1,22 @@
 <?php
 namespace Kapps\Model\Apps;
 
-use \Kapps\Model\General\Db;
+use Kapps\Model\Database\Db;
 use \Kapps\Model\Auth\User as AuthUser;
 
 /**
  * summary
  */
-class Create extends Db
+class Create
 {
+	private $db;
 	private $AuthUser;
 	private $thisUser;
 
 	public function __construct()
 	{
+		$this->db = Db::getInstance();
+
 		$this->AuthUser = new AuthUser;
 		$this->thisUser = $this->AuthUser->me();
 	}
@@ -79,22 +82,12 @@ class Create extends Db
 		}
 
 
-
-		// Init DB connection
-		$db = Db::getInstance();
-
-
-		// Set MySQL charset
-		$db->set_charset("utf8mb4");
-		$db->query("SET NAMES 'utf8mb4'");
-
-
 		// Prepare query
-		$stmt = $db->prepare("INSERT INTO apps SET 
+		$stmt = $this->db->prepare("INSERT INTO apps SET 
 				created_by=?, updated_by=?, company_id=?, title=?, description=?, installation=?, type_id=?, license_id=?, link_source_code=?");
 		if ($stmt === false) {
 			error_log('Statement false');
-			trigger_error($db->error, E_USER_ERROR);
+			trigger_error($this->db->error, E_USER_ERROR);
 			return;
 		}
 
@@ -112,236 +105,6 @@ class Create extends Db
 		} 
 		
 		else {
-			return array('status' => 'error', 'error' => $stmt->error);
-		}
-
-		$stmt->close();
-	}
-
-
-
-
-
-
-	/**
-	 * Update application description
-	 * Used for description (modal) form in frontend
-	 * 
-	 * Security: Logged in user must be in same company as application
-	 * 
-	 * @author Robert Andresen <ra@fosenikt.no>
-	 * 
-	 * @todo Fix the close statement, pointless to have it there after function is returned
-	 * 
-	 * @return 	Array    $p     Input parameters
-	 * @return 	Array    $r     Status array
-	 */
-	public function update_description($p)
-	{
-		// Set company ID from logged in user to use in query.
-		// Used to make sure other users cannot update this app
-		$company_id = $this->thisUser['customer']['public_id'];
-
-
-		// Init DB connection and set charset
-		$db = Db::getInstance();
-		$db->set_charset("utf8mb4");
-		$db->query("SET NAMES 'utf8mb4'");
-
-
-		// Prepare MySQL statement
-		$stmt = $db->prepare("UPDATE apps SET description=? WHERE id=? AND company_id=?");
-		if ($stmt === false) {
-			error_log('Statement false');
-			trigger_error($db->error, E_USER_ERROR);
-			return;
-		}
-
-		// Bind parameters to query
-		$result = $stmt->bind_param("sis", $p['description'], $p['id'], $company_id);
-
-		if ( false===$result ) {
-			error_log($stmt->error);
-		}
-
-		$result = $stmt->execute(); // Execute query
-
-
-		// If MySQL updated successfully, return status array
-		if ($result) {
-			$this->set_updated_by($p['id']); // Set updated by
-			return array('status' => 'success');
-		} 
-		
-		else {
-			return array('status' => 'error', 'error' => $stmt->error);
-		}
-
-		$stmt->close();
-	}
-
-
-
-
-
-
-	/**
-	 * Update application installation text
-	 * Used for installation form (modal) in frontend
-	 * 
-	 * Security: Logged in user must be in same company as application
-	 * 
-	 * @author Robert Andresen <ra@fosenikt.no>
-	 * 
-	 * @todo Fix the close statement, pointless to have it there after function is returned
-	 * 
-	 * @return 	Array    $p     Input parameters
-	 * @return 	Array    $r     Status array
-	 */
-	public function update_installation($p)
-	{
-		// Set company ID from logged in user to use in query.
-		// Used to make sure other users cannot update this app
-		$company_id = $this->thisUser['customer']['public_id'];
-
-
-		// Init DB connection and set charset
-		$db = Db::getInstance();
-		$db->set_charset("utf8mb4");
-		$db->query("SET NAMES 'utf8mb4'");
-
-
-		// Prepare MySQL statement
-		$stmt = $db->prepare("UPDATE apps SET installation=? WHERE id=? AND company_id=?");
-		if ($stmt === false) {
-			error_log('Statement false');
-			trigger_error($db->error, E_USER_ERROR);
-			return;
-		}
-
-		// Bind parameters to query
-		$result = $stmt->bind_param("sis", $p['installation'], $p['id'], $company_id);
-
-		if ( false===$result ) {
-			error_log($stmt->error);
-		}
-
-		$result = $stmt->execute(); // Execute query
-
-		// If MySQL updated successfully, return status array
-		if ($result) {
-			$this->set_updated_by($p['id']);
-			return array('status' => 'success');
-		} 
-		
-		else {
-			return array('status' => 'error', 'error' => $stmt->error);
-		}
-
-		$stmt->close();
-	}
-
-
-
-
-
-
-	/**
-	 * Update application details
-	 * Used for details form (sidebar) in frontend
-	 * 
-	 * Security: Logged in user must be in same company as application
-	 * 
-	 * @author Robert Andresen <ra@fosenikt.no>
-	 * 
-	 * @todo Fix the close statement, pointless to have it there after function is returned
-	 * 
-	 * @return 	Array    $p     Input parameters
-	 * @return 	Array    $r     Status array
-	 */
-	public function update_details($p)
-	{
-		// Set company ID from logged in user to use in query.
-		// Used to make sure other users cannot update this app
-		$company_id = $this->thisUser['customer']['public_id'];
-
-
-		// Init DB connection and set charset
-		$db = Db::getInstance();
-		$db->set_charset("utf8mb4");
-		$db->query("SET NAMES 'utf8mb4'");
-
-
-		// Prepare MySQL statement
-		$stmt = $db->prepare("UPDATE apps SET title=?, short_description=?, license_id=?, tags=?, link_source_code=? WHERE id=? AND company_id=?");
-		if ($stmt === false) {
-			error_log('Statement false');
-			trigger_error($db->error, E_USER_ERROR);
-			return;
-		}
-
-		// Bind parameters to query
-		$result = $stmt->bind_param("ssissis", $p['title'], $p['short_description'], $p['license_id'], $p['tags'], $p['link_source_code'], $p['id'], $company_id);
-
-		if ( false===$result ) {
-			error_log($stmt->error);
-		}
-
-		$result = $stmt->execute(); // Execute query
-
-		if ($result) {
-			$this->set_updated_by($p['id']);
-			return array('status' => 'success');
-		}
-		
-		else {
-			return array('status' => 'error', 'error' => $stmt->error);
-		}
-
-		$stmt->close();
-	}
-
-
-
-
-
-
-	/**
-	 * Set updated by
-	 * Only sets updated by, to know how updated the application last
-	 * 
-	 * Security: Private
-	 * 
-	 * @author Robert Andresen <ra@fosenikt.no>
-	 * 
-	 * @todo Fix the close statement, pointless to have it there after function is returned
-	 * 
-	 * @return 	Int      $id    App ID
-	 * @return 	Array    $r     Status array
-	 */
-	private function set_updated_by($id)
-	{
-		// Init DB connection
-		$db = Db::getInstance();
-
-		$stmt = $db->prepare("UPDATE apps SET updated_by=? WHERE id=?");
-		if ($stmt === false) {
-			error_log('Statement false');
-			trigger_error($db->error, E_USER_ERROR);
-			return;
-		}
-
-		$result = $stmt->bind_param("ii", $this->thisUser['id'], $id);
-
-		if ( false===$result ) {
-			error_log($stmt->error);
-		}
-
-		$result = $stmt->execute();
-
-		if ($result) {
-			return array('status' => 'success');
-		} else {
 			return array('status' => 'error', 'error' => $stmt->error);
 		}
 
@@ -373,8 +136,7 @@ class Create extends Db
 
 		// Query apps
 		$query = "SELECT * FROM app_types WHERE id='$id'";
-		$db = Db::getInstance();
-		$result = $db->query($query);
+		$result = $this->db->query($query);
 
 		if ($result->num_rows > 0) {
 			while ($row = $result->fetch_array()) {

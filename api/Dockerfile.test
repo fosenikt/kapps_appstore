@@ -1,0 +1,32 @@
+FROM php:8.2-cli
+
+# Install necessary extensions and tools
+RUN apt-get update && apt-get install -y \
+    git \
+    zip \
+    unzip \
+    default-mysql-client \
+    libpng-dev \
+    && docker-php-ext-install mysqli gd \
+    && docker-php-ext-enable mysqli gd
+
+# Install Composer
+COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
+
+# Set the working directory
+WORKDIR /app
+
+# Copy the application files
+COPY . /app
+
+# Change to the directory where composer.json is located
+WORKDIR /app/src
+
+# Install dependencies with superuser permissions
+RUN COMPOSER_ALLOW_SUPERUSER=1 composer install --no-interaction --prefer-dist --optimize-autoloader
+
+# Set the working directory back to /app
+WORKDIR /app
+
+# Use project-specific PHPUnit
+CMD ["./src/vendor/bin/phpunit", "--configuration", "/app/tests/phpunit.xml"]

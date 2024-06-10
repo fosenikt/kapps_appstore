@@ -1,16 +1,18 @@
 <?php
 namespace Kapps\Model\Delivery;
 
-use \Kapps\Model\General\Db;
+use Kapps\Model\Database\Db;
 
 /**
  * summary
  */
-class Methods extends Db
+class Methods
 {
+	private $db;
 
 	public function __construct()
 	{
+		$this->db = Db::getInstance();
 	}
 
 
@@ -19,8 +21,7 @@ class Methods extends Db
 		$r = array();
 
 		$query = "SELECT * FROM apps_delivery_methods";
-		$db = Db::getInstance();
-		$result = $db->query($query);
+		$result = $this->db->query($query);
 
 		if ($result->num_rows > 0) {
 			while ($row = $result->fetch_array()) {

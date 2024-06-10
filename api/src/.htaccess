@@ -1,6 +1,10 @@
 Options +FollowSymLinks
 RewriteEngine On
 
+# Exclude Swagger UI folder from rewriting rules
+RewriteCond %{REQUEST_URI} ^/swagger [NC]
+RewriteRule ^ - [L]
+
 RewriteCond %{DOCUMENT_ROOT} !-f
 RewriteRule !\.(js|ico|gif|GIF|jpg|JPG|jpeg|JPEG|png|PNG|webp|css|html|swf|flv|xml|mst|svg|php|pdf|xlsx|docx|mp4|avi)$ index.php [QSA,L]
 
