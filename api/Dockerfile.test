@@ -1,14 +1,19 @@
 FROM php:8.2-cli
 
 # Install necessary extensions and tools
-RUN apt-get update && apt-get install -y \
-    git \
-    zip \
-    unzip \
-    default-mysql-client \
+RUN apt-get clean && apt-get update && apt-get install -y \
+    libzip-dev \
     libpng-dev \
-    && docker-php-ext-install mysqli gd \
-    && docker-php-ext-enable mysqli gd
+    libjpeg-dev \
+    libicu-dev \
+    libc-client-dev \
+    libkrb5-dev \
+    unzip \
+    curl \
+    && docker-php-ext-configure imap --with-kerberos --with-imap-ssl \
+    && docker-php-ext-install -j$(nproc) intl imap zip mysqli gd exif bcmath iconv \
+    && pecl install apcu \
+    && docker-php-ext-enable apcu imap mysqli
 
 # Install Composer
 COPY --from=composer:latest /usr/bin/composer /usr/bin/composer

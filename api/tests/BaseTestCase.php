@@ -11,7 +11,11 @@ class BaseTestCase extends TestCase
     {
         require_once __DIR__ . '/../src/config.php'; // Ensure configuration is loaded
         require_once __DIR__ . '/../src/app/Model/Database/Db.php'; // Ensure Db class is loaded
+
+        $this->createCompany(); // Call the method to create company entry
     }
+
+    
 
     protected function get($uri)
     {
@@ -33,30 +37,38 @@ class BaseTestCase extends TestCase
         $this->authToken = $token;
     }
 
-    protected function request($method, $uri, $data = [], $isMultipart = false)
-    {
-        $url = $this->baseUrl . $uri;
-        $headers = $isMultipart ? "Content-Type: multipart/form-data\r\n" : "Content-Type: application/json\r\n";
-        if ($this->authToken) {
-            $headers .= "Authorization: Bearer {$this->authToken}\r\n";
-        }
-        $options = [
-            'http' => [
-                'header' => $headers,
-                'method' => $method,
-                'content' => $isMultipart ? http_build_query($data) : json_encode($data),
-                'ignore_errors' => true
-            ]
-        ];
-        $context = stream_context_create($options);
-        $response = file_get_contents($url, false, $context);
-        return json_decode($response, true);
-    }
+	protected function request($method, $uri, $data = [], $isMultipart = false)
+	{
+		$url = $this->baseUrl . $uri;
+		$headers = $isMultipart ? "Content-Type: multipart/form-data\r\n" : "Content-Type: application/json\r\n";
+		if ($this->authToken) {
+			$headers .= "Authorization: Bearer {$this->authToken}\r\n";
+		}
+		$options = [
+			'http' => [
+				'header' => $headers,
+				'method' => $method,
+				'content' => $isMultipart ? http_build_query($data) : json_encode($data),
+				'ignore_errors' => true
+			]
+		];
+		$context = stream_context_create($options);
+		$response = @file_get_contents($url, false, $context);
+
+		// Log response for debugging
+		error_log("Request to $url returned: " . print_r($response, true));
+
+		return json_decode($response, true);
+	}
+
 
     protected function getDbConnection()
     {
         return \Kapps\Model\Database\Db::getInstance();
     }
+
+
+	
 
     protected function authenticate()
     {
@@ -80,6 +92,9 @@ class BaseTestCase extends TestCase
 
         // Set the auth token
         $this->setAuthToken($validateCodeResponse['token']);
+
+		// Step 3: Update user to admin
+        $this->updateUserToAdmin($mail);
     }
 
     protected function getLoginCodeForTesting($mail)
@@ -96,5 +111,44 @@ class BaseTestCase extends TestCase
         }
 
         return null;
+    }
+
+
+	protected function updateUserToAdmin($mail)
+    {
+        $db = $this->getDbConnection();
+
+        if ($stmt = $db->prepare('UPDATE users SET admin = 1 WHERE mail = ?')) {
+            $stmt->bind_param('s', $mail);
+            $stmt->execute();
+            $stmt->close();
+        }
+    }
+
+
+	protected function createCompany()
+    {
+        $db = $this->getDbConnection();
+
+        // Check if company with domain example.com already exists
+        $stmt = $db->prepare('SELECT COUNT(*) FROM company WHERE domain = ?');
+        $domain = 'example.com';
+        $stmt->bind_param('s', $domain);
+        $stmt->execute();
+        $stmt->bind_result($count);
+        $stmt->fetch();
+        $stmt->close();
+
+        // If not, insert it
+        if ($count == 0) {
+            $stmt = $db->prepare('INSERT INTO company (public_id, domain, title, type, access) VALUES (?, ?, ?, ?, ?)');
+            $publicId = 'public-id';
+            $title = 'Example Company';
+            $type = 'Bedrift';
+            $access = 1;
+            $stmt->bind_param('ssssi', $publicId, $domain, $title, $type, $access);
+            $stmt->execute();
+            $stmt->close();
+        }
     }
 }

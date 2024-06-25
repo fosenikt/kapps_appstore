@@ -1,19 +1,19 @@
 # Kapps Appstore
 
-## 1. About
+## About
 kApps is just a database (with backend/api and frontend) ment for categorizing applications (like an appstore).
 It's goal is to share applications and services, and make them more accessible for government/counties/municipalities.
 
 
 
-## 2. Prerequisite
+## Prerequisite
 - Any Linux docker environment ([How To Install and Use Docker on Ubuntu 18.04](https://www.digitalocean.com/community/tutorials/how-to-install-and-use-docker-on-ubuntu-18-04))
 
 ### Recommended
 - Azure Enterprise Application for O365-login.
 
 
-## 3. Install
+## Install
 1. Register two DNS with an A-record to your environment (e.g. apps.kapps.no and appsapi.kapps.no).
 2. Register and configure the Azure app to get keys (see 4. Register an Azure App)
 3. Create docker-compose.yaml and paste example from *5.Docker-compose* on your Linux Docker server.
@@ -25,7 +25,7 @@ It's goal is to share applications and services, and make them more accessible f
 
 
 
-### 3.1 Environtment
+### Environtment
 If you use DNS, you will need and proxy like [jwilder/nginx-proxy](https://hub.docker.com/r/jwilder/nginx-proxy) or [træfik](https://doc.traefik.io/traefik/).
 
 We have used [jwilder/nginx-proxy](https://hub.docker.com/r/jwilder/nginx-proxy) with the [Let's encrypt companion](https://github.com/nginx-proxy/docker-letsencrypt-nginx-proxy-companion).
@@ -54,13 +54,13 @@ docker run --detach \
     jrcs/letsencrypt-nginx-proxy-companion
 ```
 
-### 3.2 Portainer
+### Portainer
 [Portainer](https://www.portainer.io/products/community-edition) is a great tool to get a GUI for your docker environment.
 
 
 
 
-## 4. Register an Azure App for Office365 Login
+## Register an Azure App for Office365 Login
 
 1. Go to https://aad.portal.azure.com/
 2. Select All services in left sidebar menu
@@ -70,7 +70,7 @@ docker run --detach \
 6. Select single-tenant (Should be default selected)
 7. Redirect URL should be https://CALENDAR_DOMAIN/login/microsoft/getToken.php
 
-### 4.1 Configure the app
+### Configure the app
 
 1. Go to Certificates & secrets and click on New client secret
 2. Copy the secret (Important, as the secret will be hidden after you navigate to another page)
@@ -91,7 +91,7 @@ This keys, with the secret key you copied, will need to be entered in your docke
 
 
 
-## 5. Docker-compose:
+## Docker-compose:
 
 ```
 version: '3.2'
@@ -344,7 +344,7 @@ Not used in this application. Used for tracking position of user-login and usage
 
 
 
-## 6. Update
+## Update
 To update FIPO-calender to a new version, you need to pull the latest image.
 
 ```
@@ -357,11 +357,11 @@ You can also open the container in Portainer, click the Recreate-button and chec
 
 
 
-## 7. Populate database
+## Populate database
 Database file is located under /db folder.
 
 
-## 8. Security, dataflow and storage
+## Security, dataflow and storage
 Login is limited to domains linked to companies in the database.
 As long as the user has a valid domain, the login will be granted.
 
@@ -381,8 +381,20 @@ The only reason for login is to make it simpler for new users to share and creat
 It will also minimize damage is anyone shares non-public content by mistake.**
 
 
+## Code testing
+docker-compose run --rm composer-update
+docker-compose build
+docker-compose run --rm tests
 
-## 9. License
+### Prerequisites:
+
+- kapps-appstore-api container must be running
+- kapps-appstore-db must be running.
+- 
+
+
+
+## License
 Copyright (c) 2021 Fosen IKT
 
 Permission is hereby granted, free of charge, to any person obtaining

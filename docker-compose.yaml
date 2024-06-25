@@ -91,7 +91,6 @@ services:
     entrypoint: ["./src/vendor/bin/phpunit", "--configuration", "/app/tests/phpunit.xml"]
     environment:
       - VIRTUAL_HOST=${BACKEND_HOST}
-      - SELF_SIGNED_HOST=${SELF_SIGNED_HOST}
       - FRONTEND_HOST=${FRONTEND_HOST}
       - DB_NAME=${DB_NAME}
       - DB_USER=${DB_USER}

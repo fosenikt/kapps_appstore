@@ -10,7 +10,7 @@ class GetCompanyUsersTest extends BaseTestCase
         $this->authenticate();
 
         // Assuming there is a company with ID 1
-        $companyId = 'o4yEbqLm';
+        $companyId = 'public-id';
 
         // Step 1: Get all users for the company
         $response = $this->get('/users/company/get/' . $companyId);
