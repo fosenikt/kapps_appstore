@@ -5,7 +5,7 @@ use OpenApi\Generator;
 
 // Specify the directories or files to scan for OpenAPI annotations
 // It's important to include all relevant source files or directories here.
-$directoriesToScan = ['index.php', 'app']; // Add or modify paths as necessary
+$directoriesToScan = ['index.php', 'app/Model/OpenApiSpec', 'app/Controller']; // Add or modify paths as necessary
 
 // Scan the files for OpenAPI annotations
 $openapi = Generator::scan($directoriesToScan);

@@ -11,7 +11,10 @@ servers:
     description: 'API server'
   -
     url: 'https://appsapi.kapps.local'
-    description: 'Development DNS'
+    description: 'Local Development Server 1'
+  -
+    url: 'https://kappsappsapi.fosenikt.no'
+    description: 'Local Development Server 2'
 paths:
   /app/new:
     post:
@@ -169,8 +172,8 @@ paths:
     get:
       tags:
         - Apps
-      summary: 'Get all apps'
-      description: 'Retrieves all published apps'
+      summary: 'Get single app'
+      description: 'Retrieves single published app or draft if owner'
       operationId: 132f4d5d76873abc3b018b9fe308e6fb
       parameters:
         -
@@ -198,17 +201,9 @@ paths:
     get:
       tags:
         - Apps
-      summary: 'Get single app'
-      description: 'Retrieves a single app by its ID.'
+      summary: 'Get all apps'
+      description: 'Retrieves all apps.'
       operationId: cc6bcc8e17f1856380c1d9076d92cb3f
-      parameters:
-        -
-          name: id
-          in: path
-          description: 'The ID of the app to retrieve'
-          required: true
-          schema:
-            type: string
       responses:
         '200':
           description: 'App retrieved successfully'
@@ -1043,7 +1038,13 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/License'
+                properties:
+                  id: { type: string, example: '1' }
+                  title: { type: string, example: 'MIT License' }
+                  description: { type: string, example: '' }
+                  link: { type: string, example: 'https://choosealicense.com/licenses/mit/' }
+                  details: { properties: { permission: { type: array, items: { properties: { id: { type: string, example: '1' }, type: { type: string, example: permission }, title: { type: string, example: 'Commercial use' }, description: { type: string, example: 'The licensed material and derivatives may be used for commercial purposes.' } }, type: object }, example: [{ id: '1', type: permission, title: 'Commercial use', description: 'The licensed material and derivatives may be used for commercial purposes.' }] }, condition: { type: array, items: { properties: { id: { type: string, example: '7' }, type: { type: string, example: condition }, title: { type: string, example: 'License and copyright notice' }, description: { type: string, example: 'A copy of the license and copyright notice must be included with the licensed material.' } }, type: object }, example: [{ id: '7', type: condition, title: 'License and copyright notice', description: 'A copy of the license and copyright notice must be included with the licensed material.' }] }, limitation: { type: array, items: { properties: { id: { type: string, example: '11' }, type: { type: string, example: limitation }, title: { type: string, example: Liability }, description: { type: string, example: 'This license includes a limitation of liability.' } }, type: object }, example: [{ id: '11', type: limitation, title: Liability, description: 'This license includes a limitation of liability.' }] } }, type: object }
+                type: object
         '404':
           description: 'Not found'
   '/license/get/{id}':
@@ -1067,7 +1068,13 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/License'
+                properties:
+                  id: { type: string, example: '1' }
+                  title: { type: string, example: 'MIT License' }
+                  description: { type: string, example: '' }
+                  link: { type: string, example: 'https://choosealicense.com/licenses/mit/' }
+                  details: { properties: { permission: { type: array, items: { properties: { id: { type: string, example: '1' }, type: { type: string, example: permission }, title: { type: string, example: 'Commercial use' }, description: { type: string, example: 'The licensed material and derivatives may be used for commercial purposes.' } }, type: object }, example: [{ id: '1', type: permission, title: 'Commercial use', description: 'The licensed material and derivatives may be used for commercial purposes.' }] }, condition: { type: array, items: { properties: { id: { type: string, example: '7' }, type: { type: string, example: condition }, title: { type: string, example: 'License and copyright notice' }, description: { type: string, example: 'A copy of the license and copyright notice must be included with the licensed material.' } }, type: object }, example: [{ id: '7', type: condition, title: 'License and copyright notice', description: 'A copy of the license and copyright notice must be included with the licensed material.' }] }, limitation: { type: array, items: { properties: { id: { type: string, example: '11' }, type: { type: string, example: limitation }, title: { type: string, example: Liability }, description: { type: string, example: 'This license includes a limitation of liability.' } }, type: object }, example: [{ id: '11', type: limitation, title: Liability, description: 'This license includes a limitation of liability.' }] } }, type: object }
+                type: object
         '404':
           description: 'Not found'
   /mail/send:
@@ -2030,54 +2037,6 @@ components:
               type: boolean
               example: true
           type: object
-    License:
-      properties:
-        id:
-          type: string
-          example: '1'
-        title:
-          type: string
-          example: 'MIT License'
-        description:
-          type: string
-          example: ''
-        link:
-          type: string
-          example: 'https://choosealicense.com/licenses/mit/'
-        details:
-          properties:
-            permission:
-              type: array
-              items:
-                $ref: '#/components/schemas/LicenseDetail'
-              example:
-                -
-                  id: '1'
-                  type: permission
-                  title: 'Commercial use'
-                  description: 'The licensed material and derivatives may be used for commercial purposes.'
-            condition:
-              type: array
-              items:
-                $ref: '#/components/schemas/LicenseDetail'
-              example:
-                -
-                  id: '7'
-                  type: condition
-                  title: 'License and copyright notice'
-                  description: 'A copy of the license and copyright notice must be included with the licensed material.'
-            limitation:
-              type: array
-              items:
-                $ref: '#/components/schemas/LicenseDetail'
-              example:
-                -
-                  id: '11'
-                  type: limitation
-                  title: Liability
-                  description: 'This license includes a limitation of liability.'
-          type: object
-      type: object
     Type:
       properties:
         id:

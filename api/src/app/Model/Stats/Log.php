@@ -27,8 +27,15 @@ class Log
 
 	public function log($type, $entity_id, $entity_id2=null)
 	{
-		$user_id = $this->me['id'];
 		$date = date('Y-m-d');
+
+		$get_user = (new AuthUser())->me();
+
+		if (is_array($get_user) && isset($get_user['id'])) {
+			$user_id = $get_user['id'];
+		} else {
+			$user_id = 0;
+		}
 
 		// Prepare our SQL, preparing the SQL statement will prevent SQL injection.
 		if ($stmt = $this->db->prepare('REPLACE INTO stats SET date_created=?, type=?, user_id=?, entity_id=?, entity_id2=?')) {

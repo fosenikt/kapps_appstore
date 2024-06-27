@@ -66,7 +66,6 @@ class User
 
 			// Query user
 			$query = "SELECT id, mail, customer_id, firstname, lastname, initials, mobile, company_role, admin FROM users WHERE id LIKE '$user_id' LIMIT 1";
-			error_log("USer me ID $user_id. Query: $query");
 			$result = $this->db->query($query);
 			$numRows = $result->num_rows;
 
@@ -138,8 +137,6 @@ class User
 			error_log('Invalid token. Token most likely expired or signed out.');
 			//return array('status' => 'error', 'message' => 'Invalid token. Token most likely expired or signed out.');
 			return false;
-		} else {
-			error_log('Token valid: ' . $get_token);
 		}
 
 

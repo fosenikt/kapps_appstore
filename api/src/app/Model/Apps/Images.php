@@ -245,7 +245,6 @@ class Images
 				error_log('Autoset primary image: ' . $get_images[0]['filename']);
 				$this->set_primary_image($id, $get_images[0]['filename']);
 			} else {
-				error_log('No images for this item');
 				return null;
 			}
 

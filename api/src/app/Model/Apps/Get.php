@@ -61,12 +61,8 @@ class Get
 	*/
 	public function get_app($id)
 	{
-		error_log("Model: Get app: $id");
-
-		$r = array(); // Declare return-array
-		error_log("This user: " . json_encode($this->thisUser));
-
-		
+		error_log("Model: get_app $id");
+		$r = array(); // Declare return-array        
 
 		// Query apps
 		$queryBuilder = new QueryBuilder();
@@ -79,12 +75,21 @@ class Get
 			->where('A.id', '=', $id);
 
 		if ($this->isAuthenticated) {
-			$queryBuilder->where('A.status', 'LIKE', 'published')
-                     	 ->orWhere('A.company_id', '=', $this->thisUser['customer']['public_id']);
+			$queryBuilder->whereRaw('(A.status LIKE ? OR A.company_id = ?)', ['published', $this->thisUser['customer']['public_id']]);
 		} else {
 			$queryBuilder->where('A.status', 'LIKE', 'published');
 		}
 
+		$queryBuilder->debug();
+		/*
+			SELECT A.*, T.title AS type_title, T.fa_icon AS type_icon, UC.firstname AS uc_firstname, UC.lastname AS uc_lastname, UC.mail AS uc_mail, UE.firstname AS ue_firstname, UE.lastname AS ue_lastname, UE.mail AS ue_mail, L.title AS license_title, L.link AS license_link 
+			FROM apps AS A 
+			JOIN app_types AS T ON A.type_id = T.id 
+			JOIN users AS UC ON A.created_by = UC.id 
+			JOIN users AS UE ON A.updated_by = UE.id 
+			JOIN licenses AS L ON A.license_id = L.id 
+			WHERE A.id = ? AND (A.status LIKE ? OR A.company_id = ?)
+		*/
 		$result = $queryBuilder->get();
 
 		if (!empty($result)) {
@@ -92,7 +97,6 @@ class Get
 		}
 
 		return $r;
-
 	}
 
 
@@ -139,7 +143,7 @@ class Get
 
 		if (!empty($results)) {
 			foreach ($results as $row) {
-				$r[] = $this->output($row);
+				$r[] = $this->output($row, false);
 			}
 		}
 
@@ -298,7 +302,7 @@ class Get
 	* @param  	Array   $data      Data array from SQL-query
 	* @return  	Array   $r         Array with app-data (see output)
 	*/
-	private function output($data)
+	private function output($data, $full_output=true)
 	{
 
 		$isAuthenticated = (new AuthUser())->isAuthenticated();
@@ -333,15 +337,12 @@ class Get
 			}
 		}
 
-		if (!empty($data['tags'])) {
-			$tags = explode(',', $data['tags']);
-		} else {
-			$tags = null;
-		}
+		$tags = !empty($data['tags']) ? explode(',', $data['tags']) : null;
+		$license_title = $data['license_title'] ?? null;
+		$license_link = $data['license_link'] ?? null;
 
 
-
-		if (!$isAuthenticated) {
+		if (!$isAuthenticated || !$full_output) {
 			return array(
 				'id' => $data['id'],
 				'title' => $data['title'],
@@ -357,6 +358,7 @@ class Get
 					'string' => $data['tags'],
 				),
 				'status' => $data['status'],
+				'company' => $this->Companies->get_company_simple($data['company_id']),
 			);
 		}
 
@@ -392,8 +394,8 @@ class Get
 				'delivery_id' => $data['delivery_id'],
 				'license' => array(
 					'id' => $data['license_id'],
-					'title' => $data['license_title'],
-					'link' => $data['license_link']
+					'title' => $license_title,
+					'link' => $license_link
 				),
 				'tags' => array(
 					'array' => $tags,

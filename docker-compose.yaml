@@ -1,3 +1,5 @@
+version: '3.8'
+
 services:
 
   ## FRONTEND
@@ -66,6 +68,7 @@ services:
         - SMTP_SENDER_NAME=${SMTP_SENDER_NAME}
     networks:
       - default
+      - kapps-internal
 
 
   composer-update:
@@ -117,44 +120,43 @@ services:
   ## Database
   kapps-appstore-db:
     container_name: kapps-appstore-db
-    build:
-      context: ./db/
-      dockerfile: ./Dockerfile
+    image: mysql:latest
     restart: always
-    command: --default-authentication-plugin=mysql_native_password
     environment:
       MYSQL_DATABASE: ${DB_NAME}
-      # So you don't have to use root, but you can if you like
       MYSQL_USER: ${DB_USER}
-      # You can use whatever password you like
       MYSQL_PASSWORD: ${DB_PASSWORD}
-      # Password for root access
       MYSQL_ROOT_PASSWORD: ${DB_PASSWORD}
       TZ: Europe/Oslo
+      MYSQL_ROOT_HOST: '%'
+      MYSQL_INITDB_SKIP_TZINFO: 1
+    command: --mysql-native-password=ON
     ports:
-      # <Port exposed> : < MySQL Port running inside container>
       - '8033:3306'
-      # Where our data will be persisted
     volumes:
       - ./db:/docker-entrypoint-initdb.d
       - kapps-appstore-db:/var/lib/mysql
       - "/etc/timezone:/etc/timezone:ro"
       - "/etc/localtime:/etc/localtime:ro"
+    networks:
+      - kapps-internal
 
   ## PHPmyadmin
   kapps-appstore-phpmyadmin:
     container_name: kapps-appstore-phpmyadmin
     image: phpmyadmin/phpmyadmin
-    links:
+    depends_on:
       - kapps-appstore-db
     environment:
-      PMA_HOST: ${PHPMYADMIN_HOST}
+      PMA_HOST: kapps-appstore-db
       PMA_PORT: 3306
       UPLOAD_LIMIT: ${PHPMYADMIN_UPLOAD_LIMIT}
     ports:
       - '8032:80'
-    volumes: 
+    volumes:
       - /sessions
+    networks:
+      - kapps-internal
 
   ## Memcached
   kapps-appstore-memcached:
@@ -195,3 +197,5 @@ networks:
   default:
     name: webproxy
     external: true
+  kapps-internal:
+    driver: bridge

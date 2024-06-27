@@ -68,6 +68,44 @@ class Get
 
 
 
+
+	/**
+	 * Get company by Public ID
+	 * 
+	 * Security: None (backend only). Not available from controller or API now.
+	 * 
+	 * @author Robert Andresen <ra@fosenikt.no>
+	 * 
+	 * @param 	Int      $id    Company Public ID
+	 * @return 	Array    $r     Array with company-data
+	 */
+	public function get_company_simple($id)
+	{
+		$r = null;
+
+		// Prepare our SQL, preparing the SQL statement will prevent SQL injection.
+		if ($stmt = $this->db->prepare('SELECT public_id, title, logo FROM company WHERE public_id=?')) {
+			// Bind parameters (s = string, i = int, b = blob, etc), in our case the username is a string so we use "s"
+			$stmt->bind_param('s', $id);
+			$stmt->execute();
+		}
+
+
+		$result = $stmt->get_result();
+		while ($row = $result->fetch_assoc()) {
+			$r = array(
+				'public_id' => $row['public_id'],
+				'title' => $row['title'],
+				'logo' => $this->get_logo($row['logo']),
+			);
+		}
+
+		return $r;
+	}
+
+
+
+
 	/**
 	 * Get all companies
 	 * 

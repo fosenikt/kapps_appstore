@@ -70,7 +70,11 @@ namespace Kapps\Model\OpenApiSpec;
  * )
  * @OA\Server(
  *     url="https://appsapi.kapps.local",
- *     description="Development DNS"
+ *     description="Local Development Server 1"
+ * )
+ * @OA\Server(
+ *     url="https://kappsappsapi.fosenikt.no",
+ *     description="Local Development Server 2"
  * )
  * @OA\Components(
  *     @OA\SecurityScheme(
