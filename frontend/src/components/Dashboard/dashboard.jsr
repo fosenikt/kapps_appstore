@@ -175,7 +175,9 @@
 		if (response != null) {
 			Object.entries(response).forEach(
 				([key, app]) => {
-					popular_list += `<li><a href="/app/${app.id}">${app.title}</a></li>`;
+					if (app != null) {
+						popular_list += `<li><a href="/app/${app.id}">${app.title}</a></li>`;
+					}
 				}
 			);
 		}
