@@ -96,11 +96,11 @@ class Event
 	public function error($p)
 	{
 
-		if (isset($p['department_id'])) {
+		/* if (isset($p['department_id'])) {
 			$department_id = $p['department_id'];
 		} else {
 			$department_id = $this->get_my_department();
-		}
+		} */
 
 		if (isset($p['user_id'])) {
 			$user_id = $p['user_id'];
@@ -165,14 +165,14 @@ class Event
 		$ip_address = $_SERVER['REMOTE_ADDR'];
 
 		$stmt = $this->db->prepare("INSERT INTO log_errors SET 
-				user_agent=?, ip_address=?, user_id=?, department_id=?, domain=?, title=?, message=?, severity=?, error_id=?, entity_id=?, event_data=?");
+				user_agent=?, ip_address=?, user_id=?, domain=?, title=?, message=?, severity=?, error_id=?, entity_id=?, event_data=?");
 		if ($stmt === false) {
 			error_log('Statement false');
 			trigger_error($this->db->error, E_USER_ERROR);
 			return;
 		}
 
-		$result = $stmt->bind_param("ssiisssssis", $user_agent, $ip_address, $user_id, $department_id, $domain, $title, $message, $severity, $error_id, $entity_id, $event_data);
+		$result = $stmt->bind_param("ssisssssis", $user_agent, $ip_address, $user_id, $domain, $title, $message, $severity, $error_id, $entity_id, $event_data);
 
 		if ( false===$result ) {
 			error_log($stmt->error);
@@ -196,7 +196,7 @@ class Event
 
 
 
-	private function get_my_department()
+	/* private function get_my_department()
 	{
 		$query = "SELECT T.department_id FROM hd_teams_members AS M
 				  INNER JOIN hd_teams AS T ON T.id = M.team_id
@@ -209,6 +209,6 @@ class Event
 		}
 
 		return 0;
-	}
+	} */
 
 }

@@ -105,12 +105,18 @@ class Login
 		// Insert e-mail to database for schedule sending
 		$send_mail = $this->Send->insert_mail($mail, $subject, $body);
 
+		if (isset($send_mail['status']) && $send_mail['status'] == 'success') {
+			$send_mail_status = true;
+		} else {
+			$send_mail_status = false;
+		}
+
 
 		// Return status
 		if ($send_mail['status'] == 'success') {
-			return array('status' => 'success', 'send_mail' => $send_mail);
+			return array('status' => 'success', 'send_mail' => $send_mail_status);
 		} else {
-			return array('status' => 'error', 'message' => 'Could not store email for sending', 'send_mail' => $send_mail);
+			return array('status' => 'error', 'message' => 'Could not store email for sending', 'send_mail' => $send_mail_status);
 		}
 	}
 

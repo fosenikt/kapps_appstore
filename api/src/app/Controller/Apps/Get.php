@@ -72,10 +72,18 @@ class Get {
 
 	/**
      * @OA\Get(
-     *     path="/apps/get",
+     *     path="/app/get/{id}",
      *     tags={"Apps"},
      *     summary="Get all apps",
      *     description="Retrieves all published apps",
+	 *     security={{"bearerAuth":{}}},
+	 *     @OA\Parameter(
+     *         name="id",
+     *         in="path",
+     *         required=true,
+     *         description="The ID of the app to retrieve",
+     *         @OA\Schema(type="string")
+     *     ),
      *     @OA\Response(
      *         response=200,
      *         description="Apps retrieved successfully",
@@ -96,7 +104,8 @@ class Get {
      * )
      */
 	public function get_app($id)
-	{		
+	{
+		error_log("Controller: Get app: $id");
 		$obj = new \Kapps\Model\Apps\Get();
 		return $obj->get_app($id);
 	}
@@ -106,10 +115,11 @@ class Get {
 
 	/**
      * @OA\Get(
-     *     path="/app/get/{id}",
+     *     path="/apps/get",
      *     tags={"Apps"},
      *     summary="Get single app",
      *     description="Retrieves a single app by its ID.",
+	 *     security={{"bearerAuth":{}}},
      *     @OA\Parameter(
      *         name="id",
      *         in="path",

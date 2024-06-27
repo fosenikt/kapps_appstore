@@ -11,7 +11,7 @@ servers:
     description: 'API server'
   -
     url: 'https://appsapi.kapps.local'
-    description: 'API server'
+    description: 'Development DNS'
 paths:
   /app/new:
     post:
@@ -27,7 +27,7 @@ paths:
             schema:
               properties:
                 type_id:
-                  description: 'The ID of the app type'
+                  description: 'The ID of the app type (See /types/get)'
                   type: string
                 title:
                   description: 'The title of the app'
@@ -39,7 +39,7 @@ paths:
                   description: 'The installation instructions'
                   type: string
                 license_id:
-                  description: 'The ID of the license'
+                  description: 'The ID of the license (See /licenses/get)'
                   type: string
                 link_source_code:
                   description: 'The link to the source code'
@@ -165,13 +165,21 @@ paths:
       security:
         -
           bearerAuth: []
-  /apps/get:
+  '/app/get/{id}':
     get:
       tags:
         - Apps
       summary: 'Get all apps'
       description: 'Retrieves all published apps'
-      operationId: 4603bb59a98f0813800eda661970b9bb
+      operationId: 132f4d5d76873abc3b018b9fe308e6fb
+      parameters:
+        -
+          name: id
+          in: path
+          description: 'The ID of the app to retrieve'
+          required: true
+          schema:
+            type: string
       responses:
         '200':
           description: 'Apps retrieved successfully'
@@ -183,13 +191,16 @@ paths:
                   oneOf: [{ $ref: '#/components/schemas/AppPublic' }, { $ref: '#/components/schemas/AppFull' }]
         '404':
           description: 'Apps not found'
-  '/app/get/{id}':
+      security:
+        -
+          bearerAuth: []
+  /apps/get:
     get:
       tags:
         - Apps
       summary: 'Get single app'
       description: 'Retrieves a single app by its ID.'
-      operationId: 2c03a72b6fde41fb2e9ac5ed905f71e9
+      operationId: cc6bcc8e17f1856380c1d9076d92cb3f
       parameters:
         -
           name: id
@@ -209,6 +220,9 @@ paths:
                   oneOf: [{ $ref: '#/components/schemas/AppPublic' }, { $ref: '#/components/schemas/AppFull' }]
         '404':
           description: 'Apps not found'
+      security:
+        -
+          bearerAuth: []
   '/company/app/{id}':
     get:
       tags:
@@ -573,13 +587,13 @@ paths:
       security:
         -
           bearerAuth: []
-  /auth/send_login_link:
+  /auth/login/send:
     post:
       tags:
         - Auth
       summary: 'Send login link'
       description: 'Sends a login link to the specified email address'
-      operationId: d4ade359c8bf5b370c79d8257fa86c48
+      operationId: 88e159d0347d61ed991e35811c69200f
       requestBody:
         required: true
         content:
@@ -602,13 +616,13 @@ paths:
                 type: object
         '400':
           description: 'Invalid input'
-  /auth/validate_code:
+  /auth/login/validate/code:
     post:
       tags:
         - Auth
       summary: 'Validate code'
       description: "Validates the login code sent to the user's email"
-      operationId: 54b9c594d5cd17cb1b558ff50b71b8ad
+      operationId: 805a02f529b6f0db5ac3b9b9874f8a25
       requestBody:
         required: true
         content:
@@ -634,13 +648,13 @@ paths:
                 type: object
         '400':
           description: 'Invalid code or email'
-  /auth/validate_hash:
+  /auth/login/validate/hash:
     post:
       tags:
         - Auth
       summary: 'Validate hash'
       description: 'Validates the login hash for the user'
-      operationId: 1df8bd6be19c482e5439b541f3ee2e44
+      operationId: 503d4f28acc1e6bc0b75f322c4cbcdf2
       requestBody:
         required: true
         content:
@@ -665,13 +679,13 @@ paths:
                 type: object
         '400':
           description: 'Invalid user ID or hash'
-  /auth/me:
+  /user/me:
     get:
       tags:
         - Auth
       summary: 'Get current user'
       description: "Retrieves the current logged-in user's information"
-      operationId: c4163de537c0b5ae81600fd54b934a07
+      operationId: be6d83f71bd6d4bb05c1262d039f5616
       responses:
         '200':
           description: 'User retrieved successfully'
@@ -694,13 +708,13 @@ paths:
       security:
         -
           bearerAuth: []
-  /auth/signout:
+  /auth/login/signout:
     post:
       tags:
         - Auth
       summary: 'Sign out user'
       description: 'Signs out the current logged-in user'
-      operationId: 3f4fee62f4fda5ac6c0914fbf09acb57
+      operationId: b197463fb8c432c016cad1b04257a375
       responses:
         '200':
           description: 'User signed out successfully'

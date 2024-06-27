@@ -5,7 +5,7 @@ class User {
 
     /**
      * @OA\Get(
-     *     path="/auth/me",
+     *     path="/user/me",
      *     tags={"Auth"},
      *     summary="Get current user",
      *     description="Retrieves the current logged-in user's information",
@@ -43,7 +43,7 @@ class User {
 
     /**
      * @OA\Post(
-     *     path="/auth/signout",
+     *     path="/auth/login/signout",
      *     tags={"Auth"},
      *     summary="Sign out user",
      *     description="Signs out the current logged-in user",

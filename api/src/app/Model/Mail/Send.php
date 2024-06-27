@@ -71,7 +71,7 @@ class Send
 		$stmt->close();
 
 		if ($result) {
-			return array('status' => 'success', 'id' => $insert_id);
+			return array('status' => 'success');
 		} else {
 			return array('status' => 'error', 'error' => $stmt_error);
 		}

@@ -66,6 +66,7 @@ class User
 
 			// Query user
 			$query = "SELECT id, mail, customer_id, firstname, lastname, initials, mobile, company_role, admin FROM users WHERE id LIKE '$user_id' LIMIT 1";
+			error_log("USer me ID $user_id. Query: $query");
 			$result = $this->db->query($query);
 			$numRows = $result->num_rows;
 

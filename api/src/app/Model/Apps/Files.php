@@ -46,29 +46,24 @@ class Files
 	 */
 	public function upload($p, $files)
 	{
-
 		// Check if app id exist in parameters
 		if (!isset($p['app_id']) || empty($p['app_id'])) {
 			return $this->Event->error(array(
-				'title' => 'App: No app ID provided for file upload',
+				'title' => 'App Files: No app ID provided for file upload',
 				'message' => "Ingen app ID",
 				'severity' => 'high',
 				'event_data' => array('params' => $p, 'files' => $files),
 			));
 		}
 
-
 		// Check if user has access to app this file is linked to
 		if (!$this->chk_app_access($p['app_id'])) {
 			return array('status' => 'error', 'message' => 'Access denied');
 		}
 
-
 		// Set base dir and URL with APP ID
 		$target_base_dir = $this->file_base_path.$p['app_id'].'/'; // Set target dir
 		$target_base_url = $this->file_base_url.$p['app_id'].'/'; // Set target dir
-
-
 
 		// Check if path exists
 		// Create folder if not
@@ -76,18 +71,17 @@ class Files
 			$create_folder = @mkdir($target_base_dir, 0775, true);
 
 			if (!$create_folder) {
-				error_log('Could not create upload-dir');
+				error_log("Could not create upload-dir in $target_base_dir");
 				$error = true;
 
 				return $this->Event->error(array(
-					'title' => 'Merchandise: Could not create directory',
+					'title' => 'App Files: Could not create directory',
 					'message' => "Klarte ikke å opprette mappe",
 					'severity' => 'high',
 					'event_data' => array('params' => $p, 'files' => $files, 'target_base_dir' => $target_base_dir),
 				));
 			}
 		}
-
 
 		// Declare some variables
 		$error = false;
@@ -96,15 +90,13 @@ class Files
 		$num_file_uploaded = 0;
 		$num_file_failed = 0;
 
-		
 		// Set new object to upload file
 		$upload = new \Kapps\Model\Upload\Upload;
 
-
-		// If multiple files
-		if (is_array($files)) {
-
-			// Rebuild array
+		// Check if multiple files
+		$rebuild_files = [];
+		if (isset($files['name']) && is_array($files['name'])) {
+			// Rebuild array for multiple files
 			for ($i = 0; $i < count($files['name']); $i++) {
 				$rebuild_files[] = array(
 					'name' => $files['name'][$i],
@@ -114,80 +106,57 @@ class Files
 					'size' => $files['size'][$i],
 				);
 			}
+		} else {
+			// Single file handling
+			$rebuild_files[] = $files;
+		}
 
+		// Array for allowed filetypes
+		// Remember that any changes here, also need to be reflected in backend .htaccess, to allow user to download the actual file
+		$ext_img   = array( 'jpg', 'jpeg', 'png', 'gif', 'bmp', 'svg', 'ico', 'webp' ); //Images
+		$ext_file  = array( 'doc', 'docx', 'rtf', 'pdf', 'xls', 'xlsx', 'txt', 'csv', 'html', 'xhtml', 'psd', 'sql', 'log', 'fla', 'xml', 'ade', 'adp', 'mdb', 'accdb', 'ppt', 'pptm', 'pptx', 'odt', 'ots', 'ott', 'odb', 'odg', 'otp', 'otg', 'odf', 'ods', 'odp', 'css', 'ai', 'kmz','dwg', 'dxf', 'hpgl', 'plt', 'spl', 'step', 'stp', 'iges', 'igs', 'sat', 'cgm', 'tiff' ); //Files
+		$ext_video = array( 'mov', 'mpeg', 'm4v', 'mp4', 'avi', 'mpg', 'wma', "flv", "webm" ); //Video
+		$ext_music = array( 'mp3', 'mpga', 'm4a', 'ac3', 'aiff', 'mid', 'ogg', 'wav' ); //Audio
+		$ext_misc  = array( 'zip', 'rar', 'gz', 'tar', 'iso', 'dmg', 'bprelease' ); //Div
 
+		$allowed_filetypes = array_merge($ext_img, $ext_file, $ext_misc, $ext_video, $ext_music); // Merge arrays
 
-			// Array for allowed filetypes
-			// Remember that any changes here, also need to be reflected in backend .htaccess, to allow user to download the actual file
-			$ext_img   = array( 'jpg', 'jpeg', 'png', 'gif', 'bmp', 'svg', 'ico', 'webp' ); //Images
-			$ext_file  = array( 'doc', 'docx', 'rtf', 'pdf', 'xls', 'xlsx', 'txt', 'csv', 'html', 'xhtml', 'psd', 'sql', 'log', 'fla', 'xml', 'ade', 'adp', 'mdb', 'accdb', 'ppt', 'pptm', 'pptx', 'odt', 'ots', 'ott', 'odb', 'odg', 'otp', 'otg', 'odf', 'ods', 'odp', 'css', 'ai', 'kmz','dwg', 'dxf', 'hpgl', 'plt', 'spl', 'step', 'stp', 'iges', 'igs', 'sat', 'cgm', 'tiff' ); //Files
-			$ext_video = array( 'mov', 'mpeg', 'm4v', 'mp4', 'avi', 'mpg', 'wma', "flv", "webm" ); //Video
-			$ext_music = array( 'mp3', 'mpga', 'm4a', 'ac3', 'aiff', 'mid', 'ogg', 'wav' ); //Audio
-			$ext_misc  = array( 'zip', 'rar', 'gz', 'tar', 'iso', 'dmg', 'bprelease' ); //Div
+		// Loop files and upload them
+		foreach ($rebuild_files as $key => $file) {
+			$num_file_total++;
 
-			$allowed_filetypes = array_merge($ext_img, $ext_file, $ext_misc, $ext_video, $ext_music); // Merge arrays
+			// Get file extention
+			$exp = explode('.', $file["name"]);
+			$ext = strtolower(end($exp));
 
-			
+			// Check if extention for filetype is allowed
+			if(!in_array($ext, $allowed_filetypes)) {
+				$upload_files[$file['name']] = 'Format not allowed';
+				$error = true;
+				$error_message = "File $ext not allowed";
 
-				
+				return $this->Event->error(array(
+					'title' => 'App Files: Wrong image format',
+					'message' => "Filformat $ext er ikke tillatt",
+					'severity' => 'high',
+					'event_data' => array('params' => $p, 'files' => $files),
+				));
 
-
-			// Loop files and upload them
-			foreach ($rebuild_files as $key => $file) {
-				$num_file_total++;
-
-				// Get file extention
-				$exp = explode('.', $file["name"]);
-				$ext = strtolower(end($exp));
-
-
-				// Check if extention for filetype is allowed
-				if(!in_array($ext, $allowed_filetypes)) {
-					$upload_files[$file['name']] = 'Format not allowed';
-					$error = true;
-					$error_message = "File $ext not allowed";
-
-					return $this->Event->error(array(
-						'title' => 'Merchandise: Wrong image format',
-						'message' => "Filformat $ext er ikke tillatt",
-						'severity' => 'high',
-						'event_data' => array('params' => $p, 'files' => $files),
-					));
-
-				}
-				
+			} else {
 				// All OK => Upload Files
-				else {
-					$upload_files[$file['name']] = $upload->upload_file($target_base_dir, $file, false);
+				$upload_files[$file['name']] = $upload->upload_file($target_base_dir, $file, false);
 
-					if ($upload_files[$file['name']]['status'] == 'success') {
-						$num_file_uploaded++;
-						$path = $target_base_url.$upload_files[$file['name']]['filename'];
-						$this->add_file2db($p['app_id'], $file['name'], $file['size'], $ext, $path);
-					} else {
-						$num_file_failed++;
-					}
+				if ($upload_files[$file['name']]['status'] == 'success') {
+					$num_file_uploaded++;
+					$path = $target_base_url.$upload_files[$file['name']]['filename'];
+					$this->add_file2db($p['app_id'], $file['name'], $file['size'], $ext, $path);
+				} else {
+					$num_file_failed++;
 				}
 			}
 		}
 
-
 		// Start returning statuses
-
-		else {
-			$error = true;
-			$error_message = "No files";
-
-			return $this->Event->error(array(
-				'title' => 'App Files: No files to upload',
-				'message' => "Fant ingen filer å laste opp",
-				'severity' => 'medium',
-				'event_data' => array('params' => $p, 'files' => $files),
-			));
-		}
-
-
-		// Success
 		if (!$error) {
 			$this->Event->add(array(
 				'domain' => 'apps',
@@ -198,17 +167,16 @@ class Files
 			));
 
 			return array('status' => 'success', 'files' => $rebuild_files, 'upload_status' => $upload_files);
-		}
-
-		else {
+		} else {
 			return $this->Event->error(array(
-				'title' => 'Merchandise image upload failed',
+				'title' => 'App Files: image upload failed',
 				'message' => 'DB error',
 				'severity' => 'high',
 				'event_data' => array('status' => 'error', 'message' => $error_message, 'num_files' => $num_file_total, 'num_uploaded' => $num_file_uploaded, 'files' => $rebuild_files, 'upload_status' => $upload_files),
 			));
 		}
 	}
+
 
 
 

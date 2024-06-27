@@ -102,7 +102,7 @@ namespace Kapps\Model\OpenApiSpec;
  *     ),
  * ),
  * security={
- *     {"tenantId": {}}
+ *     {"bearerAuth": {}}
  * }
  */
 class OpenApiSpec

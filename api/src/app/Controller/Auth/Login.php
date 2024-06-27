@@ -5,7 +5,7 @@ class Login {
 
     /**
      * @OA\Post(
-     *     path="/auth/send_login_link",
+     *     path="/auth/login/send",
      *     tags={"Auth"},
      *     summary="Send login link",
      *     description="Sends a login link to the specified email address",
@@ -44,7 +44,7 @@ class Login {
 
     /**
      * @OA\Post(
-     *     path="/auth/validate_code",
+     *     path="/auth/login/validate/code",
      *     tags={"Auth"},
      *     summary="Validate code",
      *     description="Validates the login code sent to the user's email",
@@ -88,7 +88,7 @@ class Login {
 
     /**
      * @OA\Post(
-     *     path="/auth/validate_hash",
+     *     path="/auth/login/validate/hash",
      *     tags={"Auth"},
      *     summary="Validate hash",
      *     description="Validates the login hash for the user",

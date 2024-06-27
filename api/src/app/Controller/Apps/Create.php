@@ -32,11 +32,11 @@ class Create {
      *         @OA\MediaType(
      *             mediaType="multipart/form-data",
      *             @OA\Schema(
-     *                 @OA\Property(property="type_id", type="string", description="The ID of the app type"),
+     *                 @OA\Property(property="type_id", type="string", description="The ID of the app type (See /types/get)"),
      *                 @OA\Property(property="title", type="string", description="The title of the app"),
      *                 @OA\Property(property="description", type="string", description="The description of the app"),
      *                 @OA\Property(property="installation", type="string", description="The installation instructions"),
-     *                 @OA\Property(property="license_id", type="string", description="The ID of the license"),
+     *                 @OA\Property(property="license_id", type="string", description="The ID of the license (See /licenses/get)"),
      *                 @OA\Property(property="link_source_code", type="string", description="The link to the source code")
      *             )
      *         )

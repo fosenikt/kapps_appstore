@@ -2,6 +2,7 @@
 namespace Kapps\Model\Apps;
 
 use Kapps\Model\Database\Db;
+use Kapps\Model\Database\QueryBuilder;
 use \Kapps\Model\Apps\Images;
 use \Kapps\Model\Apps\Files;
 use \Kapps\Model\Companies\Get as CompaniesGet;
@@ -20,6 +21,7 @@ class Get
 	private $image_base_url;
 	private $image_base_path;
 	private $image_none;
+	private $isAuthenticated;
 
 	public function __construct()
 	{
@@ -30,6 +32,12 @@ class Get
 		$this->Files = new Files();
 
 		$this->thisUser = (new AuthUser())->me();
+
+		if (!is_array($this->thisUser) || empty($this->thisUser['customer']['public_id'])) {
+			$this->isAuthenticated = false;
+		} else {
+			$this->isAuthenticated = true;
+		}
 
 		$this->image_base_url = '//'.URL.'/data/apps/';
 		$this->image_base_path = '/var/www/html/data/apps/';
@@ -53,29 +61,38 @@ class Get
 	*/
 	public function get_app($id)
 	{
+		error_log("Model: Get app: $id");
+
 		$r = array(); // Declare return-array
+		error_log("This user: " . json_encode($this->thisUser));
+
+		
 
 		// Query apps
-		$query = "SELECT A.*,
-						 T.title AS type_title, T.fa_icon AS type_icon,
-						 UC.firstname AS uc_firstname, UC.lastname AS uc_lastname, UC.mail AS uc_mail,
-						 UE.firstname AS ue_firstname, UE.lastname AS ue_lastname, UE.mail AS ue_mail,
-						 L.title AS license_title, L.link AS license_link
-				  FROM apps AS A
-				  INNER JOIN app_types AS T ON A.type_id = T.id
-				  INNER JOIN users AS UC ON A.created_by = UC.id
-				  INNER JOIN users AS UE ON A.updated_by = UE.id
-				  INNER JOIN licenses AS L ON A.license_id = L.id
-				  WHERE A.id='$id' AND (A.status LIKE 'published' OR A.company_id='{$this->thisUser['customer']['public_id']}')";
-		$result = $this->db->query($query);
+		$queryBuilder = new QueryBuilder();
+		$queryBuilder->table('apps AS A')
+			->select('A.*', 'T.title AS type_title', 'T.fa_icon AS type_icon', 'UC.firstname AS uc_firstname', 'UC.lastname AS uc_lastname', 'UC.mail AS uc_mail', 'UE.firstname AS ue_firstname', 'UE.lastname AS ue_lastname', 'UE.mail AS ue_mail', 'L.title AS license_title', 'L.link AS license_link')
+			->join('app_types AS T', 'A.type_id', '=', 'T.id')
+			->join('users AS UC', 'A.created_by', '=', 'UC.id')
+			->join('users AS UE', 'A.updated_by', '=', 'UE.id')
+			->join('licenses AS L', 'A.license_id', '=', 'L.id')
+			->where('A.id', '=', $id);
 
-		if ($result->num_rows > 0) {
-			while ($row = $result->fetch_array()) {
-				$r = $this->output($row);
-			}
+		if ($this->isAuthenticated) {
+			$queryBuilder->where('A.status', 'LIKE', 'published')
+                     	 ->orWhere('A.company_id', '=', $this->thisUser['customer']['public_id']);
+		} else {
+			$queryBuilder->where('A.status', 'LIKE', 'published');
+		}
+
+		$result = $queryBuilder->get();
+
+		if (!empty($result)) {
+			$r = $this->output($result[0]);
 		}
 
 		return $r;
+
 	}
 
 
@@ -97,44 +114,38 @@ class Get
 	public function get_apps($p = array())
 	{
 		$r = array(); // Declare return-array
-		$qWhereArr = array(); // Declare return-array
 
-		// Build query
-		if (isset($p['type']) && !empty($p['type']))
-			$qWhereArr[] = $this->create_query('A.type_id', $p['type']);
-		
-		if (isset($p['company']) && !empty($p['company']))
-			$qWhereArr[] = $this->create_query('A.company_id', $p['company']);
+		$queryBuilder = new QueryBuilder();
+		$queryBuilder->table('apps AS A')
+			->select('A.*', 'T.title AS type_title', 'T.fa_icon AS type_icon', 'UC.firstname AS uc_firstname', 'UC.lastname AS uc_lastname', 'UC.mail AS uc_mail', 'UE.firstname AS ue_firstname', 'UE.lastname AS ue_lastname', 'UE.mail AS ue_mail', 'L.title AS license_title', 'L.link AS license_link')
+			->join('app_types AS T', 'A.type_id', '=', 'T.id')
+			->join('users AS UC', 'A.created_by', '=', 'UC.id')
+			->join('users AS UE', 'A.updated_by', '=', 'UE.id')
+			->join('licenses AS L', 'A.license_id', '=', 'L.id');
 
-		if (is_array($qWhereArr) && count($qWhereArr) > 0) {
-			$qWhere = "WHERE (".join(' AND ', $qWhereArr).") AND A.status LIKE 'published'";
-		} else {
-			$qWhere = "WHERE A.status LIKE 'published'";
+		if (isset($p['type']) && !empty($p['type'])) {
+			$queryBuilder->where('A.type_id', '=', $p['type']);
 		}
 
+		if (isset($p['company']) && !empty($p['company'])) {
+			$queryBuilder->where('A.company_id', '=', $p['company']);
+		}
 
-		// Query apps
-		$query = "SELECT A.*,
-						 T.title AS type_title, T.fa_icon AS type_icon,
-						 UC.firstname AS uc_firstname, UC.lastname AS uc_lastname, UC.mail AS uc_mail,
-						 UE.firstname AS ue_firstname, UE.lastname AS ue_lastname, UE.mail AS ue_mail,
-						 L.title AS license_title, L.link AS license_link
-				  FROM apps AS A
-				  INNER JOIN app_types AS T ON A.type_id = T.id
-				  INNER JOIN users AS UC ON A.created_by = UC.id
-				  INNER JOIN users AS UE ON A.updated_by = UE.id
-				  INNER JOIN licenses AS L ON A.license_id = L.id
-				  $qWhere";
-		$result = $this->db->query($query);
+		// Only include published apps
+		$queryBuilder->where('A.status', 'LIKE', 'published');
 
-		if ($result->num_rows > 0) {
-			while ($row = $result->fetch_array()) {
+		// Get the results
+		$results = $queryBuilder->get();
+
+		if (!empty($results)) {
+			foreach ($results as $row) {
 				$r[] = $this->output($row);
 			}
 		}
 
 		return $r;
 	}
+
 
 
 
