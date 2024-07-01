@@ -26,7 +26,6 @@ class Db extends mysqli {
 
 	public static function getInstance(){
 		if (self::$instance == null){
-			//error_log('Creating new database connection');
 			self::$instance = new self(DB_HOST, DB_USER, DB_PASSWORD, DB_NAME, DB_PORT);
 		}
 

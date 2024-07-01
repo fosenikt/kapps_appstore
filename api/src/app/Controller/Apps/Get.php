@@ -105,7 +105,6 @@ class Get {
      */
 	public function get_app($id)
 	{
-		error_log("Controller: get_app $id");
 		$obj = new \Kapps\Model\Apps\Get();
 		return $obj->get_app($id);
 	}
@@ -141,7 +140,6 @@ class Get {
      */
 	public function get_apps()
 	{
-		error_log(json_encode($_GET));
 		$obj = new \Kapps\Model\Apps\Get();
 		return $obj->get_apps($_GET);
 	}

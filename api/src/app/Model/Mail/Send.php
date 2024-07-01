@@ -42,8 +42,6 @@ class Send
 			}
 
 			
-		} else {
-			//error_log('No emails to send...');
 		}
 
 		$stmt->close();

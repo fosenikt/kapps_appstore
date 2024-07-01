@@ -72,9 +72,7 @@ class User
 			if ($numRows > 0) {
 				$row = $result->fetch_array();
 				// Logged in user is queried by many classes... Switching customer causes mysql to crash with to many connections.
-				//error_log('get_loggedin_user 1');
 				if (empty($row['customer_id'])) {
-					//$customer_id = $this->get_user_random_customer($row['id']);
 					$get_customer = null;
 				} else {
 					$customer_id = $row['customer_id'];
@@ -110,13 +108,6 @@ class User
 
 	public function validate_login()
 	{
-		/* if (isset($_SESSION['user_validated']) && $_SESSION['user_validated'] > 0) {
-			error_log('User validated by PHPSESS');
-			//return array('status' => 'success');
-			return true;
-		} */
-
-
 		// Get token
 		$objTools = new Utils;
 		$get_token = $objTools->getBearerToken();

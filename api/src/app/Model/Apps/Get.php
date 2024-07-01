@@ -61,7 +61,6 @@ class Get
 	*/
 	public function get_app($id)
 	{
-		error_log("Model: get_app $id");
 		$r = array(); // Declare return-array        
 
 		// Query apps
@@ -79,17 +78,7 @@ class Get
 		} else {
 			$queryBuilder->where('A.status', 'LIKE', 'published');
 		}
-
-		$queryBuilder->debug();
-		/*
-			SELECT A.*, T.title AS type_title, T.fa_icon AS type_icon, UC.firstname AS uc_firstname, UC.lastname AS uc_lastname, UC.mail AS uc_mail, UE.firstname AS ue_firstname, UE.lastname AS ue_lastname, UE.mail AS ue_mail, L.title AS license_title, L.link AS license_link 
-			FROM apps AS A 
-			JOIN app_types AS T ON A.type_id = T.id 
-			JOIN users AS UC ON A.created_by = UC.id 
-			JOIN users AS UE ON A.updated_by = UE.id 
-			JOIN licenses AS L ON A.license_id = L.id 
-			WHERE A.id = ? AND (A.status LIKE ? OR A.company_id = ?)
-		*/
+		
 		$result = $queryBuilder->get();
 
 		if (!empty($result)) {

@@ -80,9 +80,7 @@ class Event
 
 		$result = $stmt->execute();
 
-		if ($result) {
-			//error_log('Event logged');
-		} else {
+		if (!$result) {
 			error_log('Error while logging event');
 			error_log($stmt->error);
 		}

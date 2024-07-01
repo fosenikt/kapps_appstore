@@ -94,7 +94,6 @@ class Upload
 		// If image, run resize
 		if ($ext == 'jpg' || $ext == 'jpeg' || $ext == 'png' || $ext == 'gif' || $ext == 'tiff') {
 			error_log('Resizing thumb');
-			//error_log('Filepath: ' . $target.$file["name"]);
 			error_log('Filepath: ' . $target.$new_filename);
 
 			try{
