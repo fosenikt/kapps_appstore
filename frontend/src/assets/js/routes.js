@@ -5,15 +5,75 @@ let nav_sidebar = new SidebarNav();
 
 page('/', function() {
 	page_switch();
-	template.load_page('/components/Dashboard/dashboard.jsr', '#page-dashboard', '').then(response => {
+	template.load_page('/components/main.jsr', '#page-main', '').then(response => {
+		console.log('Main template loaded');
+	})
+});
+
+page('/apps', function() {
+	page_switch();
+	template.load_page('/components/apps.jsr', '#page-apps', '').then(response => {
+	})
+});
+
+page('/app/:id', function(ctx) {
+	page_switch();
+
+	remote.rpc(config.api_url+'/app/get/'+ctx.params.id).then(response => {
+		console.log('app', response);
+		template.load_page('/components/app.jsr', '#page-app-'+ctx.params.id, response);
+	})
+
+	.catch((err) => {
+		notification.error('En feil oppstod under henting av template');
+		console.log(err);
+	});
+});
+
+page('/share', function() {
+	page_switch();
+	template.load_page('/components/share.jsr', '#page-share', '').then(response => {
+	})
+});
+
+page('/start', function() {
+	page_switch();
+	template.load_page('/components/start.jsr', '#page-start', '').then(response => {
+	})
+});
+
+page('/login', function() {
+	page_switch();
+	template.load_page('/components/login.jsr', '#page-login', '').then(response => {
+	})
+});
+
+page('/about', function() {
+	page_switch();
+	template.load_page('/components/about.jsr', '#page-about', '').then(response => {
+	})
+});
+
+page('/resources', function() {
+	page_switch();
+	template.load_page('/components/resources.jsr', '#page-resources', '').then(response => {
+	})
+});
+
+page('/privacy', function() {
+	page_switch();
+	template.load_page('/components/privacy.jsr', '#page-privacy', '').then(response => {
+	})
+});
+
+page('/me', function() {
+	page_switch();
+	template.load_page('/components/me.jsr', '#page-me', '').then(response => {
 	})
 });
 
 
-
-
-
-page('/apps*', function(ctx, next){
+/* page('/apps*', function(ctx, next){
 	next()
 	if (nav_sidebar.is_open('apps') == false) {
 		nav_sidebar.open_sidebar('apps');
@@ -25,14 +85,10 @@ page.exit('/apps*', function(ctx, next) {
 	nav_sidebar.close_sidebar();
 
 	next()
-})
+}) */
 
 
-page('/apps', function() {
-	page_switch();
-	template.load_page('/components/Apps/apps.jsr', '#page-app-types', '').then(response => {
-	})
-});
+
 
 page('/app/new', function() {
 	page_switch();
@@ -40,18 +96,7 @@ page('/app/new', function() {
 });
 
 
-page('/app/:id', function(ctx) {
-	page_switch();
 
-	remote.rpc(config.api_url+'/app/get/'+ctx.params.id).then(response => {
-		template.load_page('/components/Apps/app.jsr', '#page-app-'+ctx.params.id, response);
-	})
-
-	.catch((err) => {
-		notification.error('En feil oppstod under henting av template');
-		console.log(err);
-	});
-});
 
 page('/app/edit/:id', function(ctx) {
 	page_switch();

@@ -1,0 +1,270 @@
+<section class="baner">	
+	<div class="baner__row">	
+		<div class="baner__left">	
+			<p class="baner__title">	Digital</p> 
+			<p class="baner__title">Transformasjon av </p>
+			<p class="baner__title">offentlig sektor</p>
+			<div class="baner__text"> 
+				<p> Hvorfor finne opp kruttet på nytt? En Digital Offentlig sektor.</p> 
+				<p>Del offentlig utviklede løsninger med andre offentlige instanser.</p> 
+				<p><a class="baner__start" href="/start">START</a></p> 
+			</div>
+		</div>
+		<div class="baner__right">	
+			<img src="/assets/images/baner.png" alt="">
+		</div>
+	</div>
+</section>
+
+<section class="top">
+	<div class="top__title">
+		<div class="top__title-left" id="top_title">Top apps > </div>
+		<div class="top__title-right">
+			<div class="tabs" id="tabsContainer"></div>
+		</div>
+	</div>
+	<div class="tabs__body" id="tabsBodyContainer"></div>
+</section>
+
+
+<!-- <section class="top">
+	<div class="top__title">
+		<div class="top__title-left" id="top_title">Top apps > </div>
+		<div class="top__title-right">
+			<div class="tabs">
+				<a href="#" onclick="return false" id="01" class="tabs__items active">Apps</a> 
+				<a href="#" onclick="return false" id="02" class="tabs__items">RPA</a>
+				<a href="#" onclick="return false" id="03" class="tabs__items">Integrasjoner</a>
+				<a href="#" onclick="return false" id="04" class="tabs__items">Dokumenter</a>
+			</div>
+		</div>
+	</div>
+	<div class="tabs__body">
+		<div class="tabs__block active " id="tab_01">
+			<div class="top__row top__row-apps"></div>
+		</div>
+
+		<div class="tabs__block"  id="tab_02">
+			<div class="top__row top__row-rpa"></div>
+		</div>
+
+		<div class="tabs__block"  id="tab_03">
+			<div class="top__row top__row-inreg"></div>
+		</div>
+
+		<div class="tabs__block"  id="tab_04">
+			<div class="top__row top__row-docum"></div>
+		</div>
+	</div>
+</section> -->
+
+
+<section class="spartid">
+	<div class="section__component">
+		<div class="spartid__row">
+			<div class="spartid__item">
+				<div class="spartid__logo spartid__logo1">
+				
+				</div>
+				<div class="spartid__title">
+					Spar tid
+				</div>
+				<div class="spartid__text">
+					Bruk det som allerede er utviklet.
+				</div>
+			</div>
+			<div class="spartid__item">
+				<div class="spartid__logo spartid__logo2">
+					
+				</div>
+				<div class="spartid__title">
+					Tilpasning
+				</div>
+				<div class="spartid__text">
+					Åpen kildekode. Bli med på å videreutvikle det som fungerer til felles beste og nytte.
+				</div>
+			</div>
+			<div class="spartid__item">
+				<div class="spartid__logo spartid__logo3">
+				
+				</div>
+				<div class="spartid__title">
+					En Offentlig sektor
+				</div>
+				<div class="spartid__text">
+					La oss bygge sammenhengende tjenester som løser brukernes behov
+				(Lenke til DigDir)
+				</div>
+			</div>
+		</div>
+	</div>
+</section>
+
+
+<section class="nykommere">
+	<div class="nykommere__title">
+		Nykommere >
+	</div>
+	<div class="nykommere__body">
+		<div class="nykommere__row"></div>
+	</div>
+</section>
+
+
+
+<script>
+	// Fetch the types and dynamically create tabs and content sections
+fetch('https://appsapi.kapps.no/types/get')
+  .then(response => response.json())
+  .then(typesData => {
+    const tabsContainer = document.getElementById('tabsContainer');
+    const tabsBodyContainer = document.getElementById('tabsBodyContainer');
+    const typesMap = {};
+
+    // Create tabs and content sections for each type
+    typesData.forEach((type, index) => {
+		console.log('type', type);
+      // Map type ID to type title for later use
+      typesMap[type.id] = type.title;
+
+      // Create a tab item
+      const tabItem = document.createElement('a');
+      tabItem.href = '#';
+      tabItem.onclick = () => false;
+      tabItem.id = `tab_${type.id}`;
+      tabItem.className = 'tabs__items';
+      if (index === 0) tabItem.classList.add('active');
+      tabItem.textContent = type.title;
+      tabItem.addEventListener('click', () => {
+        // Switch active tab and tab content
+        document.querySelectorAll('.tabs__items').forEach(item => item.classList.remove('active'));
+        document.querySelectorAll('.tabs__block').forEach(block => block.classList.remove('active'));
+
+        tabItem.classList.add('active');
+        document.getElementById(`content_${type.id}`).classList.add('active');
+      });
+      tabsContainer.appendChild(tabItem);
+
+      // Create a corresponding content block
+      const tabContentBlock = document.createElement('div');
+      tabContentBlock.className = 'tabs__block';
+      if (index === 0) tabContentBlock.classList.add('active');
+      tabContentBlock.id = `content_${type.id}`;
+
+      const topRow = document.createElement('div');
+      topRow.className = `top__row top__row-${type.title.toLowerCase()}`;
+
+      tabContentBlock.appendChild(topRow);
+      tabsBodyContainer.appendChild(tabContentBlock);
+    });
+
+    // Fetch the applications
+    fetch('https://appsapi.kapps.no/apps/get')
+      .then(response => response.json())
+      .then(appsData => {
+        // Process each application and insert it into the correct section
+        appsData.forEach(app => {
+          const link = document.createElement('a');
+          link.href = `/app/${app.id}`;
+          link.className = 'top__item';
+
+          const content = document.createElement('div');
+          content.className = 'top__item-content';
+
+          const image = document.createElement('div');
+          image.className = 'top__item-image';
+          const img = document.createElement('img');
+          img.src = app.primary_image.thumb;
+          img.alt = app.title;
+          image.appendChild(img);
+
+          const info = document.createElement('div');
+          info.className = 'top__item-info';
+
+          const name = document.createElement('div');
+          name.className = 'top__item-name';
+          name.textContent = app.title;
+
+          const type = document.createElement('div');
+          type.className = 'top__item-type';
+          type.textContent = app.type.title;
+
+          const author = document.createElement('div');
+          author.className = 'top__item-author';
+          author.textContent = app.company.title;
+
+          info.appendChild(name);
+          info.appendChild(type);
+          info.appendChild(author);
+
+          content.appendChild(image);
+          content.appendChild(info);
+
+          link.appendChild(content);
+
+          // Find the correct section to add the app to based on its type
+          const targetRow = document.querySelector(`.top__row-${app.type.title.toLowerCase()}`);
+          if (targetRow) {
+            targetRow.appendChild(link);
+          }
+        });
+      })
+      .catch(error => console.error('Error fetching applications:', error));
+  })
+  .catch(error => console.error('Error fetching types:', error));
+
+
+
+
+// Function to fetch and display the latest applications for Nykommere
+function loadNykommere() {
+  fetch('https://appsapi.kapps.no/stats/apps/latest')
+    .then(response => response.json())
+    .then(latestAppsData => {
+      const nykommereRow = document.querySelector('.nykommere__row');
+
+      // Process each newcomer application and insert it into the nykommere section
+      latestAppsData.forEach(app => {
+        const link = document.createElement('a');
+        link.href = '#';
+        link.className = 'nykommere__item';
+
+        const content = document.createElement('div');
+        content.className = 'nykommere__item-content';
+
+        const image = document.createElement('div');
+        image.className = 'nykommere__item-image';
+        const img = document.createElement('img');
+        img.src = app.primary_image.thumb;
+        img.alt = app.title;
+        image.appendChild(img);
+
+        const info = document.createElement('div');
+        info.className = 'nykommere__item-info';
+
+        const name = document.createElement('div');
+        name.className = 'nykommere__item-name';
+        name.textContent = app.title;
+
+        const type = document.createElement('div');
+        type.className = 'nykommere__item-type';
+        type.textContent = app.type.title;
+
+        const author = document.createElement('div');
+        author.className = 'nykommere__item-author';
+        author.textContent = app.company.title;
+
+        info.appendChild(name);
+        info.appendChild(type);
+        info.appendChild(author);
+
+        content.appendChild(image);
+        content.appendChild(info);
+
+        link.appendChild(content);
+        nykommereRow.appendChild(link);
+      });
+    })
+    .catch(error => console.error('Error fetching latest applications:', error));
+}
+</script>

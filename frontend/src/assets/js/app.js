@@ -211,7 +211,7 @@ let App = function() {
 
 const app = new App();
 
-app.validate_login();
+/* app.validate_login();
 setInterval(function(){
 	app.validate_login();
-}, 60000);
+}, 60000); */

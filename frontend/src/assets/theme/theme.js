@@ -204,81 +204,6 @@ let Template = function() {
 
 
 
-
-
-let ThemeToggler = function() {
-	let plugin = this;
-
-	let theme_path = '/assets/css/';
-	let default_theme = 'light';
-	let current_theme;
-
-	let icon_on = '<i class="far fa-fw fa-lightbulb-on"></i>';
-	let icon_off = '<i class="far fa-fw fa-lightbulb"></i>';
-	let icon = document.getElementById('theme-icon');
-
-
-	// Set theme on load
-	plugin.init = function() {
-		if (localStorage.getItem("theme") === null) {
-			current_theme = default_theme;
-		}
-
-		else {
-			var current_theme = localStorage.getItem('theme');
-		}
-
-		plugin.set_theme(current_theme);
-	}
-
-	// Toggle between themes
-	plugin.toggle = function() {
-		var current_theme = localStorage.getItem('theme');
-
-		if (current_theme == 'dark') {
-			plugin.set_theme('light');
-		}
-
-		else {
-			plugin.set_theme('dark');
-		}
-	}
-
-	// Change theme
-	plugin.set_theme = function(theme) {
-		localStorage.setItem('theme', theme);
-
-		if (document.getElementById("css-theme")) {
-			document.getElementById("css-theme").setAttribute("href", theme_path + theme + '.css');
-
-			if (theme == 'dark') {
-				icon.innerHTML = icon_off;
-			}
-
-			else {
-				icon.innerHTML = icon_on;
-			}
-		}
-	}
-
-	// Run init on load
-	plugin.init();
-}
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 let Notification = function() {
 	let plugin = this;
 
@@ -367,5 +292,3 @@ let Notification = function() {
 
 
 const template = new Template();
-const theme_toggler = new ThemeToggler();
-//const remote = new Remote();

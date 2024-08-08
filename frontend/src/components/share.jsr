@@ -1,0 +1,42 @@
+<h1>Dele</h1>
+
+
+<section class="section__form">
+	<h1 class="section__form-h1">Jeg ønsker å dele</h1>
+	<form name="dele" action="#" method="get" enctype="multipart/form-data" class="section__form-form">
+		
+		<div class="section__form-type__title section__form-title">Type</div>
+						<div>
+		<select name="type" id="type" >
+			<option value="1">Applikasjon</option>
+			<option value="2">RPA (Robotic Process Automation)</option>
+			<option value="3">Integrasjon</option>
+			<option value="4">Dokument</option>
+			<option value="5">Skript</option>
+		</select>
+		</div>
+		<div class="section__form-name__title section__form-title" name="navn">Navn</div>
+						<div>
+		<input type="text" class="formDele-navn" name="name" value="" placeholder="Et navn på det du ønsker å dele">
+		</div>
+		<div class="section__form-lisens__title section__form-title">Lisens</div>
+						<div>
+		<select name="lisens" id="lisens" >
+			<option value="1">MIT License</option>
+			<option value="2">GNU AGPLv3</option>
+			<option value="3">GNU GPLv3</option>
+			<option value="4">GNU LGPLv3</option>
+			<option value="5">Mozilla Public License 2.0</option>
+			<option value="6">Apache License 2.0</option>
+			<option value="7">Boost Software License 1.0</option>
+			<option value="8">The Unlicense</option>
+			<option value="9">EULA / Kopibeskyttet</option>
+		</select>
+		</div>
+		<div>
+			<button type="submit">Opprett</button>
+
+		</div>
+
+	</form>
+</section>

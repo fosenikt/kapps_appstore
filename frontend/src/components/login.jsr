@@ -1,0 +1,437 @@
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css" />
+
+<div style="margin-top:5%;">
+<section class="section__page">
+	
+	<h2 style="text-align: center;">Innlogging</h2>
+
+	<div class="box" style="margin-top:25px;">
+		<div class="row">
+			<div class="col-md-6">
+				<div style="margin:40px 60px;">
+					<img src="/assets/images/undraw/login.svg" alt="">
+				</div>
+			</div>
+			
+			<div class="col-md-6">
+
+				<div id="login-section-mail" style="display:none;">
+					<form id="form-send-link" action="/auth/login/send" method="POST">
+						<!-- <div class="input-field col s6">
+							<input type="email" id="input-mail" name="mail">
+							<label for="input-mail">Min e-postadresse</label>
+						</div> -->
+
+						<div>
+							Skriv inn din e-postadresse. Du vil få tilsendt en engangskode for innlogging på e-post,
+							dersom ditt domene er registrert i databasen.
+						</div>
+
+						<div class="mb-3">
+							<label for="input-mail" class="form-label">E-postadresse</label>
+							<input type="email" class="form-control form-control-lg" id="input-mail" name="mail" placeholder="name@example.com">
+						</div>
+
+						<div class="feedback" id="login-section-mail-feedback"></div>
+
+						<div class="row">
+							<div class="col s6" style="text-align:left; padding-top:6px;">
+								<a href="javascript:show_enter_code();">
+									Har kode?
+								</a>
+							</div>
+
+							<div class="col s6" style="text-align:right;">
+								<button type="submit" class="btn btn-primary">
+									Send kode
+								</button>
+							</div>
+						</div>
+
+						<div style="margin-top:50px;">
+							<div class="d-grid gap-2">
+								<a class="btn btn-secondary btn-lg" id="btn-o365-login" href="">
+									<img style="height:25px; vertical-align:middle;" src="../assets/images/icons/office_logo.svg" alt="logo" /> Logg på med Office365
+								</a>
+							</div>
+
+							<script type="text/javascript">
+								let btn_o365_login = document.getElementById('btn-o365-login');
+								btn_o365_login.setAttribute('href', config.api_url + '/login/microsoft/signin.php');
+							</script>
+						</div>
+
+						<div style="margin-top:15px;">
+							<a href="#" data-bs-toggle="modal" data-bs-target="#modal-register-user-info">Opprett bruker?</a><br />
+							<a href="/privacy">Les personvernerklæring</a><br />
+						</div>
+						
+					</form>
+				</div>
+
+
+				<div id="login-section-code" style="display:none;">
+					<form id="form-validate-code" action="/auth/login/validate/code" method="POST">
+
+						<div class="help" style="margin-bottom:35px;">
+							<i class="fal fa-info-circle"></i> En kode sendes nå til din e-postadresse.
+							E-post er ikke det kjappeste, så vær litt tålmodig og sjekk gjerne spam-mappe.
+						</div>
+
+						<div class="mb-3">
+							<input type="hidden" id="input-code-mail" name="mail">
+							<label for="input-code" class="form-label">Engangskode</label>
+							<input type="tel" class="form-control form-control-lg" id="input-code" name="code" placeholder="123456">
+						</div>
+
+						<div class="feedback" id="login-section-code-feedback"></div>
+
+						<div style="text-align:right;">
+							<button type="submit" class="btn btn-primary">
+								Logg inn
+							</button>
+						</div>
+
+						<div class="form-sublink" style="margin-top:45px;">
+							<a href="javascript:show_enter_mail();">
+								Jeg trenger visst en ny kode
+							</a>
+						</div>
+					</form>
+				</div>
+
+				<div id="login-section-loader" style="display:block;">
+					<i class="fas fa-spinner fa-pulse"></i><br />
+					Laster...
+				</div>
+
+			</div>
+		</div>
+	</div>
+</section>
+</div>
+
+
+
+<!-- Modal -->
+<div class="modal fade" id="modal-register-user-info" tabindex="-1" aria-labelledby="modal-register-user-info-label" aria-hidden="true">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-header">
+				<h1 class="modal-title fs-5" id="modal-register-user-info-label">Registrer bruker</h1>
+				<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+			</div>
+			<div class="modal-body">
+				<p>
+					Du kan ikke opprette en bruker på Kapps.no.
+					Alle som har en e-postadresse under et offentlig domene kan logge inn.
+				</p>
+
+				<p>
+					Vi lagt inn e-postdomener til nærmere 700 kommuner, 
+					fylker, IKS og andre offentlige virksomheter.
+				</p>
+
+				<p>
+					Ved å skrive inn din e-postadresse, vil du få tilsendt pinkode for innlogging på e-post.
+				</p>
+
+				<p>
+					Vi mangler nok en del domener. Spesielt IKS og lignende selskaper.
+					En del virksomheter har også forskjellige e-postdomener, enn de bruker på nettside.
+					Ta kontakt dersom du ikke får logget inn, så skal vi få lagt inn din virksomhet.
+				</p>
+
+				<h2>
+					Hvorfor innlogging?
+				</h2>
+				<p>
+					Innlogging er hovedsaklig for å knytte delte tjenester mot virksomhet, 
+					samt minimere skade dersom det lastes opp eller deles tjenester/dokumenter som inneholder sensitiv informasjon.
+				</p>
+			</div>
+			<div class="modal-footer">
+				<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Lukk</button>
+			</div>
+		</div>
+	</div>
+</div>
+
+
+
+<script>
+// Get URL parameters
+function getParameterByName(name, url) {
+	if (!url) url = window.location.href;
+	name = name.replace(/[\[\]]/g, '\\$&');
+	var regex = new RegExp('[?&]' + name + '(=([^&#]*)|&|#|$)'),
+	results = regex.exec(url);
+	if (!results) return null;
+	if (!results[2]) return '';
+	return decodeURIComponent(results[2].replace(/\+/g, ' '));
+}
+
+
+// If token exist in URL
+// Get user with API request
+// Redirect if user is found
+if (getParameterByName('token') != '' && getParameterByName('token') != null) {
+
+	// Set login in progress
+	logging_in = true;
+
+	// Store token in local storage
+	localStorage.setItem("user_token", getParameterByName('token'));
+	
+	// Check logged in user from API
+	remote.rpc('https:' + config.api_url + '/user/me').then(response => {
+		// If no response
+		if (response == null || response == undefined || response == 0 || response == false) {
+			console.log('No response from '+config.api_url+'/user/me, redirecting to login-page.');
+			localStorage.removeItem("user_token");
+			window.location.replace(config.login_url + '?error=50&autologin=0');
+		}
+
+		// If error in response
+		else if (response.status == 'error') {
+			localStorage.removeItem("user_token");
+			window.location.replace(config.login_url + '?error=' + response.error_id + '&autologin=0');
+		}
+
+		// Else: Login OK
+		else {
+			//localStorage.setItem("user_access", response.access);
+			localStorage.setItem('user', JSON.stringify(response));
+
+			if (getParameterByName('redir') != null && getParameterByName('redir') != '') {
+				window.location.replace(getParameterByName('redir'));
+			} else {
+				window.location.replace("../");
+			}
+
+		}
+	}).catch((err) => {
+		console.log('API-frontend error on /user/me, redirecting to login-page.');
+		//localStorage.removeItem("user_token");
+		//window.location.replace(config.login_url + '?error=51&autologin=0');
+	});
+}
+
+
+function show_loader() {
+	document.getElementById('login-section-mail').style.display = 'none';
+	document.getElementById('login-section-code').style.display = 'none';
+	document.getElementById('login-section-loader').style.display = 'block';
+}
+
+function show_enter_mail() {
+	document.getElementById('login-section-mail').style.display = 'block';
+	document.getElementById('login-section-code').style.display = 'none';
+	document.getElementById('login-section-loader').style.display = 'none';
+}
+
+function show_enter_code() {
+	document.getElementById('login-section-mail').style.display = 'none';
+	document.getElementById('login-section-code').style.display = 'block';
+	document.getElementById('login-section-loader').style.display = 'none';
+
+	document.getElementById('input-code').focus();
+}
+
+
+function msg_status(type, msg)
+{
+	const feedback = document.querySelectorAll(".feedback");
+	for (var i = 0; i < feedback.length; i++) {
+		if (type == 'error') {
+			feedback[i].innerHTML = '<div class="alert error"><i class="fal fa-exclamation-triangle"></i> '+msg+'</div>';
+			//const element = document.querySelector('.my-element');
+			feedback[i].classList.add('animate__animated', 'animate__shakeX');
+		}
+		else if (type == 'warning') {
+			feedback[i].innerHTML = '<div class="alert warning"><i class="fas fa-check"></i> '+msg+'</div>';
+			feedback[i].classList.add('animate__animated', 'animate__shakeY');
+		}
+		else if (type == 'success') {
+			feedback[i].innerHTML = '<div class="alert success"><i class="fas fa-check"></i> '+msg+'</div>';
+			feedback[i].classList.add('animate__animated', 'animate__shakeY');
+		}
+
+		else {
+			feedback[i].innerHTML = '';
+		}
+	}
+}
+
+
+/* var modal_create_user = M.Modal.init(document.getElementById('modal-create-user'), {});
+var modal_about_privacy = M.Modal.init(document.getElementById('modal-about-privacy'), {
+	dismissible: false,
+	onCloseEnd: function (modal, trigger) {
+		localStorage.setItem('modal_privacy_read_20210618', '1');
+	}
+}); */
+
+/* if (localStorage.getItem("modal_privacy_read_20210618") === null) {
+	modal_about_privacy.open();
+} */
+
+
+// If token exist in URL
+// Get user with API request
+// Redirect if user is found
+if (getParameterByName('c') != '' && getParameterByName('c') != null) {
+
+	// Set login in progress
+	logging_in = true;
+	show_loader();
+
+	// Store token in local storage
+	//localStorage.setItem("user_token", getParameterByName('token'));
+
+	var formData = new FormData();
+	formData.append('user_id', getParameterByName('u'));
+	formData.append('hash', getParameterByName('c'));
+	
+	// Check logged in user from API
+	remote.rpc_post(config.api_url+'/auth/login/validate/hash', formData).then(response => {
+		console.log(response);
+		if (response != null) {
+			if (response.status == 'success') {
+				msg_status('success', 'Wohoo, du er nå innlogget!');
+				localStorage.setItem('user_token', response.token);
+				window.location.replace(config.app_url);
+			}
+			else {
+				show_enter_mail();
+				msg_status('error', 'Kunne ikke validere innlogging');
+			}
+		}
+		else {
+			show_enter_mail();
+			msg_status('error', 'Ingen respons fra backend');
+		}
+	})
+	
+	.catch((err) => {
+		show_enter_mail();
+		msg_status('error', 'Ugyldig respons fra backend');
+	});
+}
+
+
+
+/**
+ * Request code
+ */
+document.querySelector("#form-send-link").addEventListener('submit', event => {
+	event.preventDefault();
+	event.stopImmediatePropagation(); // Stops event to fire twice
+
+	show_loader();
+
+	let formAction = event.target.getAttribute('action');
+	let formData = new FormData(event.target);
+
+	let mail = formData.get('mail');
+
+	remote.rpc_post(config.api_url+formAction, formData).then(response => {
+		console.log(response);
+
+		if (response != null) {
+
+			if (response.status == 'success') {
+				show_enter_code();
+
+				msg_status('', '');
+
+				document.getElementById('input-code-mail').value = mail;
+				document.getElementById('input-code').value = '';
+			}
+
+			else {
+				show_enter_mail();
+
+				if (response.message == 'Not valid domain') {
+					msg_status('error', 'Domenet for din e-postadresse er ikke registrert. <a href="https://kapps.no/contact/" target="_blank">Ta kontakt</a>, så fikser vi :-)');
+				}
+				else {
+					msg_status('error', 'Fant ikke din e-postadresse i vår database. Vennligst ta kontakt.');
+				}
+			}
+
+		} else {
+			show_enter_mail();
+			msg_status('error', 'Ingen respons fra backend');
+		}
+	})
+
+	.catch((err) => {
+		console.log(err);
+	});
+
+	return false;
+});
+
+
+
+
+/**
+ * Validate code
+ */
+document.querySelector("#form-validate-code").addEventListener('submit', event => {
+	event.preventDefault();
+	event.stopImmediatePropagation(); // Stops event to fire twice
+
+	show_loader();
+
+	let formAction = event.target.getAttribute('action');
+	let formData = new FormData(event.target);
+
+	remote.rpc_post(config.api_url+formAction, formData).then(response => {
+		console.log(response);
+
+		if (response != null) {
+			if (response.status == 'success') {
+				msg_status('success', 'Wohoo, du er nå innlogget!');
+				localStorage.setItem('user_token', response.token);
+				window.location.replace(config.app_url);
+			}
+
+			else {
+				show_enter_code();
+				msg_status('error', 'Kunne ikke validere koden');
+			}
+
+		} else {
+			show_enter_code();
+			msg_status('error', 'Ingen respons fra backend');
+		}
+	})
+
+	.catch((err) => {
+		console.log(err);
+	});
+
+	return false;
+});
+
+
+
+
+
+
+
+if (getParameterByName('error') != '' && getParameterByName('error') != null) {
+	if (getParameterByName('error') == 50) {
+		msg_status('warning', 'Generell feil. Kan skyldes førstegangs pålogging. Prøv på nytt eller prøv gjerne innlogging med e-post og engangskode om feilen vedvarer.');
+	} else {
+		msg_status('error', 'Generell feil. Prøv gjerne innlogging med e-post og engangskode.');
+	}
+}
+
+
+
+
+show_enter_mail();
+</script>

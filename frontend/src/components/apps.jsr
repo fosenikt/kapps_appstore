@@ -1,0 +1,200 @@
+<section class="section__page">
+    <h2>Apps</h2>
+
+	<nav aria-label="breadcrumb">
+		<ol class="breadcrumb">
+			<li class="breadcrumb-item"><a href="/">Hjem</a></li>
+			<li class="breadcrumb-item active" aria-current="page">Apps</li>
+		</ol>
+	</nav>
+
+    <div>
+        <div class="row">
+            <div class="col-md-3">
+                <!-- Her settes typer inn for filtrering -->
+                <h4>Filtrer etter typer</h4>
+                <div id="type-filter" class="list-group"></div>
+
+                <h4 style="margin-top:25px;">Filtrer etter tag-er</h4>
+                <div id="tag-filter"></div>
+            </div>
+            <div class="col-md-9">
+                <!-- Her settes applikasjoner inn som kort -->
+                <div id="app-list" class="row"></div>
+            </div>
+        </div>
+    </div>
+</section>
+
+
+
+<script>
+// Hent og vis typer fra localStorage, inkludert "Alle" valg
+function loadTypes(apps) {
+    const types = JSON.parse(localStorage.getItem('types')) || [];
+    const typeFilter = document.getElementById('type-filter');
+
+    // Lag et objekt som teller applikasjoner per type
+    const appCountByType = apps.reduce((count, app) => {
+        count[app.type.id] = (count[app.type.id] || 0) + 1;
+        return count;
+    }, {});
+
+    // Legg til "Alle" filter
+    const allItem = document.createElement('a');
+    allItem.href = '#';
+    allItem.className = 'list-group-item list-group-item-action active'; // Sett "Alle" som aktiv ved start
+    allItem.dataset.typeId = 'all';
+    allItem.innerText = `Alle (${apps.length})`;
+
+    allItem.onclick = function () {
+        displayApps(apps);
+        setActiveFilter(allItem, 'type');
+        return false;
+    };
+
+    typeFilter.appendChild(allItem);
+
+    // Legg til filter for hver type
+    types.forEach(type => {
+        const typeItem = document.createElement('a');
+        typeItem.href = '#';
+        typeItem.className = 'list-group-item list-group-item-action';
+        typeItem.dataset.typeId = type.id;
+        const typeCount = appCountByType[type.id] || 0;
+        typeItem.innerText = `${type.title} (${typeCount})`;
+
+        typeItem.onclick = function () {
+            filterAppsByType(type.id, apps);
+            setActiveFilter(typeItem, 'type');
+            return false;
+        };
+
+        typeFilter.appendChild(typeItem);
+    });
+}
+
+// Hent og vis unike tagger som en tag-sky
+function loadTags(apps) {
+    const tagFilter = document.getElementById('tag-filter');
+    const allTags = new Set();
+
+    apps.forEach(app => {
+        if (app.tags && Array.isArray(app.tags.array)) {
+            app.tags.array.forEach(tag => {
+                allTags.add(tag);
+            });
+        }
+    });
+
+    allTags.forEach(tag => {
+        const tagBadge = document.createElement('span');
+        tagBadge.href = '#';
+        tagBadge.className = 'badge rounded-pill text-bg-secondary me-1';
+        tagBadge.dataset.tag = tag;
+        tagBadge.innerText = tag;
+        tagBadge.style.cursor = 'pointer'; // Gjør badge klikkbar
+
+        tagBadge.onclick = function () {
+            filterAppsByTag(tag, apps);
+            setActiveFilter(tagBadge, 'tag');
+            return false;
+        };
+
+        tagFilter.appendChild(tagBadge);
+    });
+}
+
+// Sett aktiv klasse på valgt filter
+function setActiveFilter(activeItem, filterType) {
+    const items = document.querySelectorAll(`#${filterType}-filter .badge, #${filterType}-filter .list-group-item`);
+    items.forEach(item => item.classList.remove('active'));
+    activeItem.classList.add('active');
+}
+
+// Hent applikasjoner fra APIet og vis dem som kort
+async function fetchAndDisplayApps() {
+    try {
+        const response = await fetch(`${config.api_url}/apps/get`);
+        if (!response.ok) {
+            throw new Error(`HTTP-feil! Status: ${response.status}`);
+        }
+        const apps = await response.json();
+        loadTypes(apps);
+        loadTags(apps);
+        displayApps(apps);
+    } catch (error) {
+        console.error('Det oppstod en feil under henting av applikasjoner:', error);
+    }
+}
+
+// Vis applikasjoner som klikkbare Bootstrap-kort
+function displayApps(apps) {
+    const appList = document.getElementById('app-list');
+    appList.innerHTML = ''; // Tøm listen før oppdatering
+
+    apps.forEach(app => {
+        const cardLink = document.createElement('a');
+        cardLink.href = `/app/${app.id}`;
+        cardLink.className = 'col-md-4 mb-3'; // Legg til Bootstrap kolonne-klasse
+
+        const card = document.createElement('div');
+        card.className = 'card';
+        card.style.width = '100%';
+
+        const img = document.createElement('img');
+        img.src = app.primary_image.thumb; // Bruker thumbnail-bildet
+        img.className = 'card-img-top';
+        img.alt = app.title;
+
+        const cardBody = document.createElement('div');
+        cardBody.className = 'card-body';
+
+        const title = document.createElement('h5');
+        title.className = 'card-title';
+        title.innerText = app.title;
+
+        const description = document.createElement('p');
+        description.className = 'card-text';
+        description.innerText = app.short_description;
+
+        const tagContainer = document.createElement('div');
+        tagContainer.className = 'mb-2';
+
+        // Legg til tag-badges hvis de finnes
+        if (app.tags && Array.isArray(app.tags.array)) {
+            app.tags.array.forEach(tag => {
+                const badge = document.createElement('span');
+                badge.className = 'badge rounded-pill text-bg-secondary me-1';
+                badge.innerText = tag;
+                tagContainer.appendChild(badge);
+            });
+        }
+
+        cardBody.appendChild(title);
+        cardBody.appendChild(description);
+        cardBody.appendChild(tagContainer);
+        card.appendChild(img);
+        card.appendChild(cardBody);
+        cardLink.appendChild(card);
+        appList.appendChild(cardLink);
+    });
+}
+
+// Filtrer applikasjoner basert på valgt type
+function filterAppsByType(typeId, apps) {
+    const filteredApps = typeId === 'all' ? apps : apps.filter(app => app.type.id == typeId);
+    displayApps(filteredApps);
+}
+
+// Filtrer applikasjoner basert på valgt tag
+function filterAppsByTag(tag, apps) {
+    const filteredApps = apps.filter(app => app.tags && app.tags.array && app.tags.array.includes(tag));
+    displayApps(filteredApps);
+}
+
+// Initialiser ved å hente applikasjoner
+fetchAndDisplayApps();
+
+
+</script>

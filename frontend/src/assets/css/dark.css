@@ -1,0 +1,55 @@
+:root {
+	--main-bg-color: #333;
+	--main-text-color: #f3f3f3;
+	--main-border-color: #f3f3f3;
+	--secondary-border-color: #414141;
+
+	--active-color: #0d6efd;
+	--active-text-color: #fff;
+
+	--section-elm-bg-color: #e8effd;
+	--section-elm-text-color: #333;
+
+	--footer-bg-color: #4d4d4d;
+	--footer-text-color: #f3f3f3;
+	--footer-link-text-color: #f3f3f3;
+	--footer-link-text-color-hover: #f3f3f3;
+	--footer-border-color: #555555;
+
+	--link-text-color: #97caff;
+	--link-text-color-hover: #97caff;
+
+	--nav-header-menu-bg: #333;
+	--nav-header-menu-icon: #f3f3f3;
+	--nav-header-menu-link: #f3f3f3;
+	--nav-header-menu-link-6: var(--link-text-color);
+
+	--form-label-color: #fff;
+	--form-input-bg: #474747;
+	--form-input-focus-bg: rgba(0,0,0,.25);
+	--form-input-border-color: #313131;
+	--form-input-border-glow: rgba(57, 149, 240, 0.8); 
+	--form-input-bg-disabled: rgba(0,0,0,.9);
+	--form-input-text-color: #f3f3f3;
+	--form-input-text-placeholder-color: #797979;
+	--form-range-track-bg: #4f545c;
+	--form-range-thumb-bg: #ffffff;
+
+	--item-bg-color: transparent;
+	--item-bg-color-hover: #e8effd;
+	--item-text-color-hover: #333;
+
+	--box-bg-color: #4d4d4d;
+	--box-border-active-color: #97caff;
+	--box-bg-color-transparent: transparent;
+	--box-tabs-bg-color: #333;
+	--box-tabs-text-color: #f3f3f3;
+	--box-tabs-active-bg-color: var(--active-color);
+	--box-tabs-active-text-color: var(--active-text-color);
+
+	--modal-bg: var(--box-bg-color);
+	--modal-border-color: var(--secondary-border-color);
+
+	--btn-dark-bg-color: #6c757d;
+	--btn-dark-text-color: #fff;
+}

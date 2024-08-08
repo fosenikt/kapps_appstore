@@ -337,6 +337,7 @@ class Get
 				'title' => $data['title'],
 				'short_description' => $data['short_description'],
 				'primary_image' => $primary_image,
+				'images' => array($primary_image),
 				'type' => array(
 					'id' => $data['type_id'],
 					'title' => $data['type_title'],
@@ -348,6 +349,11 @@ class Get
 				),
 				'status' => $data['status'],
 				'company' => $this->Companies->get_company_simple($data['company_id']),
+				'license' => array(
+					'id' => $data['license_id'],
+					'title' => $license_title,
+					'link' => $license_link
+				),
 			);
 		}
 

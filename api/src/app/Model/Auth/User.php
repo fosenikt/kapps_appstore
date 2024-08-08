@@ -192,12 +192,48 @@ class User
 					'public_id' => $row['public_id'],
 					'domain' => $row['domain'],
 					'title' => $row['title'],
-					'logo' => $row['logo'],
+					'logo' => $this->get_logo($row['logo']),
 				);
 			}
 		}
 
 		return $r;
+	}
+
+
+
+	private function get_logo($filename)
+	{
+		if (empty($filename)) {
+			return array(
+				'image' => '/assets/images/icons/building.svg',
+				'thumb' => '/assets/images/icons/building.svg'
+			);
+		}
+
+		$exp = explode('.', $filename);
+		$ext = strtolower(end($exp));
+
+		if (empty($filename)) {
+			$logo = array(
+				'image' => '/assets/images/icons/building.svg',
+				'thumb' => '/assets/images/icons/building.svg'
+			);
+		} else {
+			if ($ext != 'svg' && $ext != 'webp') {
+				$logo = array(
+					'image' => '//'.URL.'/data/companies_logo/'.$filename,
+					'thumb' => '//'.URL.'/data/companies_logo/_thumbs/'.$filename
+				);
+			} else {
+				$logo = array(
+					'image' => '//'.URL.'/data/companies_logo/'.$filename,
+					'thumb' => '//'.URL.'/data/companies_logo/'.$filename
+				);
+			}
+		}
+
+		return $logo;
 	}
 
 

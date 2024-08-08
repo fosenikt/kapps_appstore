@@ -1,0 +1,359 @@
+<section class="section__page">
+	<h2>Flere ressurser</h2>
+
+	<nav aria-label="breadcrumb">
+		<ol class="breadcrumb">
+			<li class="breadcrumb-item"><a href="/">Hjem</a></li>
+			<li class="breadcrumb-item active" aria-current="page">Flere ressurser</li>
+		</ol>
+	</nav>
+
+
+	Her er en liste over ressurser fra kommuner og andre offentlige instanser. Det er også lagt til andre relevante datasett som kan være aktuell for bygging av tjenester.
+
+	<div class="row">
+		<div class="col-md-6">
+
+		
+
+			<h3>Kommuner</h3>
+
+			<div class="resource-item">
+				<h5>Oslo kommune</h5>
+				<ul>
+					<li>
+						Github: <a href="https://github.com/oslokommune" target="_blank">https://github.com/oslokommune</a>
+					</li>
+					<li>
+						API og datakatalog: <a href="https://developer.oslo.kommune.no/" target="_blank">https://developer.oslo.kommune.no/</a>
+					</li>
+				</ul>
+			</div>
+
+			<div class="resource-item">
+				<h5>Trondheim kommune</h5>
+				<ul>
+					<li>
+						Github: <a href="https://github.com/Trondheim-kommune" target="_blank">https://github.com/Trondheim-kommune</a>
+					</li>
+					<li>
+						Github TIP: <a href="https://github.com/tktip" target="_blank">https://github.com/tktip</a>
+					</li>
+				</ul>
+			</div>
+
+			<div class="resource-item">
+				<h5>Bergen kommune</h5>
+				<ul>
+					<li>
+						Github: <a href="https://github.com/bergenkommune" target="_blank">https://github.com/bergenkommune</a>
+					</li>
+				</ul>
+			</div>
+
+			<div class="resource-item">
+				<h5>Sarpsborg kommune</h5>
+				<ul>
+					<li>
+						Github: <a href="https://github.com/Sarpsborg-kommune" target="_blank">https://github.com/Sarpsborg-kommune</a>
+					</li>
+				</ul>
+			</div>
+
+			<div class="resource-item">
+				<h5>Narvik kommune</h5>
+				<ul>
+					<li>
+						Github: <a href="https://github.com/narvikmunicipality" target="_blank">https://github.com/narvikmunicipality</a>
+					</li>
+				</ul>
+			</div>
+
+			<div class="resource-item">
+				<h5>Stavanger kommune</h5>
+				<ul>
+					<li>
+						Github: <a href="https://github.com/stavangerkommune" target="_blank">https://github.com/stavangerkommune</a>
+					</li>
+					<li>
+						Dokumentasjon: <a href="https://open.stavanger.kommune.no/" target="_blank">https://open.stavanger.kommune.no/</a>
+					</li>
+				</ul>
+			</div>
+
+			<div class="resource-item">
+				<h5>Horten kommune</h5>
+				<ul>
+					<li>
+						Github: <a href="https://github.com/Hortenkommune" target="_blank">https://github.com/Hortenkommune</a>
+					</li>
+				</ul>
+			</div>
+
+			<div class="resource-item">
+				<h5>Bærum kommune</h5>
+				<ul>
+					<li>
+						Github: <a href="https://github.com/baerumkommune" target="_blank">https://github.com/baerumkommune</a>
+					</li>
+				</ul>
+			</div>
+
+			<div class="resource-item">
+				<h5>Tromsø Kommune – Seksjon for IT</h5>
+				<ul>
+					<li>
+						Github: <a href="https://github.com/tromkom" target="_blank">https://github.com/tromkom</a> og <a href="https://github.com/It-senteret-tromkom" target="_blank">https://github.com/It-senteret-tromkom</a>
+					</li>
+				</ul>
+			</div>
+
+			<div class="resource-item">
+				<h5>StorFollo IKT</h5>
+				<ul>
+					<li>
+						Github: <a href="https://github.com/StorFollo-IKT" target="_blank">https://github.com/StorFollo-IKT</a>
+					</li>
+				</ul>
+			</div>
+
+			<div class="resource-item">
+				<h5>Narvik kommune</h5>
+				<ul>
+					<li>
+						Github: <a href="https://github.com/Narvik-kommune" target="_blank">https://github.com/Narvik-kommune</a>
+					</li>
+				</ul>
+			</div>
+
+			<div class="resource-item">
+				<h5>Sandefjord kommune</h5>
+				<ul>
+					<li>
+						Github: <a href="https://github.com/Sandefjord-kommune" target="_blank">https://github.com/Sandefjord-kommune</a>
+					</li>
+				</ul>
+			</div>
+
+			<div class="resource-item">
+				<h5>Drammen kommune</h5>
+				<ul>
+					<li>
+						Github: <a href="https://github.com/Drammenkommune" target="_blank">https://github.com/Drammenkommune</a>
+					</li>
+				</ul>
+			</div>
+
+			<div class="resource-item">
+				<h5>Kristiansund kommune</h5>
+				<ul>
+					<li>
+						Github: <a href="https://github.com/Kristiansund-kommune" target="_blank">https://github.com/Kristiansund-kommune</a>
+					</li>
+				</ul>
+			</div>
+
+			<div class="resource-item">
+				<h5>Asker kommune</h5>
+				<ul>
+					<li>
+						Github: <a href="https://github.com/Askerkommune" target="_blank">https://github.com/Askerkommune</a>
+					</li>
+				</ul>
+			</div>
+		
+			<h3>Andre offentlige</h3>
+			<div class="resource-item">
+				<h5>KS</h5>
+				<ul>
+					<li>
+						Github: <a href="https://github.com/ks-no" target="_blank">https://github.com/ks-no</a>
+					</li>
+					<li>
+						Dokumentasjon: <a href="https://ks-no.github.io/fiks-plattform/" target="_blank">https://ks-no.github.io/fiks-plattform/</a>
+					</li>
+				</ul>
+			</div>
+
+			<div class="resource-item">
+				<h5>Helsedirektoratet</h5>
+				<ul>
+					<li>
+						Github: <a href="https://github.com/hdir" target="_blank">https://github.com/hdir</a>
+					</li>
+				</ul>
+			</div>
+
+			<div class="resource-item">
+				<h5>Helsenorge</h5>
+				<ul>
+					<li>
+						Github: <a href="https://github.com/helsenorge" target="_blank">https://github.com/helsenorge</a>
+					</li>
+				</ul>
+			</div>
+
+			<div class="resource-item">
+				<h5>Altinn</h5>
+				<ul>
+					<li>
+						Github: <a href="https://github.com/altinn" target="_blank">https://github.com/altinn</a>
+					</li>
+				</ul>
+			</div>
+
+			<div class="resource-item">
+				<h5>Uninett</h5>
+				<ul>
+					<li>
+						Github: <a href="https://github.com/Uninett" target="_blank">https://github.com/Uninett</a>
+					</li>
+				</ul>
+			</div>
+
+			<div class="resource-item">
+				<h5>NAV</h5>
+				<ul>
+					<li>
+						Github: <a href="https://github.com/navikt" target="_blank">https://github.com/navikt</a>
+					</li>
+					<li>
+						Nettside: <a href="https://data.nav.no/" target="_blank">https://data.nav.no/</a>
+					</li>
+				</ul>
+			</div>
+
+		</div>
+
+
+
+
+
+		<div class="col-md-6">
+
+			<h3>API og datasett</h3>
+			<div class="resource-item">
+				<h5>Felles datakatalog</h5>
+				<ul>
+					<li>
+						Nettside: <a href="https://data.norge.no/" target="_blank">https://data.norge.no/</a>
+					</li>
+				</ul>
+			</div>
+
+			<div class="resource-item">
+				<h5>Statens vegvesen</h5>
+				<ul>
+					<li>
+						Åpne data og API-er: <a href="https://www.vegvesen.no/om+statens+vegvesen/om+organisasjonen/apne-data" target="_blank">https://www.vegvesen.no/om+statens+vegvesen/om+organisasjonen/apne-data</a>
+					</li>
+					<li>
+						Nasjonal vegdatabank (NVDB): <a href="https://api.vegdata.no/" target="_blank">https://api.vegdata.no/</a>
+					</li>
+				</ul>
+			</div>
+
+			<div class="resource-item">
+				<h5>Bysykkel</h5>
+				<ul>
+					<li>
+						<a href="https://oslobysykkel.no/apne-data" target="_blank">https://oslobysykkel.no/apne-data</a>
+					</li>
+					<li>
+						<a href="https://trondheimbysykkel.no/apne-data" target="_blank">https://trondheimbysykkel.no/apne-data</a>
+					</li>
+				</ul>
+			</div>
+
+			<div class="resource-item">
+				<h5>Statistisk Sentralbyrå (SSB)</h5>
+				<ul>
+					<li>
+						<a href="https://www.ssb.no/omssb/tjenester-og-verktoy/api" target="_blank">https://www.ssb.no/omssb/tjenester-og-verktoy/api</a>
+					</li>
+				</ul>
+			</div>
+
+			<div class="resource-item">
+				<h5>Brønnøysundregistrene (brreg)</h5>
+				<ul>
+					<li>
+						<a href="https://data.brreg.no/enhetsregisteret/api/docs/index.html#_enhetsregisteret" target="_blank">https://data.brreg.no/enhetsregisteret/api/docs/index.html#_enhetsregisteret</a>
+					</li>
+				</ul>
+			</div>
+
+			<div class="resource-item">
+				<h5>Meteorologisk institutt</h5>
+				<ul>
+					<li>
+						<a href="https://api.met.no/" target="_blank">https://api.met.no/</a>
+					</li>
+				</ul>
+			</div>
+
+			<div class="resource-item">
+				<h5>Kartverket</h5>
+				<ul>
+					<li>
+						<a href="https://www.kartverket.no/api-og-data" target="_blank">https://www.kartverket.no/api-og-data</a>
+					</li>
+				</ul>
+			</div>
+
+			<div class="resource-item">
+				<h5>Noregs vassdrags- og energidirektorat (NVE)</h5>
+				<ul>
+					<li>
+						<a href="https://www.nve.no/om-nve/apne-data-og-api-fra-nve/" target="_blank">https://www.nve.no/om-nve/apne-data-og-api-fra-nve/</a>
+					</li>
+				</ul>
+			</div>
+
+			<div class="resource-item">
+				<h5>Lovdata</h5>
+				<ul>
+					<li>
+						<a href="https://lovdata.no/artikkel/api_og_maskinlesbare_data/1323" target="_blank">https://lovdata.no/artikkel/api_og_maskinlesbare_data/1323</a>
+					</li>
+				</ul>
+			</div>
+
+			<div class="resource-item">
+				<h5>Entur</h5>
+				<ul>
+					<li>
+						<a href="https://developer.entur.org/" target="_blank">https://developer.entur.org/</a>
+					</li>
+				</ul>
+			</div>
+
+			<div class="resource-item">
+				<h5>Artsdatabanken</h5>
+				<ul>
+					<li>
+						<a href="https://artsdatabanken.no/Pages/180954" target="_blank">https://artsdatabanken.no/Pages/180954</a>
+					</li>
+				</ul>
+			</div>
+
+			<div class="resource-item">
+				<h5>Bring (Posten)</h5>
+				<ul>
+					<li>
+						<a href="https://developer.bring.com/" target="_blank">https://developer.bring.com/</a>
+					</li>
+				</ul>
+			</div>
+
+		</div>
+	</div>
+</section>
+
+
+<style>
+	.resource-item {
+		margin-top:25px;
+		margin-bottom:25px;
+	}
+</style>

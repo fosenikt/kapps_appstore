@@ -1,0 +1,124 @@
+<section class="section__page">
+	<h2>Personvernerklæring</h2>
+
+	<nav aria-label="breadcrumb">
+		<ol class="breadcrumb">
+			<li class="breadcrumb-item"><a href="/">Hjem</a></li>
+			<li class="breadcrumb-item active" aria-current="page">Personvernerklæring</li>
+		</ol>
+	</nav>
+
+
+	<div style="background-color:#fff4d6; border:1px solid #e6ce8e; padding:10px; margin-bottom:10px; border-radius:8px;">
+		<b>Oppdatert 07.08.2024:</b> Åpning av noe informasjon uten innlogging. 
+		Mer utdypende beskrivelser. Små justeringer basert på at vi har fjernet blogg (Wordpress).
+	</div>
+
+	<div style="margin:35px 0px;">
+		<p>
+			Kapps.no driftes av <a href="https://fosenikt.no/" target="_blank">Fosen IKT</a>.
+		</p>
+
+		<p>
+			Kapps.no er en katalog over tjenester rettet mot offentlige virksomheter.
+			Dette kan være alt fra hele applikasjoner, til integrasjoner og dokument som ROS og DPIA.
+		</p>
+	</div>
+
+	
+
+
+	<h3 style="margin-top:45px;">Brukere og dine data</h3>
+
+	<p>
+		Du kan kun logge inn med e-postadresse tilhørende offentlig domene som er registrert i Kapps.no sin database.
+	</p>
+
+	<p>
+		Ved innlogging med e-post lagres din <b>e-postadresse</b>, sammen med <b>IP-adresse</b> og <b>nettleser (User-agent)</b>.
+	</p>
+
+	<p>
+		Innlogging med andre tjenester som O365 vil hente grunnleggende informasjon som fornavn, etternavn, tittel og evt. profilbilde.
+	</p>
+
+	<p>
+		Videre kan du fylle ut brukerprofilen din med <b>fornavn</b>, <b>etternavn</b> og <b>mobilnummer</b>.
+	</p>
+
+	<p>
+		<b>Innlogging har to funksjoner:</b>
+		<ul>
+			<li>Registrere hvem som publiserer informasjon.</li>
+			<li>Minimere skade dersom man er uheldig å deler sensitiv informasjon.</li>
+		</ul>
+	</p>
+
+
+	<h3>Åpen plattform</h3>
+	<p>
+		Dette skal være en åpen plattform for alle offentlige virksomheter.
+		Som betyr at din brukerprofil, tjenester du legger ut og tilsvarende vil være tilgjengelig for andre i plattformen 
+		(altså andre innloggede brukere).
+	</p>
+
+	<h3>Dele en applikasjon (eller annet)</h3>
+	<p>
+		Selv om Kapps.no har innlogging, er innlogging basert på domener.
+		Det betyr at all informasjon som legges inn er tilgjengelig for alle offentlige ansatte i Norge og må derfor <b>betraktes som
+		åpen/offentlig publisering</b>. Les mer under avsnittet "Brukere".
+	</p>
+	<p>
+		<b>Denne informasjonen er tilgjengelig uten innlogging:</b>
+		<ul>
+			<li>Tittel</li>
+			<li>Kort beskrivelse</li>
+			<li>Hovedbilde</li>
+			<li>Type/Kategori (Applikasjon, dokument...)</li>
+			<li>Tagger (tags)</li>
+			<li>Lisens</li>
+			<li>Status</li>
+			<li>Organisasjon</li>
+		</ul>
+	</p>
+
+	<b>For innloggede brukere vil dette være tilgjengelig:</b>
+		<ul>
+			<li>Full beskrivelse</li>
+			<li>Installasjonsveiledning</li>
+			<li>Lenker</li>
+			<li>Opplastede filer</li>
+			<li>Personinformasjon om hvem som har publisert/endret</li>
+		</ul>
+
+	<p>
+		Applikasjoner som deles vil være redigerbar for hele organisasjonen under samme domene.
+	</p>
+
+	<h3>Statistikk</h3>
+	<p>
+		Det vil loggføres enkel internt statistikk på hvilke tjenester man klikker på. Formålet er å vise "Mest populær", "Sist settpå" og lignende.
+	</p>
+
+	<h3>Leverandører</h3>
+	<p>
+		Leverandører som i hovedsak utvikler mot offentlige virksomheter og har lyst til å dele, kan få tilgang på forespørsel.
+	</p>
+
+	<h3>Lagring av data</h3>
+	<p>
+		All informasjon er lagret lokalt innenfor Kapps.no-løsningen. Denne driftes av <a href="https://fosenikt.no/" target="_blank">Fosen IKT</a>.
+	</p>
+	<p>
+		Server er levert av Digital Ocean og er lokalisert i Nederland.<br />
+		Lokasjon av server kan variere og vurderes løpende, basert på kriterier som responstid, kostnad, tilgjengelighet og lignende.<br />
+		Hovedkriterie for valg av server er at vi må ha kontroll på dataen og den må være lagret innenfor EU.
+	</p>
+
+	<h3>Ekstern deling av data</h3>
+	<p>
+		Det vil ikke selges eller gis ut data om brukere til tredjepart, annet enn det som allerede er offentlig tilgjengelig.
+		Det finnes API som kan brukes med din egen bruker, basert på dine rettigheter.
+		Det kan vurderes åpne API-er for data som er offentlig tilgjengelig (f.eks. virksomheter), men ikke data som kan knyttes mot deg som person.
+	</p>
+</section>

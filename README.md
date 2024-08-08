@@ -5,6 +5,11 @@ kApps is just a database (with backend/api and frontend) ment for categorizing a
 It's goal is to share applications and services, and make them more accessible for government/counties/municipalities.
 
 
+## Todo
+[ ] Make /stats/apps/latest public 
+[ ] License info in public apps
+[ ] Show only primary image in images array in public, so we can foreach both on public and registered users
+
 
 ## Prerequisite
 - Any Linux docker environment ([How To Install and Use Docker on Ubuntu 18.04](https://www.digitalocean.com/community/tutorials/how-to-install-and-use-docker-on-ubuntu-18-04))

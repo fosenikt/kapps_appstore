@@ -1,0 +1,144 @@
+<section class="section__page">
+
+	<h2 style="margin-bottom:5px;">{{>title}}</h2>
+
+	<nav aria-label="breadcrumb">
+		<ol class="breadcrumb">
+			<li class="breadcrumb-item"><a href="/">Hjem</a></li>
+			<li class="breadcrumb-item"><a href="/apps">Apps</a></li>
+			<li class="breadcrumb-item active" aria-current="page">{{>title}}</li>
+		</ol>
+	</nav>
+
+	<div style="margin-bottom:25px;">
+		{{>short_description}}
+	</div>
+
+
+	<div class="row">
+		<div class="col-md-8">
+
+			<div class="box">
+				<div class="slider">
+					{{for images}}
+						<div class="slider__item">
+							<a data-fancybox="gallery" href="{{>image}}">
+							<img src="{{>image}}" alt="">
+							</a>
+						</div>
+					{{/for}}
+				</div>
+			</div>
+
+			<div class="box">
+				<h3>Beskrivelse</h3>
+
+				{{if description}}
+					{{:description}}
+				{{else}}
+					<div class="locked-content">
+						<div class="icon">
+							<i class="fa-solid fa-user-lock"></i>
+						</div>
+						<div class="info">
+							Logg inn for å se fullstendig innhold
+						</div>
+						<div class="login-btn">
+							<a href="/login" class="btn btn-secondary">
+								Logg inn
+							</a>
+						</div>
+					</div>
+				{{/if}}
+			</div>
+
+			<div class="box">
+				<h3>Installasjonsveiledning</h3>
+				{{if installation}}
+					{{:installation}}
+				{{else}}
+					<div class="locked-content">
+						<div class="icon">
+							<i class="fa-solid fa-user-lock"></i>
+						</div>
+						<div class="info">
+							Logg inn for å se fullstendig innhold
+						</div>
+						<div class="login-btn">
+							<a href="/login" class="btn btn-secondary">
+								Logg inn
+							</a>
+						</div>
+					</div>
+				{{/if}}
+			</div>
+
+
+		</div>
+
+
+
+		<div class="col-md-4">
+
+			<div class="detail__block">
+				<div class="detail__title">
+					<i class="fas fa-user"></i> Eier
+				</div>
+				<div class="detail__value">
+					<a href="#">{{>company.title}}</a>
+				</div>
+			</div>
+			<div class="detail__block">
+				<div class="detail__title">
+					<i class="fa-regular fa-file-certificate"></i> Lisens
+				</div>
+				<div class="detail__value">
+					<a href="#">MIT License</a>
+				</div>
+			</div>
+			<div class="detail__block">
+				<div class="detail__title">
+					<i class="fa-solid fa-hashtag"></i> Tags
+				</div>
+				<div class="detail__value">
+					<span class="badge rounded-pill text-bg-primary">kundeservice</span>
+					<span class="badge rounded-pill text-bg-primary">ticket</span>
+				</div>
+			</div>
+
+		</div>
+
+	</div>
+
+				
+	
+
+	</div>
+		
+</section>
+
+<script>
+if ($('.slider__item a img').length) {
+	Fancybox.bind('[data-fancybox="gallery"]', {
+		Carousel: {
+			transition: "slide",
+		},
+		Thumbs: false,
+		overlay: {
+			css: { 'background': 'rgba(0, 0, 0, 0.5)' }
+		}
+	}); 
+
+}
+if ($('.slider').length) {
+	$('.slider').slick({
+		arrows:true,
+		infinite:false,
+		speed: 300,
+		slidesToShow: 1,
+		centerPadding:'0px',
+		centerMode: true
+
+	});
+}
+</script>

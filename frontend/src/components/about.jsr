@@ -1,0 +1,58 @@
+<section class="section__page">
+	
+	<h2>Om Kapps.no</h2>
+
+	<nav aria-label="breadcrumb">
+		<ol class="breadcrumb">
+			<li class="breadcrumb-item"><a href="/">Hjem</a></li>
+			<li class="breadcrumb-item active" aria-current="page">Om Kapps</li>
+		</ol>
+	</nav>
+
+	<div class="row">
+		<div class="col-md-6">
+			<h3>Visjon</h3>
+			<p>Kapps.no (KommuneApps) er en visjon om økt samhandling og
+			deling mellom offentlige virksomheter.</p>
+
+			<p>Vi har i dag mange gode rammeverk og plattformer for
+			digitalisering. Eksempelvis <a href="https://www.digdir.no/nasjonal-arkitektur/digital-samhandling/2150" target="_blank">digital samhandling fra Digdir</a>
+			og <a href="https://www.ks.no/fagomrader/digitalisering/felleslosninger/" target="_blank">fellesløsninger fra KS</a>.</p>
+
+			<p>
+			Med Kapps.no ønsker vi å tilby en plattform for deling av faktiske applikasjoner og 
+			tjenester som man selv har laget, slik at de kan tas i bruk av andre offentlige virksomheter.
+			</p>
+
+			<h3>Hvem er vi?</h3>
+			<p>
+			Vi er «alle» i offentlig sektor. Vårt mål er at alle som
+			ønsker skal kunne delta. Kanskje du har et tips, vil skrive et innlegg eller dele en tjeneste? 
+			Kanskje du vil være med på drift og utvikling av plattformen?
+			</p>
+
+			<a href="https://app.slack.com/client/TC8Q2QTDX" target="_blank">Bli med i vår kanal på OneTeamGov sin Slack</a>.
+
+			<h3>Hvorfor</h3>
+			<p>
+			Hvorfor finne opp kruttet på nytt? En Digital Offentlig sektor. 
+			Del offentlig utviklede løsninger med andre offentlige instanser. Dette er et eksperiment på dette.
+			</p>
+
+			<h3>Historie</h3>
+			<p>
+			I et ønske om å løse noe av denne utfordringen, 
+			tok Fosen IKT et initiativ og startet et eksperiment, september 2020. 
+			Etter hvert ble DigiTrøndelag med og deretter OneTeamGov. 
+			Gjennom OneTeamGov har vi i skrivende stund hatt en meetup (12.04.2021), 
+			med flott deltagelse av personer rundt om i Norge.
+			</p>
+		</div>
+
+		<div class="col-md-6">
+			<img class="round" src="/assets/images/bracelets-collaboration-colleagues-398532-1-1024x564.jpg" alt="">
+		</div>
+	</div>
+
+
+</section>

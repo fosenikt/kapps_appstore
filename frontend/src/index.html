@@ -1,374 +1,158 @@
 <!DOCTYPE html>
-<html lang="en">
-<head>
-	<meta http-equiv="X-UA-Compatible" content="IE=edge">
-	<meta charset="utf-8">
-	<meta name="viewport" content="width=device-width, initial-scale=1">
-	<title>kApps</title>
+<html lang="nb">
+	<head>
+		<meta http-equiv="X-UA-Compatible" content="IE=edge">
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<meta name="viewpoint" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0">
+		<title>kApps</title>
 
 
-	<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
-	<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
-	<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
-	<link rel="manifest" href="/site.webmanifest">
-	<link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5">
-	<meta name="msapplication-TileColor" content="#da532c">
-	<meta name="theme-color" content="#ffffff">
+		<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+		<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+		<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+		<link rel="manifest" href="/site.webmanifest">
+		<link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5">
+		<meta name="msapplication-TileColor" content="#da532c">
+		<meta name="theme-color" content="#ffffff">
+		
 
-	
-	
-	<!-- 
-		MaterializeCSS
-		Source: https://materializecss.github.io/materialize/getting-started.html
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@materializecss/materialize@1.0.0/dist/css/materialize.min.css">
-    <script src="https://cdn.jsdelivr.net/npm/@materializecss/materialize@1.0.0/dist/js/materialize.min.js"></script>
-	-->
-	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@materializecss/materialize@1.2.2/dist/css/materialize.min.css">
-	<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
-	<script src="https://cdn.jsdelivr.net/npm/@materializecss/materialize@1.2.2/dist/js/materialize.min.js"></script>
+		<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
 
-	<!-- 
-		Noty
-		Source: http://ned.im/noty/
-	-->
-	<link href="/assets/lib/noty/noty.css" rel="stylesheet" type="text/css" />
-	<link href="/assets/lib/noty/themes/metroui.css" rel="stylesheet" type="text/css" />
+		<link id="css-theme" href="/assets/css/dark.css" rel="stylesheet">
+		<link rel="stylesheet" href="/assets/css/style_v2.css">
 
-	<!-- 
-		FontawsomeSelector
-	-->
-	<link href="/assets/lib/FontawsomeSelector/FontawsomeSelector.css" rel="stylesheet" type="text/css" />
+		<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/ui@5.0/dist/fancybox/fancybox.css"/>
+		
+	</head>
+	<body>
 
-	<!-- 
-		Vanilla tilt.js
-		Source: https://micku7zu.github.io/vanilla-tilt.js/
-	-->
-	<script src="/assets/lib/vanilla-tilt.min.js"></script>
-
-
-	
-
-
-	<!-- 
-		Fancybox
-		Source: http://fancyapps.com/fancybox/3/
-	-->
-	<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.css" />
-
-	<!-- 
-		FIPO Calendar theme
-	-->
-	<link rel="stylesheet" type="text/css" href="/assets/css/tiles.css">
-	<link href="/assets/theme/theme.css" rel="stylesheet" type="text/css">
-</head>
-
-
-
-<body id="page-body">
-
-
-
-	<nav id="nav-header">
-		<div class="nav-wrapper">
-
-			<div class="logo">
-				<a href="/" class="page-logo">
-					<img src="/assets/images/logo/Kapps_no.png" alt=""> Kapps Appstore
-				</a>
-			</div>
-
-			<div class="app-search nav-search">
-				<form id="nav-search" action="/search/all" method="POST">
-					<div class="search-container">
-						<div class="search-input">
-							<input type="text" class="input-app-search" id="input-nav-search" name="q" placeholder="Søk etter app eller tjeneste her...">
-						</div>
-						<div class="search-btn">
-							<button type="submit">
-								<i class="fas fa-search"></i>
+	<div class="wrapper">
+		<div class="content">
+			<header class="header">
+				<div class="header__content">
+					<div class="menu__body">
+						<a href="/" class="header__logo">
+							<img src="/assets/images/logo/kapps_no.svg" alt="">
+				   		</a>
+						<ul class="menu__list">
+							<li><a href="/apps" class="menu__link header__link1">Apps</a></li>
+							<li><a href="/about" class="menu__link header__link2">Om Kapps</a></li>
+							<li><a href="/resources" class="menu__link header__link3">Ressurser</a></li>
+							<li><a href="/share" class="menu__link header__link6">DELE</a></li>
+						</ul>
+						<form class="form__search">
+							<button type="submit" class="search__submit btn-transparent">
+								<i class="fa-light fa-magnifying-glass"></i>
 							</button>
+							<input type="text" placeholder="Søk...">
+						</form>
+
+						<div class="page__action">
+							<button type="button" class="page__theme"></button>
+						</div>
+						<div class="page__user" style="font-size: 1.5rem;">
+							<a href="/me">
+								<i class="fal fa-user"></i>
+							</a>
 						</div>
 					</div>
-				</form>
-			</div>
-
-			<div class="tools">
-				<a href="#" data-target="nav-menu" class="sidenav-trigger">
-					<i class="fas fa-bars"></i>
-				</a>
-				<!-- <a href="/app/new" style="display:inline-block; margin-right:15px; font-size:2.4rem; vertical-align:middle; color:#308aff;">
-					<i class="fad fa-plus-circle"></i>
-				</a> -->
-				<div class="nav-user">
-					<div id="nav-loggin-btn">
-						<a href="https://apps.kapps.no/login" class="waves-effect waves-light btn blue">Logg inn</a>
-					</div>
-					<div id="nav-user-circle" class="avatar-circle dropdown-trigger" style="display:none;" data-target='dropdown-user'></div>
-				</div>
-			</div>
-		</div>
-
-
-
-		 <!-- Dropdown Structure -->
-		<ul id="dropdown-user" class="dropdown-content" style="min-width:300px;">
-			<li>
-				<a href="/myprofile">
-					<i class="fas fa-fw fa-user"></i> Min profil
-				</a>
-			</li>
-			<li>
-				<a href="/company/myapps">
-					<i class="fas fa-fw fa-building"></i> Mine applikasjoner
-				</a>
-			</li>
-			<li class="display-admin">
-				<a href="/admin">
-					<i class="fas fa-fw fa-cog"></i> Administrasjon
-				</a>
-			</li>
-			<li class="divider" tabindex="-1"></li>
-			<li>
-				<a href="javascript:app.sign_out();">
-					<i class="far fa-fw fa-sign-out-alt"></i> Logg ut
-				</a>
-			</li>
-		</ul>
-	</nav>
-
-	<ul class="sidenav" id="nav-menu">
-		<li>
-			<div class="user-view">
 				
-				<a href="#user"><img src="/assets/images/logo/Kapps_no.png" alt="logo" style="max-height: 50px;"></a>
-				<div class="name" style="padding-bottom:25px; font-weight:600; font-size:1.2rem;">Kapps.no</div>
-			</div>
-		</li>
+					<div class="header-menu__icon">
+						<span></span>
+						<span></span>
+						<span></span>
+					</div>
 
-		<li>
-			<a href="/search/all">
-				<i class="fas fa-fw fa-search"></i> Søk
-			</a>
-		</li>
+					<div class="header-menu"></div>
+				</div>	
+			</header>
+			
+		
 
-
-		<li><div class="divider"></div></li>
-    	<li><a class="subheader">Apps og tjenester</a></li>
-		<li>
-			<a href="/apps">
-				<i class="fas fa-fw fa-box-full"></i> Bla gjennom
-			</a>
-		</li>
-		<li>
-			<a href="/company/myapps">
-				<i class="fas fa-fw fa-building"></i> Mine applikasjoner
-			</a>
-		</li>
-		<li>
-			<a href="/app/new">
-				<i class="fas fa-fw fa-hand-holding-heart"></i> Del en tjeneste
-			</a>
-		</li>
+			
+			<div id="main"></div>
 
 
-		<li><div class="divider"></div></li>
-    	<li><a class="subheader">Min bruker</a></li>
-		<li>
-			<a href="/myprofile">
-				<i class="fas fa-fw fa-user"></i> Min profil
-			</a>
-		</li>
+			<section class="links" style="margin-top:100px;">
+				<div class="links__row">
+					<div class="links__item">
+						<div class="links__item-title">
+							Kontakt oss
+						</div>
+						<div class="links__item-text">
+							E-post: helpdesk@fosenikt.no
+						</div>
+						<div class="links__item-text">
+							Telefon: 48 11 49 99
+						</div>
+						<div class="links__item-text">
+							Adresse: Rådhusveien 13, 7100 Rissa (Trøndelag)
+						</div>
+					</div>
 
-		<li><div class="divider"></div></li>
-    	<li><a class="subheader">Lenker</a></li>
-		<!-- <li><a href="https://rammeverk.kapps.no">Rammeverk</a></li> -->
-		<li><a href="https://kapps.no">Kapps.no</a></li>
-	</ul>
+					<div class="links__item">
+						<div class="links__item-title">
+							Quick links
+						</div>
+						<div class="links__item-text">
+							<a href="/about">Om oss</a>
+						</div>
+						<div class="links__item-text">
+							<a href="/resources">Ressurses og åpne data</a>
+						</div>
+						<div class="links__item-text">
+							<a href="/privacy">Personvernerklæring</a>
+						</div>
+					</div>
 
+					<div class="links__item">
+						<div class="links__item-title">
+							Community
+						</div>
+						<div class="links__item-text">
+							<a href="https://app.slack.com/client/TC8Q2QTDX/C01LWJC7RH6">Gå til community</a>
+						</div>
+						
+					</div>
 
+					<div class="links__item">
+						<div class="links__item-title">
+							Follow us
+						</div>
+						<div class="links__item-text social-icons">
+							<a href="https://www.facebook.com/fosenikt" target="_blank">
+								<i class="fa-brands fa-facebook"></i>
+							</a>
 
-	<div class="page-nav-sidebar" id="nav-sidebar"></div>
+							<a href="https://github.com/fosenikt/kapps_appstore" target="_blank">
+								<i class="fa-brands fa-github"></i>
+							</a>
+						</div>
+					</div>
+				</div>
+			</section>
 
-
-	<div id="main"></div>
-
-
-
-
-
-
-
-
-
-
-	 <!-- Modal: License info -->
-	<div id="modal-license-info" class="modal">
-		<div class="modal-content">
-			<h4>Lisens-informasjon</h4>
-
-			<div class="help" style="font-size:0.75rem;">
-				<p>
-					<b>Hvis andre kan modifisere og dele din tjeneste videre, anbefaler vi at du velger MIT lisens.</b>
-				</p>
-				<p>
-					Hvis du ikke ønsker at bruker skal modifisere og dele videre, så velger du EULA (end user license agreement).
-					Du bør oppgi mer informasjon om hva som inngår i lisensen et sted (f.eks. inne i tjenesten). 
-				</p>
-				<p>
-					De fleste lisensene er veldig like. De hindrer ikke bruk, modifisering og deling.
-					Skillet går ofte på hva den som bruker tjenesten må gjøre. Eksempelvis om noen gjenbruker din tjeneste for å lage en ny tjeneste, 
-					så må samme lisens brukes videre. Har du noen krav her, så anbefaler vi deg å lese rundt om på nettet eller se lenke under.
-				</p>
-				<p>
-					Du kan se ytterligere beskrivelse av <a href="https://choosealicense.com/licenses/" target="_blank">lisensene her</a> (åpnes i nytt vindu).
-				</p>
-			</div>
-
-
-			<table>
-				<tr>
-					<td>Andre kan:</td>
-					<td class="tdcenter">Bruke</td>
-					<td class="tdcenter">Modifisere</td>
-					<td class="tdcenter">Distribuere</td>
-					<td class="tdcenter">Stille deg ansvarlig</td>
-					<td class="tdcenter">Få garanti av deg</td>
-				</tr>
-				<tr>
-					<td><b>MIT License</b></td>
-					<td class="tdcenter"><i class="fas fa-circle" style="color:green;"></i></td>
-					<td class="tdcenter"><i class="fas fa-circle" style="color:green;"></i></td>
-					<td class="tdcenter"><i class="fas fa-circle" style="color:green;"></i></td>
-					<td class="tdcenter"><i class="fas fa-circle" style="color:red;"></i></td>
-					<td class="tdcenter"><i class="fas fa-circle" style="color:red;"></i></td>
-				</tr>
-				<tr>
-					<td><b>GNU GPL...</b></td>
-					<td class="tdcenter"><i class="fas fa-circle" style="color:green;"></i></td>
-					<td class="tdcenter"><i class="fas fa-circle" style="color:green;"></i></td>
-					<td class="tdcenter"><i class="fas fa-circle" style="color:green;"></i></td>
-					<td class="tdcenter"><i class="fas fa-circle" style="color:red;"></i></td>
-					<td class="tdcenter"><i class="fas fa-circle" style="color:red;"></i></td>
-				</tr>
-				<tr>
-					<td><b>Mozilla Public License 2.0</b></td>
-					<td class="tdcenter"><i class="fas fa-circle" style="color:green;"></i></td>
-					<td class="tdcenter"><i class="fas fa-circle" style="color:green;"></i></td>
-					<td class="tdcenter"><i class="fas fa-circle" style="color:green;"></i></td>
-					<td class="tdcenter"><i class="fas fa-circle" style="color:red;"></i></td>
-					<td class="tdcenter"><i class="fas fa-circle" style="color:red;"></i></td>
-				</tr>
-				<tr>
-					<td><b>Apache License 2.0</b></td>
-					<td class="tdcenter"><i class="fas fa-circle" style="color:green;"></i></td>
-					<td class="tdcenter"><i class="fas fa-circle" style="color:green;"></i></td>
-					<td class="tdcenter"><i class="fas fa-circle" style="color:green;"></i></td>
-					<td class="tdcenter"><i class="fas fa-circle" style="color:red;"></i></td>
-					<td class="tdcenter"><i class="fas fa-circle" style="color:red;"></i></td>
-				</tr>
-				<tr>
-					<td><b>Boost Software License 1.0</b></td>
-					<td class="tdcenter"><i class="fas fa-circle" style="color:green;"></i></td>
-					<td class="tdcenter"><i class="fas fa-circle" style="color:green;"></i></td>
-					<td class="tdcenter"><i class="fas fa-circle" style="color:green;"></i></td>
-					<td class="tdcenter"><i class="fas fa-circle" style="color:red;"></i></td>
-					<td class="tdcenter"><i class="fas fa-circle" style="color:red;"></i></td>
-				</tr>
-				<tr>
-					<td><b>The Unlicense</b></td>
-					<td class="tdcenter"><i class="fas fa-circle" style="color:green;"></i></td>
-					<td class="tdcenter"><i class="fas fa-circle" style="color:green;"></i></td>
-					<td class="tdcenter"><i class="fas fa-circle" style="color:green;"></i></td>
-					<td class="tdcenter"><i class="fas fa-circle" style="color:red;"></i></td>
-					<td class="tdcenter"><i class="fas fa-circle" style="color:red;"></i></td>
-				</tr>
-				<tr>
-					<td><b>EULA / Kopibeskyttet</b></td>
-					<td class="tdcenter"><i class="fas fa-circle" style="color:green;"></i></td>
-					<td class="tdcenter"><i class="fas fa-circle" style="color:red;"></i></td>
-					<td class="tdcenter"><i class="fas fa-circle" style="color:red;"></i></td>
-					<td class="tdcenter"><i class="fas fa-circle" style="color:red;"></i></td>
-					<td class="tdcenter"><i class="fas fa-circle" style="color:red;"></i></td>
-				</tr>
-			</table>
-
-		</div>
-		<div class="modal-footer">
-			<a href="#!" class="modal-close waves-effect waves-green btn-flat">Lukk</a>
+			<footer class="footer">
+				<div class="footer__content">2020 © 2024 En idé og tjeneste av Fosen IKT.</div>
+			</footer>
 		</div>
 	</div>
-	<script>
-		var modal_license_info = M.Modal.init(document.getElementById('modal-license-info'), {});
-	</script>
 
 
+	<script type="text/javascript" src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
 
-
-
-
-	 
-
-
-	<!-- 
-		jQuery
-		Source: https://jquery.com/
-	<script src="/assets/lib/jquery-3.5.1.slim.min.js"></script>
-	-->
-	<script src="https://code.jquery.com/jquery-3.6.3.min.js" integrity="sha256-pvPw+upLPUjgMXY0G+8O0xUf+/Im1MZjXxxgOcBQBXU=" crossorigin="anonymous"></script>
-
-
-	<!-- 
-		FontAwsome
-		Source: https://fontawesome.com/
-	-->
-	<script src="/assets/lib/fontawesome-pro-6.2.1-web/all.min.js"></script>
-
-
-	<!-- 
-		Select2
-		Source: https://github.com/select2/select2/
-	-->
-	<link href="/assets/lib/select2/css/select2.min.css" rel="stylesheet" type="text/css" />
-	<!-- <link href="/assets/lib/select2/css/select2-flat-theme.min.css" rel="stylesheet" type="text/css" /> -->
-	<script src="/assets/lib/select2/js/select2.full.min.js"></script>
-
-
-	<!-- 
-		JsRender
-		Source: https://www.jsviews.com/
+	<!--
+	jsRender
+	Source: https://www.jsviews.com
 	-->
 	<script src="/assets/lib/jsrender.min.js"></script>
 
-
-	<!-- 
-		Noty
-		Source: http://ned.im/noty/
-	-->
-	<script src="/assets/lib/noty/noty.min.js" type="text/javascript"></script>
-
-
-	<!-- 
-		FontAwsome Icon Picker
-		Source: xxx
-	<script src="/assets/lib/fontawesome-iconpicker-3.0.0/js/fontawesome-iconpicker.min.js"></script>
-	-->
-
-	<!-- 
-		FontawsomeSelector
-	-->
-	<script src="/assets/lib/FontawsomeSelector/FontawsomeSelector.js"></script>
-
-	<!-- 
-		Fancybox
-		Source: http://fancyapps.com/fancybox/3/
-	-->
-	<script src="https://cdn.jsdelivr.net/gh/fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.js"></script>
+	<script src="/assets/js/landingpage.js"></script>
 
 	
-
-
 	<!-- 
-		FIPO Calendar scripts
+		Kapps scripts
 	-->
 	<script src="/config.js"></script>
 
@@ -380,41 +164,65 @@
 
 	<script src="/assets/lib/page.js"></script>
 	<script src="/assets/js/routes.js"></script>
+	<script src="/assets/js/theme_toggler.js"></script>
 
 
+	<script>
+		// Funksjon for å hente typer fra APIet og lagre i localStorage
+		async function fetchAndStoreTypes() {
+			try {
+				// Utfør en GET-forespørsel til APIet
+				const response = await fetch(`${config.api_url}/types/get`);
 
+				// Sjekk om responsen er ok (statuskode 200-299)
+				if (!response.ok) {
+					throw new Error(`HTTP-feil! Status: ${response.status}`);
+				}
 
-	
-	
+				// Parse responsen som JSON
+				const types = await response.json();
 
-	
+				// Lagre typene i localStorage under nøkkelen "types"
+				localStorage.setItem('types', JSON.stringify(types));
 
-	<script type="text/javascript">
-		//app.load_main();
+				console.log('Typer hentet og lagret i localStorage:', types);
+			} catch (error) {
+				// Logg eventuelle feil som oppstår
+				console.error('Det oppstod en feil under henting av typer:', error);
+			}
+		}
 
-		var instances = M.Sidenav.init(document.getElementById('nav-menu'), {});
-
-		var elems = document.querySelectorAll('.dropdown-trigger');
-		var instances = M.Dropdown.init(elems, {
-			constrainWidth: false,
-			container: 'body'
-		});
-
-
-
-
-		
-
-		addEvent(document, 'submit', '#nav-search', function(e) {
-			e.preventDefault();
-			e.stopImmediatePropagation(); // Stops event to fire twice
-
-			var formData = new FormData(e.target);
-			var q = formData.get('q');
-
-			page('/search/all?q=' + q);
-			return false;
-		});
+		// Kall funksjonen for å hente og lagre typene
+		fetchAndStoreTypes();
 	</script>
+
+
+	<!-- 
+		Bootstrap
+		Source: https://getbootstrap.com/
+	-->
+	<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js" integrity="sha384-I7E8VVD/ismYTF4hNIPjVp/Zjvgyol6VFvRkX/vR+Vc4jQkC+hVqc2pM8ODewa9r" crossorigin="anonymous"></script>
+	<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.min.js" integrity="sha384-0pUGZvbkm6XF6gxjEnlmuGrJXVbNuzT9qBBavbLwCsOGabYfZo0T0to5eqruptLy" crossorigin="anonymous"></script>
+	
+
+	<!-- 
+		fancybox
+		Source: http://fancybox.net/
+	-->
+	<script src="https://cdn.jsdelivr.net/npm/@fancyapps/ui@5.0/dist/fancybox/fancybox.umd.js"></script>
+
+	<!-- 
+		Slick carousel
+		Source: https://kenwheeler.github.io/slick/
+	-->
+	<script type="text/javascript" src="//cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick.min.js"></script>
+
+	<!-- 
+		Font Awsome
+		Source: https://fontawesome.com/
+	-->
+	<script type="text/javascript" src="/assets/lib/fontawesome/all.min.js"></script>
+
+	
 </body>
 </html>
