@@ -1,0 +1,164 @@
+<script>
+	// Check if token exists in localStorage
+    var token = localStorage.getItem('user_token');
+
+    // If not redirect to login
+    if (!token) {
+        window.location.href = '/login';
+    }
+</script>
+
+<section class="section__page">
+	
+	<h2>Rediger profil</h2>
+
+	<nav aria-label="breadcrumb">
+		<ol class="breadcrumb">
+			<li class="breadcrumb-item"><a href="/">Hjem</a></li>
+			<li class="breadcrumb-item"><a href="/user/me" id="breadcrumb-user-name">Meg</a></li>
+			<li class="breadcrumb-item active" aria-current="page">Rediger profil</li>
+		</ol>
+	</nav>
+
+	<form id="form-user-me-edit" action="/myprofile/update" method="POST">
+
+		<div class="row">
+			<div class="col-md-7">
+				<div class="box">
+					<div class="detail__block">
+						<div class="detail__title">
+							<label for="inputMeEditFirstname">Fornavn</label>
+						</div>
+						<div class="detail__value">
+							<div class="mb-3">
+								<input type="text" class="form-control" id="inputMeEditFirstname" name="firstname" placeholder="Kari">
+							</div>
+						</div>
+					</div>
+
+					<div class="detail__block">
+						<div class="detail__title">
+							<label for="inputMeEditLastname">Etternavn</label>
+						</div>
+						<div class="detail__value">
+							<div class="mb-3">
+								<input type="text" class="form-control" id="inputMeEditLastname" name="lastname" placeholder="Nordmann">
+							</div>
+						</div>
+					</div>
+
+					<div class="detail__block">
+						<div class="detail__title">
+							<label for="inputMeEditMail">E-post</label>
+						</div>
+						<div class="detail__value">
+							<div class="mb-3">
+								<input type="email" class="form-control" id="inputMeEditMail" name="mail" placeholder="name@example.com" aria-describedby="inputMeEditMailHelp">
+								<div id="inputMeEditMailHelp" class="form-text">
+									<i class="fal fa-info-circle"></i> Du kan ikke endre domenet.
+								</div>
+							</div>
+						</div>
+					</div>
+
+					<div class="detail__block">
+						<div class="detail__title">
+							<label for="inputMeEditMobile">Mobiltelefon</label>
+						</div>
+						<div class="detail__value">
+							<div class="mb-3">
+								<input type="tel" class="form-control" id="inputMeEditMobile" name="mobile" placeholder="12345678">
+							</div>
+						</div>
+					</div>
+
+					<div class="detail__block">
+						<div class="detail__title">
+							<label for="inputMeEditRole">Rolle / tittel</label>
+						</div>
+						<div class="detail__value">
+							<div class="mb-3">
+								<input type="text" class="form-control" id="inputMeEditRole" name="company_role" placeholder="Saksbehandler">
+							</div>
+						</div>
+					</div>
+				</div>
+
+				<div style="text-align: right;">
+					<button type="submit" class="btn btn-primary">Lagre min profil</button>
+				</div>
+
+			</div>
+		</div>
+
+	</form>
+
+	
+
+
+</section>
+
+
+<script>
+	function user_profile_me_edit_get() {
+		remote.rpc(`${config.api_url}/user/me`).then(response => {
+			console.log(response);
+
+			document.getElementById('breadcrumb-user-name').innerHTML = `${response.firstname} ${response.lastname}`;
+			document.getElementById('inputMeEditFirstname').value = response.firstname;
+			document.getElementById('inputMeEditLastname').value = response.lastname;
+			document.getElementById('inputMeEditMail').value = response.mail;
+			document.getElementById('inputMeEditMobile').value = response.mobile;
+			document.getElementById('inputMeEditRole').value = response.company_role;
+		}).catch(error => {
+			console.error('Error fetching user:', error);
+
+			if (error.status == 401) {
+				console.warn('Fjerner token og videresender til login');
+
+				localStorage.removeItem('user_token');
+				window.location.href = '/login';
+			}
+		});
+	}
+
+	user_profile_me_edit_get();
+
+
+	// Submit form
+	var formElement = document.getElementById('form-user-me-edit');
+	formElement.addEventListener('submit', (event) => {
+		// Prevent the default form submission behavior
+		event.preventDefault();
+
+		// The form variable is the form element itself
+		const form = event.target; // This gets the form that triggered the event
+
+		// Extract the form action URL
+		const formAction = form.getAttribute('action');
+
+		// Create a FormData object to gather all the form inputs
+		const formData = new FormData(form);
+
+		// Submit the form using remote.rpc_post
+		remote.rpc_post(`${config.api_url}${formAction}`, formData).then(response => {
+			console.log('Form submitted successfully:', response);
+			
+			if (response.status == 'success') {
+				notification.success('Din brukerprofil ble oppdatert!');
+			} else {
+				notification.error('Ukjent feil oppstod (1)!');
+			}
+
+		}).catch(error => {
+			console.error('Error submitting form:', error);
+
+			if (error.response.message != '') {
+				notification.error(`<b>En feil oppstod!</b><br />${error.response.message}`);
+			} else {
+				notification.error('Ukjent feil oppstod (2)!');
+			}
+		});
+	});
+
+</script>

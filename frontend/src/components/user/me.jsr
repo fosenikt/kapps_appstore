@@ -1,10 +1,10 @@
 <script>
 	// Check if token exists in localStorage
-    const token = localStorage.getItem('user_token');
+    var token = localStorage.getItem('user_token');
 
     // If not redirect to login
     if (!token) {
-        window.location.href = '/login';
+        window.location.href = '/user/login';
     }
 </script>
 
@@ -19,7 +19,7 @@
 		</ol>
 	</nav>
 
-	<div id="user-me-data">
+	<div id="user-me-data" style="margin-top:45px;">
 
 	</div>
 
@@ -29,12 +29,9 @@
 
 <script>
 	function user_profile_me_get() {
-		remote.rpc(config.api_url + '/user/me').then(response => {
+		remote.rpc(`${config.api_url}/user/me`).then(response => {
 			console.log(response);
-
-			//document.getElementById('user-me-firstname').innerHTML = response.firstname;
-
-			template.load_webpart('/components/_webparts/user_me.jsr', '#user-me-data', response).then(response => {
+			template.load_webpart('/components/user/_webparts/user_me.jsr', '#user-me-data', response).then(response => {
 
 			});
 		});

@@ -1,0 +1,144 @@
+<section class="section__page">
+    <h2>Apps</h2>
+
+	<nav aria-label="breadcrumb">
+		<ol class="breadcrumb">
+			<li class="breadcrumb-item"><a href="/">Hjem</a></li>
+			<li class="breadcrumb-item active" aria-current="page">Apps</li>
+		</ol>
+	</nav>
+
+    <div>
+        <div class="row">
+            <div class="col-md-3">
+                <h4>Filtrer etter typer</h4>
+                <div id="type-filter" class="list-group"></div>
+
+                <h4 style="margin-top:25px;">Filtrer etter tag-er</h4>
+                <div id="tag-filter" class="tag-cloud"></div>
+            </div>
+            <div class="col-md-9">
+                <div id="app-list" class="row"></div>
+            </div>
+        </div>
+    </div>
+</section>
+
+
+
+<script>
+    function get_apps() {
+        remote.rpc(`${config.api_url}/apps/get`).then(response => {
+            console.log(response);
+
+            template.load_webpart('/components/apps/_webparts/apps.jsr', '#app-list', response).then(() => {
+                const typeCounts = new Map();
+                const tagCounts = new Map();
+
+                document.querySelectorAll('#app-list a').forEach(app => {
+                    const typeId = app.getAttribute('data-type-id');
+                    const typeText = app.getAttribute('data-type-text');
+                    if (!typeCounts.has(typeId)) {
+                        typeCounts.set(typeId, { text: typeText, count: 0 });
+                    }
+                    typeCounts.get(typeId).count += 1;
+
+                    app.getAttribute('data-tags').split(',').forEach(tag => {
+                        tag = tag.trim();
+                        if (tag !== "") { // Only count non-empty tags
+                            if (!tagCounts.has(tag)) {
+                                tagCounts.set(tag, 0);
+                            }
+                            tagCounts.set(tag, tagCounts.get(tag) + 1);
+                        }
+                    });
+                });
+
+                // Render filter options for types with counts
+                renderFilterOptions([...typeCounts.entries()], '#type-filter', 'type', document.querySelectorAll('#app-list a').length);
+
+                // Render tag cloud for tags
+                renderTagCloud([...tagCounts.entries()], '#tag-filter');
+            });
+        });
+    }
+
+    function renderFilterOptions(items, containerId, filterType, totalCount) {
+        const container = document.querySelector(containerId);
+        container.innerHTML = ''; // Clear any existing content
+
+        // Add "Alle" button
+        const allButton = `<button class="list-group-item list-group-item-action active" data-filter-${filterType}="all">Alle (${totalCount})</button>`;
+        container.insertAdjacentHTML('beforeend', allButton);
+
+        items.forEach(item => {
+            if (filterType === 'type') {
+                const [id, { text, count }] = item;
+                const button = `<button class="list-group-item list-group-item-action" data-filter-type="${id}">${text} (${count})</button>`;
+                container.insertAdjacentHTML('beforeend', button);
+            }
+        });
+
+        // Attach event listeners to filter buttons
+        container.querySelectorAll('button').forEach(button => {
+            button.addEventListener('click', () => {
+                const filterValue = button.getAttribute(`data-filter-${filterType}`);
+                filterApps(filterType, filterValue);
+
+                // Highlight the active button
+                container.querySelectorAll('button').forEach(btn => btn.classList.remove('active'));
+                button.classList.add('active');
+            });
+        });
+    }
+
+    function renderTagCloud(tags, containerId) {
+        const container = document.querySelector(containerId);
+        container.innerHTML = ''; // Clear any existing content
+
+        // Add "Alle" badge
+        const allBadge = `<span class="badge rounded-pill text-bg-dark tag-badge active" data-filter-tag="all" style="cursor: pointer; margin: 3px;">Alle</span>`;
+        container.insertAdjacentHTML('beforeend', allBadge);
+
+        tags.forEach(([tag, count]) => {
+            if (tag) { // Only render non-empty tags
+                const badge = `<span class="badge rounded-pill text-bg-dark tag-badge" data-filter-tag="${tag}" style="cursor: pointer; margin: 3px;">${tag} (${count})</span>`;
+                container.insertAdjacentHTML('beforeend', badge);
+            }
+        });
+
+        // Attach event listeners to tag badges
+        container.querySelectorAll('.tag-badge').forEach(badge => {
+            badge.addEventListener('click', () => {
+                const filterValue = badge.getAttribute('data-filter-tag');
+                filterApps('tag', filterValue);
+
+                // Highlight the active badge
+                container.querySelectorAll('.tag-badge').forEach(b => b.classList.remove('active'));
+                badge.classList.add('active');
+            });
+        });
+    }
+
+    function filterApps(filterType, filterValue) {
+        document.querySelectorAll('#app-list a').forEach(app => {
+            if (filterValue === 'all') {
+                app.style.display = 'block';
+            } else {
+                let isMatch = false;
+
+                if (filterType === 'type') {
+                    const typeId = app.getAttribute('data-type-id');
+                    isMatch = (typeId === filterValue);
+                } else if (filterType === 'tag') {
+                    const tags = app.getAttribute('data-tags').split(',');
+                    isMatch = tags.includes(filterValue);
+                }
+
+                app.style.display = isMatch ? 'block' : 'none';
+            }
+        });
+    }
+
+    get_apps();
+</script>

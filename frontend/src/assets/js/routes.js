@@ -1,338 +1,91 @@
-let notification = new Notification();
-let nav_sidebar = new SidebarNav();
-
-//page.base('/app')
-
-page('/', function() {
-	page_switch();
-	template.load_page('/components/main.jsr', '#page-main', '').then(response => {
-		console.log('Main template loaded');
-	})
+page('/', function () {
+	page_switch('main');
 });
 
-page('/apps', function() {
-	page_switch();
-	template.load_page('/components/apps.jsr', '#page-apps', '').then(response => {
-	})
+
+/* Apps
+----------------------------------------- */
+
+page('/apps/all', (context, next) => {
+	page_switch(context.canonicalPath);
 });
 
-page('/app/:id', function(ctx) {
-	page_switch();
+page('/apps/app/:id', function(ctx) {
+	//page_switch();
 
 	remote.rpc(config.api_url+'/app/get/'+ctx.params.id).then(response => {
 		console.log('app', response);
-		template.load_page('/components/app.jsr', '#page-app-'+ctx.params.id, response);
+		page_switch('/apps/app', `page-apps-app-${ctx.params.id}`, response);
 	})
 
 	.catch((err) => {
-		notification.error('En feil oppstod under henting av template');
-		console.log(err);
+		notification.error('En feil oppstod under henting av applikasjon');
+		console.error(err);
 	});
 });
 
-page('/share', function() {
-	page_switch();
-	template.load_page('/components/share.jsr', '#page-share', '').then(response => {
-	})
-});
-
-page('/start', function() {
-	page_switch();
-	template.load_page('/components/start.jsr', '#page-start', '').then(response => {
-	})
-});
-
-page('/login', function() {
-	page_switch();
-	template.load_page('/components/login.jsr', '#page-login', '').then(response => {
-	})
-});
-
-page('/about', function() {
-	page_switch();
-	template.load_page('/components/about.jsr', '#page-about', '').then(response => {
-	})
-});
-
-page('/resources', function() {
-	page_switch();
-	template.load_page('/components/resources.jsr', '#page-resources', '').then(response => {
-	})
-});
-
-page('/privacy', function() {
-	page_switch();
-	template.load_page('/components/privacy.jsr', '#page-privacy', '').then(response => {
-	})
-});
-
-page('/me', function() {
-	page_switch();
-	template.load_page('/components/me.jsr', '#page-me', '').then(response => {
-	})
-});
-
-
-/* page('/apps*', function(ctx, next){
-	next()
-	if (nav_sidebar.is_open('apps') == false) {
-		nav_sidebar.open_sidebar('apps');
-		nav_sidebar.load_template('/components/Apps/_sidebar/sidebar.jsr');
-	}
-});
-
-page.exit('/apps*', function(ctx, next) {
-	nav_sidebar.close_sidebar();
-
-	next()
-}) */
-
-
-
-
-page('/app/new', function() {
-	page_switch();
-	template.load_page('/components/Apps/new.jsr', '#page-app-new', '');
+page('/apps/share', (context, next) => {
+	page_switch(context.canonicalPath);
 });
 
 
 
+/* Organization
+----------------------------------------- */
 
-page('/app/edit/:id', function(ctx) {
-	page_switch();
-
-	remote.rpc(config.api_url+'/app/get/'+ctx.params.id).then(response => {
-		console.log(response);
-		template.load_page('/components/Apps/edit.jsr', '#page-app-edit-'+ctx.params.id, response);
-	})
-
-	.catch((err) => {
-		notification.error('En feil oppstod under henting av template');
-		console.log(err);
-	});
-});
-
-page('/apps/get', function(ctx) {
-	page_switch();
-	template.load_page('/components/Apps/apps.jsr', '#page-apps', '', true);
-});
-
-
-page('/company/myapps', function() {
-	page_switch();
-	template.load_page('/components/Apps/myapps.jsr', '#page-company-myapp', '').then(response => {
-	})
-});
-
-page('/company/apps/:id', function(ctx) {
-	page_switch();
-
+page('/organization/profile/:id', (ctx) => {
 	remote.rpc(config.api_url+'/company/get/'+ctx.params.id).then(response => {
-		console.log(response);
-		template.load_page('/components/Apps/company.jsr', '#page-company-apps-'+ctx.params.id, response);
+		console.log('app', response);
+		page_switch('/organization/profile', `organization-profile-${ctx.params.id}`, response);
 	})
 
 	.catch((err) => {
-		notification.error('En feil oppstod under henting av template');
-		console.log(err);
-	});
-});
-
-
-
-page('/myprofile/edit', function(ctx) {
-	page_switch();
-	
-	remote.rpc(config.api_url+'/user/me').then(response => {
-		template.load_page('/components/MyProfile/edit.jsr', '#page-myprofile-edit', response).then(response => {
-			M.updateTextFields();
-		})
-
-	})
-
-	.catch((err) => {
-		notification.error('En feil oppstod under henting av template');
-		console.log(err);
-	});
-});
-
-page('/myprofile', function(ctx) {
-	page_switch();
-	
-	remote.rpc(config.api_url+'/user/me').then(response => {
-		console.log(response);
-		template.load_page('/components/MyProfile/myprofile.jsr', '#page-myprofile', response);
-	})
-
-	.catch((err) => {
-		notification.error('En feil oppstod under henting av template');
-		console.log(err);
+		notification.error('En feil oppstod under henting av applikasjon');
+		console.error(err);
 	});
 });
 
 
 
 
+/* Info
+----------------------------------------- */
 
-
-page('/admin*', function(ctx, next){
-	next()
-	if (nav_sidebar.is_open('admin') == false) {
-		nav_sidebar.open_sidebar('admin');
-		nav_sidebar.load_template('/components/Admin/_sidebar/sidebar.jsr');
-	}
+page('/info/about', (context, next) => {
+	page_switch(context.canonicalPath);
 });
 
-page.exit('/admin*', function(ctx, next) {
-	nav_sidebar.close_sidebar();
-	next()
-})
-
-
-page('/admin', function(ctx) {
-	page_switch();
-	template.load_page('/components/Admin/dashboard.jsr', '#page-admin', '');
+page('/info/resources', (context, next) => {
+	page_switch(context.canonicalPath);
 });
 
-
-page('/admin/companies', function(ctx) {
-	page_switch();
-	template.load_page('/components/Admin/Companies/companies.jsr', '#page-admin-companies', '');
+page('/info/privacy', (context, next) => {
+	page_switch(context.canonicalPath);
 });
 
-
-page('/admin/company/new', function(ctx) {
-	page_switch();
-	template.load_page('/components/Admin/Companies/new.jsr', '#page-admin-companies-new', '');
-});
-
-
-page('/admin/company/:id', function(ctx) {
-	page_switch();
-
-	remote.rpc(config.api_url+'/company/get/'+ctx.params.id).then(response => {
-		template.load_page('/components/Admin/Companies/profile.jsr', '#page-admin-companies-'+ctx.params.id, response);
-	})
-
-	.catch((err) => {
-		notification.error('En feil oppstod under henting av template');
-		console.log(err);
-	});
-});
-
-
-page('/admin/users', function(ctx) {
-	page_switch();
-	template.load_page('/components/Admin/Users/users.jsr', '#page-admin-users', '');
-});
-
-page('/admin/user/new', function(ctx) {
-	page_switch();
-	template.load_page('/components/Admin/Users/new.jsr', '#page-admin-user-new', '');
-});
-
-page('/admin/user/edit/:id', function(ctx) {
-	page_switch();
-
-	remote.rpc(config.api_url+'/user/get/'+ctx.params.id).then(userdata => {
-		console.log(userdata);
-		template.load_page('/components/Admin/Users/new.jsr', '#page-admin-user-edit-'+ctx.params.id, userdata).then(response => {
-			M.updateTextFields();
-
-			document.getElementById('sel-newuser-status').value = userdata.status;
-			if (userdata.admin == 1) {
-				console.log('Admin: ' + userdata.admin);
-				document.getElementById('sel-newuser-status').value = userdata.status;
-				document.getElementById('chk-newuser-systemuser').checked = true;
-			} else {
-				console.log('Not admin');
-			}
-		})
-	})
-
-	.catch((err) => {
-		notification.error('En feil oppstod under henting av template');
-		console.log(err);
-	});
-});
-
-page('/admin/user/tokens/:id', function(ctx) {
-	page_switch();
-
-	remote.rpc(config.api_url+'/user/get/'+ctx.params.id).then(response => {
-		console.log(response);
-		template.load_page('/components/Admin/Users/tokens.jsr', '#page-admin-user-tokens-'+ctx.params.id, response);
-	})
-
-	.catch((err) => {
-		notification.error('En feil oppstod under henting av template');
-		console.log(err);
-	});
-});
-
-page('/admin/user/:id', function(ctx) {
-	page_switch();
-
-	remote.rpc(config.api_url+'/user/get/'+ctx.params.id).then(response => {
-		console.log(response);
-		template.load_page('/components/Admin/Users/user.jsr', '#page-admin-user-'+ctx.params.id, response);
-	})
-
-	.catch((err) => {
-		notification.error('En feil oppstod under henting av template');
-		console.log(err);
-	});
+page('/info/contact', (context, next) => {
+	page_switch(context.canonicalPath);
 });
 
 
 
+/* User
+----------------------------------------- */
 
+page('/user/login', (context, next) => {
+	page_switch(context.canonicalPath);
+});
 
+page('/user/me', (context, next) => {
+	page_switch(context.canonicalPath);
+});
 
-
-
-page('/company/profile/:id', function(ctx) {
-	page_switch();
-
-	remote.rpc(config.api_url+'/company/get/'+ctx.params.id).then(response => {
-		template.load_page('/components/Companies/profile.jsr', '#page-company-'+ctx.params.id, response);
-	})
-
-	.catch((err) => {
-		notification.error('En feil oppstod under henting av template');
-		console.log(err);
-	});
+page('/user/me/edit', (context, next) => {
+	page_switch(context.canonicalPath);
 });
 
 
 
-
-
-
-page('/users/profile/:id', function(ctx) {
-	page_switch();
-
-	remote.rpc(config.api_url+'/user/get/'+ctx.params.id).then(response => {
-		console.log(response);
-		template.load_page('/components/Users/profile.jsr', '#page-user-'+ctx.params.id, response);
-	})
-
-	.catch((err) => {
-		notification.error('En feil oppstod under henting av template');
-		console.log(err);
-	});
-});
-
-
-
-
-
-
-
-page('/search/all', function(ctx) {
-	page_switch();
-	template.load_page('/components/Dashboard/search.jsr', '#page-dashboard-search', '', true);
-});
 
 
 
@@ -340,15 +93,48 @@ page('*', notfound);
 page();
 
 function notfound() {
-	console.log('Not found');
+	page_switch('_error_pages/404');
 }
 
+function page_switch(page, page_id, data) {
+    console.log('page', page);
+    console.log('page_id', page_id);
 
-function page_switch()
-{
-	var divsToHide = document.getElementsByClassName("page-item"); //divsToHide is an array
-    for(var i = 0; i < divsToHide.length; i++){
-        divsToHide[i].style.visibility = "hidden"; // or
-        divsToHide[i].style.display = "none"; // depending on what you're doing
+    // Hide all elements with class 'page-item'
+    document.querySelectorAll('.page-item').forEach(item => {
+        item.style.display = 'none';
+    });
+
+    // Show the element with id 'main'
+    const mainElement = document.getElementById('main');
+    if (mainElement) {
+        mainElement.style.display = 'block';
     }
+
+    if (page_id === undefined) {
+        page_id = page.replace(/\//g, '-');
+    }
+
+    // Check if it starts with a /
+    if (page.charAt(0) !== "/") {
+        page = "/" + page;
+    }
+
+    // Remove @ and . from page_id
+    page_id = page_id.replace(/[@.]/g, "-");
+
+    page = page.toLowerCase();
+
+    console.log('page', page);
+    console.log('page_id', page_id);
+    console.log('template_path', '/components' + page + '.jsr', '#page-' + page_id);
+    console.log('data', data);
+
+    template.load_page('/components' + page + '.jsr', '#page-' + page_id, data)
+        .then(response => {
+            updateActiveLink(page);
+        })
+        .catch(err => {
+            console.error(err);
+        });
 }

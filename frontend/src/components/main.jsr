@@ -114,7 +114,7 @@
 
 <script>
 	// Fetch the types and dynamically create tabs and content sections
-fetch('https://appsapi.kapps.no/types/get')
+fetch(`${config.api_url}/types/get`)
   .then(response => response.json())
   .then(typesData => {
     const tabsContainer = document.getElementById('tabsContainer');
@@ -159,13 +159,13 @@ fetch('https://appsapi.kapps.no/types/get')
     });
 
     // Fetch the applications
-    fetch('https://appsapi.kapps.no/apps/get')
+    fetch(`${config.api_url}/apps/get`)
       .then(response => response.json())
       .then(appsData => {
         // Process each application and insert it into the correct section
         appsData.forEach(app => {
           const link = document.createElement('a');
-          link.href = `/app/${app.id}`;
+          link.href = `/apps/app/${app.id}`;
           link.className = 'top__item';
 
           const content = document.createElement('div');
@@ -218,7 +218,7 @@ fetch('https://appsapi.kapps.no/types/get')
 
 // Function to fetch and display the latest applications for Nykommere
 function loadNykommere() {
-  fetch('https://appsapi.kapps.no/stats/apps/latest')
+  fetch(`${config.api_url}/stats/apps/latest`)
     .then(response => response.json())
     .then(latestAppsData => {
       const nykommereRow = document.querySelector('.nykommere__row');

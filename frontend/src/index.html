@@ -23,6 +23,13 @@
 		<link rel="stylesheet" href="/assets/css/style_v2.css">
 
 		<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/ui@5.0/dist/fancybox/fancybox.css"/>
+
+		<!-- 
+			Noty
+			Source: http://ned.im/noty/
+		-->
+		<link href="/assets/lib/noty/noty.css" rel="stylesheet" type="text/css" />
+		<link href="/assets/lib/noty/themes/nest.css" rel="stylesheet" type="text/css" />
 		
 	</head>
 	<body>
@@ -36,10 +43,10 @@
 							<img src="/assets/images/logo/kapps_no.svg" alt="">
 				   		</a>
 						<ul class="menu__list">
-							<li><a href="/apps" class="menu__link header__link1">Apps</a></li>
-							<li><a href="/about" class="menu__link header__link2">Om Kapps</a></li>
-							<li><a href="/resources" class="menu__link header__link3">Ressurser</a></li>
-							<li><a href="/share" class="menu__link header__link6">DELE</a></li>
+							<li><a href="/apps/all" class="menu__link header__link1">Apps</a></li>
+							<li><a href="/info/about" class="menu__link header__link2">Om Kapps</a></li>
+							<li><a href="/info/resources" class="menu__link header__link3">Ressurser</a></li>
+							<li><a href="/apps/share" class="menu__link header__link6">DELE</a></li>
 						</ul>
 						<form class="form__search">
 							<button type="submit" class="search__submit btn-transparent">
@@ -52,7 +59,7 @@
 							<button type="button" class="page__theme"></button>
 						</div>
 						<div class="page__user" style="font-size: 1.5rem;">
-							<a href="/me">
+							<a href="/user/me">
 								<i class="fal fa-user"></i>
 							</a>
 						</div>
@@ -96,13 +103,13 @@
 							Quick links
 						</div>
 						<div class="links__item-text">
-							<a href="/about">Om oss</a>
+							<a href="/info/about">Om oss</a>
 						</div>
 						<div class="links__item-text">
-							<a href="/resources">Ressurses og åpne data</a>
+							<a href="/info/resources">Ressurses og åpne data</a>
 						</div>
 						<div class="links__item-text">
-							<a href="/privacy">Personvernerklæring</a>
+							<a href="/info/privacy">Personvernerklæring</a>
 						</div>
 					</div>
 
@@ -111,7 +118,9 @@
 							Community
 						</div>
 						<div class="links__item-text">
-							<a href="https://app.slack.com/client/TC8Q2QTDX/C01LWJC7RH6">Gå til community</a>
+							<a href="https://app.slack.com/client/TC8Q2QTDX/C01LWJC7RH6">
+								<i class="fa-brands fa-slack"></i> Slack
+							</a>
 						</div>
 						
 					</div>
@@ -148,7 +157,16 @@
 	-->
 	<script src="/assets/lib/jsrender.min.js"></script>
 
+	<!-- 
+		Noty
+		Source: http://ned.im/noty/
+	-->
+	<script src="/assets/lib/noty/noty.min.js" type="text/javascript"></script>
+
+
 	<script src="/assets/js/landingpage.js"></script>
+
+
 
 	
 	<!-- 
@@ -158,6 +176,7 @@
 
 	<script src="/assets/js/dom_functions.js"></script>
 	<script src="/assets/js/remote.js"></script>
+	<script src="/assets/js/notification.js"></script>
 	<script src="/assets/theme/theme.js"></script>
 	<script src="/assets/js/app.js"></script>
 	<script src="/assets/js/sidebarNav.js"></script>
@@ -194,6 +213,45 @@
 
 		// Kall funksjonen for å hente og lagre typene
 		fetchAndStoreTypes();
+
+
+
+		function updateActiveLink(url) {
+			console.log(url);
+			// Get all the navigation links
+			const navLinks = document.querySelectorAll('.header a');
+			
+			// Initialize the current and previous active links
+			let currentActiveLink = null;
+			let previousActiveLink = null;
+
+			navLinks.forEach(link => {
+				link.classList.remove('active');
+			});
+
+			const dashboardLink = document.querySelector('.header a[href="/"]');
+			console.log("Dashboard Link:", dashboardLink);
+
+
+			// If the URL is the base URL, set the Dashboard link to active
+			if (url === '/' || url === '/home' || !url) {
+				document.querySelector('.navigation a[href="/"]').classList.add('active');
+				return;
+			}
+
+			// Loop through each navigation link
+			navLinks.forEach(link => {
+				// Get the href attribute of the link
+				const linkUrl = link.getAttribute('href');
+
+				// Check if the link's href matches the given URL
+				if (linkUrl === url) {
+					link.classList.add('active');
+					previousActiveLink = currentActiveLink;
+					currentActiveLink = link;
+				}
+			});
+		}
 	</script>
 
 

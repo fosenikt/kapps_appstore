@@ -1,0 +1,13 @@
+<section class="section__page">
+	
+	<h2>Kontakt</h2>
+
+	<nav aria-label="breadcrumb">
+		<ol class="breadcrumb">
+			<li class="breadcrumb-item"><a href="/">Hjem</a></li>
+			<li class="breadcrumb-item active" aria-current="page">Kontakt</li>
+		</ol>
+	</nav>
+
+
+</section>

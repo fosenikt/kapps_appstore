@@ -1,5 +1,6 @@
 <div class="row">
 	<div class="col-md-7">
+		<h4>Min bruker</h4>
 		<div class="box">
 			<div class="detail__block">
 				<div class="detail__title">
@@ -52,25 +53,52 @@
 					{{/if}}
 				</div>
 			</div>
+
+			<div class="detail__block">
+				<div class="detail__title">
+					Rolle / tittel
+				</div>
+				<div class="detail__value">
+					{{if company_role}}
+						{{>company_role}}
+					{{else}}
+						<i>Ikke oppgitt</i>
+					{{/if}}
+				</div>
+			</div>
 		</div>
 	</div>
 
 
 	<div class="col-md-5">
+		<h4>Min organisasjon</h4>
 		<div class="box">
-			<div style="display:inline-block; max-width:30px;">
-				<img src="{{>customer.logo.image}}" alt="">
+			<div>
+				<div style="display:inline-block; max-width:30px;">
+					<img src="{{>customer.logo.image}}" alt="">
+				</div>
+				{{>customer.title}}
 			</div>
-			{{>customer.title}}
+			<div style="margin-top:25px;">
+				<a href="/organization/profile/{{>customer.public_id}}">
+					> Se organisasjonens applikasjoner
+				</a>
+			</div>
 		</div>
-
-		<a href="">
-			<i class="fas fa-pencil-alt"></i> Rediger profil
-		</a>
-
-		<a href="">
-			<i class="fa-light fa-right-from-bracket"></i> Logg ut
-		</a>
+		
+		<div class="row">
+			<div class="col-md-6">
+				<a class="btn btn-light" href="/user/me/edit">
+					<i class="fas fa-pencil-alt"></i> Rediger profil
+				</a>
+			</div>
+			<div class="col-md-6" style="text-align: right;">
+				<a class="btn btn-danger btn-signout" href="#">
+					<i class="fa-light fa-right-from-bracket"></i> Logg ut
+				</a>
+			</div>
+		</div>
+		
 	</div>
 </div>
 

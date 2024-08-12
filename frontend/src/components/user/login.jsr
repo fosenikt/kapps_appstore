@@ -1,114 +1,116 @@
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css" />
 
 <div style="margin-top:5%;">
-<section class="section__page">
-	
-	<h2 style="text-align: center;">Innlogging</h2>
+	<section class="section__page">
+		
+		<h2 style="text-align: center;">Innlogging</h2>
 
-	<div class="box" style="margin-top:25px;">
-		<div class="row">
-			<div class="col-md-6">
-				<div style="margin:40px 60px;">
-					<img src="/assets/images/undraw/login.svg" alt="">
+		<div class="box" style="margin-top:25px; margin-bottom:6px;">
+			<div class="row">
+				<div class="col-md-6">
+					<div style="margin:40px 60px;">
+						<img src="/assets/images/undraw/login.svg" alt="">
+					</div>
 				</div>
-			</div>
-			
-			<div class="col-md-6">
+				
+				<div class="col-md-6">
 
-				<div id="login-section-mail" style="display:none;">
-					<form id="form-send-link" action="/auth/login/send" method="POST">
-						<!-- <div class="input-field col s6">
-							<input type="email" id="input-mail" name="mail">
-							<label for="input-mail">Min e-postadresse</label>
-						</div> -->
+					<div id="login-section-mail" style="display:none;">
+						<form id="form-send-link" action="/auth/login/send" method="POST">
+							<!-- <div class="input-field col s6">
+								<input type="email" id="input-mail" name="mail">
+								<label for="input-mail">Min e-postadresse</label>
+							</div> -->
 
-						<div>
-							Skriv inn din e-postadresse. Du vil få tilsendt en engangskode for innlogging på e-post,
-							dersom ditt domene er registrert i databasen.
-						</div>
-
-						<div class="mb-3">
-							<label for="input-mail" class="form-label">E-postadresse</label>
-							<input type="email" class="form-control form-control-lg" id="input-mail" name="mail" placeholder="name@example.com">
-						</div>
-
-						<div class="feedback" id="login-section-mail-feedback"></div>
-
-						<div class="row">
-							<div class="col s6" style="text-align:left; padding-top:6px;">
-								<a href="javascript:show_enter_code();">
-									Har kode?
-								</a>
+							<div style="margin-bottom:45px;">
+								Skriv inn din e-postadresse. Du vil få tilsendt en engangskode for innlogging på e-post,
+								dersom ditt domene er registrert i databasen.
 							</div>
 
-							<div class="col s6" style="text-align:right;">
+							<div class="mb-3">
+								<label for="input-mail" class="form-label">E-postadresse</label>
+								<input type="email" class="form-control form-control-lg" id="input-mail" name="mail" placeholder="name@example.com">
+							</div>
+
+							<div class="feedback" id="login-section-mail-feedback"></div>
+
+							<div class="row">
+								<div class="col s6" style="text-align:left; padding-top:6px;">
+									<a href="javascript:show_enter_code();">
+										Har kode?
+									</a>
+								</div>
+
+								<div class="col s6" style="text-align:right;">
+									<button type="submit" class="btn btn-primary">
+										Send kode
+									</button>
+								</div>
+							</div>
+
+							<div style="margin-top:50px;">
+								<div class="d-grid gap-2">
+									<a class="btn btn-secondary btn-lg" id="btn-o365-login" href="">
+										<img style="height:25px; vertical-align:middle;" src="../assets/images/icons/office_logo.svg" alt="logo" /> Logg på med Office365
+									</a>
+								</div>
+
+								<script type="text/javascript">
+									let btn_o365_login = document.getElementById('btn-o365-login');
+									btn_o365_login.setAttribute('href', config.api_url + '/login/microsoft/signin.php');
+								</script>
+							</div>
+
+							
+							
+						</form>
+					</div>
+
+
+					<div id="login-section-code" style="display:none;">
+						<form id="form-validate-code" action="/auth/login/validate/code" method="POST">
+
+							<div class="help" style="margin-bottom:35px;">
+								<i class="fal fa-info-circle"></i> En kode sendes nå til din e-postadresse.
+								E-post er ikke det kjappeste, så vær litt tålmodig og sjekk gjerne spam-mappe.
+							</div>
+
+							<div class="mb-3">
+								<input type="hidden" id="input-code-mail" name="mail">
+								<label for="input-code" class="form-label">Engangskode</label>
+								<input type="tel" class="form-control form-control-lg" id="input-code" name="code" placeholder="123456">
+							</div>
+
+							<div class="feedback" id="login-section-code-feedback"></div>
+
+							<div style="text-align:right;">
 								<button type="submit" class="btn btn-primary">
-									Send kode
+									Logg inn
 								</button>
 							</div>
-						</div>
 
-						<div style="margin-top:50px;">
-							<div class="d-grid gap-2">
-								<a class="btn btn-secondary btn-lg" id="btn-o365-login" href="">
-									<img style="height:25px; vertical-align:middle;" src="../assets/images/icons/office_logo.svg" alt="logo" /> Logg på med Office365
+							<div class="form-sublink" style="margin-top:45px;">
+								<a href="javascript:show_enter_mail();">
+									Jeg trenger visst en ny kode
 								</a>
 							</div>
+						</form>
+					</div>
 
-							<script type="text/javascript">
-								let btn_o365_login = document.getElementById('btn-o365-login');
-								btn_o365_login.setAttribute('href', config.api_url + '/login/microsoft/signin.php');
-							</script>
-						</div>
+					<div id="login-section-loader" style="display:block;">
+						<i class="fas fa-spinner fa-pulse"></i><br />
+						Laster...
+					</div>
 
-						<div style="margin-top:15px;">
-							<a href="#" data-bs-toggle="modal" data-bs-target="#modal-register-user-info">Opprett bruker?</a><br />
-							<a href="/privacy">Les personvernerklæring</a><br />
-						</div>
-						
-					</form>
 				</div>
-
-
-				<div id="login-section-code" style="display:none;">
-					<form id="form-validate-code" action="/auth/login/validate/code" method="POST">
-
-						<div class="help" style="margin-bottom:35px;">
-							<i class="fal fa-info-circle"></i> En kode sendes nå til din e-postadresse.
-							E-post er ikke det kjappeste, så vær litt tålmodig og sjekk gjerne spam-mappe.
-						</div>
-
-						<div class="mb-3">
-							<input type="hidden" id="input-code-mail" name="mail">
-							<label for="input-code" class="form-label">Engangskode</label>
-							<input type="tel" class="form-control form-control-lg" id="input-code" name="code" placeholder="123456">
-						</div>
-
-						<div class="feedback" id="login-section-code-feedback"></div>
-
-						<div style="text-align:right;">
-							<button type="submit" class="btn btn-primary">
-								Logg inn
-							</button>
-						</div>
-
-						<div class="form-sublink" style="margin-top:45px;">
-							<a href="javascript:show_enter_mail();">
-								Jeg trenger visst en ny kode
-							</a>
-						</div>
-					</form>
-				</div>
-
-				<div id="login-section-loader" style="display:block;">
-					<i class="fas fa-spinner fa-pulse"></i><br />
-					Laster...
-				</div>
-
 			</div>
 		</div>
-	</div>
-</section>
+
+		<div style="text-align:right; margin:0px 25px;">
+			<a href="#" data-bs-toggle="modal" data-bs-target="#modal-register-user-info">Opprett bruker?</a> &nbsp;&nbsp;&nbsp;&nbsp; 
+			<a href="/privacy">Les personvernerklæring</a><br />
+		</div>
+	</section>
 </div>
 
 
@@ -122,6 +124,9 @@
 				<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
 			</div>
 			<div class="modal-body">
+				<p>
+					Ta <a href="/contact">kontakt</a> dersom ditt domene ikke finnes i databasen.
+				</p>
 				<p>
 					Du kan ikke opprette en bruker på Kapps.no.
 					Alle som har en e-postadresse under et offentlig domene kan logge inn.

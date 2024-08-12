@@ -79,8 +79,8 @@ $dispatcher = FastRoute\simpleDispatcher(function(FastRoute\RouteCollector $r) {
 	$r->addRoute(['DELETE', 'GET'], '/app/delete/{id:\d+}', ['Kapps\Controller\Apps\Delete', 'delete']);
 
 	// App: Companies
+	$r->addRoute('GET', '/company/published/apps/{id}', ['Kapps\Controller\Apps\Get', 'get_company_published_apps']);
 	$r->addRoute('GET', '/company/apps', ['Kapps\Controller\Apps\Get', 'get_company_apps']);
-	$r->addRoute('GET', '/company/published/apps/{id}', ['Kapps\Controller\Apps\Get', 'get_company_apps']);
 	$r->addRoute('GET', '/company/app/{id:\d+}', ['Kapps\Controller\Apps\Get', 'get_company_app']);
 
 

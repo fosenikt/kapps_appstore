@@ -211,12 +211,12 @@ class Get {
      */
 	public function get_company_apps()
 	{
-		$this->AuthUser = new AuthUser;
+		/* $this->AuthUser = new AuthUser;
         if (!$this->AuthUser->isAuthenticated()) {
             header('HTTP/1.0 403 Forbidden');
             echo json_encode(['status' => 'error', 'message' => 'Access denied']);
             exit;
-        }
+        } */
 		
 		$obj = new \Kapps\Model\Apps\Get();
 		return $obj->get_company_apps();

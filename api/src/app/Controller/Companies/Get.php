@@ -86,7 +86,7 @@ class Get {
 
     /**
      * @OA\Get(
-     *     path="/companies/{id}",
+     *     path="/company/get/{id}",
      *     tags={"Companies"},
      *     summary="Get a company by ID",
      *     description="Retrieves a company by its ID",

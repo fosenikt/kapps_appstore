@@ -35,6 +35,7 @@ class User
 
 		if (empty($get_token) || $get_token == 'null') {
 			error_log('No token provided');
+			//http_response_code(401);
 			return array();
 		}
 
@@ -48,6 +49,7 @@ class User
 			if (!$validate_token) {
 				error_log('Provided token: ' . $get_token);
 				error_log('Invalid token. Cant get payload for user.');
+				http_response_code(401);
 				return array();
 			}
 
@@ -60,6 +62,7 @@ class User
 
 			if (empty($user_id)) {
 				error_log('No userID found in token payload');
+				http_response_code(401);
 				return array();
 			}
 
@@ -94,6 +97,7 @@ class User
 				
 			} else {
 				error_log('No user found in database with userID: ' . $user_id . '. Maybe deleted or deactivated?');
+				http_response_code(404);
 				$r = array('status' => 'error', 'message' => 'Could not find user or validate token');
 			}
 		}

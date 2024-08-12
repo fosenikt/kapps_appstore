@@ -4,9 +4,9 @@ let App = function() {
 	
 
 
-	addEvent(document, 'click', 'a#signout', function(e) {
+	addEvent(document, 'click', 'a.btn-signout', function(e) {
 		localStorage.removeItem("user_token");
-		window.location.replace(config.editor_url + 'login/');
+		window.location.replace('/login');
 	});
 
 

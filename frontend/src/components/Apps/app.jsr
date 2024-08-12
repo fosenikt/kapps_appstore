@@ -1,144 +1,144 @@
-<script src="/assets/lib/prism/prism.js"></script>
-<link rel="stylesheet" href="/assets/lib/prism/prism.css">
+<section class="section__page">
 
-<div class="container page-top-space application-view">
+	<h2 style="margin-bottom:5px;">{{>title}}</h2>
 
-	<div class="row">
-		<div class="col l8">
-			<h1 style="margin-bottom:10px;">{{>title}}</h1>
+	<nav aria-label="breadcrumb">
+		<ol class="breadcrumb">
+			<li class="breadcrumb-item"><a href="/">Hjem</a></li>
+			<li class="breadcrumb-item"><a href="/apps/all">Apps</a></li>
+			<li class="breadcrumb-item active" aria-current="page">{{>title}}</li>
+		</ol>
+	</nav>
 
-			<div class="breadcrumbs">
-				<a href="/" class="breadcrumb">Hjem</a>
-				<a href="/apps/get?type={{>type.id}}" class="breadcrumb">{{>type.title}}</a>
-				<a href="#!" class="breadcrumb">{{>title}}</a>
-			</div>
-			<p>{{>short_description}}</p>
-		</div>
-		<div class="col l4" style="text-align:right;">
-			{{if edit_access == 1}}
-				<a class="waves-effect waves-light btn blue" href="/app/edit/{{>id}}">Rediger</a>
-			{{/if}}
-		</div>
+	<div style="margin-bottom:25px;">
+		{{>short_description}}
 	</div>
 
 
-	
-
 	<div class="row">
-		<div class="col s12 l4">
-			<div class="image" id="app-product-images-{{>id}}">
-				<a class="app-img primary-img" data-fancybox="gallery-{{>id}}" href="{{>primary_image.image}}">
-					<img src="{{:primary_image.thumb}}">
-				</a>
-				<div class="secondary-images">
+		<div class="col-md-8">
+
+			<div class="box">
+				<div class="slider">
 					{{for images}}
-						{{if primary == 0}}
-							<a class="app-img secondary-img" data-fancybox="gallery-{{>~root.id}}" href="{{>image}}"><img src="{{>thumb}}"></a>
-						{{/if}}
-					{{/for}}
-				</div>
-			</div>
-
-
-			<div style="margin-top:45px;">
-				<h4>Eier</h4>
-				<div class="company" style="display:flex; background-color:#eaeaea; padding:10px; border-radius:8px;">
-					<div style="flex:0 0 60px; text-align:center;">
-						<img style="max-width:50%;" src="{{>company.logo.thumb}}" alt="Logo">
-					</div>
-
-					<div style="flex:1 1 auto;">
-						<a href="/company/profile/{{>company.public_id}}">
-							{{>company.title}}
-						</a>
-					</div>
-				</div>
-			</div>
-
-			
-
-
-			<div>
-				<h4 style="margin-top:45px;">Lisens</h4>
-				<div style="padding:0px 10px 10px 10px; font-size:0.8rem;">
-					<i class="fal fa-file-certificate"></i> <a href="{{>license.link}}" target="_blank">{{>license.title}}</a>
-				</div>
-			</div>
-
-			{{if link_source_code}}
-				<h4 style="margin-top:35px;">Kildekode</h4>
-				<div style="padding:0px 10px 10px 10px; font-size:0.8rem;">
-					<i class="fal fa-external-link"></i> <a href="{{>link_source_code}}" target="_blank">{{>link_source_code}}</a>
-				</div>
-			{{/if}}
-
-			{{if tags}}
-				{{if tags.array}}
-					<h4 style="margin-top:35px;">Tags</h4>
-					<div>	
-						{{props tags.array}}
-							<span class="badge tags">{{:prop}}</span>
-						{{/props}}
-					</div>
-				{{/if}}
-			{{/if}}
-			<div style="height:80px;">&nbsp;</div>
-		</div>
-
-
-
-
-		<div class="col s12 l8">
-
-			<section>
-				<h2>Beskrivelse</h2>
-				<div id="app-description-{{>id}}">
-					{{:description}}
-				</div>
-			</section>
-
-			{{if files}}
-				<section style="margin-top:50px;">
-				<h2>Filer</h2>
-					{{for files}}
-						<div class="app-file" id="app-file-{{>id}}">
-							<div class="fileicon">{{:icon}}</div>
-							<div class="info">
-								<div class="title">
-									<a href="{{>path}}" target="_blank" onClick="app.log('file', '{{>id}}');">
-										{{>filename}}
-									</a>
-								</div>
-								<div class="desc">
-									<div>
-										<span class="item">Filstr. {{>size.readable}}</span>
-										<span class="item">Type: .{{>type}}</span>
-										<span class="item">Tid opplastet: {{>time_uploaded}}</span>
-									</div>
-								</div>
-							</div>
+						<div class="slider__item">
+							<a data-fancybox="gallery" href="{{>image}}">
+							<img src="{{>image}}" alt="">
+							</a>
 						</div>
 					{{/for}}
-				</section>
-			{{/if}}
-
-			{{if installation}}
-			<section style="margin-top:50px;">
-				<h2>Installasjonsveiledning</h2>
-				<div id="app-installation-{{>id}}">
-					{{:installation}}
 				</div>
-			</section>
-			{{/if}}
+			</div>
+
+			<div class="box">
+				<h3>Beskrivelse</h3>
+
+				{{if description}}
+					{{:description}}
+				{{else}}
+					<div class="locked-content">
+						<div class="icon">
+							<i class="fa-solid fa-user-lock"></i>
+						</div>
+						<div class="info">
+							Logg inn for å se fullstendig innhold
+						</div>
+						<div class="login-btn">
+							<a href="/login" class="btn btn-secondary">
+								Logg inn
+							</a>
+						</div>
+					</div>
+				{{/if}}
+			</div>
+
+			<div class="box">
+				<h3>Installasjonsveiledning</h3>
+				{{if installation}}
+					{{:installation}}
+				{{else}}
+					<div class="locked-content">
+						<div class="icon">
+							<i class="fa-solid fa-user-lock"></i>
+						</div>
+						<div class="info">
+							Logg inn for å se fullstendig innhold
+						</div>
+						<div class="login-btn">
+							<a href="/login" class="btn btn-secondary">
+								Logg inn
+							</a>
+						</div>
+					</div>
+				{{/if}}
+			</div>
+
 
 		</div>
+
+
+
+		<div class="col-md-4">
+
+			<div class="detail__block">
+				<div class="detail__title">
+					<i class="fas fa-user"></i> Eier
+				</div>
+				<div class="detail__value">
+					<a href="/organization/profile/{{>company.public_id}}">{{>company.title}}</a>
+				</div>
+			</div>
+			<div class="detail__block">
+				<div class="detail__title">
+					<i class="fa-regular fa-file-certificate"></i> Lisens
+				</div>
+				<div class="detail__value">
+					<a href="#">MIT License</a>
+				</div>
+			</div>
+			<div class="detail__block">
+				<div class="detail__title">
+					<i class="fa-solid fa-hashtag"></i> Tags
+				</div>
+				<div class="detail__value">
+					<span class="badge rounded-pill text-bg-primary">kundeservice</span>
+					<span class="badge rounded-pill text-bg-primary">ticket</span>
+				</div>
+			</div>
+
+		</div>
+
 	</div>
-</div>
 
+				
+	
 
+	</div>
+		
+</section>
 
 <script>
-	// Log visit.
-	// Used to create stats for most visited, popular, shortcuts, etc...
-	app.log('app', '{{>id}}');
+if ($('.slider__item a img').length) {
+	Fancybox.bind('[data-fancybox="gallery"]', {
+		Carousel: {
+			transition: "slide",
+		},
+		Thumbs: false,
+		overlay: {
+			css: { 'background': 'rgba(0, 0, 0, 0.5)' }
+		}
+	}); 
+
+}
+if ($('.slider').length) {
+	$('.slider').slick({
+		arrows:true,
+		infinite:false,
+		speed: 300,
+		slidesToShow: 1,
+		centerPadding:'0px',
+		centerMode: true
+
+	});
+}
 </script>

@@ -162,11 +162,12 @@ class Update
 
 			// Check if mail is valid
 			if (!filter_var($mail, FILTER_VALIDATE_EMAIL)) {
-				return array('status' => 'error', 'message' => 'Invalid e-postadresse');
+				//http_response_code(400);
+				return array('status' => 'error', 'message' => "$mail er en invalid e-postadresse");
 			}
 
 			// Check if domain is not changed
-			list($new_mailuser, $new_maildomain) = explode('@', $mail);
+			list($new_mailuser, $new_maildomain) = explode('@', $p['mail']);
 			list($current_mailuser, $current_maildomain) = explode('@', $current_mail);
 
 			if ($new_maildomain != $current_maildomain) {
