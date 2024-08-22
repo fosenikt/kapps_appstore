@@ -1,8 +1,11 @@
 :root {
 	--main-bg-color: #333;
 	--main-text-color: #f3f3f3;
+	--muted-text-color: #bdbdbd;
 	--main-border-color: #f3f3f3;
 	--secondary-border-color: #414141;
+
+	--shadow-color: #3a3a3a;
 
 	--active-color: #0d6efd;
 	--active-text-color: #fff;
@@ -40,6 +43,7 @@
 	--item-text-color-hover: #333;
 
 	--box-bg-color: #4d4d4d;
+	--box-bg-color-hover: #464646;
 	--box-border-active-color: #97caff;
 	--box-bg-color-transparent: transparent;
 	--box-tabs-bg-color: #333;

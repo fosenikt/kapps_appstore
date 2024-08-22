@@ -7,6 +7,7 @@ use \Kapps\Model\Apps\Images;
 use \Kapps\Model\Apps\Files;
 use \Kapps\Model\Companies\Get as CompaniesGet;
 use \Kapps\Model\Auth\User as AuthUser;
+use \Kapps\Model\Stats\Log as StatsLog;
 
 /**
  * summary
@@ -70,12 +71,14 @@ class Get
 			->join('app_types AS T', 'A.type_id', '=', 'T.id')
 			->join('users AS UC', 'A.created_by', '=', 'UC.id')
 			->join('users AS UE', 'A.updated_by', '=', 'UE.id')
-			->join('licenses AS L', 'A.license_id', '=', 'L.id')
+			->leftJoin('licenses AS L', 'A.license_id', '=', 'L.id')
 			->where('A.id', '=', $id);
 
 		if ($this->isAuthenticated) {
+			error_log("Auth OK for app id: $id");
 			$queryBuilder->whereRaw('(A.status LIKE ? OR A.company_id = ?)', ['published', $this->thisUser['customer']['public_id']]);
 		} else {
+			error_log("Not authenticated for app id: $id");
 			$queryBuilder->where('A.status', 'LIKE', 'published');
 		}
 		
@@ -84,6 +87,9 @@ class Get
 		if (!empty($result)) {
 			$r = $this->output($result[0]);
 		}
+
+		// Log app request
+		(new StatsLog)->log('app', $id);
 
 		return $r;
 	}
@@ -303,9 +309,11 @@ class Get
 		$edit_access = 0;
 		if (isset($this->thisUser) && is_array($this->thisUser) && isset($this->thisUser['customer']['public_id'])) {
 			if ($this->thisUser['customer']['public_id'] == $data['company_id']) {
+				error_log("Edit access to {$data['id']} because of same company id");
 				$edit_access = 1;
 			}
 			elseif ($this->thisUser['id'] == $data['created_by']) {
+				error_log("Edit access to {$data['id']} because of i am the creator");
 				$edit_access = 1;
 			}
 		}

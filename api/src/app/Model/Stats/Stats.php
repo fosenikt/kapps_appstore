@@ -37,9 +37,12 @@ class Stats
 	{
 		$r = null;
 
-		$query = "SELECT A.id, A.time_created, A.title, A.short_description, A.primary_image, A.company_id, C.title AS company_title, C.logo AS company_logo
+		$query = "SELECT A.id, A.time_created, A.title, A.short_description, A.primary_image, A.company_id, 
+						 C.title AS company_title, C.logo AS company_logo,
+						 T.id AS type_id, T.title AS type_title
 				  FROM apps AS A 
 				  INNER JOIN company AS C ON A.company_id = C.public_id
+				  INNER JOIN app_types AS T ON T.id = A.type_id
 				  WHERE A.status LIKE 'published' 
 				  ORDER BY A.time_created DESC 
 				  LIMIT 5";
@@ -52,10 +55,14 @@ class Stats
 					'time_created' => $row['time_created'],
 					'title' => $row['title'],
 					'short_description' => $row['short_description'],
+					'type' => array(
+						'id' => $row['type_id'],
+						'title' => $row['type_title'],
+					),
 					'primary_image' => $this->Utils->get_app_image($row['primary_image'], $row['id']),
 					'company' => array(
 						'public_id' => $row['company_id'],
-						'name' => $row['company_title'],
+						'title' => $row['company_title'],
 						'logo' => $this->Utils->get_company_logo($row['company_logo']),
 					)
 				);
@@ -76,7 +83,7 @@ class Stats
 		$query = "SELECT entity_id, COUNT(*)
 				  FROM stats
 				  WHERE type LIKE 'app' 
-				  	AND date_created BETWEEN CURDATE() - INTERVAL 30 DAY AND CURDATE()
+				  	AND date_created BETWEEN CURDATE() - INTERVAL 60 DAY AND CURDATE()
 				  GROUP BY entity_id
 				  ORDER BY COUNT(*) DESC
 				  LIMIT 5";
@@ -107,9 +114,12 @@ class Stats
 	{
 		$r = null;
 
-		$query = "SELECT A.id, A.time_created, A.title, A.short_description, A.primary_image, A.company_id, C.title AS company_title, C.logo AS company_logo
+		$query = "SELECT A.id, A.time_created, A.title, A.short_description, A.primary_image, A.company_id, 
+						 C.title AS company_title, C.logo AS company_logo,
+						 T.id AS type_id, T.title AS type_title
 				  FROM apps AS A 
 				  INNER JOIN company AS C ON A.company_id = C.public_id
+				  INNER JOIN app_types AS T ON T.id = A.type_id
 				  WHERE A.status LIKE 'published' AND A.id='$id'
 				  ORDER BY A.time_created DESC 
 				  LIMIT 5";
@@ -122,10 +132,14 @@ class Stats
 					'time_created' => $row['time_created'],
 					'title' => $row['title'],
 					'short_description' => $row['short_description'],
+					'type' => array(
+						'id' => $row['type_id'],
+						'title' => $row['type_title'],
+					),
 					'primary_image' => $this->Utils->get_app_image($row['primary_image'], $row['id']),
 					'company' => array(
 						'public_id' => $row['company_id'],
-						'name' => $row['company_title'],
+						'title' => $row['company_title'],
 						'logo' => $this->Utils->get_company_logo($row['company_logo']),
 					)
 				);

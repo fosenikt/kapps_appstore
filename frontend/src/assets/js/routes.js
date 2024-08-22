@@ -13,7 +13,7 @@ page('/apps/all', (context, next) => {
 page('/apps/app/:id', function(ctx) {
 	//page_switch();
 
-	remote.rpc(config.api_url+'/app/get/'+ctx.params.id).then(response => {
+	remote.rpc(`${config.api_url}/app/get/${ctx.params.id}`).then(response => {
 		console.log('app', response);
 		page_switch('/apps/app', `page-apps-app-${ctx.params.id}`, response);
 	})
@@ -21,6 +21,32 @@ page('/apps/app/:id', function(ctx) {
 	.catch((err) => {
 		notification.error('En feil oppstod under henting av applikasjon');
 		console.error(err);
+
+		// If token is expired
+		if (err.status == 401) {
+			localStorage.removeItem("user_token");
+			location.reload();
+		}
+	});
+});
+
+page('/apps/edit/:id', function(ctx) {
+	//page_switch();
+
+	remote.rpc(`${config.api_url}/app/get/${ctx.params.id}`).then(response => {
+		console.log('app', response);
+		page_switch('/apps/edit', `page-apps-edit-${ctx.params.id}`, response);
+	})
+
+	.catch((err) => {
+		notification.error('En feil oppstod under henting av applikasjon');
+		console.error(err);
+
+		// If token is expired
+		if (err.status == 401) {
+			localStorage.removeItem("user_token");
+			location.reload();
+		}
 	});
 });
 
@@ -42,6 +68,12 @@ page('/organization/profile/:id', (ctx) => {
 	.catch((err) => {
 		notification.error('En feil oppstod under henting av applikasjon');
 		console.error(err);
+
+		// If token is expired
+		if (err.status == 401) {
+			localStorage.removeItem("user_token");
+			page('/user/login');
+		}
 	});
 });
 
@@ -97,8 +129,10 @@ function notfound() {
 }
 
 function page_switch(page, page_id, data) {
-    console.log('page', page);
-    console.log('page_id', page_id);
+	console.log('Switch page');
+	console.log('page', page);
+	console.log('page_id', page_id);
+	console.log('data', data);
 
     // Hide all elements with class 'page-item'
     document.querySelectorAll('.page-item').forEach(item => {
@@ -125,13 +159,9 @@ function page_switch(page, page_id, data) {
 
     page = page.toLowerCase();
 
-    console.log('page', page);
-    console.log('page_id', page_id);
-    console.log('template_path', '/components' + page + '.jsr', '#page-' + page_id);
-    console.log('data', data);
-
     template.load_page('/components' + page + '.jsr', '#page-' + page_id, data)
         .then(response => {
+			console.log('Page loaded');
             updateActiveLink(page);
         })
         .catch(err => {

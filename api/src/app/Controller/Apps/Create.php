@@ -47,7 +47,7 @@ class Create {
      *         @OA\JsonContent(
      *             type="object",
      *             @OA\Property(property="status", type="string", example="success"),
-     *             @OA\Property(property="page_id", type="integer", example=45)
+     *             @OA\Property(property="app_id", type="integer", example=45)
      *         )
      *     ),
      *     @OA\Response(

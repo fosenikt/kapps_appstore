@@ -1,8 +1,11 @@
 :root {
 	--main-bg-color: #f3f3f3;
 	--main-text-color: #333;
+	--muted-text-color: #7a7a7a;
 	--main-border-color: #333;
 	--secondary-border-color: #e2e2e2;
+
+	--shadow-color: #e5eaef;
 
 	--active-color: #0d6efd;
 	--active-text-color: #fff;
@@ -24,7 +27,7 @@
 	--nav-header-menu-link: var(--main-text-color);
 	--nav-header-menu-link-6: var(--link-text-color);
 
-	--form-label-color: #fff;
+	--form-label-color: var(--main-text-color);
 	--form-input-bg: #fff;
 	--form-input-focus-bg: #fff;
 	--form-input-border-color: #7d8082;
@@ -40,6 +43,7 @@
 	--item-text-color-hover: #333;
 
 	--box-bg-color: #fff;
+	--box-bg-color-hover: #e8effd;
 	--box-border-active-color: #97caff;
 	--box-bg-color-transparent: transparent;
 	--box-tabs-bg-color: #f4f4f5;

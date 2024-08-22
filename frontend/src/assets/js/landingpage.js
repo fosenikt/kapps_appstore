@@ -25,7 +25,7 @@ $(document).ready(function(){
 	});
 
 
-	$('.tabs__items').click(function(event){
+	/* $('.tabs__items').click(function(event){
 		$.each($('.tabs__items'), function() {
 			$(this).removeClass('active');
 		});
@@ -37,7 +37,7 @@ $(document).ready(function(){
 		var name = '#tab_' + $(this)[0].id;
 
 		$(name).addClass('active');
-	});
+	}); */
 
 });
 

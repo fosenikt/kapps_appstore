@@ -6,7 +6,7 @@ let App = function() {
 
 	addEvent(document, 'click', 'a.btn-signout', function(e) {
 		localStorage.removeItem("user_token");
-		window.location.replace('/login');
+		window.location.replace('/user/login');
 	});
 
 

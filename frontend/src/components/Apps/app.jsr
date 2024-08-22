@@ -1,4 +1,4 @@
-<section class="section__page">
+<section class="section__page section_app">
 
 	<h2 style="margin-bottom:5px;">{{>title}}</h2>
 
@@ -10,30 +10,67 @@
 		</ol>
 	</nav>
 
-	<div style="margin-bottom:25px;">
+	<div style="margin-bottom:25px; font-size: 1.1rem; font-weight: 600;">
 		{{>short_description}}
 	</div>
+
+	{{if edit_access=='1'}}
+		<div class="alert alert-success">
+			<i class="fa-light fa-money-check-pen"></i> Du har rettigheter til å redigere denne siden.
+		</div>
+	{{/if}}
 
 
 	<div class="row">
 		<div class="col-md-8">
 
 			<div class="box">
-				<div class="slider">
-					{{for images}}
-						<div class="slider__item">
+				<div id="carouselExampleIndicators" class="carousel slide" data-bs-ride="carousel">
+					<!-- Carousel Indicators -->
+					<div class="carousel-indicators">
+						{{for images}}
+						<button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="{{:#index}}" class="{{:#index == 0 ? 'active' : ''}}" aria-current="{{:#index == 0 ? 'true' : ''}}" aria-label="Slide {{:#index + 1}}"></button>
+						{{/for}}
+					</div>
+
+					<!-- Carousel Inner -->
+					<div class="carousel-inner">
+						{{for images}}
+						<div class="carousel-item {{:#index == 0 ? 'active' : ''}}">
 							<a data-fancybox="gallery" href="{{>image}}">
-							<img src="{{>image}}" alt="">
+								<img src="{{>image}}" class="d-block w-100" alt="">
 							</a>
 						</div>
-					{{/for}}
+						{{/for}}
+					</div>
+
+					<!-- Carousel Controls -->
+					<button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide="prev">
+						<span class="carousel-control-prev-icon-wrapper">
+							<span class="carousel-control-prev-icon" aria-hidden="true"></span>
+						</span>
+						<span class="visually-hidden">Previous</span>
+					</button>
+					<button class="carousel-control-next" type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide="next">
+						<span class="carousel-control-next-icon-wrapper">
+							<span class="carousel-control-next-icon" aria-hidden="true"></span>
+						</span>
+						<span class="visually-hidden">Next</span>
+					</button>
+
 				</div>
+
+				{{if edit_access=='1'}}
+					<a href="">
+						<i class="fas fa-pencil-alt"></i> Rediger bilder
+					</a>
+				{{/if}}
 			</div>
 
 			<div class="box">
 				<h3>Beskrivelse</h3>
 
-				{{if description}}
+				{{if description || edit_access=='1'}}
 					{{:description}}
 				{{else}}
 					<div class="locked-content">
@@ -44,34 +81,78 @@
 							Logg inn for å se fullstendig innhold
 						</div>
 						<div class="login-btn">
-							<a href="/login" class="btn btn-secondary">
+							<a href="/user/login" class="btn btn-secondary">
 								Logg inn
 							</a>
 						</div>
 					</div>
+				{{/if}}
+
+				{{if edit_access=='1'}}
+					<a href="">
+						<i class="fas fa-pencil-alt"></i> Rediger beskrivelse
+					</a>
 				{{/if}}
 			</div>
 
-			<div class="box">
-				<h3>Installasjonsveiledning</h3>
-				{{if installation}}
-					{{:installation}}
-				{{else}}
-					<div class="locked-content">
-						<div class="icon">
-							<i class="fa-solid fa-user-lock"></i>
+			{{if files || edit_access=='1'}}
+				<div class="box">
+					<h3>Filer</h3>
+
+					{{if files}}
+						{{for files}}
+							<div class="file">
+								<div class="icon">
+									{{:icon}}
+								</div>
+								<div class="filedata">
+									<div class="title">
+										<a href="{{>path}}">
+											{{>filename}}
+										</a>
+									</div>
+									<div class="info">{{>size.readable}} &middot; {{>time_uploaded}}</div>
+								</div>
+							</div>
+						{{/for}}
+					{{/if}}
+
+					{{if edit_access=='1'}}
+						<a href="">
+							<i class="fas fa-pencil-alt"></i> Last opp filer
+						</a>
+					{{/if}}
+				</div>
+			{{/if}}
+
+			{{if installation || edit_access=='1'}}
+				<div class="box">
+					<h3>Installasjonsveiledning</h3>
+					{{if installation || edit_access=='1'}}
+						{{:installation}}
+					{{else}}
+						<div class="locked-content">
+							<div class="icon">
+								<i class="fa-solid fa-user-lock"></i>
+							</div>
+							<div class="info">
+								Logg inn for å se fullstendig innhold
+							</div>
+							<div class="login-btn">
+								<a href="/user/login" class="btn btn-secondary">
+									Logg inn
+								</a>
+							</div>
 						</div>
-						<div class="info">
-							Logg inn for å se fullstendig innhold
-						</div>
-						<div class="login-btn">
-							<a href="/login" class="btn btn-secondary">
-								Logg inn
-							</a>
-						</div>
-					</div>
-				{{/if}}
-			</div>
+					{{/if}}
+
+					{{if edit_access=='1'}}
+						<a href="">
+							<i class="fas fa-pencil-alt"></i> Rediger Installasjonsveiledning
+						</a>
+					{{/if}}
+				</div>
+			{{/if}}
 
 
 		</div>
@@ -106,19 +187,103 @@
 				</div>
 			</div>
 
+			{{if edit_access=='1'}}
+				<div>
+					<ul>
+						<li>
+							<a href="/apps/edit/{{>id}}">
+								<i class="fas fa-pencil-alt"></i> Rediger metadata
+							</a>
+						</li>
+						<li>
+							<a href="">
+								<i class="fas fa-pencil-alt"></i> Overfør eierskap
+							</a>
+						</li>
+						<li>
+							<a href="">
+								<i class="fas fa-pencil-alt"></i> Slett tjeneste
+							</a>
+						</li>
+					</ul>
+				</div>
+			{{/if}}
+
 		</div>
 
 	</div>
 
-				
-	
-
-	</div>
-		
 </section>
 
+
+
+<style>
+.carousel-item img {
+	max-height: 420px;
+    object-fit: contain;
+    width: 100%;
+}
+.carousel-indicators button {
+    
+}
+
+.carousel-indicators .active {
+
+}
+
+.carousel-indicators [data-bs-target] {
+	background-color: rgb(180, 180, 180);
+}
+
+.carousel-control-prev, .carousel-control-next {
+    width: 50px;
+    height: 100%; /* La kontrollene dekke hele høyden av karusellen */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: transparent; /* Fjern bakgrunnsfargen fra hele knappen */
+    border: none; /* Fjern eventuelle standard border */
+}
+
+.carousel-control-prev-icon-wrapper, .carousel-control-next-icon-wrapper {
+    background-color: rgba(0, 0, 0, 0.5); /* Bakgrunn rundt pilene */
+    padding: 10px; /* Gi litt plass rundt pilene */
+    border-radius: 50%; /* Gjør bakgrunnen rundt pilene rund */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.carousel-control-prev-icon, .carousel-control-next-icon {
+    filter: brightness(0) invert(1); /* Gjør pilene hvite */
+    width: 20px; /* Juster størrelsen på pilene */
+    height: 20px;
+}
+
+
+
+
+.carousel-control-prev-icon-wrapper:hover, .carousel-control-next-icon-wrapper:hover {
+    background-color: rgba(0, 0, 0, 0.7); /* Gjør bakgrunnen mørkere ved hover */
+}
+
+.carousel-control-prev-icon-wrapper:focus, .carousel-control-next-icon-wrapper:focus {
+    background-color: rgba(0, 0, 0, 0.7); /* Gjør bakgrunnen mørkere ved fokus */
+}
+
+</style>
+
 <script>
-if ($('.slider__item a img').length) {
+	Fancybox.bind('[data-fancybox="gallery"]', {
+		Carousel: {
+			transition: "slide",
+		},
+		Thumbs: false,
+		overlay: {
+			css: { 'background': 'rgba(0, 0, 0, 0.5)' }
+		}
+	}); 
+/* if ($('.slider__item a img').length) {
 	Fancybox.bind('[data-fancybox="gallery"]', {
 		Carousel: {
 			transition: "slide",
@@ -140,5 +305,5 @@ if ($('.slider').length) {
 		centerMode: true
 
 	});
-}
+} */
 </script>

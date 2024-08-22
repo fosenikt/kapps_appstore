@@ -61,6 +61,12 @@ class Create
 			$title = $p['title'];
 		}
 
+		if (isset($p['short_description'])) {
+			$short_description = $p['short_description'];
+		} else {
+			$short_description = $type_data['short_description'];
+		}
+
 		if (isset($p['description'])) {
 			$description = $p['description'];
 		} else {
@@ -73,8 +79,10 @@ class Create
 			$installation = '';
 		}
 
-		if (isset($p['license_id'])) {
+		if (isset($p['license_id']) && !empty($p['license_id'])) {
 			$license_id = $p['license_id'];
+		} else {
+			return array('status' => 'error', 'message' => 'Lisens ikke valgt');
 		}
 
 		if (isset($p['link_source_code'])) {
@@ -84,14 +92,14 @@ class Create
 
 		// Prepare query
 		$stmt = $this->db->prepare("INSERT INTO apps SET 
-				created_by=?, updated_by=?, company_id=?, title=?, description=?, installation=?, type_id=?, license_id=?, link_source_code=?");
+				created_by=?, updated_by=?, company_id=?, title=?, description=?, short_description=?, installation=?, type_id=?, license_id=?, link_source_code=?");
 		if ($stmt === false) {
 			error_log('Statement false');
 			trigger_error($this->db->error, E_USER_ERROR);
 			return;
 		}
 
-		$result = $stmt->bind_param("iissssiis", $created_by, $updated_by, $company_id, $title, $description, $installation, $type_id, $license_id, $link_source_code);
+		$result = $stmt->bind_param("iisssssiis", $created_by, $updated_by, $company_id, $title, $description, $short_description, $installation, $type_id, $license_id, $link_source_code);
 
 		if ( false===$result ) {
 			error_log($stmt->error);
@@ -101,7 +109,7 @@ class Create
 
 		// If insert to mysql is success, return status-array
 		if ($result) {
-			return array('status' => 'success', 'page_id' => $stmt->insert_id);
+			return array('status' => 'success', 'app_id' => $stmt->insert_id);
 		} 
 		
 		else {

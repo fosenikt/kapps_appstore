@@ -1,42 +1,548 @@
-<h1>Dele</h1>
+<section class="section__page app_share">
+    <h1 class="section__form-h1">Jeg ønsker å dele</h1>
 
+	<div class="box" style="padding:0;">
 
-<section class="section__form">
-	<h1 class="section__form-h1">Jeg ønsker å dele</h1>
-	<form name="dele" action="#" method="get" enctype="multipart/form-data" class="section__form-form">
-		
-		<div class="section__form-type__title section__form-title">Type</div>
-						<div>
-		<select name="type" id="type" >
-			<option value="1">Applikasjon</option>
-			<option value="2">RPA (Robotic Process Automation)</option>
-			<option value="3">Integrasjon</option>
-			<option value="4">Dokument</option>
-			<option value="5">Skript</option>
-		</select>
-		</div>
-		<div class="section__form-name__title section__form-title" name="navn">Navn</div>
-						<div>
-		<input type="text" class="formDele-navn" name="name" value="" placeholder="Et navn på det du ønsker å dele">
-		</div>
-		<div class="section__form-lisens__title section__form-title">Lisens</div>
-						<div>
-		<select name="lisens" id="lisens" >
-			<option value="1">MIT License</option>
-			<option value="2">GNU AGPLv3</option>
-			<option value="3">GNU GPLv3</option>
-			<option value="4">GNU LGPLv3</option>
-			<option value="5">Mozilla Public License 2.0</option>
-			<option value="6">Apache License 2.0</option>
-			<option value="7">Boost Software License 1.0</option>
-			<option value="8">The Unlicense</option>
-			<option value="9">EULA / Kopibeskyttet</option>
-		</select>
-		</div>
-		<div>
-			<button type="submit">Opprett</button>
+		<!-- Steg 1: Velg type -->
+		<div class="wizard-step step-1">
+			
+			<div class="wizard-step-inner">
+				<div class="row">
+					<div class="col-md-7 wizard-help">
+						<h2>Hva ønsker du å dele?</h2>
+						<p>
+							Velg type/kategori som du ønsker å dele.
+						</p>
+						<div class="help" style="margin-top:50px;">
+							<p>
+								<i class="fal fa-info-circle"></i> Denne veiviseren har 3 steg:
+								<ul>
+									<li>Type</li>
+									<li>Navn</li>
+									<li>Lisens</li>
+								</ul>
+							</p>
 
+							<p>
+								Når applikasjonen er opprettet, kan du laste opp bilder, legge til beskrivelse, 
+								tag-er og lignende.
+							</p>
+
+							<p>
+								Når du føler at alt er riktig, kan du velge å publisere for andre.
+							</p>
+						</div>
+					</div>
+
+					<div class="col-md-1"></div>
+
+					<div class="col-md-4 option-box-container">
+						<div class="option-box-type option-box" data-value="1">
+							<i class="fas fa-mobile-alt"></i>
+							<p>Applikasjon</p>
+						</div>
+						<div class="option-box-type option-box" data-value="2">
+							<i class="fas fa-robot"></i>
+							<p>RPA (Robotic Process Automation)</p>
+						</div>
+						<div class="option-box-type option-box" data-value="3">
+							<i class="fas fa-plug"></i>
+							<p>Integrasjon</p>
+						</div>
+						<div class="option-box-type option-box" data-value="4">
+							<i class="fas fa-file-alt"></i>
+							<p>Dokument</p>
+						</div>
+						<div class="option-box-type option-box" data-value="5">
+							<i class="fas fa-code"></i>
+							<p>Skript</p>
+						</div>
+					</div>
+				</div>
+			</div>
+
+			<div class="navigation-buttons">
+				<div class="row">
+					<div class="col-md-12" style="text-align:right;">
+						<button class="btn btn-primary btn-lg next-btn">Neste <i class="fa-solid fa-chevron-right"></i></button>
+					</div>
+				</div>
+			</div>
 		</div>
 
-	</form>
+		<!-- Steg 2: Navn på tjenesten -->
+		<div class="wizard-step step-2" style="display: none;">
+
+			<div class="wizard-step-inner">
+				<div class="row">
+					<div class="col-md-5 wizard-help">
+						<h2>Navn</h2>
+						<p>
+							Skriv inn en passende tittel og beskrivelse på det du ønsker å dele.
+						</p>
+						<p>
+							Du kan legge til en lengre beskrivelse og mer informasjon senere.
+						</p>
+					</div>
+
+					<div class="col-md-1"></div>
+
+					<div class="col-md-5">
+						<div class="mb-3">
+							<label for="inputShareTitle" class="form-label">Navn</label>
+							<input type="text" class="form-control form-control-lg" id="inputShareTitle" name="title" placeholder="Min applikasjon">
+						</div>
+
+						<div class="mb-3">
+							<label for="inputShareShortDesc" class="form-label">Kort beskrivelse</label>
+							<input type="text" class="form-control" id="inputShareShortDesc" name="short_description" placeholder="Applikasjon for å hente ut informasjon om ...">
+						</div>
+					</div>
+				</div>
+			</div>
+
+			<div class="navigation-buttons">
+				<div class="row">
+					<div class="col-md-6">
+                		<button class="btn btn-secondary btn-lg previous-btn"><i class="fa-solid fa-chevron-left"></i> Tilbake</button>
+					</div>
+					<div class="col-md-6" style="text-align:right;">
+                		<button class="btn btn-primary btn-lg next-btn">Neste <i class="fa-solid fa-chevron-right"></i></button>
+					</div>
+				</div>
+            </div>
+		</div>
+
+		<!-- Steg 3: Velg lisens -->
+		<div class="wizard-step step-3" style="display: none;">
+
+			<div class="wizard-step-inner">
+				<div class="row">
+					<div class="col-md-7 wizard-help">
+						<h2>Velg lisens</h2>
+						<p>
+							Lisens bestemmer hvordan tjenesten du deler kan benyttes videre.
+							Kan man bare ta den i bruk? Har den en betalingsmodell?
+						</p>
+						<div class="help" style="margin-top:50px;">
+							
+						</div>
+
+						<!-- Hjelpetekst for lisenser -->
+						<div class="license-info" style="display: none;">
+							<h3>Lisensinformasjon</h3>
+							<ul id="license-details">
+								<!-- Dynamisk innhold vil bli lagt inn her -->
+							</ul>
+						</div>
+					</div>
+
+					<div class="col-md-1"></div>
+
+					<div class="col-md-4 option-box-container">
+
+						<div class="option-box-license option-box" data-license="mit">
+							<p>MIT License</p>
+						</div>
+						<div class="option-box-license option-box" data-license="gpl">
+							<p>GNU GPLv3</p>
+						</div>
+						<div class="option-box-license option-box" data-license="apache">
+							<p>Apache License 2.0</p>
+						</div>
+						<div class="option-box-license option-box" data-license="eula">
+							<p>EULA / Kopibeskyttet</p>
+						</div>
+					</div>
+				</div>
+			</div>
+
+			<div class="navigation-buttons">
+				<div class="row">
+					<div class="col-md-6">
+               			<button class="btn btn-secondary btn-lg previous-btn"><i class="fa-solid fa-chevron-left"></i> Tilbake</button>
+					</div>
+					<div class="col-md-6" style="text-align:right;">
+               			<button class="btn btn-success btn-lg finish-btn">Forhåndsvis <i class="fa-solid fa-chevron-right"></i></button>
+					</div>
+				</div>
+            </div>
+		</div>
+
+    </div>
 </section>
+
+
+<style>
+.app_share .section__form-h1 {
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+.app_share .navigation-buttons {
+	margin-top: 30px;
+	background-color: var(--shadow-color);
+	border-bottom-left-radius: 25px;
+	border-bottom-right-radius: 25px;
+	padding: 20px 100px;
+}
+
+.app_share .wizard-step {
+    /* display: flex;
+    flex-wrap: nowrap;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%; */
+}
+.app_share .wizard-step .wizard-step-inner {
+	padding: 50px 100px;
+}
+
+.app_share .option-box {
+    flex-grow: 1;
+    margin: 10px;
+    min-width: 350px;
+    max-width: 22%;
+    height: 70px;
+    background-color: var(--shadow-color);
+    text-align: center;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s, transform 0.3s;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: row;
+	border: 1px solid var(--secondary-border-color);
+}
+
+.app_share .option-box-container {
+	display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.app_share .wizard-step.step-1, .app_share .wizard-step.step-3 {
+    
+}
+
+.app_share .option-box i, .app_share .option-box .svg-inline--fa {
+    font-size: 24px;
+    color: #007bff;
+    margin-right: 10px;
+}
+
+.app_share .option-box p {
+    margin: 0;
+    font-weight: bold;
+}
+
+.app_share .option-box:hover {
+    background-color: #007bff;
+    color: #fff;
+    transform: translateY(-5px);
+}
+
+.app_share .option-box:hover i {
+    color: #fff;
+}
+
+.app_share .option-box.active {
+    background-color: #0056b3;
+    color: #fff;
+    transform: translateY(-5px);
+}
+
+.app_share .option-box.active i {
+    color: #fff;
+}
+
+
+
+.app_share .input-box {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    margin: 20px 0;
+    width: 100%;
+}
+
+.app_share .input-box label {
+    margin-bottom: 10px;
+    font-weight: bold;
+}
+
+.app_share .input-box input {
+    padding: 10px;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+    font-size: 16px;
+    width: 100%;
+}
+
+.app_share .license-info {
+    margin-top: 20px;
+    padding: 20px;
+    border-radius: 5px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+.app_share .license-info h3 {
+    margin-top: 0;
+}
+
+.app_share .license-info ul {
+    list-style: none;
+    padding: 0;
+}
+
+.app_share .license-info ul li {
+    margin-bottom: 10px;
+    display: flex;
+    align-items: center;
+}
+
+.app_share .license-info ul li i {
+    margin-right: 10px;
+}
+
+.app_share .license-info ul li .fa-check-circle {
+    color: green;
+}
+
+.app_share .license-info ul li .fa-times-circle {
+    color: red;
+}
+</style>
+
+<script>
+let currentStep = 1;
+
+document.addEventListener('DOMContentLoaded', () => {
+    // Hent data fra localStorage hvis tilgjengelig
+    const savedData = JSON.parse(localStorage.getItem('appShareWizardData')) || {};
+    
+    if (savedData.currentStep) {
+        goToStep(savedData.currentStep);
+    }
+    
+    if (savedData.selectedType) {
+        const selectedBox = document.querySelector(`.option-box-type[data-value="${savedData.selectedType}"]`);
+        if (selectedBox) {
+            selectedBox.classList.add('active');
+        }
+    }
+    
+    if (savedData.serviceName) {
+        document.querySelector('.app_share #inputShareTitle').value = savedData.serviceName;
+    }
+
+    if (savedData.shortDescription) {
+        document.querySelector('.app_share #inputShareShortDesc').value = savedData.shortDescription;
+    }
+
+    if (savedData.selectedLicense) {
+        const selectedLicenseBox = document.querySelector(`.option-box-license[data-license="${savedData.selectedLicense}"]`);
+        if (selectedLicenseBox) {
+            selectedLicenseBox.classList.add('active');
+            showLicenseDetails(savedData.selectedLicense);
+        }
+    }
+});
+
+// Håndterer klikk på type-bokser i steg 1
+document.querySelectorAll('.option-box-type').forEach(box => {
+    box.addEventListener('click', () => {
+        const typeValue = box.getAttribute('data-value');
+
+        // Fjern "aktiv" klassen fra alle bokser
+        document.querySelectorAll('.option-box-type').forEach(b => b.classList.remove('active'));
+
+        // Legg til "aktiv" klassen på den valgte boksen
+        box.classList.add('active');
+
+        // Lagre valgt type i localStorage
+        saveToLocalStorage('selectedType', typeValue);
+    });
+});
+
+// Håndterer "Neste"-knappen på steg 1
+document.querySelector('.step-1 .next-btn').addEventListener('click', () => {
+    // Sjekk at en type er valgt før du går videre
+    const selectedType = document.querySelector('.app_share .option-box-type.active');
+    if (!selectedType) {
+        alert("Vennligst velg en type før du går videre.");
+        return;
+    }
+    goToStep(2);
+});
+
+// Håndterer "Neste"-knappen på steg 2
+document.querySelector('.step-2 .next-btn').addEventListener('click', () => {
+    const serviceName = document.querySelector('.app_share #inputShareTitle').value;
+    const shortDescription = document.querySelector('.app_share #inputShareShortDesc').value;
+
+    // Lagre navn og beskrivelse i localStorage
+    saveToLocalStorage('serviceName', serviceName);
+    saveToLocalStorage('shortDescription', shortDescription);
+
+    // Gå til neste steg
+    goToStep(3);
+});
+
+document.querySelectorAll('.app_share .previous-btn').forEach(button => {
+    button.addEventListener('click', () => {
+        if (currentStep > 1) {
+            goToStep(currentStep - 1);
+        }
+    });
+});
+
+// Håndterer klikk på lisens-bokser i steg 3
+document.querySelectorAll('.option-box-license').forEach(box => {
+    box.addEventListener('click', () => {
+        const licenseType = box.getAttribute('data-license');
+
+        // Fjern "aktiv" klassen fra alle lisensbokser
+        document.querySelectorAll('.option-box-license').forEach(b => b.classList.remove('active'));
+
+        // Legg til "aktiv" klassen på den valgte boksen
+        box.classList.add('active');
+
+        // Lagre valgt lisens i localStorage
+        saveToLocalStorage('selectedLicense', licenseType);
+
+        // Vis lisensinformasjon basert på valgt lisens
+        showLicenseDetails(licenseType);
+    });
+});
+
+// Håndterer "Forhåndsvis"/"Fullfør"-knappen på steg 3
+document.querySelector('.step-3 .finish-btn').addEventListener('click', () => {
+    submitForm();
+});
+
+function goToStep(step) {
+    // Skjul gjeldende steg
+    document.querySelector(`.step-${currentStep}`).style.display = 'none';
+
+    // Oppdater gjeldende steg
+    currentStep = step;
+
+    // Lagre nåværende steg i localStorage
+    saveToLocalStorage('currentStep', currentStep);
+
+    // Vis neste steg
+    document.querySelector(`.step-${currentStep}`).style.display = 'block';
+}
+
+function showLicenseDetails(licenseType) {
+    const licenseDetails = {
+        mit: [
+            { text: "Kommersiell bruk tillatt", allowed: true },
+            { text: "Endring og distribusjon tillatt", allowed: true },
+            { text: "Ingen garanti", allowed: false }
+        ],
+        gpl: [
+            { text: "Kommersiell bruk tillatt", allowed: true },
+            { text: "Distribusjon må inkludere kildekode", allowed: true },
+            { text: "Endringer må være åpen kildekode", allowed: true }
+        ],
+        apache: [
+            { text: "Kommersiell bruk tillatt", allowed: true },
+            { text: "Endringer tillatt", allowed: true },
+            { text: "Patentrettigheter gitt", allowed: true }
+        ],
+        eula: [
+            { text: "Kommersiell bruk begrenset", allowed: false },
+            { text: "Endringer begrenset", allowed: false },
+            { text: "Kopibeskyttelse gjelder", allowed: true }
+        ]
+    };
+
+    const details = licenseDetails[licenseType] || [];
+    const licenseDetailsContainer = document.getElementById('license-details');
+    licenseDetailsContainer.innerHTML = '';
+
+    details.forEach(detail => {
+        const iconClass = detail.allowed ? 'fas fa-fw fa-check-circle' : 'fas fa-fw fa-times-circle';
+        const iconColor = detail.allowed ? '#5cd15c' : '#ff9595';
+        const listItem = `
+            <li>
+                <i class="${iconClass}" style="color: ${iconColor}; margin-right: 10px;"></i>
+                <span>${detail.text}</span>
+            </li>
+        `;
+        licenseDetailsContainer.innerHTML += listItem;
+    });
+
+    document.querySelector('.app_share .license-info').style.display = 'block';
+}
+
+function saveToLocalStorage(key, value) {
+    const savedData = JSON.parse(localStorage.getItem('appShareWizardData')) || {};
+    savedData[key] = value;
+    localStorage.setItem('appShareWizardData', JSON.stringify(savedData));
+}
+
+function submitForm() {
+    const selectedType = document.querySelector('.app_share .option-box-type.active')?.getAttribute('data-value');
+    const serviceName = document.querySelector('.app_share #inputShareTitle').value;
+    const shortDescription = document.querySelector('.app_share #inputShareShortDesc').value;
+    const selectedLicense = document.querySelector('.app_share .option-box-license.active')?.getAttribute('data-license');
+
+    if (!selectedType || !serviceName || !shortDescription || !selectedLicense) {
+        alert("Vennligst fyll ut alle feltene før du sender inn skjemaet.");
+        return;
+    }
+
+    // Create FormData object
+    const formData = new FormData();
+    formData.append('type_id', selectedType);
+    formData.append('title', serviceName);
+    formData.append('short_description', shortDescription);
+    formData.append('license_id', selectedLicense);
+
+	// Display the key/value pairs
+	for (var pair of formData.entries()) {
+		console.log(pair[0]+ ', ' + pair[1]); 
+	}
+
+    const formAction = "/app/new";
+
+    // Send skjemaet via POST
+    remote.rpc_post(config.api_url + formAction, formData).then(response => {
+        if (response.status == 'success') {
+            notification.success('Applikasjon/Tjeneste opprettet');
+
+            // Slett localStorage data for appShareWizardData
+            localStorage.removeItem('appShareWizardData');
+
+            // Naviger til app-siden
+            page('/apps/app/' + response.app_id);
+        } else {
+            notification.error('En feil oppstod');
+        }
+    })
+    .catch((err) => {
+        console.log(err);
+
+        if (err.status == 400) {
+            if (err.response.message != null) {
+                notification.error(`En feil oppstod!<br />${err.response.message}`);
+            } else {
+                notification.error('En feil oppstod!<br />400 Bad request');
+            }
+		}
+
+		else if (err.status == 500) {
+			notification.error('En feil oppstod!<br />500 Internal server error');
+		}
+
+		else {
+            notification.error('En feil oppstod!<br />Ukjent feil. Sjekk at alle felt er riktig valgt og utfylt.');
+        }
+    });
+}
+
+</script>

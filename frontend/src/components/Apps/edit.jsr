@@ -1,0 +1,363 @@
+<!-- Inkluder Quill CSS og JS -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/quill/2.0.0-dev.3/quill.min.js" type="text/javascript"></script>
+<script src="https://unpkg.com/quill-table-ui@1.0.5/dist/umd/index.js" type="text/javascript"></script>
+
+<link href="https://cdnjs.cloudflare.com/ajax/libs/quill/2.0.0-dev.3/quill.snow.min.css" rel="stylesheet">
+<link href="https://unpkg.com/quill-table-ui@1.0.5/dist/index.css" rel="stylesheet">
+
+<form>
+	<section class="section__page section_app">
+
+		<h2 class="class="input-editable"" style="margin-bottom:5px;" contenteditable="true">{{>title}}</h2>
+
+		<nav aria-label="breadcrumb">
+			<ol class="breadcrumb">
+				<li class="breadcrumb-item"><a href="/">Hjem</a></li>
+				<li class="breadcrumb-item"><a href="/apps/all">Apps</a></li>
+				<li class="breadcrumb-item"><a href="/apps/app/{{>id}}">{{>title}}</a></li>
+				<li class="breadcrumb-item active" aria-current="page">Rediger</li>
+			</ol>
+		</nav>
+
+		<div class="input-editable" style="margin-bottom:25px; font-size: 1.1rem; font-weight: 600;" contenteditable="true">
+			{{>short_description}}
+		</div>
+
+		<div class="row">
+			<div class="col-md-8">
+
+				<div class="box">
+					<div style="margin-bottom:15px;">
+						<a class="btn btn-light" href="">
+							<i class="fas fa-upload"></i> Last opp
+						</a>
+					</div>
+					<div>
+						{{for images}}
+							<div class="thumb" style="background-image: url('{{>image}}');">
+								<div class="thumb-footer">
+									<div class="left">
+										{{if primary=='1'}}
+											<i class="fas fa-check" style="color:green;"></i> Hovedbilde
+										{{else}}
+											<a href="">Sett hovedbilde</a>
+										{{/if}}
+									</div>
+									<div class="right">
+										<a href="">
+											<i class="fas fa-trash-alt" style="color:rgb(255, 122, 122);"></i>
+										</a>
+									</div>
+								</div>
+							</div>
+						{{/for}}
+					</div>
+				</div>
+
+				<div class="box">
+					<h3>Beskrivelse</h3>
+
+					<div id="textAppEditDesc">
+						{{:description}}
+					</div>
+
+					<!-- <textarea name="" id="textAppEditDesc">
+						{{:description}}
+					</textarea> -->
+				</div>
+
+
+
+				<div class="box">
+					<h3>Filer</h3>
+
+					{{if files}}
+						{{for files}}
+							<div class="file">
+								<div class="icon">
+									{{:icon}}
+								</div>
+								<div class="filedata">
+									<div class="title">
+										<a href="{{>path}}">
+											{{>filename}}
+										</a>
+									</div>
+									<div class="info">{{>size.readable}} &middot; {{>time_uploaded}}</div>
+								</div>
+							</div>
+						{{/for}}
+					{{/if}}
+
+					<div>
+						<a class="btn btn-light" href="">
+							<i class="fas fa-upload"></i> Last opp
+						</a>
+					</div>
+				</div>
+
+
+
+
+				<div class="box">
+					<h3>Installasjonsveiledning</h3>
+
+					<div id="textAppEditInst">
+						{{:description}}
+					</div>
+
+					<!-- <textarea name="" id="textAppEditInst">
+						{{:installation}}
+					</textarea> -->
+				</div>
+
+
+			</div>
+
+
+
+			<div class="col-md-4">
+
+				<div class="detail__block">
+					<div class="detail__title">
+						<i class="fas fa-user"></i> Eier
+					</div>
+					<div class="detail__value">
+						<a href="/organization/profile/{{>company.public_id}}">{{>company.title}}</a>
+					</div>
+				</div>
+				<div class="detail__block">
+					<div class="detail__title">
+						<i class="fa-regular fa-file-certificate"></i> Lisens
+					</div>
+					<div class="detail__value">
+						<a href="#">MIT License</a>
+
+						<div class="mb-3">
+							<label for="selectAppEditLicense" class="form-label"></label>
+							<select class="form-select" name="license" id="selAppEditLicense" aria-label="Select license"></select>
+						</div>
+					</div>
+				</div>
+				<div class="detail__block">
+					<div class="detail__title">
+						<i class="fa-solid fa-hashtag"></i> Tags
+					</div>
+					<div class="detail__value">
+						<div id="tag-container">
+							{{for tags.array}}
+								<span class="badge rounded-pill text-bg-primary">
+									{{:#data}}
+									<i class="fas fa-times" style="margin-left: 5px; cursor: pointer;"></i>
+								</span>
+							{{/for}}
+						</div>
+
+						<div style="margin-top:8px;">
+							<input type="text" id="tag-input" placeholder="Legg til tag" />
+						</div>
+					</div>
+				</div>
+
+
+
+			</div>
+
+		</div>
+
+	</section>
+</form>
+
+
+<style>
+	.thumb {
+		display: inline-block;
+		height: 150px;
+		width: 160px;
+		margin: 4px;
+		border-radius: 5px;
+		background-position: center !important;
+		background-size: cover !important;
+		background-repeat: no-repeat !important;
+		position: relative !important;
+	}
+
+	.thumb .thumb-footer {
+		position: absolute;
+		display: flex;
+		left: 0;
+		bottom: 0;
+		font-size: 0.8rem;
+		background-color: var(--shadow-color);
+		width: 100%;
+		padding: 6px 8px;
+		border-bottom-left-radius: 5px;
+		border-bottom-right-radius: 5px;
+	}
+
+	.thumb .thumb-footer .left { flex:1 1 auto; }
+	.thumb .thumb-footer .right { flex:0 0 20px; text-align:right; }
+
+
+	.ql-toolbar.ql-snow {
+		background-color: #e5eaef;
+	}
+
+	.ql-editor {
+		font-family: "PT Sans", "Bebas Neue", "akzidenz", sans-serif;
+		font-size: 16px; /* Du kan også sette standard tekststørrelse om nødvendig */
+		line-height: 1.5;
+	}
+
+
+	#tag-container {
+		display: flex;
+		flex-wrap: wrap;
+		gap: 5px;
+	}
+
+	#tag-container .badge {
+		display: flex;
+		align-items: center;
+		padding-right: 8px;
+	}
+
+	#tag-container .badge i {
+		margin-left: 5px;
+		cursor: pointer;
+	}
+
+	#tag-input {
+		border: none;
+		outline: none;
+		padding: 5px;
+		font-size: 14px;
+		flex: 1;
+	}
+</style>
+
+
+<script>
+	var toolbarOptions = [
+		//[{ 'font': [] }],
+		[{ 'header': [4, false] }],
+		['bold', 'italic', 'underline', 'strike'],        // Toggling inline styles
+		[{ 'color': [] }, { 'background': [] }],          // Tekst- og bakgrunnsfarger
+		//[{ 'script': 'sub'}, { 'script': 'super' }],    // Subscript/Superscript
+		[{ 'list': 'ordered'}, { 'list': 'bullet' }],     // Listetyper
+		[{ 'indent': '-1'}, { 'indent': '+1' }],          // Indentation
+		//[{ 'direction': 'rtl' }],                        // Tekstretning
+		[{ 'align': [] }],                                // Tekstjustering
+		['link', 'image', 'video'],                       // Sett inn link, bilde, video
+		['code-block', 'clean']                  	      // Blokker
+	];
+
+	document.addEventListener("DOMContentLoaded", function() {
+		// Initialiser Quill for "Beskrivelse"
+		var quillDesc = new Quill('#textAppEditDesc', {
+			theme: 'snow',  // Velg tema, 'snow' er standardtemaet
+			modules: {
+				toolbar: toolbarOptions,
+				table: true,
+			}
+		});
+
+		// Initialiser Quill for "Installasjonsveiledning"
+		var quillInst = new Quill('#textAppEditInst', {
+			theme: 'snow',
+			modules: {
+				toolbar: toolbarOptions
+			}
+		});
+
+
+
+		const tagContainer = document.getElementById('tag-container');
+		const tagInput = document.getElementById('tag-input');
+
+		if (tagContainer && tagInput) {
+			// Håndterer å legge til en ny tag
+			tagInput.addEventListener('keypress', function(e) {
+				if (e.key === 'Enter') {
+					e.preventDefault();
+					addTag(tagInput.value);
+					tagInput.value = '';
+				}
+			});
+
+			// Håndterer fjerning av tags ved klikk på kryssikonet
+			tagContainer.addEventListener('click', function(e) {
+				console.log("Klikk registrert på element:", e.target);
+
+				if (e.target.closest('svg') || e.target.closest('path') || e.target.classList.contains('fa-times')) {
+					console.log("Kryssikon klikket");
+					const badge = e.target.closest('.badge');
+					if (badge) {
+						console.log("Badge funnet, fjerner:", badge);
+						badge.remove();
+					} else {
+						console.log("Badge ikke funnet");
+					}
+				} else {
+					console.log("Klikket element er ikke et kryssikon");
+				}
+			});
+
+			// Funksjon for å legge til en ny tag
+			function addTag(tag) {
+				if (tag.trim() === '') return;
+				const tagElement = document.createElement('span');
+				tagElement.classList.add('badge', 'rounded-pill', 'text-bg-primary');
+				tagElement.textContent = tag.trim();
+
+				const removeIcon = document.createElement('i');
+				removeIcon.classList.add('fas', 'fa-times');
+				removeIcon.style.marginLeft = '5px';
+				removeIcon.style.cursor = 'pointer';
+
+				tagElement.appendChild(removeIcon);
+				tagContainer.appendChild(tagElement); // Legger til tag-elementet på slutten av tagContainer
+
+				console.log("Ny tag lagt til:", tagElement);
+			}
+
+		} else {
+			console.error("Elementene 'tag-container' eller 'tag-input' ble ikke funnet i dokumentet.");
+		}
+
+
+	});
+
+
+
+	var licenseSelect = document.getElementById('selAppEditLicense');
+    var selectedLicenseId = "{{>license.id}}".trim();  // Trim for å fjerne eventuelle ekstra mellomrom
+
+    function populateLicenses(licenses) {
+        licenses.forEach(license => {
+            const option = document.createElement('option');
+            option.value = license.id;
+            option.textContent = license.title;
+
+            // Sørg for at begge er strenger for en sikker sammenligning
+            if (String(license.id).trim() === String(selectedLicenseId)) {
+                option.selected = true;
+            }
+
+            licenseSelect.appendChild(option);
+        });
+    }
+
+    function app_edit_get_licenses() {
+        remote.rpc(`${config.api_url}/licenses/get`).then(response => {
+            populateLicenses(response);
+        })
+        .catch((err) => {
+            notification.error('Kunne ikke hente lisenser');
+            console.error(err);
+        });
+    }
+
+    app_edit_get_licenses();
+
+</script>

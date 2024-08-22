@@ -1,4 +1,4 @@
-<section class="baner">	
+<section class="container baner">	
 	<div class="baner__row">	
 		<div class="baner__left">	
 			<p class="baner__title">	Digital</p> 
@@ -16,7 +16,7 @@
 	</div>
 </section>
 
-<section class="top">
+<!-- <section class="top">
 	<div class="top__title">
 		<div class="top__title-left" id="top_title">Top apps > </div>
 		<div class="top__title-right">
@@ -24,6 +24,14 @@
 		</div>
 	</div>
 	<div class="tabs__body" id="tabsBodyContainer"></div>
+</section> -->
+
+<section class="container" style="padding:50px 0px 100px 0px;">
+	<div class="header-split d-flex flex-column flex-md-row justify-content-between align-items-center">
+		<h2>Applikasjoner ></h2>
+		<ul class="nav nav-pills mb-3" id="pills-tab" role="tablist"></ul>
+	</div>
+	<div class="tab-content" id="pills-tabContent"></div>
 </section>
 
 
@@ -101,61 +109,55 @@
 </section>
 
 
-<section class="nykommere">
-	<div class="nykommere__title">
-		Nykommere >
-	</div>
-	<div class="nykommere__body">
-		<div class="nykommere__row"></div>
-	</div>
+<section class="container">
+	<h2>Nykommere ></h2>
+	<div id="main-apps-latest" class="apps-row"></div>
 </section>
 
 
 
 <script>
-	// Fetch the types and dynamically create tabs and content sections
+
 fetch(`${config.api_url}/types/get`)
   .then(response => response.json())
   .then(typesData => {
-    const tabsContainer = document.getElementById('tabsContainer');
-    const tabsBodyContainer = document.getElementById('tabsBodyContainer');
+    const tabsContainer = document.getElementById('pills-tab');
+    const tabsBodyContainer = document.getElementById('pills-tabContent');
     const typesMap = {};
 
     // Create tabs and content sections for each type
     typesData.forEach((type, index) => {
-		console.log('type', type);
       // Map type ID to type title for later use
       typesMap[type.id] = type.title;
 
-      // Create a tab item
-      const tabItem = document.createElement('a');
-      tabItem.href = '#';
-      tabItem.onclick = () => false;
-      tabItem.id = `tab_${type.id}`;
-      tabItem.className = 'tabs__items';
-      if (index === 0) tabItem.classList.add('active');
-      tabItem.textContent = type.title;
-      tabItem.addEventListener('click', () => {
-        // Switch active tab and tab content
-        document.querySelectorAll('.tabs__items').forEach(item => item.classList.remove('active'));
-        document.querySelectorAll('.tabs__block').forEach(block => block.classList.remove('active'));
+      // Generate tab item using template literals
+      const tabItemHTML = `
+        <li class="nav-item" role="presentation">
+          <button class="nav-link ${index === 0 ? 'active' : ''}" 
+                  id="pills-${type.id}-tab" 
+                  data-bs-toggle="pill" 
+                  data-bs-target="#pills-${type.id}" 
+                  type="button" 
+                  role="tab" 
+                  aria-controls="pills-${type.id}" 
+                  aria-selected="${index === 0 ? 'true' : 'false'}">
+            ${type.title}
+          </button>
+        </li>
+      `;
+      tabsContainer.insertAdjacentHTML('beforeend', tabItemHTML);
 
-        tabItem.classList.add('active');
-        document.getElementById(`content_${type.id}`).classList.add('active');
-      });
-      tabsContainer.appendChild(tabItem);
-
-      // Create a corresponding content block
-      const tabContentBlock = document.createElement('div');
-      tabContentBlock.className = 'tabs__block';
-      if (index === 0) tabContentBlock.classList.add('active');
-      tabContentBlock.id = `content_${type.id}`;
-
-      const topRow = document.createElement('div');
-      topRow.className = `top__row top__row-${type.title.toLowerCase()}`;
-
-      tabContentBlock.appendChild(topRow);
-      tabsBodyContainer.appendChild(tabContentBlock);
+      // Generate corresponding content block using template literals, adding an apps-row div
+      const tabContentHTML = `
+        <div class="tab-pane fade ${index === 0 ? 'show active' : ''}" 
+             id="pills-${type.id}" 
+             role="tabpanel" 
+             aria-labelledby="pills-${type.id}-tab" 
+             tabindex="0">
+          <div class="apps-row top__row-${type.title.toLowerCase()}"></div>
+        </div>
+      `;
+      tabsBodyContainer.insertAdjacentHTML('beforeend', tabContentHTML);
     });
 
     // Fetch the applications
@@ -164,48 +166,29 @@ fetch(`${config.api_url}/types/get`)
       .then(appsData => {
         // Process each application and insert it into the correct section
         appsData.forEach(app => {
-          const link = document.createElement('a');
-          link.href = `/apps/app/${app.id}`;
-          link.className = 'top__item';
-
-          const content = document.createElement('div');
-          content.className = 'top__item-content';
-
-          const image = document.createElement('div');
-          image.className = 'top__item-image';
-          const img = document.createElement('img');
-          img.src = app.primary_image.thumb;
-          img.alt = app.title;
-          image.appendChild(img);
-
-          const info = document.createElement('div');
-          info.className = 'top__item-info';
-
-          const name = document.createElement('div');
-          name.className = 'top__item-name';
-          name.textContent = app.title;
-
-          const type = document.createElement('div');
-          type.className = 'top__item-type';
-          type.textContent = app.type.title;
-
-          const author = document.createElement('div');
-          author.className = 'top__item-author';
-          author.textContent = app.company.title;
-
-          info.appendChild(name);
-          info.appendChild(type);
-          info.appendChild(author);
-
-          content.appendChild(image);
-          content.appendChild(info);
-
-          link.appendChild(content);
+          // Generate application item using template literals
+          const appItemHTML = `
+            <a href="/apps/app/${app.id}" class="app-card">
+                <div class="img-container">
+                  <img src="${app.primary_image.thumb}" alt="${app.title}">
+                </div>
+                <div class="info">
+                  <div class="name">${app.title}</div>
+                  <div class="desc">${app.type.title}</div>
+                  <div class="author">
+                    <span class="badge rounded-pill text-bg-light">
+                      <img src="${app.company.logo.thumb}" alt="" />
+                      ${app.company.title}
+                    </span>
+                  </div>
+                </div>
+            </a>
+          `;
 
           // Find the correct section to add the app to based on its type
           const targetRow = document.querySelector(`.top__row-${app.type.title.toLowerCase()}`);
           if (targetRow) {
-            targetRow.appendChild(link);
+            targetRow.insertAdjacentHTML('beforeend', appItemHTML);
           }
         });
       })
@@ -216,55 +199,44 @@ fetch(`${config.api_url}/types/get`)
 
 
 
+
 // Function to fetch and display the latest applications for Nykommere
 function loadNykommere() {
   fetch(`${config.api_url}/stats/apps/latest`)
     .then(response => response.json())
     .then(latestAppsData => {
-      const nykommereRow = document.querySelector('.nykommere__row');
+      console.log('latestAppsData', latestAppsData);
+      const nykommereRow = document.querySelector('#main-apps-latest');
 
-      // Process each newcomer application and insert it into the nykommere section
+      // Tømmer innholdet før nye elementer legges til
+      nykommereRow.innerHTML = '';
+
+      // Behandler hver ny applikasjon og legger den til i nykommere-seksjonen
       latestAppsData.forEach(app => {
-        const link = document.createElement('a');
-        link.href = '#';
-        link.className = 'nykommere__item';
-
-        const content = document.createElement('div');
-        content.className = 'nykommere__item-content';
-
-        const image = document.createElement('div');
-        image.className = 'nykommere__item-image';
-        const img = document.createElement('img');
-        img.src = app.primary_image.thumb;
-        img.alt = app.title;
-        image.appendChild(img);
-
-        const info = document.createElement('div');
-        info.className = 'nykommere__item-info';
-
-        const name = document.createElement('div');
-        name.className = 'nykommere__item-name';
-        name.textContent = app.title;
-
-        const type = document.createElement('div');
-        type.className = 'nykommere__item-type';
-        type.textContent = app.type.title;
-
-        const author = document.createElement('div');
-        author.className = 'nykommere__item-author';
-        author.textContent = app.company.title;
-
-        info.appendChild(name);
-        info.appendChild(type);
-        info.appendChild(author);
-
-        content.appendChild(image);
-        content.appendChild(info);
-
-        link.appendChild(content);
-        nykommereRow.appendChild(link);
+        const itemHTML = `
+          <a href="/apps/app/${app.id}" class="app-card">
+                <div class="img-container">
+                  <img src="${app.primary_image.thumb}" alt="${app.title}">
+                </div>
+                <div class="info">
+                  <div class="name">${app.title}</div>
+                  <div class="desc">${app.type.title}</div>
+                  <div class="author">
+				  	<span class="badge rounded-pill text-bg-light">
+						<img src="${app.company.logo.thumb}" alt="" />
+						${app.company.title}
+					</span>
+				  </div>
+                </div>
+            </a>
+        `;
+        nykommereRow.insertAdjacentHTML('beforeend', itemHTML);
       });
     })
     .catch(error => console.error('Error fetching latest applications:', error));
 }
+
+
+
+loadNykommere();
 </script>

@@ -122,6 +122,8 @@ h5 {
 	margin-top:8px;
 }
 
+
+
 .btn {
 	border-radius: 50px;
 }
@@ -157,10 +159,14 @@ h5 {
 .page__user {
 	margin-left: 15px;
 }
+.help {
+	color: var(--muted-text-color);
+	font-size: 0.9rem;
+}
 .content {
     overflow: hidden;
     min-height: 100%;
-    max-width: 1900px;
+    /* max-width: 1900px; */
     margin: 0 auto;
     display: -webkit-box;
     display: -ms-flexbox;
@@ -733,7 +739,6 @@ html.dark .links {
 	color: var(--footer-text-color);
 }
 .footer__content {
-    max-width: 1180px;
     margin: 0 auto;
     padding-top: 30px;
     padding-bottom: 30px;
@@ -868,7 +873,21 @@ html.dark .links {
         flex: 1 1 100%;
     }
 }
-.top {
+
+
+
+.nav-pills .nav-link {
+	border-radius: 20px;
+}
+
+
+.container .title {}
+.container h2 {
+	padding-bottom: 30px;
+}
+
+
+/* .top {
     max-width: 1181px;
     margin: 0 auto;
     margin-bottom: 60px;
@@ -879,7 +898,6 @@ html.dark .links {
 .top__title {
     max-width: 1180px;
     margin: 0 auto;
-    /* color: #4d4d4d; */
     padding-bottom: 30px;
     display: -webkit-box;
     display: -ms-flexbox;
@@ -939,7 +957,48 @@ html.dark .links {
     -ms-flex-wrap: wrap;
     flex-wrap: wrap;
     margin-bottom: 30px;
+} */
+
+
+.apps-row {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 20px;
 }
+
+.app-card {
+	display: flex;
+	padding: 20px;
+	color: var(--box-tabs-text-color);
+	background-color: var(--box-bg-color);
+	border-radius: 5px;
+}
+.app-card:hover {
+	background-color: var(--box-bg-color-hover);
+	color: var(--box-tabs-text-color);
+}
+.app-card .img-container {
+	flex: 0 0 90px;
+}
+.app-card .img-container img {}
+.app-card .info {
+	flex: 1 1 auto;
+	margin-left: 15px;
+}
+.app-card .info .name {
+	font-size: 1.4rem;
+}
+.app-card .info .desc {
+	font-size: 0.9rem;
+}
+.app-card .info .author {
+	margin-top:15px;
+}
+.app-card .info .author img {
+	height: 16px;
+}
+
+
 .top__item {
     display: block;
     -webkit-box-flex: 0;
@@ -1178,6 +1237,7 @@ html.dark .spartid .spartid__logo3 {
     background-size: 100%;
     margin: 0 auto;
 }
+/*
 .nykommere {
     max-width: 1181px;
     margin: 0 auto;
@@ -1225,6 +1285,9 @@ html.dark .spartid .spartid__logo3 {
     display: flex;
     font-size: 0;
 }
+.nykommere__item-image {
+	flex: 0 0 90px;
+}
 .nykommere__item-image img {
     width: 75px;
     margin-right: 20px;
@@ -1233,7 +1296,6 @@ html.dark .spartid .spartid__logo3 {
     color: #4d4d4d;
     font-size: 13px;
     position: relative;
-    padding-bottom: 30px;
 }
 .nykommere__item-name {
     font-size: 15px;
@@ -1244,13 +1306,13 @@ html.dark .spartid .spartid__logo3 {
     margin-top: 5px;
 }
 .nykommere__item-author {
-    position: absolute;
-    bottom: 0;
-    left: 0;
-    padding: 5px;
-    background-color: #f4f4f5;
-    border-radius: 5px;
-    color: #4d4d4d;
+	margin-top:25px;
+}
+.nykommere__item-author img {
+	height: 16px;
+}
+.nykommere__item .author img {
+	height: 16px;
 }
 @media (max-width: 1180px) {
     .nykommere {
@@ -1299,7 +1361,8 @@ html.dark .nykommere__item:hover {
     -webkit-box-shadow: 0 0 10px 2px #434343;
     box-shadow: 0 0 10px 2px #434343;
 }
-.tabs__body {
+*/
+/* .tabs__body {
     border-top: 1px solid var(--secondary-border-color);
     padding-top: 30px;
 }
@@ -1308,7 +1371,7 @@ html.dark .nykommere__item:hover {
 }
 .tabs__body .tabs__block.active {
     display: block;
-}
+} */
 /* html.dark .nykommere__item-author {
     background-color: #333;
     color: #f3f3f3;
@@ -1406,7 +1469,7 @@ html.dark .nykommere__item-name {
 	font-weight: 700;
 }
 
-.slider__block {
+/* .slider__block {
     position: relative;
     width: 100%;
 }
@@ -1458,7 +1521,7 @@ html.dark .nykommere__item-name {
 }
 .slider__item.slick-slide.slick-current.slick-center img {
     margin: 0 auto;
-}
+} */
 .fancybox__container {
     background: #f3f3f3;
 }
@@ -1823,7 +1886,7 @@ html.dark .section__form-form select {
 
 
 
-.slick-slider {
+/* .slick-slider {
   position: relative;
   display: block;
   -webkit-box-sizing: border-box;
@@ -1924,7 +1987,7 @@ html.dark .section__form-form select {
 
 .slick-arrow.slick-hidden {
   display: none;
-}
+} */
 
 
 .locked-content {
@@ -2278,6 +2341,11 @@ input[type=range]:focus::-ms-fill-upper {
 
 
 
+
+.section_app .box h3 {
+	margin-top:0px;
+}
+
 .card.app {
 	border-radius: 8px;
 }
@@ -2304,4 +2372,48 @@ input[type=range]:focus::-ms-fill-upper {
 .card.app p {
 	height: 0px;
 	margin:0px;
+}
+
+
+.file {
+	display: flex;
+	margin: 15px 0px;
+}
+.file .icon {
+	flex: 0 0 60px;
+	font-size:2rem;
+}
+.file .filedata {
+	flex: 1 1 auto;
+}
+.file .filedata .title {
+	font-size: 1.2rem;
+}
+.file .filedata .info {
+	font-size: 0.8rem;
+}
+
+
+.input-editable[contenteditable="true"]::before {
+    content: "Klikk her for å redigere";
+    display: block;
+    color: #6c757d;
+    font-size: 12px;
+    margin-bottom: 5px;
+}
+
+.input-editable[contenteditable="true"]:focus::before {
+    content: "";
+}
+
+
+.input-editable[contenteditable="true"] {
+    border: 1px dashed #007bff;
+    padding: 5px;
+}
+
+.input-editable[contenteditable="true"]:focus {
+    border: 1px solid #007bff;
+    background-color: #e9f7ff5b;
+	min-height: 40px;
 }
