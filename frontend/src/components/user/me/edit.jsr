@@ -89,6 +89,18 @@
 				</div>
 
 			</div>
+
+			<div class="col-md-5">
+				<div style="padding:20px;">
+					<p>
+						<i class="fal fa-info-circle"></i> Din brukerprofil er offentlig for alle innloggede brukere.
+					</p>
+
+					<p>
+						Det er kun e-post som er påkrevd felt.
+					</p>
+				</div>
+			</div>
 		</div>
 
 	</form>

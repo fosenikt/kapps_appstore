@@ -6,6 +6,7 @@ use Kapps\Model\Database\QueryBuilder;
 use \Kapps\Model\Apps\Images;
 use \Kapps\Model\Apps\Files;
 use \Kapps\Model\Companies\Get as CompaniesGet;
+use \Kapps\Model\Users\Utils as UsersUtils;
 use \Kapps\Model\Auth\User as AuthUser;
 use \Kapps\Model\Stats\Log as StatsLog;
 
@@ -383,12 +384,16 @@ class Get
 					'firstname' => $data['uc_firstname'],
 					'lastname' => $data['uc_lastname'],
 					'mail' => $data['uc_mail'],
+					'displayname' => UsersUtils::displayname($data['uc_firstname'], $data['uc_lastname'], $data['uc_mail']),
+					'initials' => UsersUtils::initials($data['ue_firstname'], $data['ue_lastname'], $data['ue_mail']),
 				),
 				'updated_by' => array(
 					'id' => $data['updated_by'],
 					'firstname' => $data['ue_firstname'],
 					'lastname' => $data['ue_lastname'],
 					'mail' => $data['ue_mail'],
+					'displayname' => UsersUtils::displayname($data['ue_firstname'], $data['ue_lastname'], $data['ue_mail']),
+					'initials' => UsersUtils::initials($data['ue_firstname'], $data['ue_lastname'], $data['ue_mail']),
 				),
 				'company' => $this->Companies->get_company($data['company_id']),
 				'title' => $data['title'],

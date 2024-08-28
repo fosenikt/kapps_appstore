@@ -1,0 +1,104 @@
+<section class="section__page section_app">
+
+	<h2 style="margin-bottom:5px;">{{>title}}</h2>
+
+	<nav aria-label="breadcrumb">
+		<ol class="breadcrumb">
+			<li class="breadcrumb-item"><a href="/">Hjem</a></li>
+			<li class="breadcrumb-item"><a href="#">Brukere</a></li>
+			<li class="breadcrumb-item active" aria-current="page">{{>displayname}}</li>
+		</ol>
+	</nav>
+
+	<div class="row">
+		<div class="col-md-7">
+			<h4>Brukerdata</h4>
+			<div class="box">
+				<div class="detail__block">
+					<div class="detail__title">
+						Fornavn
+					</div>
+					<div class="detail__value">
+						{{if firstname}}
+							{{>firstname}}
+						{{else}}
+							<i>Ikke oppgitt</i>
+						{{/if}}
+					</div>
+				</div>
+
+				<div class="detail__block">
+					<div class="detail__title">
+						Etternavn
+					</div>
+					<div class="detail__value">
+						{{if lastname}}
+							{{>lastname}}
+						{{else}}
+							<i>Ikke oppgitt</i>
+						{{/if}}
+					</div>
+				</div>
+
+				<div class="detail__block">
+					<div class="detail__title">
+						E-post
+					</div>
+					<div class="detail__value">
+						{{if mail}}
+							{{>mail}}
+						{{else}}
+							<i>Ikke oppgitt</i>
+						{{/if}}
+					</div>
+				</div>
+
+				<div class="detail__block">
+					<div class="detail__title">
+						Mobiltelefon
+					</div>
+					<div class="detail__value">
+						{{if mobile}}
+							{{>mobile}}
+						{{else}}
+							<i>Ikke oppgitt</i>
+						{{/if}}
+					</div>
+				</div>
+
+				<div class="detail__block">
+					<div class="detail__title">
+						Rolle / tittel
+					</div>
+					<div class="detail__value">
+						{{if company_role}}
+							{{>company_role}}
+						{{else}}
+							<i>Ikke oppgitt</i>
+						{{/if}}
+					</div>
+				</div>
+			</div>
+		</div>
+
+
+		<div class="col-md-5">
+			<h4>Organisasjon</h4>
+			<div class="box">
+				<div>
+					<div style="display:inline-block; max-width:30px;">
+						<img src="{{>customer.logo.image}}" alt="">
+					</div>
+					{{>customer.title}}
+				</div>
+				<div style="margin-top:25px;">
+					<a href="/organization/profile/{{>customer.public_id}}">
+						> Publiserte applikasjoner
+					</a>
+				</div>
+			</div>
+			
+		</div>
+	</div>
+
+</section>

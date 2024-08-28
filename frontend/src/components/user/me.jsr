@@ -34,6 +34,22 @@
 			template.load_webpart('/components/user/_webparts/user_me.jsr', '#user-me-data', response).then(response => {
 
 			});
+		})
+		.catch((err) => {
+			if (err.status == 401) {
+				notification.error('Ingen tilgang. Flytter deg til innlogging.');
+				document.getElementById('user-me-data').innerHTML = `
+					<div style="text-align:center;">
+						<div style="font-size:1.5rem">Oops! Du har sneket deg ut av klubben.</div>
+						<div>
+							<p>Ser ut som om din adgangsbillett (token) har utløpt, eller så har du glemt å logge inn. 🤭</p>
+							<p>Trykk på <a href="/user/login">denne lenken</a> for å komme deg tilbake!</p>
+						</div>
+					</div>
+				`;
+				page('/user/login');
+			}
+			console.error(err);
 		});
 	}
 

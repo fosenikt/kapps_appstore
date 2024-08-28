@@ -155,6 +155,7 @@
 						</div>
 					</div>
 				</div>
+				<div id="app-share-form-error"></div>
 			</div>
 
 			<div class="navigation-buttons">
@@ -432,6 +433,9 @@ function goToStep(step) {
     // Lagre nåværende steg i localStorage
     saveToLocalStorage('currentStep', currentStep);
 
+	// Reset error message when changing steps
+	document.getElementById('app-share-form-error').innerHTML = '';
+
     // Vis neste steg
     document.querySelector(`.step-${currentStep}`).style.display = 'block';
 }
@@ -491,8 +495,23 @@ function submitForm() {
     const shortDescription = document.querySelector('.app_share #inputShareShortDesc').value;
     const selectedLicense = document.querySelector('.app_share .option-box-license.active')?.getAttribute('data-license');
 
-    if (!selectedType || !serviceName || !shortDescription || !selectedLicense) {
-        alert("Vennligst fyll ut alle feltene før du sender inn skjemaet.");
+    const errorDiv = document.getElementById('app-share-form-error');
+    errorDiv.innerHTML = ''; // Tømmer tidligere feilmeldinger
+
+    if (!selectedType) {
+        errorDiv.innerHTML = `<div class="alert alert-danger">Vennligst velg en type før du sender inn skjemaet.</div>`;
+        return;
+    }
+    if (!serviceName) {
+        errorDiv.innerHTML = `<div class="alert alert-danger">Vennligst fyll ut navn på tjenesten.</div>`;
+        return;
+    }
+    if (!shortDescription) {
+        errorDiv.innerHTML = `<div class="alert alert-danger">Vennligst fyll ut en kort beskrivelse.</div>`;
+        return;
+    }
+    if (!selectedLicense) {
+        errorDiv.innerHTML = `<div class="alert alert-danger">Vennligst velg en lisens.</div>`;
         return;
     }
 

@@ -1,0 +1,66 @@
+<div class="box list-box">
+	<div class="info-wrapper">
+		<div class="icon">
+			<div class="image" style="background:url('{{>primary_image.thumb}}');"></div>
+		</div>
+
+		<div class="info">
+			<div class="title">
+				<a href="/apps/app/{{>id}}">
+					{{>title}}
+				</a>
+			</div>
+			<div class="desc">
+				<div>
+					{{>short_description}}
+				</div>
+
+				<div style="margin-top:8px;">
+					{{if status=='draft'}}
+						<span class="badge rounded-pill text-bg-primary">Utkast</span>
+					{{else status=='published'}}
+						<span class="badge rounded-pill text-bg-success">Publisert</span>
+					{{else status=='deleted'}}
+						<span class="badge rounded-pill text-bg-danger">Slettet</span>
+					{{/if}}
+
+
+					<span class="badge rounded-pill text-bg-info">{{>type.title}}</span>
+				</div>
+
+				<div class="muted" style="font-size:0.7rem; font-style:italic; margin-top:15px;">
+					Sist endret: {{>time_edited}} av 
+					<a href="/user/profile/{{>updated_by.id}}">
+						{{if updated_by.displayname}}
+							{{>updated_by.displayname}}
+						{{else}}
+							Ukjent/slettet
+						{{/if}}
+					</a>. 
+					Opprettet: {{>time_created}} av 
+					<a href="/user/profile/{{>created_by.id}}">
+						{{if created_by.displayname}}
+							{{>created_by.displayname}}
+						{{else}}
+							Ukjent/slettet
+						{{/if}}
+					</a>. 
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<div class="tools">
+		<a href="javascript:void(0);" 
+           class="delete-app"
+           data-app-id="{{>id}}" 
+           data-app-status="{{>status}}" 
+           onclick="organization_modal_app_delete(event)">
+            <i class="fas fa-trash-alt"></i>
+        </a>
+
+		<a href="/apps/edit/{{>id}}">
+			<i class="fas fa-pencil-alt"></i>
+		</a>
+	</div>
+</div>

@@ -5,6 +5,7 @@ use Kapps\Model\Database\Db;
 use \Kapps\Model\Companies\Get as CompaniesGet;
 use \Kapps\Model\Auth\User as AuthUser;
 use \Kapps\Model\Utils\Colors;
+use \Kapps\Model\Users\Utils as UsersUtils;
 
 /**
  * summary
@@ -55,10 +56,6 @@ class Get
 
 		$result = $stmt->get_result();
 		while ($row = $result->fetch_assoc()) {
-
-			if (!empty($row['initials'])) $initials = $row['initials'];
-			else $initials = $this->create_initials($row['firstname'], $row['lastname'], $row['mail']);
-
 			if (!empty($row['color'])) $color = $row['color'];
 			else $color = Colors::get_random_color();
 
@@ -68,7 +65,8 @@ class Get
 				'customer' => $this->Companies->get_company_by_id($row['customer_id']),
 				'firstname' => $row['firstname'],
 				'lastname' => $row['lastname'],
-				'initials' => $initials,
+				'initials' => UsersUtils::initials($row['firstname'], $row['lastname'], $row['mail']),
+				'displayname' => UsersUtils::displayname($row['firstname'], $row['lastname'], $row['mail']),
 				'mail' => $row['mail'],
 				'mobile' => $row['mobile'],
 				//'o365_token' => $row['o365_token'],
@@ -119,10 +117,6 @@ class Get
 
 		$result = $stmt->get_result();
 		while ($row = $result->fetch_assoc()) {
-
-			if (!empty($row['initials'])) $initials = $row['initials'];
-			else $initials = $this->create_initials($row['firstname'], $row['lastname'], $row['mail']);
-
 			if (!empty($row['color'])) $color = $row['color'];
 			else $color = Colors::get_random_color();
 
@@ -130,7 +124,8 @@ class Get
 				'id' => $row['id'],
 				'firstname' => $row['firstname'],
 				'lastname' => $row['lastname'],
-				'initials' => $initials,
+				'initials' => UsersUtils::initials($row['firstname'], $row['lastname'], $row['mail']),
+				'displayname' => UsersUtils::displayname($row['firstname'], $row['lastname'], $row['mail']),
 				'mail' => $row['mail'],
 				'mobile' => $row['mobile'],
 				'photo' => $row['photo'],
@@ -169,10 +164,6 @@ class Get
 
 		$result = $stmt->get_result();
 		while ($row = $result->fetch_assoc()) {
-
-			if (!empty($row['initials'])) $initials = $row['initials'];
-			else $initials = $this->create_initials($row['firstname'], $row['lastname'], $row['mail']);
-
 			if (!empty($row['color'])) $color = $row['color'];
 			else $color = Colors::get_random_color();
 
@@ -181,7 +172,8 @@ class Get
 				'customer' => $this->Companies->get_company_by_id($row['customer_id']),
 				'firstname' => $row['firstname'],
 				'lastname' => $row['lastname'],
-				'initials' => $initials,
+				'initials' => UsersUtils::initials($row['firstname'], $row['lastname'], $row['mail']),
+				'displayname' => UsersUtils::displayname($row['firstname'], $row['lastname'], $row['mail']),
 				'mail' => $row['mail'],
 				'mobile' => $row['mobile'],
 				'company_role' => $row['company_role'],
@@ -201,6 +193,10 @@ class Get
 
 		return $r;
 	}
+
+
+
+	
 
 
 
@@ -252,59 +248,6 @@ class Get
 		}
 
 		return $r;
-	}
-
-
-
-
-	/**
-	 * Create initials
-	 * 
-	 * Security: None (backend only)
-	 * 
-	 * @author Robert Andresen <ra@fosenikt.no>
-	 * 
-	 * @param 	String      $firstname    Firstname
-	 * @param 	String      $lastname     Lastname
-	 * @param 	String      $mail         Mail
-	 * @return 	String                    Initials
-	 */
-	public function create_initials($firstname, $lastname, $mail)
-	{
-		if (!empty($firstname) && !empty($lastname)) {
-			$f = substr($firstname, 0, 1);
-			$l = substr($lastname, 0, 1);
-			return strtoupper($f.$l);
-		}
-
-		if (!empty($firstname) && empty($lastname)) {
-			$f = substr($firstname, 0, 2);
-			return strtoupper($f);
-		}
-
-		if (empty($firstname) && !empty($lastname)) {
-			$l = substr($lastname, 0, 2);
-			return strtoupper($l);
-		}
-
-
-		if (!empty($mail)) {
-			list($user, $domain) = explode('@', $mail);
-
-			$split_username = explode('.', $user);
-
-			if (is_array($split_username) && count($split_username) >= 2) {
-				$f = substr($split_username[0], 0, 1);
-				$l = substr(end($split_username), 0, 1);
-				return strtoupper($f.$l);
-			}
-
-			else {
-				return strtoupper(substr($mail, 0, 2));
-			}
-		}
-
-		return 'XX';
 	}
 
 }

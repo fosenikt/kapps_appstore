@@ -43,18 +43,26 @@ class Delete
 	 */
 	public function delete($id)
 	{
-		
 		// Get application to check permission
 		$get_app = $this->Apps->get_app($id);
 		if ($get_app['edit_access'] != 1) {
 			return array('status' => 'error', 'message' => 'No access');
 		}
 
-		// Set status to set
-		$status = 'deleted';
-		
+		// Initialize SQL and parameters
+		if ($get_app['status'] == 'deleted') {
+			// SQL to delete the application completely
+			$sql = "DELETE FROM apps WHERE id=?";
+			$params = array("i", $id);
+		} else {
+			// SQL to update the status to deleted
+			$sql = "UPDATE apps SET updated_by=?, status=? WHERE id=?";
+			$status = 'deleted';
+			$params = array("isi", $this->thisUser['id'], $status, $id);
+		}
+
 		// Prepare statement
-		$stmt = $this->db->prepare("UPDATE apps SET updated_by=?, status=? WHERE id=?");
+		$stmt = $this->db->prepare($sql);
 		if ($stmt === false) {
 			error_log('Statement false');
 			trigger_error($this->db->error, E_USER_ERROR);
@@ -62,25 +70,23 @@ class Delete
 		}
 
 		// Bind parameters to query
-		$result = $stmt->bind_param("isi", $this->thisUser['id'], $status, $id);
-
-		if ( false===$result ) {
+		$result = $stmt->bind_param(...$params);
+		if ($result === false) {
 			error_log($stmt->error);
-		}
-
-		$result = $stmt->execute(); // Execute query
-
-
-		// Return status
-		if ($result) {
-			return array('status' => 'success');
-		}
-		
-		else {
 			return array('status' => 'error', 'error' => $stmt->error);
 		}
 
+		// Execute query
+		$result = $stmt->execute();
 		$stmt->close();
+
+		// Return status
+		if ($result) {
+			return array('status' => 'success', 'message' => $get_app['status'] == 'deleted' ? 'Application deleted completely' : 'Application status set to deleted');
+		} else {
+			return array('status' => 'error', 'error' => $stmt->error);
+		}
 	}
+
 
 }

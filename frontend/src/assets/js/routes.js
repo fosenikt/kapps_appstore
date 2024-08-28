@@ -60,9 +60,27 @@ page('/apps/share', (context, next) => {
 ----------------------------------------- */
 
 page('/organization/profile/:id', (ctx) => {
-	remote.rpc(config.api_url+'/company/get/'+ctx.params.id).then(response => {
+	remote.rpc(`${config.api_url}/company/get/${ctx.params.id}`).then(response => {
 		console.log('app', response);
 		page_switch('/organization/profile', `organization-profile-${ctx.params.id}`, response);
+	})
+
+	.catch((err) => {
+		notification.error('En feil oppstod under henting av applikasjon');
+		console.error(err);
+
+		// If token is expired
+		if (err.status == 401) {
+			localStorage.removeItem("user_token");
+			page('/user/login');
+		}
+	});
+});
+
+
+page('/organization/myapps/:id', (ctx) => {
+	remote.rpc(`${config.api_url}/company/get/${ctx.params.id}`).then(response => {
+		page_switch('/organization/myapps', `organization-myapps-${ctx.params.id}`, response);
 	})
 
 	.catch((err) => {
@@ -116,6 +134,23 @@ page('/user/me/edit', (context, next) => {
 	page_switch(context.canonicalPath);
 });
 
+
+page('/user/profile/:id', (ctx) => {
+	remote.rpc(`${config.api_url}/user/get/${ctx.params.id}`).then(response => {
+		page_switch('/user/profile', `user-profile-${ctx.params.id}`, response);
+	})
+
+	.catch((err) => {
+		notification.error('En feil oppstod under henting av applikasjon');
+		console.error(err);
+
+		// If token is expired
+		if (err.status == 401) {
+			localStorage.removeItem("user_token");
+			page('/user/login');
+		}
+	});
+});
 
 
 

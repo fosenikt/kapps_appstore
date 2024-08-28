@@ -81,18 +81,21 @@
 			</div>
 			<div style="margin-top:25px;">
 				<a href="/organization/profile/{{>customer.public_id}}">
-					> Se organisasjonens applikasjoner
+					> Publiserte applikasjoner
+				</a><br />
+				<a href="/organization/myapps/{{>customer.public_id}}">
+					> Utkast applikasjoner
 				</a>
 			</div>
 		</div>
 		
 		<div class="row">
-			<div class="col-md-6">
+			<div class="col-6">
 				<a class="btn btn-light" href="/user/me/edit">
 					<i class="fas fa-pencil-alt"></i> Rediger profil
 				</a>
 			</div>
-			<div class="col-md-6" style="text-align: right;">
+			<div class="col-6" style="text-align: right;">
 				<a class="btn btn-danger btn-signout" href="#">
 					<i class="fa-light fa-right-from-bracket"></i> Logg ut
 				</a>

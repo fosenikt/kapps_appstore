@@ -25,45 +25,51 @@
 		<div class="col-md-8">
 
 			<div class="box">
-				<div id="carouselExampleIndicators" class="carousel slide" data-bs-ride="carousel">
-					<!-- Carousel Indicators -->
-					<div class="carousel-indicators">
-						{{for images}}
-						<button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="{{:#index}}" class="{{:#index == 0 ? 'active' : ''}}" aria-current="{{:#index == 0 ? 'true' : ''}}" aria-label="Slide {{:#index + 1}}"></button>
-						{{/for}}
-					</div>
-
-					<!-- Carousel Inner -->
-					<div class="carousel-inner">
-						{{for images}}
-						<div class="carousel-item {{:#index == 0 ? 'active' : ''}}">
-							<a data-fancybox="gallery" href="{{>image}}">
-								<img src="{{>image}}" class="d-block w-100" alt="">
-							</a>
+				{{if images}}
+					<div id="carouselExampleIndicators" class="carousel slide" data-bs-ride="carousel">
+						<!-- Carousel Indicators -->
+						<div class="carousel-indicators">
+							{{for images}}
+							<button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="{{:#index}}" class="{{:#index == 0 ? 'active' : ''}}" aria-current="{{:#index == 0 ? 'true' : ''}}" aria-label="Slide {{:#index + 1}}"></button>
+							{{/for}}
 						</div>
-						{{/for}}
+
+						<!-- Carousel Inner -->
+						<div class="carousel-inner">
+							{{for images}}
+							<div class="carousel-item {{:#index == 0 ? 'active' : ''}}">
+								<a data-fancybox="gallery" href="{{>image}}">
+									<img src="{{>image}}" class="d-block w-100" alt="">
+								</a>
+							</div>
+							{{/for}}
+						</div>
+
+						<!-- Carousel Controls -->
+						<button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide="prev">
+							<span class="carousel-control-prev-icon-wrapper">
+								<span class="carousel-control-prev-icon" aria-hidden="true"></span>
+							</span>
+							<span class="visually-hidden">Previous</span>
+						</button>
+						<button class="carousel-control-next" type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide="next">
+							<span class="carousel-control-next-icon-wrapper">
+								<span class="carousel-control-next-icon" aria-hidden="true"></span>
+							</span>
+							<span class="visually-hidden">Next</span>
+						</button>
+
 					</div>
 
-					<!-- Carousel Controls -->
-					<button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide="prev">
-						<span class="carousel-control-prev-icon-wrapper">
-							<span class="carousel-control-prev-icon" aria-hidden="true"></span>
-						</span>
-						<span class="visually-hidden">Previous</span>
-					</button>
-					<button class="carousel-control-next" type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide="next">
-						<span class="carousel-control-next-icon-wrapper">
-							<span class="carousel-control-next-icon" aria-hidden="true"></span>
-						</span>
-						<span class="visually-hidden">Next</span>
-					</button>
-
-				</div>
-
-				{{if edit_access=='1'}}
-					<a href="">
-						<i class="fas fa-pencil-alt"></i> Rediger bilder
-					</a>
+					{{if edit_access=='1'}}
+						<a href="">
+							<i class="fas fa-pencil-alt"></i> Rediger bilder
+						</a>
+					{{/if}}
+				{{else}}
+					<div style="text-align: center;">
+						<i>Denne tjenesten har ingen skjermbilder...</i>
+					</div>
 				{{/if}}
 			</div>
 
@@ -89,7 +95,7 @@
 				{{/if}}
 
 				{{if edit_access=='1'}}
-					<a href="">
+					<a href="/apps/edit/{{>id}}">
 						<i class="fas fa-pencil-alt"></i> Rediger beskrivelse
 					</a>
 				{{/if}}
@@ -147,7 +153,7 @@
 					{{/if}}
 
 					{{if edit_access=='1'}}
-						<a href="">
+						<a href="/apps/edit/{{>id}}">
 							<i class="fas fa-pencil-alt"></i> Rediger Installasjonsveiledning
 						</a>
 					{{/if}}
@@ -189,23 +195,9 @@
 
 			{{if edit_access=='1'}}
 				<div>
-					<ul>
-						<li>
-							<a href="/apps/edit/{{>id}}">
-								<i class="fas fa-pencil-alt"></i> Rediger metadata
-							</a>
-						</li>
-						<li>
-							<a href="">
-								<i class="fas fa-pencil-alt"></i> Overfør eierskap
-							</a>
-						</li>
-						<li>
-							<a href="">
-								<i class="fas fa-pencil-alt"></i> Slett tjeneste
-							</a>
-						</li>
-					</ul>
+					<a class="btn btn-secondary" href="/apps/edit/{{>id}}">
+						<i class="fas fa-pencil-alt"></i> Rediger side
+					</a>
 				</div>
 			{{/if}}
 
