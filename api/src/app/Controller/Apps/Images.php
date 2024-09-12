@@ -70,11 +70,14 @@ class Images {
      *     summary="Set primary image for an app",
      *     description="Sets the primary image for a specific app. Requires user to be logged in with a bearer token.",
      *     security={{"bearerAuth": {}}},
-     *     @OA\RequestBody(
+	 *     @OA\RequestBody(
      *         required=true,
-     *         @OA\JsonContent(
-     *             @OA\Property(property="id", type="string", description="The ID of the app"),
-     *             @OA\Property(property="image", type="string", description="The URL of the image to set as primary")
+     *         @OA\MediaType(
+     *             mediaType="multipart/form-data",
+     *             @OA\Schema(
+     *                 @OA\Property(property="id", type="string", description="The ID of the app"),
+     *                 @OA\Property(property="image", type="string", description="The filename of the image")
+     *             )
      *         )
      *     ),
      *     @OA\Response(
@@ -108,11 +111,14 @@ class Images {
      *     summary="Delete an image from an app",
      *     description="Deletes a specific image from an app. Requires user to be logged in with a bearer token.",
      *     security={{"bearerAuth": {}}},
-     *     @OA\RequestBody(
+	 *     @OA\RequestBody(
      *         required=true,
-     *         @OA\JsonContent(
-     *             @OA\Property(property="app_id", type="string", description="The ID of the app"),
-     *             @OA\Property(property="filename", type="string", description="The filename of the image to delete")
+     *         @OA\MediaType(
+     *             mediaType="multipart/form-data",
+     *             @OA\Schema(
+     *                 @OA\Property(property="id", type="string", description="The ID of the app"),
+     *                 @OA\Property(property="image", type="string", description="The filename of the image")
+     *             )
      *         )
      *     ),
      *     @OA\Response(

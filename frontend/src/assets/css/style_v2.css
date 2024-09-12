@@ -161,6 +161,10 @@ h5 {
 }
 
 
+.box-sm { padding: 10px; border-radius: 12px; margin-bottom: 8px !important; }
+.box-bg { background-color: var(--box-bg-color-hover); border-color: var(--main-border-color); }
+.box-hover { background-color: var(--box-bg-color); color: var(--main-text-color); }
+.box-hover:hover { background-color: var(--box-bg-color-hover); border-color: var(--main-border-color); }
 
 
 .page-content-loader {
@@ -2151,7 +2155,6 @@ input[type=range]:focus::-ms-fill-upper {
 
 .file {
 	display: flex;
-	margin: 15px 0px;
 }
 .file .icon {
 	flex: 0 0 60px;
@@ -2165,6 +2168,11 @@ input[type=range]:focus::-ms-fill-upper {
 }
 .file .filedata .info {
 	font-size: 0.8rem;
+}
+.file .file-actions {
+	flex: 0 0 20px;
+	padding-top: 10px;
+	padding-right: 10px;
 }
 
 

@@ -23,6 +23,61 @@ class Update
 
 
 
+	/**
+	 * Update application description
+	 * Used for description (modal) form in frontend
+	 * 
+	 * Security: Logged in user must be in same company as application
+	 * 
+	 * @author Robert Andresen <ra@fosenikt.no>
+	 * 
+	 * @todo Fix the close statement, pointless to have it there after function is returned
+	 * 
+	 * @return 	Array    $p     Input parameters
+	 * @return 	Array    $r     Status array
+	 */
+	public function update_app($p)
+	{
+		// Set company ID from logged in user to use in query.
+		// Used to make sure other users cannot update this app
+		$company_id = $this->thisUser['customer']['public_id'];
+
+
+		// Prepare MySQL statement
+		$stmt = $this->db->prepare("UPDATE apps SET time_edited=?, updated_by=?, title=?, description=?, short_description=?, installation=?, license_id=?, tags=? WHERE id=? AND company_id=?");
+		if ($stmt === false) {
+			error_log('Statement false');
+			trigger_error($this->db->error, E_USER_ERROR);
+			return;
+		}
+
+		// Bind parameters to query
+		$result = $stmt->bind_param("sis", $p['description'], $p['id'], $company_id);
+
+		if ( false===$result ) {
+			error_log($stmt->error);
+		}
+
+		$result = $stmt->execute(); // Execute query
+
+
+		// If MySQL updated successfully, return status array
+		if ($result) {
+			$this->set_updated_by($p['id']); // Set updated by
+			return array('status' => 'success');
+		} 
+		
+		else {
+			return array('status' => 'error', 'error' => $stmt->error);
+		}
+
+		$stmt->close();
+	}
+
+
+
+
+
 
 
 	/**

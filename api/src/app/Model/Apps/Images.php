@@ -61,7 +61,7 @@ class Images
 
 		// Check if user has access to app this file is linked to
 		if (!$this->chk_app_access($p['app_id'])) {
-			return array('status' => 'error', 'message' => 'Access denied');
+			return array('status' => 'error', 'message' => 'Manglende tilgang til applikasjon. Forsøk eventuelt å logg ut og inn igjen.');
 		}
 
 
@@ -159,7 +159,19 @@ class Images
 				// Do the actuall upload
 				else {
 					$upload_files[$file['name']] = $upload->upload_file($target_base_dir, $file);
-					$num_file_uploaded++;
+
+					if ($upload_files[$file['name']]['status'] == 'success') {
+						$num_file_uploaded++;
+					}
+
+					else {
+						return $this->Event->error(array(
+							'title' => 'Image: Error uploading file',
+							'message' => "En feil oppstod ved opplasting av {$file['name']}. {$upload_files[$file['name']]['message']}",
+							'severity' => 'medium',
+							'event_data' => array('params' => $p, 'files' => $files),
+						));
+					}
 				}
 			}
 		}

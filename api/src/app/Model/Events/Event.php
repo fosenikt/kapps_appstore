@@ -187,7 +187,7 @@ class Event
 
 		$stmt->close();
 
-		return array('status' => 'error', 'title' => $title, 'message' => $message, 'error_id' => $error_id, 'msgid' => $error_id); // msgid for backwards-compability in frontend
+		return array('status' => 'error', 'title' => $title, 'message' => $message, 'error_id' => $error_id, 'msgid' => $error_id, 'status_code' => 500); // msgid for backwards-compability in frontend
 	}
 
 

@@ -81,10 +81,10 @@
 			</div>
 			<div style="margin-top:25px;">
 				<a href="/organization/profile/{{>customer.public_id}}">
-					> Publiserte applikasjoner
+					> Se organisasjonsprofil
 				</a><br />
 				<a href="/organization/myapps/{{>customer.public_id}}">
-					> Utkast applikasjoner
+					> Administrer applikasjoner/tjenester
 				</a>
 			</div>
 		</div>

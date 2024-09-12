@@ -38,7 +38,7 @@ class Upload
 
 		// Check for admin access to update company
 		if (!$this->Access->chk_customer_access($p['public_id'])) {
-			return array('status' => 'error', 'message' => 'Access denied');
+			return array('status' => 'error', 'message' => 'Manglende tilgang til organisasjon. Forsøk eventuelt å logg ut og inn igjen.');
 		}
 
 
@@ -207,6 +207,20 @@ class Upload
 			return $this->Event->error(array(
 				'title' => 'Upload: Target dir does not exist',
 				'message' => 'Target dir does not exist',
+				'severity' => 'high',
+				'event_data' => array('target' => $target, 'file' => $file),
+			));
+		}
+
+
+		// Check if target directory is writable
+		if (!is_writable($target)) {
+			$error = true;
+			$error_msg[] = 'Target directory is not writable';
+
+			return $this->Event->error(array(
+				'title' => 'Upload: Target directory is not writable',
+				'message' => 'Failed to write to target directory. Check permissions.',
 				'severity' => 'high',
 				'event_data' => array('target' => $target, 'file' => $file),
 			));
