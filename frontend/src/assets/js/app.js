@@ -62,26 +62,28 @@ let App = function() {
 	plugin.validate_login = function()
 	{
 		remote.rpc(config.api_url + '/user/me').then(response => {
+			console.log('validate_login', response);
 			// No response
 			if (response == null || response == undefined || response == 0 || response == false) {
-				console.log('No response from current logged in user');
-				localStorage.removeItem("user_data");
-				localStorage.removeItem("user_token");
-				window.location.replace(config.login_url + '?tokenRemove=1');
+				//console.log('No response from current logged in user');
+				//localStorage.removeItem("user_data");
+				//localStorage.removeItem("user_token");
+				//window.location.replace(config.login_url + '?tokenRemove=1');
+				document.getElementById('nav-login-button').innerHTML = '<i class="fal fa-right-to-bracket"></i>';
 			}
 
 			// Valid response
 			else {
 				localStorage.setItem("user_data", JSON.stringify(response));
 
-				document.getElementById('nav-loggin-btn').style.display = 'none';
-				document.getElementById('nav-user-circle').style.display = 'inline-block';
+				document.getElementById('nav-login-button').innerHTML = '<i class="fal fa-user"></i>';
+				//document.getElementById('nav-user-circle').style.display = 'inline-block';
 
-				if (response.initials != null) {
+				/* if (response.initials != null) {
 					document.getElementById('nav-user-circle').innerHTML = response.initials;
 				} else {
 					document.getElementById('nav-user-circle').innerHTML = '<i class="fal fa-user"></i>';
-				}
+				} */
 
 
 				if (response.admin == 1) {
@@ -92,10 +94,10 @@ let App = function() {
 
 			}
 		}).catch((err) => {
-			console.log('Request error for current logged in user');
-			console.log(err);
-			localStorage.removeItem("user_token");
-			window.location.replace(config.login_url + '?tokenRemove=1');
+			//console.log('Request error for current logged in user');
+			//console.log(err);
+			//localStorage.removeItem("user_token");
+			//window.location.replace(config.login_url + '?tokenRemove=1');
 		});
 	}
 

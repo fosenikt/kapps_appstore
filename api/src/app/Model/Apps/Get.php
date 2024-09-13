@@ -300,12 +300,7 @@ class Get
 	*/
 	private function output($data, $full_output=true)
 	{
-
-		error_log(json_encode($data));
-
 		$isAuthenticated = (new AuthUser())->isAuthenticated();
-
-		error_log(json_encode($this->thisUser));
 
 		$edit_access = 0;
 		if (isset($this->thisUser) && is_array($this->thisUser) && isset($this->thisUser['customer']['public_id'])) {
@@ -347,7 +342,6 @@ class Get
 
 
 		if (!$isAuthenticated || !$full_output) {
-			error_log('Output simple');
 			return array(
 				'id' => $data['id'],
 				'title' => $data['title'],
@@ -374,7 +368,6 @@ class Get
 		}
 
 		else {
-			error_log('Output full');
 			return array(
 				'id' => $data['id'],
 				'time_created' => $data['time_created'],

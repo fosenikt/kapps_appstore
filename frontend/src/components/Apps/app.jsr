@@ -60,12 +60,6 @@
 						</button>
 
 					</div>
-
-					{{if edit_access=='1'}}
-						<a href="">
-							<i class="fas fa-pencil-alt"></i> Rediger bilder
-						</a>
-					{{/if}}
 				{{else}}
 					<div style="text-align: center;">
 						<i>Denne tjenesten har ingen skjermbilder...</i>
@@ -93,12 +87,6 @@
 						</div>
 					</div>
 				{{/if}}
-
-				{{if edit_access=='1'}}
-					<a href="/apps/edit/{{>id}}">
-						<i class="fas fa-pencil-alt"></i> Rediger beskrivelse
-					</a>
-				{{/if}}
 			</div>
 
 			{{if files || edit_access=='1'}}
@@ -121,12 +109,6 @@
 								</div>
 							</div>
 						{{/for}}
-					{{/if}}
-
-					{{if edit_access=='1'}}
-						<a href="">
-							<i class="fas fa-pencil-alt"></i> Last opp filer
-						</a>
 					{{/if}}
 				</div>
 			{{/if}}
@@ -151,12 +133,6 @@
 							</div>
 						</div>
 					{{/if}}
-
-					{{if edit_access=='1'}}
-						<a href="/apps/edit/{{>id}}">
-							<i class="fas fa-pencil-alt"></i> Rediger Installasjonsveiledning
-						</a>
-					{{/if}}
 				</div>
 			{{/if}}
 
@@ -180,7 +156,11 @@
 					<i class="fa-regular fa-file-certificate"></i> Lisens
 				</div>
 				<div class="detail__value">
-					<a href="#">MIT License</a>
+					{{if license.title}}
+						{{>license.title}}
+					{{else}}
+						<i>Ikke oppgitt</i>
+					{{/if}}
 				</div>
 			</div>
 			<div class="detail__block">
@@ -188,8 +168,26 @@
 					<i class="fa-solid fa-hashtag"></i> Tags
 				</div>
 				<div class="detail__value">
-					<span class="badge rounded-pill text-bg-primary">kundeservice</span>
-					<span class="badge rounded-pill text-bg-primary">ticket</span>
+					{{if tags.array && tags.array.length}}
+						{{for tags.array}}
+							<span class="badge rounded-pill text-bg-primary">{{:#data}}</span>
+						{{/for}}
+					{{else}}
+						<i>Ikke oppgitt</i>
+					{{/if}}
+				</div>
+			</div>
+
+			<div class="detail__block">
+				<div class="detail__title">
+					<i class="fa-solid fa-link"></i> Kildekode
+				</div>
+				<div class="detail__value">
+					{{if link_source_code}}
+						<a href="{{>link_source_code}}">{{>link_source_code}}</a>
+					{{else}}
+						<i>Ikke oppgitt</i>
+					{{/if}}
 				</div>
 			</div>
 

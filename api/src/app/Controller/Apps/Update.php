@@ -14,6 +14,53 @@ class Update {
         }
     }
 
+
+
+	/**
+     * @OA\Post(
+     *     path="/app/update/all",
+     *     tags={"Apps"},
+     *     summary="Update app page",
+     *     description="Updates most fields for the app. Requires user to be logged in with a bearer token.",
+     *     security={{"bearerAuth": {}}},
+     *     @OA\RequestBody(
+     *         required=true,
+     *         @OA\MediaType(
+     *             mediaType="multipart/form-data",
+     *             @OA\Schema(
+     *                 @OA\Property(property="id", type="string", description="The ID of the app to update"),
+     *                 @OA\Property(property="title", type="string", description="Title"),
+     *                 @OA\Property(property="description", type="string", description="Long the description of the app"),
+     *                 @OA\Property(property="short_description", type="string", description="Short description (e.g. one line/sentence)"),
+     *                 @OA\Property(property="installation", type="string", description="Installation description"),
+     *                 @OA\Property(property="license_id", type="int", description="License ID"),
+     *                 @OA\Property(property="tags", type="string", description="Comma seperated tags (e.g. tag1, tag2, tag3)")
+     *             )
+     *         )
+     *     ),
+     *     @OA\Response(
+     *         response=200,
+     *         description="App description updated successfully",
+     *         @OA\JsonContent(type="object", @OA\Property(property="status", type="string", example="success"))
+     *     ),
+     *     @OA\Response(
+     *         response=403,
+     *         description="Access denied"
+     *     ),
+     *     @OA\Response(
+     *         response=404,
+     *         description="App not found"
+     *     )
+     * )
+     */
+	public function update_app()
+	{		
+		$obj = new \Kapps\Model\Apps\Update();
+		return $obj->update_app($_POST);
+	}
+
+
+
 	/**
      * @OA\Post(
      *     path="/app/update/desc",

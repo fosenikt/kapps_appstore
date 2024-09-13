@@ -5,7 +5,7 @@
 <link href="https://cdnjs.cloudflare.com/ajax/libs/quill/2.0.0-dev.3/quill.snow.min.css" rel="stylesheet">
 <link href="https://unpkg.com/quill-table-ui@1.0.5/dist/index.css" rel="stylesheet">
 
-<form method="POST">
+<form id="form-app-edit-{{>id}}" method="POST">
 	<section class="section__page section_app">
 
 		<h2 class="input-editable" style="margin-bottom:5px;" data-field="title" contenteditable="true">{{>title}}</h2>
@@ -29,7 +29,7 @@
 				<div class="box">
 					<h3>Bilder</h3>
 					<div style="margin-bottom:15px;">
-						<button type="button" class="btn btn-light" data-bs-toggle="modal" data-bs-target="#modal-app-edit-img-upload-{{>id}}">
+						<button type="button" class="btn btn-light" data-bs-toggle="modal" data-bs-target="#modal-app-edit-upload-{{>id}}" data-bs-type="images">
 							<i class="fas fa-upload"></i> Last opp
 						</button>
 						<button type="button" class="btn btn-light" onclick="app_edit_images_refresh();">
@@ -99,7 +99,7 @@
 					</div>
 
 					<div>
-						<button type="button" class="btn btn-light" data-bs-toggle="modal" data-bs-target="#modal-app-edit-file-upload-{{>id}}">
+						<button type="button" class="btn btn-light" data-bs-toggle="modal" data-bs-target="#modal-app-edit-upload-{{>id}}" data-bs-type="files">
 							<i class="fas fa-upload"></i> Last opp
 						</button>
 						<button type="button" class="btn btn-light" onclick="app_edit_files_refresh();">
@@ -140,7 +140,7 @@
 					</div>
 					<div class="detail__value">
 						<div class="mb-3">
-							<select class="form-select" name="license" id="selAppEditLicense" aria-label="Select license"></select>
+							<select class="form-select" name="license_id" id="selAppEditLicense" aria-label="Select license"></select>
 						</div>
 					</div>
 					<div style="margin: 5px 2px;" class="muted help">
@@ -200,60 +200,27 @@
 </form>
 
 
-
-
-<!-- Image upload -->
-<div class="modal fade" id="modal-app-edit-img-upload-{{>id}}" tabindex="-1" aria-labelledby="modal-app-edit-img-upload-{{>id}}-label" aria-hidden="true">
+<!-- Felles Upload Modal -->
+<div class="modal fade" id="modal-app-edit-upload-{{>id}}" tabindex="-1" aria-labelledby="modal-app-edit-upload-{{>id}}-label" aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
-                <h1 class="modal-title fs-5" id="modal-app-edit-img-upload-{{>id}}-label">Last opp bilder</h1>
+                <h1 class="modal-title fs-5" id="modal-app-edit-upload-{{>id}}-label">Last opp</h1>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
-                <!-- Image upload box -->
-                <div class="upload-box" id="upload-box-{{>id}}">
-                    <input type="file" id="file-input-{{>id}}" multiple accept="image/*" hidden>
-                    <div class="upload-area" id="upload-area-{{>id}}">
-                        <i class="fa fa-cloud-upload-alt fa-3x"></i>
-                        <p>Dra og slipp bilder her, eller klikk for å velge</p>
-                    </div>
-                </div>
-				<!-- Preview area -->
-                <div id="file-preview-{{>id}}" class="file-preview"></div>
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                <button type="button" class="btn btn-primary" id="upload-submit-{{>id}}">Last opp</button>
-            </div>
-        </div>
-    </div>
-</div>
-
-
-<!-- File upload -->
-<div class="modal fade" id="modal-app-edit-file-upload-{{>id}}" tabindex="-1" aria-labelledby="modal-app-edit-file-upload-{{>id}}-label" aria-hidden="true">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h1 class="modal-title fs-5" id="modal-app-edit-file-upload-{{>id}}-label">Last opp filer</h1>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>
-            <div class="modal-body">
-                <!-- File upload box -->
-                <div class="upload-box" id="upload-box-file-{{>id}}">
-                    <input type="file" id="file-input-file-{{>id}}" multiple accept="*/*" hidden>
-                    <div class="upload-area" id="upload-area-file-{{>id}}">
+                <div class="upload-box" id="upload-box">
+                    <input type="file" id="file-input" multiple hidden>
+                    <div class="upload-area" id="upload-area">
                         <i class="fa fa-cloud-upload-alt fa-3x"></i>
                         <p>Dra og slipp filer her, eller klikk for å velge</p>
                     </div>
                 </div>
-                <!-- Preview area -->
-                <div id="file-preview-file-{{>id}}" class="file-preview"></div>
+                <div id="file-preview" class="file-preview"></div>
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                <button type="button" class="btn btn-primary" id="upload-submit-file-{{>id}}">Last opp</button>
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Lukk</button>
+                <button type="button" class="btn btn-primary" id="upload-submit">Last opp</button>
             </div>
         </div>
     </div>
@@ -346,75 +313,157 @@
 		font-size: 14px;
 		flex: 1;
 	}
-
-	.upload-box {
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        width: 100%;
-        height: 200px;
-        border: 2px dashed var(--main-border-color);
-        border-radius: 10px;
-        cursor: pointer;
-        position: relative;
-        text-align: center;
-        background-color: var(--box-bg-color);
-		color: var(--main-text-color);
-    }
-
-    .upload-area {
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        justify-content: center;
-        height: 100%;
-    }
-
-    .upload-area p {
-        margin: 0;
-    }
-
-    .upload-box:hover {
-        background-color: var(--box-bg-color-hover);
-        border-color: var(--main-border-color);
-    }
-
-    .file-preview {
-        margin-top: 15px;
-        display: flex;
-        flex-wrap: wrap;
-        gap: 10px;
-    }
-
-    .file-preview-item {
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
-        background-color: var(--box-bg-color-hover);
-        padding: 5px 10px;
-        border: 1px solid var(--secondary-border-color);
-        border-radius: 5px;
-        width: 100%;
-    }
-
-    .file-preview-item span {
-        flex: 1 1 auto;
-        margin-right: 10px;
-        overflow: hidden;
-        text-overflow: ellipsis;
-        white-space: nowrap;
-    }
-
-    .remove-file {
-		flex: 0 0 10px !important;
-        cursor: pointer;
-        color: #d9534f;
-        font-weight: bold;
-    }
 </style>
 
 
 <script>
+	/**
+	 * Tags
+	 */
+	var tagContainer = document.getElementById('tag-container');
+	var tagInput = document.getElementById('tag-input');
+
+	if (tagContainer && tagInput) {
+		// Håndterer å legge til en ny tag
+		tagInput.addEventListener('keypress', function (e) {
+			if (e.key === 'Enter') {
+				e.preventDefault(); // Hindre skjema submit
+				e.stopPropagation(); // Hindre videre bubbling av eventet
+				addTag(tagInput.value);
+				tagInput.value = '';
+			}
+		});
+
+		// Håndterer fjerning av tags ved klikk på kryssikonet
+		tagContainer.addEventListener('click', function(e) {
+			console.log("Klikk registrert på element:", e.target);
+
+			if (e.target.closest('svg') || e.target.closest('path') || e.target.classList.contains('fa-times')) {
+				console.log("Kryssikon klikket");
+				const badge = e.target.closest('.badge');
+				if (badge) {
+					console.log("Badge funnet, fjerner:", badge);
+					badge.remove();
+				} else {
+					console.log("Badge ikke funnet");
+				}
+			} else {
+				console.log("Klikket element er ikke et kryssikon");
+			}
+		});
+
+		// Funksjon for å legge til en ny tag
+		function addTag(tag) {
+			if (tag.trim() === '') return;
+			const tagElement = document.createElement('span');
+			tagElement.classList.add('badge', 'rounded-pill', 'text-bg-primary');
+			tagElement.textContent = tag.trim();
+
+			const removeIcon = document.createElement('i');
+			removeIcon.classList.add('fas', 'fa-times');
+			removeIcon.style.marginLeft = '5px';
+			removeIcon.style.cursor = 'pointer';
+
+			tagElement.appendChild(removeIcon);
+			tagContainer.appendChild(tagElement); // Legger til tag-elementet på slutten av tagContainer
+
+			console.log("Ny tag lagt til:", tagElement);
+		}
+
+	} else {
+		console.error("Elementene 'tag-container' eller 'tag-input' ble ikke funnet i dokumentet.");
+	}
+
+
+
+
+	/**
+	 * Form submit
+	 */		
+	addEvent(document, 'submit', 'form#form-app-edit-{{>id}}', function(e) {
+		event.preventDefault(); // Forhindre standard submit-adferd
+		console.log('Submit app');
+
+		var quillDesc = new Quill('#textAppEditDesc'); // Initialiser Quill editor for beskrivelse
+		var quillInst = new Quill('#textAppEditInst'); // Initialiser Quill editor for installasjonsveiledning
+
+		// Opprett FormData objekt
+		var formData = new FormData();
+		formData.append('id', '{{>id}}'); // Legg til App ID
+		
+		// Hent data fra alle elementer med class 'input-editable'
+		document.querySelectorAll('.input-editable').forEach(element => {
+		var fieldName = element.getAttribute('data-field'); // Hent feltnavn fra data-attribute
+		var fieldValue = element.innerText.trim(); // Hent tekstinnhold og trim whitespace
+		if (fieldName && fieldValue) {
+			formData.append(fieldName, fieldValue); // Legg til data i FormData
+		}
+		});
+
+		// Hent innhold fra Quill editor for beskrivelse
+		var descriptionContent = quillDesc.root.innerHTML;
+		formData.append('description', descriptionContent);
+
+		// Hent innhold fra Quill editor for installasjonsveiledning
+		var instructionContent = quillInst.root.innerHTML;
+		formData.append('installation', instructionContent);
+
+
+		formData.append('license_id', document.getElementById('selAppEditLicense').value);
+		formData.append('link_source_code', document.getElementById('link_source_code').value);
+
+		// Hent tags fra tag-container
+		var tags = Array.from(document.querySelectorAll('#tag-container .badge')).map(tag => tag.textContent.trim());
+		if (tags.length > 0) {
+			formData.append('tags', tags.join(','));
+		}
+
+		for (var pair of formData.entries()) {
+			console.log(pair[0]+ ', ' + pair[1]); 
+		}
+
+		// Send data til backend via rpc_post
+		
+		remote.rpc_post(`${config.api_url}/app/update/all`, formData)
+			.then(response => {
+				console.log('response', response);
+				if (response.status === 'success') {
+					notification.success('Applikasjon / Tjeneste ble oppdatert!');
+					window.location.replace("/apps/app/{{>id}}");
+					setTimeout(() => {
+						window.location.reload();
+					}, 500);
+				} else {
+					notification.error('Kunne ikke lagre tjeneste!');
+				}
+			})
+			.catch(err => {
+				console.error('Feil ved sending:', err);
+				if (err.status == 400) {
+					if (err.response.message != null) {
+						notification.error(`En feil oppstod!<br />${err.response.message}`);
+					} else {
+						notification.error('En feil oppstod!<br />400 Bad request');
+					}
+				}
+
+				else if (err.status == 500) {
+					notification.error('En feil oppstod!<br />500 Internal server error');
+				}
+
+				else {
+					notification.error('En feil oppstod!<br />Ukjent feil. Sjekk at alle felt er riktig valgt og utfylt.');
+				}
+			});
+		
+	});
+
+
+
+
+	/**
+	 * Quill editor
+	 */		
 	var toolbarOptions = [
 		//[{ 'font': [] }],
 		[{ 'header': [4, false] }],
@@ -446,67 +495,15 @@
 				toolbar: toolbarOptions
 			}
 		});
-
-
-
-		const tagContainer = document.getElementById('tag-container');
-		const tagInput = document.getElementById('tag-input');
-
-		if (tagContainer && tagInput) {
-			// Håndterer å legge til en ny tag
-			tagInput.addEventListener('keypress', function(e) {
-				if (e.key === 'Enter') {
-					e.preventDefault();
-					addTag(tagInput.value);
-					tagInput.value = '';
-				}
-			});
-
-			// Håndterer fjerning av tags ved klikk på kryssikonet
-			tagContainer.addEventListener('click', function(e) {
-				console.log("Klikk registrert på element:", e.target);
-
-				if (e.target.closest('svg') || e.target.closest('path') || e.target.classList.contains('fa-times')) {
-					console.log("Kryssikon klikket");
-					const badge = e.target.closest('.badge');
-					if (badge) {
-						console.log("Badge funnet, fjerner:", badge);
-						badge.remove();
-					} else {
-						console.log("Badge ikke funnet");
-					}
-				} else {
-					console.log("Klikket element er ikke et kryssikon");
-				}
-			});
-
-			// Funksjon for å legge til en ny tag
-			function addTag(tag) {
-				if (tag.trim() === '') return;
-				const tagElement = document.createElement('span');
-				tagElement.classList.add('badge', 'rounded-pill', 'text-bg-primary');
-				tagElement.textContent = tag.trim();
-
-				const removeIcon = document.createElement('i');
-				removeIcon.classList.add('fas', 'fa-times');
-				removeIcon.style.marginLeft = '5px';
-				removeIcon.style.cursor = 'pointer';
-
-				tagElement.appendChild(removeIcon);
-				tagContainer.appendChild(tagElement); // Legger til tag-elementet på slutten av tagContainer
-
-				console.log("Ny tag lagt til:", tagElement);
-			}
-
-		} else {
-			console.error("Elementene 'tag-container' eller 'tag-input' ble ikke funnet i dokumentet.");
-		}
-
-
 	});
 
 
 
+
+
+	/**
+	 * License select
+	 */	
 	var licenseSelect = document.getElementById('selAppEditLicense');
     var selectedLicenseId = "{{>license.id}}".trim();  // Trim for å fjerne eventuelle ekstra mellomrom
 
@@ -540,362 +537,216 @@
 
 
 
-	function app_edit_images_refresh() {
-		let img_container = document.getElementById('app-edit-images-container-{{>id}}');
 
-		remote.rpc(`${config.api_url}/app/get/{{>id}}`)
-			.then(response => {
-				console.log('app images', response.images);
-				img_container.innerHTML = ''; // Fjern eksisterende innhold i containeren
+	/**
+	 * Funksjon for å oppdatere enten bilder eller filer.
+	 * @param {string} type - 'images' eller 'files' for å bestemme hva som skal hentes og vises.
+	 * @param {string} containerId - ID for containeren der elementene skal vises.
+	 */
+	function app_edit_refresh_uploads(type, containerId) {
+    let container = document.getElementById(containerId);
 
-				response.images.forEach(image => {
-					// Lag HTML-strukturen ved hjelp av template literals
-					const thumbHTML = `
-						<div class="thumb" style="background-image: url('${image.thumb}');">
-							<div class="thumb-footer">
-								<div class="left">
-									${image.primary === 1 ? `
-										<i class="fas fa-check" style="color:green;"></i> Hovedbilde
-									` : `
-										<a href="#" onclick="app_edit_img_set_primary('${image.filename}')">Sett hovedbilde</a>
-									`}
-								</div>
-								<div class="right">
-									<a href="#" data-bs-toggle="modal" data-bs-target="#modal-app-edit-delete-confirmation" data-bs-id="${image.filename}" data-bs-type="image">
-										<i class="fas fa-trash-alt" style="color:rgb(255, 122, 122);"></i>
-									</a>
-								</div>
-							</div>
-						</div>
-					`;
+    remote.rpc(`${config.api_url}/app/get/{{>id}}`)
+        .then(response => {
+            container.innerHTML = '';
 
-					// Sett inn HTML i containeren
-					img_container.insertAdjacentHTML('beforeend', thumbHTML);
-				});
-			})
-			.catch((err) => {
-				notification.error('En feil oppstod under henting av bilder');
-				console.error(err);
-			});
+            if (type === 'images') {
+                response.images.forEach(image => {
+                    const thumbHTML = `
+                        <div class="thumb" style="background-image: url('${image.thumb}');">
+                            <div class="thumb-footer">
+                                <div class="left">
+                                    ${image.primary === 1 ? `
+                                        <i class="fas fa-check" style="color:green;"></i> Hovedbilde
+                                    ` : `
+                                        <a href="#" onclick="app_edit_img_set_primary('${image.filename}')">Sett hovedbilde</a>
+                                    `}
+                                </div>
+                                <div class="right">
+                                    <a href="#" data-bs-toggle="modal" data-bs-target="#modal-app-edit-delete-confirmation" data-bs-id="${image.filename}" data-bs-type="image">
+                                        <i class="fas fa-trash-alt" style="color:rgb(255, 122, 122);"></i>
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    `;
+                    container.insertAdjacentHTML('beforeend', thumbHTML);
+                });
+            } else if (type === 'files') {
+                response.files.forEach(file => {
+                    const fileHTML = `
+                        <div class="file box box-sm box-bg">
+                            <div class="icon">
+                                ${file.icon}
+                            </div>
+                            <div class="filedata">
+                                <div class="title">
+                                    <a href="${file.path}" target="_blank">${file.filename}</a>
+                                </div>
+                                <div class="info">${file.size.readable} &middot; ${file.time_uploaded}</div>
+                            </div>
+                            <div class="file-actions">
+                                <a href="#" data-bs-toggle="modal" data-bs-target="#modal-app-edit-delete-confirmation" data-bs-id="${file.id}" data-bs-type="file">
+                                    <i class="fas fa-trash-alt" style="color:rgb(255, 122, 122);"></i>
+                                </a>
+                            </div>
+                        </div>
+                    `;
+                    container.insertAdjacentHTML('beforeend', fileHTML);
+                });
+            }
+        })
+        .catch((err) => {
+            notification.error(`En feil oppstod under henting av ${type}`);
+            console.error(err);
+        });
 	}
 
 
 
 
-	function app_edit_files_refresh() {
-		let file_container = document.getElementById('app-edit-files-container-{{>id}}');
 
-		remote.rpc(`${config.api_url}/app/get/{{>id}}`)
+
+	/**
+	 * Upload images and files
+	 */	
+	var uploadModal = document.getElementById('modal-app-edit-upload-{{>id}}');
+	var fileInput = document.getElementById('file-input');
+	var uploadBox = document.getElementById('upload-box');
+	var uploadArea = document.getElementById('upload-area');
+	var filePreview = document.getElementById('file-preview');
+	var uploadSubmit = document.getElementById('upload-submit');
+	var upload_type = '';
+	var selectedFiles = [];
+	var upload_endpoint = '';
+
+	// Håndter modal visning og sette endepunkt og modal tittel
+	uploadModal.addEventListener('show.bs.modal', function (event) {
+		const button = event.relatedTarget;
+		upload_type = button.getAttribute('data-bs-type');
+
+		if (upload_type == 'files') upload_endpoint = '/app/files/upload';
+		else if (upload_type == 'images') upload_endpoint = '/app/images/upload';
+
+		// Oppdater modal tittel
+		const modalTitle = uploadModal.querySelector('.modal-title');
+		modalTitle.textContent = `Last opp ${upload_type === 'images' ? 'bilder' : 'filer'}`;
+
+		// Oppdater input aksepterte filtyper basert på valgt opplasting
+		fileInput.setAttribute('accept', upload_type === 'images' ? 'image/*' : '*/*');
+	});
+
+	// Håndterer klikk for å åpne filinput
+	uploadBox.addEventListener('click', () => {
+		fileInput.click();
+	});
+
+	// Håndterer filendring (filer valgt av bruker)
+	fileInput.addEventListener('change', (e) => {
+		handleFiles(e.target.files);
+	});
+
+	// Drag and drop funksjonalitet
+	uploadBox.addEventListener('dragover', (e) => {
+		e.preventDefault();
+		uploadBox.classList.add('hover');
+	});
+
+	uploadBox.addEventListener('dragleave', () => {
+		uploadBox.classList.remove('hover');
+	});
+
+	uploadBox.addEventListener('drop', (e) => {
+		e.preventDefault();
+		uploadBox.classList.remove('hover');
+		handleFiles(e.dataTransfer.files);
+	});
+
+	// Håndterer opplastning
+	uploadSubmit.addEventListener('click', () => {
+		if (selectedFiles.length === 0) {
+			alert('Ingen filer valgt for opplasting.');
+			return;
+		}
+
+		const formData = new FormData();
+		formData.append('app_id', '{{>id}}');
+		for (let i = 0; i < selectedFiles.length; i++) {
+			formData.append('files[]', selectedFiles[i]);
+			formData.append('images[]', selectedFiles[i]);
+		}
+
+		// Send filer til valgt endepunkt
+		remote.rpc_post(`${config.api_url}${upload_endpoint}`, formData)
 			.then(response => {
-				console.log('app files', response);
-				file_container.innerHTML = ''; // Fjern eksisterende innhold i containeren
-
-				response.files.forEach(file => {
-					// Lag HTML-strukturen ved hjelp av template literals
-					const fileHTML = `
-						<div class="file box box-sm box-bg">
-							<div class="icon">
-								${file.icon}
-							</div>
-							<div class="filedata">
-								<div class="title">
-									<a href="${file.path}" target="_blank">${file.filename}</a>
-								</div>
-								<div class="info">${file.size.readable} &middot; ${file.time_uploaded}</div>
-							</div>
-							<div class="file-actions">
-								<a href="#" data-bs-toggle="modal" data-bs-target="#modal-app-edit-delete-confirmation" data-bs-id="${file.id}" data-bs-type="file">
-									<i class="fas fa-trash-alt" style="color:rgb(255, 122, 122);"></i>
-								</a>
-							</div>
-						</div>
-					`;
-
-					// Sett inn HTML i containeren
-					file_container.insertAdjacentHTML('beforeend', fileHTML);
-				});
+				console.log('Upload response:', response);
+				notification.success('Filer lastet opp vellykket.');
+				selectedFiles = []; // Cleanup array with files
+				updatePreview(); // Remove file preview in modal
+				
+				// Refresh content in page
+				if (upload_type == 'files') {
+					app_edit_refresh_uploads('files', 'app-edit-files-container-{{>id}}');
+				} else {
+					app_edit_refresh_uploads('images', 'app-edit-images-container-{{>id}}');
+				}
 			})
-			.catch((err) => {
-				notification.error('En feil oppstod under henting av filer');
-				console.error(err);
+			.catch(error => {
+				console.error('Upload error:', error);
+				notification.error(`Det oppstod en feil ved opplasting.<br /><br />${error.response.message}`);
 			});
+	});
+
+	// Legger filer til listen og viser forhåndsvisning
+	function handleFiles(files) {
+		selectedFiles = [...selectedFiles, ...files];
+		updatePreview();
 	}
 
+	// Oppdater forhåndsvisning av valgte filer
+	function updatePreview() {
+		filePreview.innerHTML = '';
+		selectedFiles.forEach((file, index) => {
+			const fileItem = document.createElement('div');
+			fileItem.className = 'file-preview-item';
+			fileItem.innerHTML = `
+				<span>${file.name}</span>
+				<span class="remove-file" data-index="${index}">&times;</span>
+			`;
 
+			fileItem.querySelector('.remove-file').addEventListener('click', (e) => {
+				const idx = parseInt(e.target.getAttribute('data-index'));
+				removeFileFromList(idx);
+			});
+
+			filePreview.appendChild(fileItem);
+		});
+	}
+
+	// Fjern filer fra listen
+	function removeFileFromList(index) {
+		selectedFiles.splice(index, 1);
+		updatePreview();
+	}
 
 
 	
 
 
-
-
-
-	document.addEventListener('DOMContentLoaded', function () {
-        const uploadBox = document.getElementById('upload-box-{{>id}}');
-        const fileInput = document.getElementById('file-input-{{>id}}');
-        const uploadArea = document.getElementById('upload-area-{{>id}}');
-        const uploadSubmit = document.getElementById('upload-submit-{{>id}}');
-        const filePreview = document.getElementById('file-preview-{{>id}}');
-        let selectedFiles = [];
-
-        // Handle click to open file input
-        uploadBox.addEventListener('click', () => {
-            fileInput.click();
-        });
-
-        // Handle file input change
-        fileInput.addEventListener('change', (e) => {
-            handleFiles(e.target.files);
-        });
-
-        // Drag and drop functionality
-        uploadBox.addEventListener('dragover', (e) => {
-            e.preventDefault();
-            uploadBox.classList.add('hover');
-        });
-
-        uploadBox.addEventListener('dragleave', () => {
-            uploadBox.classList.remove('hover');
-        });
-
-        uploadBox.addEventListener('drop', (e) => {
-            e.preventDefault();
-            uploadBox.classList.remove('hover');
-            handleFiles(e.dataTransfer.files);
-        });
-
-        function handleFiles(files) {
-            for (let i = 0; i < files.length; i++) {
-                addFileToList(files[i]);
-            }
-        }
-
-        function addFileToList(file) {
-            selectedFiles.push(file);
-
-            const fileItem = document.createElement('div');
-            fileItem.className = 'file-preview-item';
-            fileItem.innerHTML = `
-                <span>${file.name}</span>
-                <span class="remove-file" data-index="${selectedFiles.length - 1}">&times;</span>
-            `;
-
-            fileItem.querySelector('.remove-file').addEventListener('click', (e) => {
-                const index = parseInt(e.target.getAttribute('data-index'));
-                removeFileFromList(index);
-            });
-
-            filePreview.appendChild(fileItem);
-        }
-
-        function removeFileFromList(index) {
-            selectedFiles.splice(index, 1);
-            updatePreview();
-        }
-
-        function updatePreview() {
-            filePreview.innerHTML = '';
-            selectedFiles.forEach((file, index) => {
-                const fileItem = document.createElement('div');
-                fileItem.className = 'file-preview-item';
-                fileItem.innerHTML = `
-                    <span>${file.name}</span>
-                    <span class="remove-file" data-index="${index}">&times;</span>
-                `;
-
-                fileItem.querySelector('.remove-file').addEventListener('click', (e) => {
-                    const idx = parseInt(e.target.getAttribute('data-index'));
-                    removeFileFromList(idx);
-                });
-
-                filePreview.appendChild(fileItem);
-            });
-        }
-
-        // Handle submit button click
-        uploadSubmit.addEventListener('click', () => {
-            if (selectedFiles.length === 0) {
-                alert('Ingen filer valgt for opplasting.');
-                return;
-            }
-
-            const formData = new FormData();
-            formData.append('app_id', '{{>id}}'); // Replace with the actual app ID or dynamically set it
-            for (let i = 0; i < selectedFiles.length; i++) {
-                formData.append('images[]', selectedFiles[i]);
-            }
-
-            // Use the existing RPC function to post the form data
-            remote.rpc_post(`${config.api_url}/app/images/upload`, formData)
-                .then(response => {
-                    console.log('Upload response:', response);
-                    notification.success('Bilder lastet opp vellykket.');
-                    selectedFiles = []; // Clear selected files after successful upload
-                    updatePreview(); // Clear the preview area
-					app_edit_images_refresh(); // Refresh images in edit-page
-                })
-                .catch(error => {
-                    console.error('Upload error:', error);
-                    notification.error(`Det oppstod!<br /><br />${error.response.message}`);
-                });
-        });
-    });
-
-
-
-
-	document.addEventListener('DOMContentLoaded', function () {
-		const uploadBoxFile = document.getElementById('upload-box-file-{{>id}}');
-		const fileInputFile = document.getElementById('file-input-file-{{>id}}');
-		const uploadAreaFile = document.getElementById('upload-area-file-{{>id}}');
-		const uploadSubmitFile = document.getElementById('upload-submit-file-{{>id}}');
-		const filePreviewFile = document.getElementById('file-preview-file-{{>id}}');
-		let selectedFilesFile = [];
-
-		// Handle click to open file input
-		uploadBoxFile.addEventListener('click', () => {
-			fileInputFile.click();
-		});
-
-		// Handle file input change
-		fileInputFile.addEventListener('change', (e) => {
-			handleFilesFile(e.target.files);
-		});
-
-		// Drag and drop functionality
-		uploadBoxFile.addEventListener('dragover', (e) => {
-			e.preventDefault();
-			uploadBoxFile.classList.add('hover');
-		});
-
-		uploadBoxFile.addEventListener('dragleave', () => {
-			uploadBoxFile.classList.remove('hover');
-		});
-
-		uploadBoxFile.addEventListener('drop', (e) => {
-			e.preventDefault();
-			uploadBoxFile.classList.remove('hover');
-			handleFilesFile(e.dataTransfer.files);
-		});
-
-		function handleFilesFile(files) {
-			for (let i = 0; i < files.length; i++) {
-				addFileToListFile(files[i]);
-			}
-		}
-
-		function addFileToListFile(file) {
-			selectedFilesFile.push(file);
-
-			const fileItem = document.createElement('div');
-			fileItem.className = 'file-preview-item';
-			fileItem.innerHTML = `
-				<span>${file.name}</span>
-				<span class="remove-file" data-index="${selectedFilesFile.length - 1}">&times;</span>
-			`;
-
-			fileItem.querySelector('.remove-file').addEventListener('click', (e) => {
-				const index = parseInt(e.target.getAttribute('data-index'));
-				removeFileFromListFile(index);
-			});
-
-			filePreviewFile.appendChild(fileItem);
-		}
-
-		function removeFileFromListFile(index) {
-			selectedFilesFile.splice(index, 1);
-			updatePreviewFile();
-		}
-
-		function updatePreviewFile() {
-			filePreviewFile.innerHTML = '';
-			selectedFilesFile.forEach((file, index) => {
-				const fileItem = document.createElement('div');
-				fileItem.className = 'file-preview-item';
-				fileItem.innerHTML = `
-					<span>${file.name}</span>
-					<span class="remove-file" data-index="${index}">&times;</span>
-				`;
-
-				fileItem.querySelector('.remove-file').addEventListener('click', (e) => {
-					const idx = parseInt(e.target.getAttribute('data-index'));
-					removeFileFromListFile(idx);
-				});
-
-				filePreviewFile.appendChild(fileItem);
-			});
-		}
-
-		// Handle submit button click
-		uploadSubmitFile.addEventListener('click', () => {
-			if (selectedFilesFile.length === 0) {
-				alert('Ingen filer valgt for opplasting.');
-				return;
-			}
-
-			const formData = new FormData();
-			formData.append('app_id', '{{>id}}'); // Replace with the actual app ID or dynamically set it
-			for (let i = 0; i < selectedFilesFile.length; i++) {
-				formData.append('files[]', selectedFilesFile[i]);
-			}
-
-			// Use the existing RPC function to post the form data
-			remote.rpc_post(`${config.api_url}/app/files/upload`, formData)
-				.then(response => {
-					console.log('Upload response:', response);
-					notification.success('Filer lastet opp vellykket.');
-					selectedFilesFile = []; // Clear selected files after successful upload
-					updatePreviewFile(); // Clear the preview area
-					app_edit_files_refresh(); // Refresh files list on page
-				})
-				.catch(error => {
-					console.error('Upload error:', error);
-					notification.error(`Det oppstod en feil!<br /><br />${error.response.message}`);
-				});
-		});
-	});
-
-
-
-
-
-
-
-
-	function app_edit_img_delete(filename) {
+	/**
+	 * Set primary image
+	 */	
+	function app_edit_img_set_primary(image) {
 		var formData = new FormData();
-		formData.append("app_id", "{{>id}}");
-		formData.append("filename", filename);
+		formData.append("id", "{{>id}}");
+		formData.append("image", image);
 
-		remote.rpc_post(`${config.api_url}/app/images/delete`, formData)
+		remote.rpc_post(`${config.api_url}/app/image/primary/set`, formData)
 			.then(response => {
-				console.log('image delete', response);
+				console.log('file set primary', response);
 
 				if (response.status == 'success') {
 					app_edit_images_refresh();
-				}
-
-				else {
-					notification.error('En feil oppstod!');
-				}
-			})
-			.catch((err) => {
-				notification.error('En feil oppstod under sletting av bilde');
-				console.error(err);
-			});
-	}
-
-	function app_edit_file_delete(file_id) {
-		var formData = new FormData();
-		formData.append("app_id", "{{>id}}");
-		formData.append("file_id", file_id);
-
-		remote.rpc_post(`${config.api_url}/app/file/delete`, formData)
-			.then(response => {
-				console.log('file delete', response);
-
-				if (response.status == 'success') {
-					app_edit_files_refresh();
 				}
 
 				else {
@@ -909,6 +760,66 @@
 	}
 
 
+
+
+	/**
+	 * Delete image
+	 */	
+	function app_edit_img_delete(filename) {
+		var formData = new FormData();
+		formData.append("app_id", "{{>id}}");
+		formData.append("filename", filename);
+
+		remote.rpc_post(`${config.api_url}/app/images/delete`, formData)
+			.then(response => {
+				console.log('image delete', response);
+
+				if (response.status == 'success') {
+					app_edit_refresh_uploads('images', 'app-edit-images-container-{{>id}}');
+				}
+
+				else {
+					notification.error('En feil oppstod!');
+				}
+			})
+			.catch((err) => {
+				notification.error('En feil oppstod under sletting av bilde');
+				console.error(err);
+			});
+	}
+
+
+
+	/**
+	 * Delete file
+	 */
+	function app_edit_file_delete(file_id) {
+		var formData = new FormData();
+		formData.append("app_id", "{{>id}}");
+		formData.append("file_id", file_id);
+
+		remote.rpc_post(`${config.api_url}/app/file/delete`, formData)
+			.then(response => {
+				console.log('file delete', response);
+
+				if (response.status == 'success') {
+					app_edit_refresh_uploads('files', 'app-edit-files-container-{{>id}}');
+				}
+
+				else {
+					notification.error('En feil oppstod!');
+				}
+			})
+			.catch((err) => {
+				notification.error('En feil oppstod under sletting av fil');
+				console.error(err);
+			});
+	}
+
+
+	/**
+	 * Delete confirmation
+	 */
 	document.addEventListener('DOMContentLoaded', function() {
 		var deleteConfirmModal = document.getElementById('modal-app-edit-delete-confirmation');
 		let idToDelete = null;
@@ -941,95 +852,5 @@
 
 
 
-	function app_edit_img_set_primary(image) {
-		var formData = new FormData();
-		formData.append("id", "{{>id}}");
-		formData.append("image", image);
-
-		remote.rpc_post(`${config.api_url}/app/image/primary/set`, formData)
-			.then(response => {
-				console.log('file set primary', response);
-
-				if (response.status == 'success') {
-					app_edit_images_refresh();
-				}
-
-				else {
-					notification.error('En feil oppstod!');
-				}
-			})
-			.catch((err) => {
-				notification.error('En feil oppstod under sletting av fil');
-				console.error(err);
-			});
-	}
-
-
-
-
-
-
-
-
-	document.addEventListener('DOMContentLoaded', function () {
-		const form = document.querySelector('form'); // Velg formen som skal submit
-		const quillDesc = new Quill('#textAppEditDesc'); // Initialiser Quill editor for beskrivelse
-		const quillInst = new Quill('#textAppEditInst'); // Initialiser Quill editor for installasjonsveiledning
-		const appId = "{{>id}}"; // Hent App ID fra server-side rendering
-		
-		form.addEventListener('submit', function (event) {
-			event.preventDefault(); // Forhindre standard submit-adferd
-			console.log('Submit app');
-
-			// Opprett FormData objekt
-			const formData = new FormData();
-			formData.append('app_id', appId); // Legg til App ID
-			
-			// Hent data fra alle elementer med class 'input-editable'
-			document.querySelectorAll('.input-editable').forEach(element => {
-			const fieldName = element.getAttribute('data-field'); // Hent feltnavn fra data-attribute
-			const fieldValue = element.innerText.trim(); // Hent tekstinnhold og trim whitespace
-			if (fieldName && fieldValue) {
-				formData.append(fieldName, fieldValue); // Legg til data i FormData
-			}
-			});
-
-			// Hent innhold fra Quill editor for beskrivelse
-			const descriptionContent = quillDesc.root.innerHTML;
-			formData.append('description', descriptionContent);
-
-			// Hent innhold fra Quill editor for installasjonsveiledning
-			const instructionContent = quillInst.root.innerHTML;
-			formData.append('instructions', instructionContent);
-
-			// Hent tags fra tag-container
-			const tags = Array.from(document.querySelectorAll('#tag-container .badge')).map(tag => tag.textContent.trim());
-			if (tags.length > 0) {
-				formData.append('tags', tags.join(',')); // Legg til tags som en kommaseparert liste
-			}
-
-			for (var pair of formData.entries()) {
-				console.log(pair[0]+ ', ' + pair[1]); 
-			}
-
-			// Send data til backend via rpc_post
-			/*
-			remote.rpc_post('/app/update', formData)
-				.then(response => {
-					if (response.status === 'success') {
-					alert('Data ble oppdatert vellykket!');
-					// Eventuelt kan du utføre en refresh av siden eller oppdatere UI her
-					} else {
-					alert('En feil oppstod under oppdatering.');
-					}
-				})
-				.catch(error => {
-					console.error('Feil ved sending:', error);
-					alert('En feil oppstod under sending av data.');
-				});
-			*/
-		});
-	});
-
-
+	
 </script>

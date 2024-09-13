@@ -59,7 +59,7 @@
 							<button type="button" class="page__theme"></button>
 						</div>
 						<div class="page__user" style="font-size: 1.5rem;">
-							<a href="/user/me">
+							<a href="/user/me" id="nav-login-button">
 								<i class="fal fa-user"></i>
 							</a>
 						</div>
@@ -111,6 +111,9 @@
 							</div>
 							<div class="links__item-text">
 								<a href="/info/privacy">Personvernerklæring</a>
+							</div>
+							<div class="links__item-text display-admin" style="display:none;">
+								<a href="/admin/dashboard">Administrasjon</a>
 							</div>
 						</div>
 
@@ -254,6 +257,8 @@
 				}
 			});
 		}
+
+		app.validate_login();
 	</script>
 
 

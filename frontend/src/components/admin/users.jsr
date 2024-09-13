@@ -1,0 +1,15 @@
+<section class="section__page">
+    <h2>Brukere</h2>
+
+	<nav aria-label="breadcrumb">
+		<ol class="breadcrumb">
+			<li class="breadcrumb-item"><a href="/">Hjem</a></li>
+			<li class="breadcrumb-item"><a href="/admin/dashboard">Administrasjon</a></li>
+			<li class="breadcrumb-item active" aria-current="page">Brukere</li>
+		</ol>
+	</nav>
+
+	<div>
+	</div>
+
+</section>

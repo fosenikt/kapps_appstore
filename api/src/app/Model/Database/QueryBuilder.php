@@ -261,8 +261,8 @@ class QueryBuilder {
 
     private function executeStatement($sql, $params = []) {
         if ($this->debug) {
-            error_log("SQL: $sql");
-            error_log("Params: " . json_encode($params));
+            //error_log("SQL: $sql");
+            //error_log("Params: " . json_encode($params));
         }
 
         $stmt = $this->db->prepare($sql);

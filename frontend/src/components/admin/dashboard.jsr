@@ -1,0 +1,22 @@
+<section class="section__page">
+    <h2>Administrasjon</h2>
+
+	<nav aria-label="breadcrumb">
+		<ol class="breadcrumb">
+			<li class="breadcrumb-item"><a href="/">Hjem</a></li>
+			<li class="breadcrumb-item active" aria-current="page">Administrasjon</li>
+		</ol>
+	</nav>
+
+	<div>
+		<a href="/admin/organizations">
+			> Virksomheter
+		</a>
+	</div>
+	<div>
+		<a href="/admin/users">
+			> Brukere
+		</a>
+	</div>
+
+</section>

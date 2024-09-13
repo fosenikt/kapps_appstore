@@ -153,6 +153,19 @@ page('/user/profile/:id', (ctx) => {
 });
 
 
+page('/admin/dashboard', (context, next) => {
+	page_switch(context.canonicalPath);
+});
+
+page('/admin/organizations', (context, next) => {
+	page_switch(context.canonicalPath);
+});
+
+page('/admin/users', (context, next) => {
+	page_switch(context.canonicalPath);
+});
+
+
 
 
 
@@ -193,6 +206,8 @@ function page_switch(page, page_id, data) {
     page_id = page_id.replace(/[@.]/g, "-");
 
     page = page.toLowerCase();
+
+	console.log('page', page);
 
     template.load_page('/components' + page + '.jsr', '#page-' + page_id, data)
         .then(response => {

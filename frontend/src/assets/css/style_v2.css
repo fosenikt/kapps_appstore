@@ -489,12 +489,6 @@ h5 {
     width: 50px;
     height: 50px;
 }
-/* html.dark .menu__link {
-    color: var(--nav-header-menu-link);
-}
-html.dark .header__link6 {
-    color: var(--nav-header-menu-link-6);
-} */
 
 .btn-transparent {
 	background-color: transparent;
@@ -512,39 +506,7 @@ html.dark .header__link6 {
     background-size: 100%;
 	color: var(--form-input-text-color);
 }
-/* html.dark .search__submit {
-    background-size: 100%;
-} */
-/* html.dark input {
-    width: 100%;
-    height: 42px;
-    padding-left: 50px;
-    border: 1px solid var(--form-input-border-color);
-    border-radius: 5px;
-    outline: none;
-    background: #4d4d4d;
-    color: #f3f3f3;
-    font-size: 15px;
-} */
-/* html.dark input::-webkit-input-placeholder {
-    color: var(--form-input-text-placeholder-color);
-}
-html.dark input::-moz-placeholder {
-    color: var(--form-input-text-placeholder-color);
-}
-html.dark input:-ms-input-placeholder {
-    color: var(--form-input-text-placeholder-color);
-}
-html.dark input::-ms-input-placeholder {
-    color: var(--form-input-text-placeholder-color);
-}
-html.dark input::placeholder {
-    color: var(--form-input-text-placeholder-color);
-} */
-/* * {
-    -webkit-box-sizing: border-box;
-    box-sizing: border-box;
-} */
+
 .header__content form {
     position: relative;
     width: 600px;
@@ -919,79 +881,6 @@ html.dark .links {
 }
 
 
-/* .top {
-    max-width: 1181px;
-    margin: 0 auto;
-    margin-bottom: 60px;
-    background: var(--box-bg-color);
-    padding: 40px;
-    border-radius: 10px;
-}
-.top__title {
-    max-width: 1180px;
-    margin: 0 auto;
-    padding-bottom: 30px;
-    display: -webkit-box;
-    display: -ms-flexbox;
-    display: flex;
-    font-size: 0;
-    -webkit-box-align: center;
-    -ms-flex-align: center;
-    align-items: center;
-}
-.top__title .top__title-left {
-    font-size: 18px;
-    margin-left: 30px;
-    font-weight: 700;
-    line-height: 40px;
-    -webkit-box-flex: 1;
-    -ms-flex: 1 1 50%;
-    flex: 1 1 50%;
-    text-transform: uppercase;
-}
-.top__title .top__title-right {
-    color: #4d4d4d;
-    -webkit-box-flex: 1;
-    -ms-flex: 1 1 50%;
-    flex: 1 1 50%;
-    font-size: 14px;
-}
-.top__title .top__title-right .tabs {
-    display: -webkit-box;
-    display: -ms-flexbox;
-    display: flex;
-}
-.top__title .top__title-right .tabs__items {
-    margin-left: 10px;
-    display: block;
-    padding: 10px 15px;
-    background-color: var(--box-tabs-bg-color);
-    border-radius: 20px;
-    color: var(--box-tabs-text-color);
-    min-width: 90px;
-    text-align: center;
-}
-.top__title .top__title-right .tabs__items.active {
-    background-color: var(--box-tabs-active-bg-color);
-    color: var(--box-tabs-active-text-color);
-    border: 0;
-}
-.top__title .top__title-right .tabs__items:hover {
-    background-color: var(--box-tabs-active-bg-color);
-    color: var(--box-tabs-active-text-color);
-    border: 0;
-}
-.top__row {
-    display: -webkit-box;
-    display: -ms-flexbox;
-    display: flex;
-    font-size: 0;
-    -ms-flex-wrap: wrap;
-    flex-wrap: wrap;
-    margin-bottom: 30px;
-} */
-
-
 .apps-row {
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
@@ -1113,13 +1002,6 @@ html.dark .links {
     }
 }
 
-/* html.dark .top__title .top__title-right .tabs__items {
-    color: #f3f3f3;
-    background-color: #333;
-}
-html.dark .top__title .top__title-left {
-    color: #f3f3f3;
-} */
 .tabs__body {
     border-top: 1px solid var(--main-border-color-color);
     padding-top: 30px;
@@ -1130,32 +1012,7 @@ html.dark .top__title .top__title-left {
 .tabs__body .tabs__block.active {
     display: block;
 }
-/* html.dark .tabs__body {
-    border-top: 1px solid #8c8c8c;
-} */
-/* html.dark .top__title .top__title-right .tabs__items.active {
-    background-color: #97caff;
-    color: #333;
-    border: 0;
-}
-html.dark .top__title .top__title-right .tabs__items:hover {
-    background-color: #97caff;
-    color: #333;
-    border: 0;
-} */
-/* html.dark .top__item-name {
-    color: #f3f3f3;
-}
-html.dark .top__item-type {
-    color: #f3f3f3;
-}
-html.dark .top__item-author {
-    color: #f3f3f3;
-    background-color: #333;
-}
-html.dark .top__item:hover {
-    background-color: #646464;
-} */
+
 .spartid {
     /* max-width: 1180px;
     margin: 0 auto; */
@@ -1663,111 +1520,6 @@ html.dark .section__form-form select {
 
 
 
-
-/* .slick-slider {
-  position: relative;
-  display: block;
-  -webkit-box-sizing: border-box;
-          box-sizing: border-box;
-  -webkit-user-select: none;
-  -moz-user-select: none;
-  -ms-user-select: none;
-  user-select: none;
-  -webkit-touch-callout: none;
-  -khtml-user-select: none;
-  -ms-touch-action: pan-y;
-  touch-action: pan-y;
-  -webkit-tap-highlight-color: transparent;
-}
-
-.slick-list {
-  position: relative;
-  display: block;
-  overflow: hidden;
-  margin: 0;
-  padding: 0;
-}
-
-.slick-list:focus {
-  outline: none;
-}
-
-.slick-list.dragging {
-  cursor: pointer;
-  cursor: hand;
-}
-
-.slick-slider .slick-track,
-.slick-slider .slick-list {
-  -webkit-transform: translate3d(0, 0, 0);
-  transform: translate3d(0, 0, 0);
-}
-
-.slick-track {
-  position: relative;
-  top: 0;
-  left: 0;
-  display: block;
-  margin-left: auto;
-  margin-right: auto;
-}
-
-.slick-track:before,
-.slick-track:after {
-  display: table;
-  content: "";
-}
-
-.slick-track:after {
-  clear: both;
-}
-
-.slick-loading .slick-track {
-  visibility: hidden;
-}
-
-.slick-slide {
-  display: none;
-  float: left;
-  height: 100%;
-  min-height: 1px;
-}
-
-[dir=rtl] .slick-slide {
-  float: right;
-}
-
-.slick-slide img {
-  display: block;
-}
-
-.slick-slide.slick-loading img {
-  display: none;
-}
-
-.slick-slide.dragging img {
-  pointer-events: none;
-}
-
-.slick-initialized .slick-slide {
-  display: block;
-}
-
-.slick-loading .slick-slide {
-  visibility: hidden;
-}
-
-.slick-vertical .slick-slide {
-  display: block;
-  height: auto;
-  border: 1px solid transparent;
-}
-
-.slick-arrow.slick-hidden {
-  display: none;
-} */
-
-
 .locked-content {
 	text-align: center;
 	border: 0px solid #eaeaea;
@@ -1827,7 +1579,7 @@ html.dark .section__form-form select {
 
 
 /* Form
---------------------------------------------------------------------------- */
+--------------------------------------------------------------*/
 
 .form-label {
 	font-weight: bold;
@@ -1977,12 +1729,6 @@ input[type=range]:focus::-ms-fill-upper {
   text-shadow: 0 1px 0 rgba(0, 0, 0, 0.4);
 }
 
-/* input {
-	background-color: var(--form-input-bg);
-	color: var(--form-input-text-color);
-}
- */
-
 
  .input-group-text {
 	background-color: var(--bg-shade3);
@@ -2003,14 +1749,8 @@ input[type=range]:focus::-ms-fill-upper {
 	flex: 1;
 	display: block;
 	cursor: pointer;
-	/* border: 2px solid transparent;
-	padding: 10px;
-	margin-bottom: 5px;
-	transition: border-color 0.3s; */
-
 	color:var(--main-text-color);
 	background-color:var(--box-bg-color-transparent);
-	/*width:100%;*/
 	padding:15px;
 	border-radius: 10px;
 	border: 1px solid var(--box-border-color);
@@ -2046,6 +1786,8 @@ input[type=range]:focus::-ms-fill-upper {
 
 
 
+/* Select2
+--------------------------------------------------------------*/
 
 /* Search results for user-search */
 .sel2-search-item { display:flex; }
@@ -2113,6 +1855,8 @@ input[type=range]:focus::-ms-fill-upper {
 
 
 
+/* Div
+--------------------------------------------------------------*/
 .ui-timepicker-standard a {
 	font-size: 0.9rem;
 }
@@ -2124,6 +1868,11 @@ input[type=range]:focus::-ms-fill-upper {
 	margin-top:0px;
 }
 
+
+
+
+/* Application Card
+--------------------------------------------------------------*/
 .card.app {
 	border-radius: 8px;
 }
@@ -2153,6 +1902,11 @@ input[type=range]:focus::-ms-fill-upper {
 }
 
 
+
+
+/* Files row
+--------------------------------------------------------------*/
+
 .file {
 	display: flex;
 }
@@ -2176,6 +1930,40 @@ input[type=range]:focus::-ms-fill-upper {
 }
 
 
+
+
+/* Upload box with drag and drop
+--------------------------------------------------------------*/
+.upload-box {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	width: 100%;
+	height: 200px;
+	border: 2px dashed var(--main-border-color);
+	border-radius: 10px;
+	cursor: pointer;
+	position: relative;
+	text-align: center;
+	background-color: var(--box-bg-color);
+	color: var(--main-text-color);
+}
+
+.upload-area { display:flex; flex-direction:column; align-items:center; justify-content:center; height:100%; }
+.upload-area p { margin: 0; }
+.upload-box:hover { background-color: var(--box-bg-color-hover); border-color: var(--main-border-color); }
+.file-preview { margin-top:15px; display:flex; flex-wrap:wrap; gap:10px; }
+.file-preview-item { display:flex; align-items:center; justify-content:space-between; background-color:var(--box-bg-color-hover); padding:5px 10px; border:1px solid var(--secondary-border-color); border-radius:5px; width:100%; }
+.file-preview-item span { flex:1 1 auto; margin-right:10px; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
+.remove-file { flex:0 0 10px !important; cursor:pointer; color:#d9534f; font-weight:bold; }
+
+
+
+
+/* Contenteditable field
+ *
+ * Helper to show user that field can be modified
+--------------------------------------------------------------*/
 .input-editable[contenteditable="true"]::before {
     content: "Klikk her for å redigere";
     display: block;
@@ -2202,7 +1990,10 @@ input[type=range]:focus::-ms-fill-upper {
 
 
 
-
+/* Buttons
+ *
+ * Reverse colors for dark and light mode
+--------------------------------------------------------------*/
 .btn-light {
 	background-color: var(--box-bg-color);
 	color: var(--box-tabs-text-color) !important;
@@ -2220,7 +2011,10 @@ input[type=range]:focus::-ms-fill-upper {
 
 
 
-
+/* Listbox
+ *
+ * Used to e.g. list organizations applications
+--------------------------------------------------------------*/
 @media (min-width: 0px) {
 	.list-box {
 		display: flex;
@@ -2234,6 +2028,9 @@ input[type=range]:focus::-ms-fill-upper {
 	}
 	.list-box .icon {
 		flex: 0 0 140px;
+	}
+	.list-box .icon-sm {
+		flex: 0 0 60px;
 	}
 	.list-box .icon .image {
 		border-radius: 15px;

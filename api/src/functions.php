@@ -9,8 +9,6 @@ function output($result)
 		$result = (array)$result;
 	}
 
-	error_log(json_encode($result));
-
 	if (isset($result['message']) && !empty($result['message'])) {
 		$message = $result['message'];
 	} else {

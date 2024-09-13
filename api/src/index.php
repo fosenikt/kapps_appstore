@@ -71,6 +71,7 @@ $dispatcher = FastRoute\simpleDispatcher(function(FastRoute\RouteCollector $r) {
 	$r->addRoute('GET', '/app/get/{id:\d+}', ['Kapps\Controller\Apps\Get', 'get_app']);
 	$r->addRoute('GET', '/apps/get', ['Kapps\Controller\Apps\Get', 'get_apps']);
 	$r->addRoute('POST', '/app/new', ['Kapps\Controller\Apps\Create', 'add']);
+	$r->addRoute('POST', '/app/update/all', ['Kapps\Controller\Apps\Update', 'update_app']);
 	$r->addRoute('POST', '/app/update/desc', ['Kapps\Controller\Apps\Update', 'update_description']);
 	$r->addRoute('POST', '/app/update/install', ['Kapps\Controller\Apps\Update', 'update_installation']);
 	$r->addRoute('POST', '/app/update/details', ['Kapps\Controller\Apps\Update', 'update_details']);
