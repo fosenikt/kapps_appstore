@@ -9,7 +9,202 @@
 		</ol>
 	</nav>
 
-	<div>
+	<div class="box" style="margin-bottom:25px;">
+		<div>
+			<i class="fas fa-search"></i> Søk
+		</div>
+		<div>
+			<input class="form-control" type="text" id="input-admin-users-search">
+		</div>
 	</div>
 
+	<div id="admin-users-list"></div>
 </section>
+
+
+
+<div class="modal fade" id="admin-user-edit" tabindex="-1" aria-labelledby="admin-user-edit-label" aria-hidden="true">
+	<div class="modal-dialog modal-lg">
+		<div class="modal-content">
+			<form id="form-modal-admin-user" action="/admin/user/update" method="POST" data-callback="user_update">
+				<div class="modal-header">
+					<h1 class="modal-title fs-5" id="admin-user-edit-label">Organisasjon</h1>
+					<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+				</div>
+				<div class="modal-body">
+					<input type="text" class="form-control" name="id" id="admin-user-edit-id">
+					<input type="text" class="form-control" name="customer_id" id="admin-user-edit-customerid">
+
+					<div class="row">
+						<div class="col-md-6">
+							<div class="mb-3">
+								<label for="admin-user-edit-firstname" class="col-form-label">Fornavn</label>
+								<input type="text" class="form-control form-control-lg" name="firstname" id="admin-user-edit-firstname">
+							</div>
+						</div>
+						<div class="col-md-6">
+							<div class="mb-3">
+								<label for="admin-user-edit-lastname" class="col-form-label">Etternavn</label>
+								<input type="text" class="form-control form-control-lg" name="lastname" id="admin-user-edit-lastname">
+							</div>
+						</div>
+					</div>
+
+					<div class="row">
+						<div class="col-md-6">
+							<div class="mb-3">
+								<label for="admin-user-edit-mail" class="col-form-label">E-post</label>
+								<input type="email" class="form-control" name="mail" id="admin-user-edit-mail">
+							</div>
+						</div>
+						<div class="col-md-6">
+							<div class="mb-3">
+								<label for="admin-user-edit-mobile" class="col-form-label">Mobil</label>
+								<input type="tel" class="form-control" name="mobile" id="admin-user-edit-mobile">
+							</div>
+						</div>
+					</div>
+
+
+					<div class="mb-3">
+						<label for="admin-user-edit-role" class="col-form-label">Rolle</label>
+						<input type="tel" class="form-control" name="company_role" id="admin-user-edit-role">
+					</div>
+
+
+					<div class="mb-3">
+						<label for="admin-user-edit-status" class="col-form-label">Status</label>
+						<select class="form-select" name="status" id="admin-user-edit-status" aria-label="User status">
+							<option value="active">Aktiv</option>
+							<option value="deactivated">Deaktivert</option>
+							<option value="system">System-bruker (e.g. API)</option>
+						</select>
+					</div>
+
+					<div style="padding:10px;">
+						<div class="form-check">
+							<input class="form-check-input" type="checkbox" value="1" name="admin" id="admin-user-edit-admin">
+							<label class="form-check-label" for="admin-user-edit-admin">
+								Administrator
+							</label>
+						</div>
+					</div>
+
+				</div>
+				<div class="modal-footer">
+					<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Lukk</button>
+					<button type="submit" class="btn btn-primary">Lagre</button>
+				</div>
+			</form>
+		</div>
+	</div>
+</div>
+
+
+
+<script>
+    // Variabel for å lagre debounce timeout
+    let debounceTimeout;
+
+    // Funksjon for å søke etter organisasjoner
+    function admin_users_search(query) {
+        // Send søkespørring til API
+        remote.rpc(`${config.api_url}/search/users/${query}`).then(response => {
+            console.log(response);
+            // Last inn resultater i webparten
+            template.load_webpart('/components/admin/_webparts/user.jsr', '#admin-users-list', response).then(response => {
+                // Håndter responser her om nødvendig
+            });
+        })
+        .catch((err) => {
+            console.error(err);
+
+			if (err.status == 403) {
+				notification.error('<b>403 Forbidden</b><br />Din innloggingssesjon har mest sannsynlig utløpt. Vennligst forsøk å logg inn på nytt.');
+			}
+        });
+    }
+
+    // Funksjon for å håndtere input-felt med debounce
+    document.getElementById('input-admin-users-search').addEventListener('input', (event) => {
+        const query = event.target.value;
+
+        // Lagre søketeksten i localStorage
+        localStorage.setItem('admin_users_search_query', query);
+
+        // Fjern eksisterende timeout for å unngå for mange kall
+        clearTimeout(debounceTimeout);
+
+        // Sett ny timeout på 300ms før søkefunksjonen blir kalt
+        debounceTimeout = setTimeout(() => {
+            if (query.trim() !== '') { // Unngå tomme spørringer
+                admin_users_search(query);
+            } else {
+                document.getElementById('admin-users-list').innerHTML = ''; // Tøm listen ved tomt input
+            }
+        }, 300); // 300ms debounce delay
+    });
+
+    // Funksjon for å laste tidligere søk ved innlasting av siden
+    function admin_users_load_prev_search() {
+        const savedQuery = localStorage.getItem('admin_users_search_query');
+
+        if (savedQuery && savedQuery.trim() !== '') {
+            // Sett verdien i input-feltet
+            document.getElementById('input-admin-users-search').value = savedQuery;
+            // Kjør søk med lagret søketekst
+            admin_users_search(savedQuery);
+        }
+    }
+
+    // Kall funksjonen for å laste tidligere søk ved oppstart
+    admin_users_load_prev_search();
+
+
+
+	function user_update(response) {
+		console.log('user_update', response);
+		admin_users_load_prev_search();
+	}
+
+
+
+	const admin_user_edit = document.getElementById('admin-user-edit')
+	if (admin_user_edit) {
+		admin_user_edit.addEventListener('show.bs.modal', event => {
+			const button = event.relatedTarget;
+			const user_id = button.getAttribute('data-bs-user-id');
+
+			// Update the modal's content.
+			const modalTitle = admin_user_edit.querySelector('.modal-title')
+			const modalBodyInput = admin_user_edit.querySelector('.modal-body input')
+
+			remote.rpc(`${config.api_url}/user/get/${user_id}`).then(response => {
+				console.log(response);
+
+				modalTitle.textContent = `${response.displayname}`;
+				
+				document.getElementById('admin-user-edit-id').value = response.id;
+				document.getElementById('admin-user-edit-firstname').value = response.firstname;
+				document.getElementById('admin-user-edit-lastname').value = response.lastname;
+				document.getElementById('admin-user-edit-mail').value = response.mail;
+				document.getElementById('admin-user-edit-mobile').value = response.mobile;
+				document.getElementById('admin-user-edit-role').value = response.company_role;
+				document.getElementById('admin-user-edit-status').value = response.status;
+
+				if (response.customer != null) {
+					document.getElementById('admin-user-edit-customerid').value = response.customer.public_id;
+				}
+
+				if (response.admin == 1) {
+					document.getElementById('admin-user-edit-admin').checked = true;
+				} else {
+					document.getElementById('admin-user-edit-admin').checked = false;
+				}
+			})
+			.catch((err) => {
+				console.error(err);
+			});
+		})
+	}
+</script>

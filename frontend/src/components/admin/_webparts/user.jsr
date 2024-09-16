@@ -1,1 +1,30 @@
-{{>firstname}}
+<div class="list-box box box-hover">
+	<div class="icon icon-sm" style="padding-top:12px; padding-left:10px;">
+		<i class="fal fa-user"></i>
+	</div>
+
+	<div class="info">
+		<div class="title">
+			{{:displayname}}
+		</div>
+
+		<div class="help muted">
+			<b>E-post:</b> {{if mail}}{{>mail}}{{else}}<i>Ikke oppgitt</i>{{/if}} &nbsp;&nbsp;&nbsp;&nbsp; <b>Telefon:</b> {{if mobile}}{{>mobile}}{{else}}<i>Ikke oppgitt</i>{{/if}}
+		</div>
+		<div class="help muted" style="margin-top:15px;">
+			<a href="/organization/profile/{{>company_id}}">
+				<img style="max-height:16px;" src="{{>company_logo.thumb}}" alt="Company logo"> {{>company_title}}
+			</a>
+		</div>
+	</div>
+
+	<div class="tools">
+		<a href="#" data-bs-toggle="modal" data-bs-target="#admin-user-edit" data-bs-user-id="{{>id}}">
+			<i class="fas fa-pencil"></i>
+		</a>
+
+		<a href="">
+			<i class="fas fa-trash-alt"></i>
+		</a>
+	</div>
+</div>

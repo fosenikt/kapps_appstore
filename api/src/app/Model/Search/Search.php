@@ -2,6 +2,7 @@
 namespace Kapps\Model\Search;
 
 use Kapps\Model\Database\Db;
+use Kapps\Model\Users\Utils AS UserUtils;
 
 /**
  * summary
@@ -241,5 +242,82 @@ class Search
 
 		return $logo;
 	}
+
+
+
+
+
+	public function users($q, $limit = 20)
+	{
+		$r = null;
+
+		// Check for content in the search string and split each word into an array
+		if (strlen($q) > 1) {
+			$qarr = explode(" ", $q);
+		}
+
+		// Base query with join
+		$query = "
+			SELECT U.*, C.public_id AS company_public_id, C.title AS company_title, C.logo AS company_logo
+			FROM users AS U
+			LEFT JOIN company AS C ON U.customer_id = C.id
+		";
+
+		// Initialize search conditions
+		$conditions = [];
+		$params = [];
+		$param_types = '';
+
+		// Build conditions if search string has content
+		if (strlen($q) > 1) {
+			foreach ($qarr as $so) {
+				$conditions[] = "(U.firstname LIKE ? OR U.lastname LIKE ? OR U.mail LIKE ? OR U.mobile LIKE ? OR C.title LIKE ?)";
+				$param_types .= 'sssss'; // Add five 's' for each condition
+				$search_term = '%' . $so . '%';
+				$params = array_merge($params, array_fill(0, 5, $search_term));
+			}
+		}
+
+		// Append conditions to the query
+		if (!empty($conditions)) {
+			$query .= " WHERE " . implode(" AND ", $conditions);
+		}
+
+		// Add limit to the query
+		$query .= " LIMIT ?";
+
+		// Prepare statement
+		$stmt = $this->db->prepare($query);
+		$param_types .= 'i'; // 'i' for integer limit parameter
+		$params[] = $limit;
+
+		// Bind parameters dynamically
+		$stmt->bind_param($param_types, ...$params);
+
+		// Execute and fetch results
+		$stmt->execute();
+		$result = $stmt->get_result();
+
+		while ($row = $result->fetch_assoc()) {
+			$r[] = array(
+				'id' => $row['id'],
+				'firstname' => $row['firstname'],
+				'lastname' => $row['lastname'],
+				'initials' => $row['initials'],
+				'displayname' => UserUtils::displayname($row['firstname'], $row['lastname'], $row['mail']),
+				'mail' => $row['mail'],
+				'mobile' => $row['mobile'],
+				'status' => $row['status'],
+				'last_update' => $row['last_update'],
+				'company_id' => $row['company_public_id'],
+				'company_title' => $row['company_title'],
+				'company_logo' => $this->get_company_logo($row['company_logo']),
+			);
+		}
+
+		$stmt->close();
+		return $r;
+	}
+
 
 }

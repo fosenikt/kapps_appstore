@@ -2032,6 +2032,9 @@ input[type=range]:focus::-ms-fill-upper {
 	.list-box .icon-sm {
 		flex: 0 0 60px;
 	}
+	.list-box .icon-sm .svg-inline--fa {
+		font-size: 2rem;
+	}
 	.list-box .icon .image {
 		border-radius: 15px;
 		height: 90px;

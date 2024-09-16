@@ -236,5 +236,58 @@ class Search {
         $obj = new \Kapps\Model\Search\Search();
         return $obj->companies($q);
     }
+
+
+
+
+	/**
+     * @OA\Get(
+     *     path="/search/users/{q}",
+     *     tags={"Search"},
+     *     summary="Search users (GET)",
+     *     description="Searches for companies with the given query",
+     *     security={{"bearerAuth": {}}},
+     *     @OA\Parameter(
+     *         name="q",
+     *         in="path",
+     *         required=true,
+     *         @OA\Schema(
+     *             type="string",
+     *             example="search query"
+     *         )
+     *     ),
+     *     @OA\Response(
+     *         response=200,
+     *         description="Companies retrieved successfully",
+     *         @OA\JsonContent(
+     *             type="array",
+     *             @OA\Items(
+     *                 @OA\Property(property="public_id", type="string", example="companyId"),
+     *                 @OA\Property(property="title", type="string", example="Company Title"),
+     *                 @OA\Property(property="county", type="string", example="County Name"),
+     *                 @OA\Property(property="type_id", type="integer", example=1),
+     *                 @OA\Property(property="org_numb", type="string", example="123456789"),
+     *                 @OA\Property(property="website", type="string", example="http://www.company.com"),
+     *                 @OA\Property(property="domain", type="string", example="company.com"),
+     *                 @OA\Property(property="type", type="string", example="LLC"),
+     *                 @OA\Property(property="logo", type="object",
+     *                     @OA\Property(property="image", type="string", example="http://example.com/company_logo.jpg"),
+     *                     @OA\Property(property="thumb", type="string", example="http://example.com/company_logo_thumb.jpg")
+     *                 )
+     *             )
+     *         )
+     *     ),
+     *     @OA\Response(
+     *         response=403,
+     *         description="Access denied"
+     *     )
+     * )
+     */
+    public function users($q)
+    {
+		error_log("Search Query: $q");
+        $obj = new \Kapps\Model\Search\Search();
+        return $obj->users($q);
+    }
 }
 ?>

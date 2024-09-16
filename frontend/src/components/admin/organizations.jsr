@@ -18,9 +18,7 @@
 		</div>
 	</div>
 
-	<div id="admin-organizations-list">
-	</div>
-
+	<div id="admin-organizations-list"></div>
 </section>
 
 
@@ -28,13 +26,13 @@
 <div class="modal fade" id="admin-org-edit" tabindex="-1" aria-labelledby="admin-org-edit-label" aria-hidden="true">
 	<div class="modal-dialog modal-lg">
 		<div class="modal-content">
-			<form id="form-modal-admin-org" action="/company/update" method="POST">
+			<form id="form-modal-admin-org" action="/company/update" method="POST" data-callback="organization_update">
 				<div class="modal-header">
 					<h1 class="modal-title fs-5" id="admin-org-edit-label">Organisasjon</h1>
 					<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
 				</div>
 				<div class="modal-body">
-					<input type="text" class="form-control" name="public_id" id="admin-org-edit-public-id">
+					<input type="hidden" class="form-control" name="public_id" id="admin-org-edit-public-id">
 
 					<div class="mb-3">
 						<label for="admin-org-edit-title" class="col-form-label">Navn</label>
@@ -101,7 +99,7 @@
 				</div>
 				<div class="modal-footer">
 					<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Lukk</button>
-					<button type="button" class="btn btn-primary">Lagre</button>
+					<button type="submit" class="btn btn-primary">Lagre</button>
 				</div>
 			</form>
 		</div>
@@ -126,6 +124,10 @@
         })
         .catch((err) => {
             console.error(err);
+
+			if (err.status == 403) {
+				notification.error('<b>403 Forbidden</b><br />Din innloggingssesjon har mest sannsynlig utløpt. Vennligst forsøk å logg inn på nytt.');
+			}
         });
     }
 
@@ -150,7 +152,7 @@
     });
 
     // Funksjon for å laste tidligere søk ved innlasting av siden
-    function loadPreviousSearch() {
+    function admin_organizations_load_prev_search() {
         const savedQuery = localStorage.getItem('admin_org_search_query');
 
         if (savedQuery && savedQuery.trim() !== '') {
@@ -162,37 +164,44 @@
     }
 
     // Kall funksjonen for å laste tidligere søk ved oppstart
-    loadPreviousSearch();
+    admin_organizations_load_prev_search();
+
+
+
+	function organization_update(response) {
+		console.log('organization_update', response);
+		admin_organizations_load_prev_search();
+	}
 
 
 
 	const admin_org_edit = document.getElementById('admin-org-edit')
 	if (admin_org_edit) {
-	admin_org_edit.addEventListener('show.bs.modal', event => {
-		const button = event.relatedTarget;
-		const org_public_id = button.getAttribute('data-bs-public-id');
+		admin_org_edit.addEventListener('show.bs.modal', event => {
+			const button = event.relatedTarget;
+			const org_public_id = button.getAttribute('data-bs-public-id');
 
-		// Update the modal's content.
-		const modalTitle = admin_org_edit.querySelector('.modal-title')
-		const modalBodyInput = admin_org_edit.querySelector('.modal-body input')
+			// Update the modal's content.
+			const modalTitle = admin_org_edit.querySelector('.modal-title')
+			const modalBodyInput = admin_org_edit.querySelector('.modal-body input')
 
-		remote.rpc(`${config.api_url}/company/get/${org_public_id}`).then(response => {
-            console.log(response);
+			remote.rpc(`${config.api_url}/company/get/${org_public_id}`).then(response => {
+				console.log(response);
 
-			modalTitle.textContent = `${response.title}`;
-            
-			document.getElementById('admin-org-edit-public-id').value = response.public_id;
-			document.getElementById('admin-org-edit-title').value = response.title;
-			document.getElementById('admin-org-edit-website').value = response.website;
-			document.getElementById('admin-org-edit-orgnr').value = response.org_numb;
-			document.getElementById('admin-org-edit-domain').value = response.domain;
-			document.getElementById('admin-org-edit-type').value = response.type;
-			document.getElementById('admin-org-edit-county').value = response.county;
-			document.getElementById('admin-org-edit-type-id').value = response.type_id;
-        })
-        .catch((err) => {
-            console.error(err);
-        });
-	})
+				modalTitle.textContent = `${response.title}`;
+				
+				document.getElementById('admin-org-edit-public-id').value = response.public_id;
+				document.getElementById('admin-org-edit-title').value = response.title;
+				document.getElementById('admin-org-edit-website').value = response.website;
+				document.getElementById('admin-org-edit-orgnr').value = response.org_numb;
+				document.getElementById('admin-org-edit-domain').value = response.domain;
+				document.getElementById('admin-org-edit-type').value = response.type;
+				document.getElementById('admin-org-edit-county').value = response.county;
+				document.getElementById('admin-org-edit-type-id').value = response.type_id;
+			})
+			.catch((err) => {
+				console.error(err);
+			});
+		})
 	}
 </script>
