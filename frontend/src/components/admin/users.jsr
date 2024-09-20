@@ -28,7 +28,7 @@
 		<div class="modal-content">
 			<form id="form-modal-admin-user" action="/admin/user/update" method="POST" data-callback="user_update">
 				<div class="modal-header">
-					<h1 class="modal-title fs-5" id="admin-user-edit-label">Organisasjon</h1>
+					<h1 class="modal-title fs-5" id="admin-user-edit-label">Bruker</h1>
 					<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
 				</div>
 				<div class="modal-body">
@@ -102,9 +102,34 @@
 
 
 
+
+<div class="modal fade" id="admin-user-delete" tabindex="-1" aria-labelledby="admin-user-delete-label" aria-hidden="true">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<form id="form-modal-admin-user-delete" action="/admin/user/delete" method="GET" data-callback="user_update">
+				<div class="modal-header">
+					<h1 class="modal-title fs-5" id="admin-user-delete-label">Bruker</h1>
+					<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+				</div>
+				<div class="modal-body">
+					<input type="hidden" class="form-control" name="id" id="admin-user-delete-id">
+					
+					<p>Er du sikker på at du vil slette denne brukeren?</p>
+				</div>
+				<div class="modal-footer">
+					<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Lukk</button>
+					<button type="submit" class="btn btn-danger">Slett bruker</button>
+				</div>
+			</form>
+		</div>
+	</div>
+</div>
+
+
+
 <script>
     // Variabel for å lagre debounce timeout
-    let debounceTimeout;
+    var debounceTimeout;
 
     // Funksjon for å søke etter organisasjoner
     function admin_users_search(query) {
@@ -169,7 +194,7 @@
 
 
 
-	const admin_user_edit = document.getElementById('admin-user-edit')
+	const admin_user_edit = document.getElementById('admin-user-edit');
 	if (admin_user_edit) {
 		admin_user_edit.addEventListener('show.bs.modal', event => {
 			const button = event.relatedTarget;
@@ -206,5 +231,16 @@
 				console.error(err);
 			});
 		})
+	}
+
+
+	const admin_user_delete = document.getElementById('admin-user-delete');
+	if (admin_user_delete) {
+		admin_user_delete.addEventListener('show.bs.modal', event => {
+			const button = event.relatedTarget;
+			const user_id = button.getAttribute('data-bs-user-id');
+
+			document.getElementById('admin-user-delete-id').value = user_id;
+		});
 	}
 </script>

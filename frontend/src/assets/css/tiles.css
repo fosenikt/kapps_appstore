@@ -1,23 +1,19 @@
 /**
 Examples:
 -----------------------------------------------
-
 <a class="tile" href="#">
 	<span class="tile-icon">
 		<div class="bg-image" style="background:url('{{image}}');"></div>
 	</span>
-
 	<span class="tile-title">
 		{{title}}
 	</span>
 </a>
-
 Icons supported:
  - Microsoft Fabric: https://developer.microsoft.com/en-us/fabric#/styles/web/icons
    Example: <i class="ms-Icon ms-Icon--OfficeLogo" aria-hidden="true"></i>
  - Font Awsome: https://fontawesome.com/
    Example: <i class="fal fa-info-circle"></i>
-
 Versions:
 -----------------------------------------------
 2019-06-30: Added support for Office glyphs
@@ -115,9 +111,9 @@ Versions:
 .tile-low-height { height:80px; }
 .tile-low-height span.tile-icon img { height:45px; }
 
-.tile-lg {
+.tile-modern {
 	width:100%;
-	height: 175px;
+	height: 196px;
 	border-radius: 7px;
 	transition: .2s ease all;
 	background-color: #fff;
@@ -134,7 +130,7 @@ Versions:
 	.tiles { grid-template-columns: 1fr; }
 }
 
-.tile-lg:hover {
+.tile-modern:hover {
 	box-shadow:0 20px 50px rgba(0,0,0,.18);
 	-webkit-transform:scale(1.03);
 	transform:scale(1.03);
@@ -142,33 +138,48 @@ Versions:
 	color:#000;
 }
 
-.tile-lg span.tile-icon {
+.tile-modern span.tile-icon {
 	display:block;
 	color: #0060d0;
 	fill: #f4f8fd;
 	stroke: #0060d0;
 	stroke-width: .9px;
-	margin-bottom: 0;
+	margin-bottom: 1.2em;
 	pointer-events: none;
 }
 /*.tile-lg span.tile-icon .svg-inline--fa { font-size:3rem; }*/
-.tile-lg span.title {
+.tile-modern span.title {
 	display:block;
 	width: 100%;
 	font-weight: 500;
-	font-size: 1.6em;
+	font-size: 1.7em;
 	line-height: 1.2em;
 	text-align: center;
 	white-space:nowrap; overflow:hidden; text-overflow:ellipsis;
 }
-.tile-lg span.subtitle { display:block; margin-top:5px; font-size: 0.9em; width: 100%; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
+.tile-modern span.subtitle { display:block; margin-top:5px; font-size: 1em; width: 100%; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
+.tile-modern span.head-title { display:block; text-align:center; margin-top:-15px; margin-bottom:-8px; }
+.tile-modern span.head-title img { max-height:18px; display: inline-block; }
+
+/* Tile medium */
+.tile-md { height:150px; }
+.tile-md span.tile-icon { height:50px; }
+.tile-md span.tile-icon .fa, .tile-md span.tile-icon .far, .tile-md span.tile-icon .fal, .tile-md span.tile-icon .fas, .tile-md span.tile-icon .fab, .tile-md span.tile-icon .svg-inline--fa {
+    font-size: 45px;
+    padding-top: 5px;
+}
+.tile-md span.title { font-size: 1em; }
+.tile-md span.subtitle { font-size: 0.7em; }
+
+
 
 /* Tile colors */
 .tile-lightblue { background-color: #88aebe; color:#fff; }
 .tile-lightblue:hover { color:#fff; }
 .tile-blue { background-color: #0a5ac3; color:#fff !important; }
 .tile-blue:hover { color:#fff; }
-.tile-darkblue { background-color: #0b335e; color:#fff; }
+.tile-darkblue { background-color: #0b335e; color:#fff !important; }
+.tile-darkblue .svg-inline--fa { color:#fff !important; }
 .tile-darkblue:hover { color:#fff; }
 .tile-navy { background-color: #5f7978; color:#fff; }
 .tile-navy:hover { color:#fff; }
@@ -189,8 +200,9 @@ Versions:
 .tile-dark { background-color: #1f1f1f; color:#fff; }
 .tile-dark:hover { color:#fff; }
 .tile-red { background-color: #b9090b }
-.tile-orange { background-color: #d44a27; color:#fff; }
+.tile-orange { background-color: #d44a27; color:#fff !important; }
 .tile-orange:hover { background-color: #CB3915; color:#fff; }
+.tile-orange .svg-inline--fa { color:#fff !important; }
 .tile-lightorange { background-color: #d9712b; color:#fff; }
 .tile-lightorange:hover { color:#fff; }
 .tile-yellow { background-color: #f4f71b; color:#4d4d4d; }

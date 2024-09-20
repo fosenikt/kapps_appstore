@@ -9,8 +9,9 @@
 	</nav>
 
 
-	<div style="background-color:#fff4d6; border:1px solid #e6ce8e; padding:10px; margin-bottom:10px; border-radius:8px;">
-		<b>Oppdatert 07.08.2024:</b> Åpning av noe informasjon uten innlogging. 
+	<!-- <div style="background-color:#fff4d6; border:1px solid #e6ce8e; padding:10px; margin-bottom:10px; border-radius:8px;"> -->
+	<div class="alert alert-warning">
+		<b>Oppdatert 07.08.2024:</b> Vi viser nå begrenset informasjon rundt applikasjoner og tjenester uten innlogging. 
 		Mer utdypende beskrivelser. Små justeringer basert på at vi har fjernet blogg (Wordpress).
 	</div>
 

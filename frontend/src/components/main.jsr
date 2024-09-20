@@ -16,17 +16,8 @@
 	</div>
 </section>
 
-<!-- <section class="top">
-	<div class="top__title">
-		<div class="top__title-left" id="top_title">Top apps > </div>
-		<div class="top__title-right">
-			<div class="tabs" id="tabsContainer"></div>
-		</div>
-	</div>
-	<div class="tabs__body" id="tabsBodyContainer"></div>
-</section> -->
 
-<section class="container" style="padding:50px 0px 100px 0px;">
+<section class="container" style="padding:50px 0px 30px 0px;">
 	<div class="header-split d-flex flex-column flex-md-row justify-content-between align-items-center">
 		<h2>Applikasjoner ></h2>
 		<ul class="nav nav-pills mb-3" id="pills-tab" role="tablist"></ul>
@@ -35,84 +26,59 @@
 </section>
 
 
-<!-- <section class="top">
-	<div class="top__title">
-		<div class="top__title-left" id="top_title">Top apps > </div>
-		<div class="top__title-right">
-			<div class="tabs">
-				<a href="#" onclick="return false" id="01" class="tabs__items active">Apps</a> 
-				<a href="#" onclick="return false" id="02" class="tabs__items">RPA</a>
-				<a href="#" onclick="return false" id="03" class="tabs__items">Integrasjoner</a>
-				<a href="#" onclick="return false" id="04" class="tabs__items">Dokumenter</a>
-			</div>
-		</div>
+<section class="container" style="padding:50px 0px 80px 0px;">
+	<div class="header-split d-flex flex-column flex-md-row justify-content-between align-items-center">
+		<h2>Nykommere ></h2>
 	</div>
-	<div class="tabs__body">
-		<div class="tabs__block active " id="tab_01">
-			<div class="top__row top__row-apps"></div>
-		</div>
-
-		<div class="tabs__block"  id="tab_02">
-			<div class="top__row top__row-rpa"></div>
-		</div>
-
-		<div class="tabs__block"  id="tab_03">
-			<div class="top__row top__row-inreg"></div>
-		</div>
-
-		<div class="tabs__block"  id="tab_04">
-			<div class="top__row top__row-docum"></div>
-		</div>
-	</div>
-</section> -->
+	<div id="main-apps-latest" class="apps-row"></div>
+</section>
 
 
 <section class="spartid">
 	<div class="section__component">
-		<div class="spartid__row">
-			<div class="spartid__item">
-				<div class="spartid__logo spartid__logo1">
-				
+
+		<div class="row">
+			<div class="col-md-4">
+				<div style="font-size:4rem;">
+					<i class="fa-duotone fa-solid fa-user-clock"></i>
 				</div>
-				<div class="spartid__title">
-					Spar tid
+				<div>
+					<h2>Spar tid</h2>
 				</div>
-				<div class="spartid__text">
+				<div>
 					Bruk det som allerede er utviklet.
 				</div>
 			</div>
-			<div class="spartid__item">
-				<div class="spartid__logo spartid__logo2">
-					
+
+			<div class="col-md-4">
+				<div style="font-size:4rem;">
+					<i class="fa-light fa-square-sliders"></i>
 				</div>
-				<div class="spartid__title">
-					Tilpasning
+				<div>
+					<h2>Tilpasning</h2>
 				</div>
-				<div class="spartid__text">
+				<div>
 					Åpen kildekode. Bli med på å videreutvikle det som fungerer til felles beste og nytte.
 				</div>
 			</div>
-			<div class="spartid__item">
-				<div class="spartid__logo spartid__logo3">
-				
+
+			<div class="col-md-4">
+				<div style="font-size:4rem;">
+					<i class="fa-sharp fa-light fa-house-building"></i>
 				</div>
-				<div class="spartid__title">
-					En Offentlig sektor
+				<div>
+					<h2>En Offentlig sektor</h2>
 				</div>
-				<div class="spartid__text">
-					La oss bygge sammenhengende tjenester som løser brukernes behov
-				(Lenke til DigDir)
+				<div>
+					La oss bygge sammenhengende tjenester som løser brukernes behov.
 				</div>
 			</div>
 		</div>
+
 	</div>
 </section>
 
 
-<section class="container">
-	<h2>Nykommere ></h2>
-	<div id="main-apps-latest" class="apps-row"></div>
-</section>
 
 
 

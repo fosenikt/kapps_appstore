@@ -23,7 +23,7 @@
 			<i class="fas fa-pencil"></i>
 		</a>
 
-		<a href="">
+		<a href="#" data-bs-toggle="modal" data-bs-target="#admin-user-delete" data-bs-user-id="{{>id}}">
 			<i class="fas fa-trash-alt"></i>
 		</a>
 	</div>

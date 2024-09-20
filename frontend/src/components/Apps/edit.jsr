@@ -447,6 +447,13 @@
 					}
 				}
 
+				if (err.status == 403) {
+					if (err.response.message != null) {
+						console.error(err.response.message);
+					}
+					notification.error('En feil oppstod (403 Forbidden)!<br /><br />Din innlogging har mest sannsynlig utløpt.');
+				}
+
 				else if (err.status == 500) {
 					notification.error('En feil oppstod!<br />500 Internal server error');
 				}

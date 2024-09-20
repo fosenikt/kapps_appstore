@@ -121,7 +121,7 @@
 
 		<div style="text-align:right; margin:0px 25px;">
 			<a href="#" data-bs-toggle="modal" data-bs-target="#modal-register-user-info">Opprett bruker?</a> &nbsp;&nbsp;&nbsp;&nbsp; 
-			<a href="/privacy">Les personvernerklæring</a><br />
+			<a href="/info/privacy">Les personvernerklæring</a><br />
 		</div>
 	</section>
 </div>
@@ -155,7 +155,7 @@
 				</p>
 
 				<p>
-					Vi mangler nok en del domener. Spesielt IKS og lignende selskaper.
+					Vi mangler nok en del domener. Spesielt IKS og lignende organisasjoner.
 					En del virksomheter har også forskjellige e-postdomener, enn de bruker på nettside.
 					Ta kontakt dersom du ikke får logget inn, så skal vi få lagt inn din virksomhet.
 				</p>
@@ -498,7 +498,7 @@ document.querySelector("#form-validate-code").addEventListener('submit', event =
 		console.log(err.status);
 		console.log(err.response.message);
 		if (err.status == 400) {
-			if (err.response.message != '') {
+			if (err.response.message != '' && err.response.message != undefined) {
 				msg_status('error', err.response.message);
 			}
 

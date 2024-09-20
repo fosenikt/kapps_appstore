@@ -38,12 +38,12 @@ class Login
 
 		// Check if e-mail has a valid format
 		if (!filter_var($mail, FILTER_VALIDATE_EMAIL)) {
-			return array('status' => 'error', 'message' => 'Invalid email address');
+			return array('status' => 'error', 'message' => 'Manglende eller ugyldig e-postadresse');
 		}
 
 		// Check if email has a valid domain
 		if (!$this->validate_domain($mail)) {
-			return array('status' => 'error', 'message' => 'Not valid domain');
+			return array('status' => 'error', 'message' => 'Ugyldig domene');
 		}
 
 		
@@ -134,7 +134,7 @@ class Login
 	{
 		// Check if e-mail has a valid format
 		if (!filter_var($mail, FILTER_VALIDATE_EMAIL)) {
-			return array('status' => 'error', 'message' => 'Invalid email address');
+			return array('status' => 'error', 'message' => 'Manglende eller ugyldig e-postadresse');
 		}
 
 

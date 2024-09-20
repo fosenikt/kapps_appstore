@@ -1,0 +1,44 @@
+<section class="section__page">
+	
+	<!-- <h2>Om Kapps.no</h2>
+
+	<nav aria-label="breadcrumb">
+		<ol class="breadcrumb">
+			<li class="breadcrumb-item"><a href="/">Hjem</a></li>
+			<li class="breadcrumb-item active" aria-current="page">Start</li>
+		</ol>
+	</nav> -->
+
+	<div style="margin-top:10%">
+		<div style="margin:0 auto; max-width:600px;">
+			<div style="margin-bottom:25px; text-align:center;">
+				<h2>Hva ønsker du å gjøre?</h2>
+			</div>
+
+			<div class="row">
+				<div class="col-md-6" style="margin-bottom:25px;">
+					<a class="tile tile-modern tile-orange" href="/apps/share">
+						<span class="tile-icon">
+							<i class="fa-thin fa-hand-holding-box"></i>
+						</span>
+						<span class="title">
+							Del en tjeneste
+						</span>
+					</a>
+				</div>
+
+				<div class="col-md-6">
+					<a class="tile tile-modern tile-darkblue" href="/apps/all">
+						<span class="tile-icon">
+							<i class="fa-regular fa-eyes"></i>
+						</span>
+						<span class="title">
+							Jeg vil se
+						</span>
+					</a>
+				</div>
+			</div>
+		</div>
+	</div>
+
+</section>

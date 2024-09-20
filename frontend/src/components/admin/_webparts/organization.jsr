@@ -5,7 +5,9 @@
 
 	<div class="info">
 		<div class="title">
-			{{:title}}
+			<a href="/organization/profile/{{>public_id}}">
+				{{:title}}
+			</a>
 		</div>
 
 		<div class="help muted">
@@ -18,7 +20,7 @@
 			<i class="fas fa-pencil"></i>
 		</a>
 
-		<a href="">
+		<a href="#" data-bs-toggle="modal" data-bs-target="#admin-org-delete" data-bs-public-id="{{>public_id}}">
 			<i class="fas fa-trash-alt"></i>
 		</a>
 	</div>

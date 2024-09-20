@@ -1,7 +1,28 @@
 <section class="section__page app_share">
     <h1 class="section__form-h1">Jeg ønsker å dele</h1>
 
-	<div class="box" style="padding:0;">
+
+	<div id="share-not-logged-in" style="display:none;">
+		<div class="box" style="margin:0 auto; max-width:800px;">
+			<div class="row">
+				<div class="col-md-6">
+					<div style="font-size: 6rem; text-align: center;">
+						<i class="fa-light fa-user-lock"></i>
+					</div>
+				</div>
+				<div class="col-md-6">
+					<div style="font-size:1.5rem">Du må logge inn</div>
+					<div style="margin-top:15px;">
+						<p>For å dele en applikasjon må du logge inn.</p>
+						<p>Trykk på <a href="/user/login">denne lenken</a> for å gå til innlogging!</p>
+					</div>
+				</div>
+
+			</div>
+		</div>
+	</div>
+
+	<div id="share-wizard" class="box" style="padding:0; display:none;">
 
 		<!-- Steg 1: Velg type -->
 		<div class="wizard-step step-1">
@@ -563,5 +584,24 @@ function submitForm() {
         }
     });
 }
+
+
+
+function share_check_login() {
+	remote.rpc(`${config.api_url}/user/me`).then(response => {
+		console.log(response);
+		document.getElementById('share-not-logged-in').style.display = 'none';
+		document.getElementById('share-wizard').style.display = 'block';
+	})
+	.catch((err) => {
+		if (err.status == 401) {
+			document.getElementById('share-not-logged-in').style.display = 'block';
+			document.getElementById('share-wizard').style.display = 'none';
+		}
+		console.error(err);
+	});
+}
+
+share_check_login();
 
 </script>

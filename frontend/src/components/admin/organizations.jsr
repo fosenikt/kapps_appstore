@@ -108,9 +108,33 @@
 
 
 
+<div class="modal fade" id="admin-org-delete" tabindex="-1" aria-labelledby="admin-org-delete-label" aria-hidden="true">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<form id="form-modal-admin-org-delete" action="/company/delete" method="GET" data-callback="organization_update">
+				<div class="modal-header">
+					<h1 class="modal-title fs-5" id="admin-org-delete-label">Organisasjon</h1>
+					<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+				</div>
+				<div class="modal-body">
+					<input type="hidden" class="form-control" name="id" id="admin-org-delete-id">
+					
+					<p>Er du sikker på at du vil slette denne organisasjonen?</p>
+					<p>Når du sletter en organisasjon, vil også alle applikasjoner og brukere tilknyttet organisasjonen slettes.</p>
+				</div>
+				<div class="modal-footer">
+					<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Lukk</button>
+					<button type="submit" class="btn btn-danger">Slett organisasjon</button>
+				</div>
+			</form>
+		</div>
+	</div>
+</div>
+
+
 <script>
     // Variabel for å lagre debounce timeout
-    let debounceTimeout;
+    var debounceTimeout;
 
     // Funksjon for å søke etter organisasjoner
     function admin_organizations_search(query) {
@@ -203,5 +227,17 @@
 				console.error(err);
 			});
 		})
+	}
+
+
+
+	const admin_org_delete = document.getElementById('admin-org-delete');
+	if (admin_org_delete) {
+		admin_org_delete.addEventListener('show.bs.modal', event => {
+			const button = event.relatedTarget;
+			const user_id = button.getAttribute('data-bs-public-id');
+
+			document.getElementById('admin-org-delete-id').value = user_id;
+		});
 	}
 </script>

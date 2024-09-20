@@ -3,6 +3,11 @@ page('/', function () {
 });
 
 
+page('/start', (context, next) => {
+	page_switch(context.canonicalPath);
+});
+
+
 /* Apps
 ----------------------------------------- */
 
