@@ -164,7 +164,7 @@
 
 		.catch((err) => {
 			notification.error('En feil oppstod under henting av template');
-			console.log(err);
+			console.error(err);
 		});
 	}
 
@@ -192,7 +192,7 @@
 
 		.catch((err) => {
 			notification.error('En feil oppstod under henting av template');
-			console.log(err);
+			console.error(err);
 		});
 	}
 
@@ -206,10 +206,7 @@
 
 			// Loop
 			if (response != null) {
-				for (let i = 0; i < response.length; i++) {
-
-					console.log(response[i].title);
-					
+				for (let i = 0; i < response.length; i++) {					
 					document.getElementById('app-new-delivery-methods').innerHTML += `
 						<div class="input-border">
 							<div class="row">
@@ -237,7 +234,7 @@
 
 		.catch((err) => {
 			notification.error('En feil oppstod under henting av template');
-			console.log(err);
+			console.error(err);
 		});
 	}
 
@@ -335,9 +332,7 @@
 	setTimeout(function(){
 		document.getElementById('form-app-new').addEventListener('submit', function(event) {
 			event.preventDefault();
-			event.stopImmediatePropagation(); // Stops event to fire twice
-
-			console.log('Submitting form');
+			event.stopImmediatePropagation();
 
 			var thisForm = $(this);
 			var formAction = thisForm.attr('action');
@@ -356,12 +351,11 @@
 			formData.append('tags', tags);
 
 			remote.rpc_post(config.api_url+formAction, formData).then(response => {
-				console.log(response);
 			})
 
 			.catch((err) => {
 				notification.error('En feil oppstod (Feilkode 2)');
-				console.log(err);
+				console.error(err);
 			});
 
 

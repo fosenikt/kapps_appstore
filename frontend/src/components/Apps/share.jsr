@@ -543,11 +543,6 @@ function submitForm() {
     formData.append('short_description', shortDescription);
     formData.append('license_id', selectedLicense);
 
-	// Display the key/value pairs
-	for (var pair of formData.entries()) {
-		console.log(pair[0]+ ', ' + pair[1]); 
-	}
-
     const formAction = "/app/new";
 
     // Send skjemaet via POST
@@ -565,7 +560,7 @@ function submitForm() {
         }
     })
     .catch((err) => {
-        console.log(err);
+        console.error(err);
 
         if (err.status == 400) {
             if (err.response.message != null) {
@@ -589,7 +584,6 @@ function submitForm() {
 
 function share_check_login() {
 	remote.rpc(`${config.api_url}/user/me`).then(response => {
-		console.log(response);
 		document.getElementById('share-not-logged-in').style.display = 'none';
 		document.getElementById('share-wizard').style.display = 'block';
 	})

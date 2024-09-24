@@ -271,7 +271,7 @@ if (getParameterByName('token') != '' && getParameterByName('token') != null) {
 	remote.rpc('https:' + config.api_url + '/user/me').then(response => {
 		// If no response
 		if (response == null || response == undefined || response == 0 || response == false) {
-			console.log('No response from '+config.api_url+'/user/me, redirecting to login-page.');
+			console.info('No response from '+config.api_url+'/user/me, redirecting to login-page.');
 			localStorage.removeItem("user_token");
 			window.location.replace(config.login_url + '?error=50&autologin=0');
 		}
@@ -295,7 +295,7 @@ if (getParameterByName('token') != '' && getParameterByName('token') != null) {
 
 		}
 	}).catch((err) => {
-		console.log('API-frontend error on /user/me, redirecting to login-page.');
+		console.error('API-frontend error on /user/me, redirecting to login-page.');
 		//localStorage.removeItem("user_token");
 		//window.location.replace(config.login_url + '?error=51&autologin=0');
 	});
@@ -379,7 +379,6 @@ if (getParameterByName('c') != '' && getParameterByName('c') != null) {
 	
 	// Check logged in user from API
 	remote.rpc_post(config.api_url+'/auth/login/validate/hash', formData).then(response => {
-		console.log(response);
 		if (response != null) {
 			if (response.status == 'success') {
 				msg_status('success', 'Wohoo, du er nå innlogget!');
@@ -420,10 +419,7 @@ document.querySelector("#form-send-link").addEventListener('submit', event => {
 	let mail = formData.get('mail');
 
 	remote.rpc_post(config.api_url+formAction, formData).then(response => {
-		console.log(response);
-
 		if (response != null) {
-
 			if (response.status == 'success') {
 				show_enter_code();
 
@@ -451,7 +447,7 @@ document.querySelector("#form-send-link").addEventListener('submit', event => {
 	})
 
 	.catch((err) => {
-		console.log(err);
+		console.error(err);
 	});
 
 	return false;
@@ -473,8 +469,6 @@ document.querySelector("#form-validate-code").addEventListener('submit', event =
 	let formData = new FormData(event.target);
 
 	remote.rpc_post(config.api_url+formAction, formData).then(response => {
-		console.log(response);
-
 		if (response != null) {
 			if (response.status == 'success') {
 				msg_status('success', 'Wohoo, du er nå innlogget!');
@@ -494,9 +488,9 @@ document.querySelector("#form-validate-code").addEventListener('submit', event =
 	})
 
 	.catch((err) => {
-		console.log(err);
-		console.log(err.status);
-		console.log(err.response.message);
+		console.error(err);
+		console.error(err.status);
+		console.error(err.response.message);
 		if (err.status == 400) {
 			if (err.response.message != '' && err.response.message != undefined) {
 				msg_status('error', err.response.message);

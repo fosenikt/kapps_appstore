@@ -141,13 +141,13 @@
 
 		.catch((err) => {
 			notification.error('En feil oppstod under lasting av siden. Vennligst prøv oppfrisk siden å prøv på nytt.');
-			console.log(err);
+			console.error(err);
 		});
 	})
 
 	.catch((err) => {
 		notification.error('En feil oppstod under henting av template');
-		console.log(err);
+		console.error(err);
 	});
 
 
@@ -162,7 +162,7 @@
 
 	.catch((err) => {
 		notification.error('En feil oppstod under henting av template');
-		console.log(err);
+		console.error(err);
 	});
 
 

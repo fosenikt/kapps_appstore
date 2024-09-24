@@ -336,19 +336,11 @@
 
 		// Håndterer fjerning av tags ved klikk på kryssikonet
 		tagContainer.addEventListener('click', function(e) {
-			console.log("Klikk registrert på element:", e.target);
-
 			if (e.target.closest('svg') || e.target.closest('path') || e.target.classList.contains('fa-times')) {
-				console.log("Kryssikon klikket");
 				const badge = e.target.closest('.badge');
 				if (badge) {
-					console.log("Badge funnet, fjerner:", badge);
 					badge.remove();
-				} else {
-					console.log("Badge ikke funnet");
 				}
-			} else {
-				console.log("Klikket element er ikke et kryssikon");
 			}
 		});
 
@@ -365,9 +357,7 @@
 			removeIcon.style.cursor = 'pointer';
 
 			tagElement.appendChild(removeIcon);
-			tagContainer.appendChild(tagElement); // Legger til tag-elementet på slutten av tagContainer
-
-			console.log("Ny tag lagt til:", tagElement);
+			tagContainer.appendChild(tagElement);
 		}
 
 	} else {
@@ -382,7 +372,6 @@
 	 */		
 	addEvent(document, 'submit', 'form#form-app-edit-{{>id}}', function(e) {
 		event.preventDefault(); // Forhindre standard submit-adferd
-		console.log('Submit app');
 
 		var quillDesc = new Quill('#textAppEditDesc'); // Initialiser Quill editor for beskrivelse
 		var quillInst = new Quill('#textAppEditInst'); // Initialiser Quill editor for installasjonsveiledning
@@ -418,15 +407,9 @@
 			formData.append('tags', tags.join(','));
 		}
 
-		for (var pair of formData.entries()) {
-			console.log(pair[0]+ ', ' + pair[1]); 
-		}
-
 		// Send data til backend via rpc_post
-		
 		remote.rpc_post(`${config.api_url}/app/update/all`, formData)
 			.then(response => {
-				console.log('response', response);
 				if (response.status === 'success') {
 					notification.success('Applikasjon / Tjeneste ble oppdatert!');
 					window.location.replace("/apps/app/{{>id}}");
@@ -686,7 +669,6 @@
 		// Send filer til valgt endepunkt
 		remote.rpc_post(`${config.api_url}${upload_endpoint}`, formData)
 			.then(response => {
-				console.log('Upload response:', response);
 				notification.success('Filer lastet opp vellykket.');
 				selectedFiles = []; // Cleanup array with files
 				updatePreview(); // Remove file preview in modal
@@ -750,8 +732,6 @@
 
 		remote.rpc_post(`${config.api_url}/app/image/primary/set`, formData)
 			.then(response => {
-				console.log('file set primary', response);
-
 				if (response.status == 'success') {
 					app_edit_images_refresh();
 				}
@@ -779,8 +759,6 @@
 
 		remote.rpc_post(`${config.api_url}/app/images/delete`, formData)
 			.then(response => {
-				console.log('image delete', response);
-
 				if (response.status == 'success') {
 					app_edit_refresh_uploads('images', 'app-edit-images-container-{{>id}}');
 				}
@@ -807,8 +785,6 @@
 
 		remote.rpc_post(`${config.api_url}/app/file/delete`, formData)
 			.then(response => {
-				console.log('file delete', response);
-
 				if (response.status == 'success') {
 					app_edit_refresh_uploads('files', 'app-edit-files-container-{{>id}}');
 				}

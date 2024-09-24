@@ -171,7 +171,6 @@ function loadNykommere() {
   fetch(`${config.api_url}/stats/apps/latest`)
     .then(response => response.json())
     .then(latestAppsData => {
-      console.log('latestAppsData', latestAppsData);
       const nykommereRow = document.querySelector('#main-apps-latest');
 
       // Tømmer innholdet før nye elementer legges til

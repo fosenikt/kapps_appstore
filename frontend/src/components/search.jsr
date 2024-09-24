@@ -1,0 +1,54 @@
+<section class="section__page section_app">
+
+	<h2 style="margin-bottom:5px;">Søk</h2>
+
+	<nav aria-label="breadcrumb">
+		<ol class="breadcrumb">
+			<li class="breadcrumb-item"><a href="/">Hjem</a></li>
+			<li class="breadcrumb-item active" aria-current="page">Søk</li>
+		</ol>
+	</nav>
+
+	<div id="search-results" class="row">Søkeresultater</div>
+</section>
+
+
+<script>
+	function executeSearch(query) {
+		console.log('executeSearch', query);
+		if (query) {
+			const formData = new FormData();
+			formData.append("q", query);
+
+			remote.rpc_post(`${config.api_url}/search/apps`, formData).then(response => {
+				console.log(response);
+
+				if (response == null) {
+					document.getElementById('search-results').innerHTML = `Fant ingen tjenester som passer med ditt søk`;
+				} else {
+					template.load_webpart('/components/_webparts/search_results.jsr', '#search-results', response).then(response => {
+						// Search results loaded
+					});
+				}
+			})
+			.catch((err) => {
+				console.error(err);
+				if (err.status == 400) {
+					if (err.response.message !== '' && err.response.message !== undefined) {
+						msg_status('error', err.response.message);
+					}
+				} else {
+					msg_status('error', 'En feil oppstod!');
+				}
+			});
+		}
+	}
+
+	// Kjør søk når siden lastes basert på query-parametere
+	const urlParams = new URLSearchParams(window.location.search);
+	const query = urlParams.get('q');
+	if (query) {
+		executeSearch(query);
+	}
+
+</script>

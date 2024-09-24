@@ -105,9 +105,6 @@
 
 	function get_tokens() {
 		remote.rpc(config.api_url+'/admin/user/token/get/{{>id}}').then(response => {
-
-			console.log(response);
-
 			if (response == null) {
 				document.getElementById('user-token-list-{{>id}}').style.display = 'none';
 				document.getElementById('user-token-list-{{>id}}-noresults').style.display = 'block';
@@ -123,7 +120,7 @@
 
 		.catch((err) => {
 			notification.error('En feil oppstod under henting av template');
-			console.log(err);
+			console.error(err);
 		});
 	}
 
@@ -141,10 +138,7 @@
 		var formData = new FormData(e.target);
 		var formAction = e.target.getAttribute("action");
 
-		remote.rpc_post(config.api_url+formAction, formData).then(response => {			
-			console.log(response);
-			console.log(response.length);
-
+		remote.rpc_post(config.api_url+formAction, formData).then(response => {
 			if (response == null) {
 				notification.error('<b>En feil oppstod!</b><br /><br />Ingen svar fra backend. Mulig teknisk feil. Sjekk serverlog.'); // Notification
 			}
@@ -168,7 +162,7 @@
 		})
 
 		.catch((err) => {
-			console.log(err);
+			console.error(err);
 			notification.error('<b>En feil oppstod!</b><br /><br />Teknisk feil'); // Notification
 		});
 
@@ -182,16 +176,12 @@
 
 	function token_delete(id) {
 		remote.rpc(config.api_url+'/admin/user/token/delete/' + id).then(response => {
-
-			console.log(response);
-
 			get_tokens();
-
 		})
 
 		.catch((err) => {
 			notification.error('En feil oppstod under henting av template');
-			console.log(err);
+			console.error(err);
 		});
 	}
 

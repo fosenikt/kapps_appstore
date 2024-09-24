@@ -112,8 +112,6 @@
 <script>
 	function user_profile_me_edit_get() {
 		remote.rpc(`${config.api_url}/user/me`).then(response => {
-			console.log(response);
-
 			document.getElementById('breadcrumb-user-name').innerHTML = `${response.firstname} ${response.lastname}`;
 			document.getElementById('inputMeEditFirstname').value = response.firstname;
 			document.getElementById('inputMeEditLastname').value = response.lastname;
@@ -151,9 +149,7 @@
 		const formData = new FormData(form);
 
 		// Submit the form using remote.rpc_post
-		remote.rpc_post(`${config.api_url}${formAction}`, formData).then(response => {
-			console.log('Form submitted successfully:', response);
-			
+		remote.rpc_post(`${config.api_url}${formAction}`, formData).then(response => {			
 			if (response.status == 'success') {
 				notification.success('Din brukerprofil ble oppdatert!');
 			} else {

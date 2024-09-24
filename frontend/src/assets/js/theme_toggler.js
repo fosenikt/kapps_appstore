@@ -19,7 +19,6 @@ let ThemeToggler = function() {
         }
 
         current_theme = localStorage.getItem('theme') || default_theme;
-		console.log('current_theme', current_theme);
         
         // Initialize the icon in the button
         icon = document.createElement('span');
@@ -46,7 +45,6 @@ let ThemeToggler = function() {
 
     // Change theme
     plugin.set_theme = function(theme) {
-		console.log('set_theme', theme);
         localStorage.setItem('theme', theme);
         document.getElementById("css-theme").setAttribute("href", theme_path + theme + '.css');
 
@@ -88,18 +86,14 @@ let ThemeToggler = function() {
 
     // Update the icon in the button
     plugin.update_icon = function(theme) {
-		console.log('update_icon', theme);
-
         if (!icon) {
             console.error("Icon element not found");
             return;
         }
 
         if (theme == 'dark') {
-			console.log('Set icon off', icon_off);
             icon.innerHTML = icon_off;
         } else {
-			console.log('Set icon on', icon_on);
             icon.innerHTML = icon_on;
         }
     }

@@ -160,7 +160,7 @@
 		});
 
 	}).catch((err) => {
-		console.log(err);
+		console.error(err);
 	});
 
 
@@ -191,10 +191,6 @@
 		var thisData = $(this).select2('data');
 		var id_input = $(this).siblings('#input-newuser-company-id');
 		$(id_input).val(thisData[0].id);
-
-		//console.log('Show merc selected');
-		//merc_selected = document.getElementById("modalAddMerchandise").getElementsByClassName("mercSelected")[0];
-		//merc_selected.style.display = 'block';
 	});
 
 	/*
@@ -241,8 +237,6 @@
 		var formAction = e.target.getAttribute("action");
 
 		var id = formData.get('id');
-		console.log(id);
-
 		let endpoint = '';
 
 		if (id == '' || id == null || id == undefined) {
@@ -251,8 +245,7 @@
 			formAction = '/admin/user/update';
 		}
 
-		remote.rpc_post(config.api_url+formAction, formData).then(response => {			
-			console.log(response);
+		remote.rpc_post(config.api_url+formAction, formData).then(response => {
 			if (response.status == 'success') {
 				notification.success('Bruker lagret'); // Notification
 				thisForm.reset();
@@ -270,7 +263,7 @@
 		})
 
 		.catch((err) => {
-			console.log(err);
+			console.error(err);
 		});
 
 		return false;

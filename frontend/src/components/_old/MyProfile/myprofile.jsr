@@ -92,19 +92,17 @@
 
 <script>
 	remote.rpc(config.api_url+'/company/get/{{>customer.public_id}}').then(response => {
-		console.log(response);
 		template.load_webpart('/components/MyProfile/_webparts/userprofile_company.jsr', '#myprofile-company', response).then(response => {
-			console.log('Template loaded...');
 		})
 
 		.catch((err) => {
 			notification.error('En feil oppstod under lasting av siden. Vennligst prøv oppfrisk siden å prøv på nytt.');
-			console.log(err);
+			console.error(err);
 		});
 	})
 
 	.catch((err) => {
 		notification.error('En feil oppstod under henting av template');
-		console.log(err);
+		console.error(err);
 	});
 </script>

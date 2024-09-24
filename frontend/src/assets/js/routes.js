@@ -7,6 +7,10 @@ page('/start', (context, next) => {
 	page_switch(context.canonicalPath);
 });
 
+page('/search', (context, next) => {
+	page_switch(context.canonicalPath);
+});
+
 
 /* Apps
 ----------------------------------------- */
@@ -16,10 +20,7 @@ page('/apps/all', (context, next) => {
 });
 
 page('/apps/app/:id', function(ctx) {
-	//page_switch();
-
 	remote.rpc(`${config.api_url}/app/get/${ctx.params.id}`).then(response => {
-		console.log('app', response);
 		page_switch('/apps/app', `page-apps-app-${ctx.params.id}`, response);
 	})
 
@@ -35,11 +36,9 @@ page('/apps/app/:id', function(ctx) {
 	});
 });
 
-page('/apps/edit/:id', function(ctx) {
-	//page_switch();
 
+page('/apps/edit/:id', function(ctx) {
 	remote.rpc(`${config.api_url}/app/get/${ctx.params.id}`).then(response => {
-		console.log('app', response);
 		page_switch('/apps/edit', `page-apps-edit-${ctx.params.id}`, response);
 	})
 
@@ -61,12 +60,13 @@ page('/apps/share', (context, next) => {
 
 
 
+
+
 /* Organization
 ----------------------------------------- */
 
 page('/organization/profile/:id', (ctx) => {
 	remote.rpc(`${config.api_url}/company/get/${ctx.params.id}`).then(response => {
-		console.log('app', response);
 		page_switch('/organization/profile', `organization-profile-${ctx.params.id}`, response);
 	})
 
@@ -182,10 +182,8 @@ function notfound() {
 }
 
 function page_switch(page, page_id, data) {
-	console.log('Switch page');
-	console.log('page', page);
-	console.log('page_id', page_id);
-	console.log('data', data);
+    // Fjern query-parametere fra page-path (hvis de eksisterer)
+    page = page.split('?')[0]; // Fjerner alt etter '?' i URL-en
 
     // Hide all elements with class 'page-item'
     document.querySelectorAll('.page-item').forEach(item => {
@@ -212,11 +210,8 @@ function page_switch(page, page_id, data) {
 
     page = page.toLowerCase();
 
-	console.log('page', page);
-
     template.load_page('/components' + page + '.jsr', '#page-' + page_id, data)
         .then(response => {
-			console.log('Page loaded');
             updateActiveLink(page);
         })
         .catch(err => {

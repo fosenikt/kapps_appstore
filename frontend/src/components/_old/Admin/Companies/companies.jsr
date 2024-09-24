@@ -43,7 +43,7 @@
 
 	.catch((err) => {
 		notification.error('En feil oppstod under henting av template');
-		console.log(err);
+		console.error(err);
 	});
 
 
@@ -87,7 +87,6 @@ if (localStorage.getItem('tourAdminCompanies') === null) {
 	tour.on("show", step => console.log("TOUR SHOW", step));
 	tour.on("hide", step => console.log("TOUR HIDE"));
 	tour.on("complete", () => {
-		console.log("TOUR COMPLETED");
 		localStorage.setItem('tourAdminCompanies', 'completed');
 	});
 

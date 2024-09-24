@@ -35,8 +35,6 @@ let App = function() {
 
 	plugin.load_main = function()
 	{
-		console.log('App => load_main()');
-
 		template.load_page('/templates/dashboard.jsr', '#main', '', true).then(response => {
 
 			remote.rpc(config.api_url + '/user/me').then(response => {				
@@ -44,14 +42,14 @@ let App = function() {
 				document.getElementById('nav-user-circle').style.display = 'inline-block';
 				document.getElementById('nav-user-circle').innerHTML = response.initials;
 			}).catch((err) => {
-				console.log('Request error for current logged in user');
+				console.error('Request error for current logged in user');
 			});
 
 		})
 
 		.catch((err) => {
 			notification.error('En feil oppstod under lasting av siden. Vennligst prøv oppfrisk siden å prøv på nytt.');
-			console.log(err);
+			console.error(err);
 		});
 	}
 
@@ -62,13 +60,8 @@ let App = function() {
 	plugin.validate_login = function()
 	{
 		remote.rpc(config.api_url + '/user/me').then(response => {
-			console.log('validate_login', response);
 			// No response
 			if (response == null || response == undefined || response == 0 || response == false) {
-				//console.log('No response from current logged in user');
-				//localStorage.removeItem("user_data");
-				//localStorage.removeItem("user_token");
-				//window.location.replace(config.login_url + '?tokenRemove=1');
 				document.getElementById('nav-login-button').innerHTML = '<i class="fal fa-right-to-bracket"></i>';
 			}
 
@@ -77,14 +70,6 @@ let App = function() {
 				localStorage.setItem("user_data", JSON.stringify(response));
 
 				document.getElementById('nav-login-button').innerHTML = '<i class="fal fa-user"></i>';
-				//document.getElementById('nav-user-circle').style.display = 'inline-block';
-
-				/* if (response.initials != null) {
-					document.getElementById('nav-user-circle').innerHTML = response.initials;
-				} else {
-					document.getElementById('nav-user-circle').innerHTML = '<i class="fal fa-user"></i>';
-				} */
-
 
 				if (response.admin == 1) {
 					document.querySelectorAll('.display-admin').forEach(function(item) {
@@ -94,10 +79,7 @@ let App = function() {
 
 			}
 		}).catch((err) => {
-			//console.log('Request error for current logged in user');
-			//console.log(err);
-			//localStorage.removeItem("user_token");
-			//window.location.replace(config.login_url + '?tokenRemove=1');
+			//console.error(err);
 		});
 	}
 
@@ -107,9 +89,8 @@ let App = function() {
 
 		// Remove session from server
 		remote.rpc(config.api_url + '/auth/login/signout').then(response => {
-			console.log(response);
 		}).catch((err) => {
-			console.log('Request error for current logged in user');
+			console.error('Request error for current logged in user', err);
 		});
 
 		// Remove JWT token from client
@@ -201,10 +182,8 @@ let App = function() {
 		formData.append('entity_id2', entity_id2);
 
 		remote.rpc_post(config.api_url + '/stats/log', formData).then(response => {
-			console.log(response);
 		}).catch((err) => {
-			console.log('Could not log event');
-			console.log(err);
+			console.error(err);
 		});
 	}
 

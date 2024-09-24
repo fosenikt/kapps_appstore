@@ -187,11 +187,6 @@
 
 
 <script>
-	/* template.load_webpart('/components/Apps/_webparts/form_new.jsr', '#form-app-new', '').then(response => {
-		console.log('Form loaded...');
-	}); */
-
-
 	function appNewSelectType(type_id) {
 		document.getElementById('app-new-input-type-id').value = type_id;
 		appNewShowInputTitle();
@@ -216,9 +211,7 @@
 
 	document.getElementById('form-app-new').addEventListener('submit', function(event) {
 		event.preventDefault();
-		event.stopImmediatePropagation(); // Stops event to fire twice
-
-		console.log('Submitting form');
+		event.stopImmediatePropagation();
 
 		var thisForm = $(this);
 		var formAction = thisForm.attr('action');
@@ -228,8 +221,6 @@
 			xhr = new XMLHttpRequest();
 
 		remote.rpc_post(config.api_url+formAction, formData).then(response => {
-			console.log(response);
-
 			if (response.status == 'success') {
 				appNewShowSelectType();
 				document.getElementById('app-new-input-title').value = '';
@@ -242,7 +233,7 @@
 
 		.catch((err) => {
 			notification.error('En feil oppstod (Feilkode 2)');
-			console.log(err);
+			console.error(err);
 		});
 
 
@@ -274,7 +265,7 @@
 
 		.catch((err) => {
 			notification.error('En feil oppstod under henting av template');
-			console.log(err);
+			console.error(err);
 		});
 	}
 

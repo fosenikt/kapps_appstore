@@ -136,16 +136,6 @@ let Template = function() {
 	plugin.refresh_page = async function(template, target, json, force_reload)
 	{
 		return new Promise(function (resolve, reject) {
-
-			// Check if target has an hash to indicate ID
-			// Jquery support
-			//var without_hash = target.substring(1);
-			//var element =  document.getElementById(without_hash);
-
-
-			//console.log(element);
-
-
 			// Fetch template
 			var xhr = new XMLHttpRequest();
 			xhr.open("GET", template, true);

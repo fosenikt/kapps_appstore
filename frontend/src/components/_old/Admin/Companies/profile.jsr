@@ -299,8 +299,7 @@
 		var formData = new FormData(e.target);
 		var formAction = e.target.getAttribute("action");
 
-		remote.rpc_post(config.api_url+formAction, formData).then(response => {			
-			console.log(response);
+		remote.rpc_post(config.api_url+formAction, formData).then(response => {
 			if (response.status == 'success') {
 				notification.success('Virksomhet oppdatert'); // Notification
 				thisForm.reset();
@@ -316,7 +315,7 @@
 		})
 
 		.catch((err) => {
-			console.log(err);
+			console.error(err);
 		});
 
 		return false;
@@ -341,18 +340,11 @@
 
 
 	function submit_logo_upload(e) {
-		
-
 		var thisForm = document.getElementById('form-company-logo-{{>public_id}}');
 		var formData = new FormData(thisForm);
 		var formAction = thisForm.getAttribute("action");
 
-		console.log(thisForm);
-		console.log(formData);
-		console.log(formAction);
-
-		remote.rpc_post(config.api_url+formAction, formData).then(response => {			
-			console.log(response);
+		remote.rpc_post(config.api_url+formAction, formData).then(response => {
 			if (response.status == 'success') {
 				notification.success('Logo lastet opp'); // Notification
 				thisForm.reset();
@@ -368,7 +360,7 @@
 		})
 
 		.catch((err) => {
-			console.log(err);
+			console.error(err);
 		});
 
 		return false;
@@ -378,8 +370,7 @@
 
 
 	function deleteCompany(public_id) {
-		remote.rpc(config.api_url+'/company/delete/'+public_id).then(response => {			
-			console.log(response);
+		remote.rpc(config.api_url+'/company/delete/'+public_id).then(response => {
 			if (response.status == 'success') {
 				notification.success('Virksomhet slettet'); // Notification
 				modal_delete.close();
@@ -393,7 +384,7 @@
 		})
 
 		.catch((err) => {
-			console.log(err);
+			console.error(err);
 		});
 
 		return false;

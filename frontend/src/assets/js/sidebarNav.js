@@ -40,8 +40,6 @@ let SidebarNav = function() {
 
 	plugin.open_sidebar = function(sidebar_data_id) 
 	{
-		console.log('Open sidebar');
-
 		var sidebarElm = document.getElementById("nav-sidebar");
 
 		if (sidebar_data_id != undefined) {

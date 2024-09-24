@@ -141,13 +141,8 @@
 <script>
 	var modal_delete_user = M.Modal.init(document.getElementById('modal-delete-user-{{>id}}'), {});
 
-	function delete_user(id)
-	{
-		console.log('Delete user: ' + id);
-		
-
+	function delete_user(id) {
 		remote.rpc(config.api_url+'/admin/user/delete/{{>id}}').then(response => {
-			console.log(response);
 			if (response.status == 'success') {
 				notification.success('Bruker slettet'); // Notification
 				modal_delete_user.close();
@@ -159,7 +154,7 @@
 
 		.catch((err) => {
 			notification.error('En feil oppstod under henting av template');
-			console.log(err);
+			console.error(err);
 		});
 	}
 </script>

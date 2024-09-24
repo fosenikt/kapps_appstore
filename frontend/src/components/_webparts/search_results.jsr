@@ -1,0 +1,23 @@
+<a href="/apps/app/{{>id}}" class="col-md-3 mb-4">
+    <div class="card app" style="width:100%;">
+        <div class="card-image" style="background: url('{{>primary_image.thumb}}');"></div>
+        <div class="card-body">
+            <div>
+                <h5 class="card-title" style="white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">
+                    {{>title}}
+                </h5>
+            </div>
+            <p class="card-text">
+                <div class="description">
+                    {{>short_description}}
+                </div>
+
+                <div style="margin-top:10px;">
+                    <span class="badge rounded-pill text-bg-primary">
+                        {{>company.name}}
+                    </span>
+                </div>
+            </p>
+        </div>
+    </div>
+</a>

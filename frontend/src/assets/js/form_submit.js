@@ -9,7 +9,7 @@
 		event.preventDefault();
 
 		var f = event.target, formData = new FormData(f);
-		console.log("Form data for debugging:", Object.fromEntries(formData.entries()));
+		if (debug) console.log("Form data for debugging:", Object.fromEntries(formData.entries()));
 
 		var formAction = f.getAttribute("action");
 		

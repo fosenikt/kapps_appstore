@@ -53,7 +53,7 @@
 							<button type="submit" class="search__submit btn-transparent">
 								<i class="fa-light fa-magnifying-glass"></i>
 							</button>
-							<input type="text" placeholder="Søk...">
+							<input type="text" id="nav-header-search" placeholder="Søk...">
 						</form>
 
 						<div class="page__action">
@@ -210,8 +210,6 @@
 
 				// Lagre typene i localStorage under nøkkelen "types"
 				localStorage.setItem('types', JSON.stringify(types));
-
-				console.log('Typer hentet og lagret i localStorage:', types);
 			} catch (error) {
 				// Logg eventuelle feil som oppstår
 				console.error('Det oppstod en feil under henting av typer:', error);
@@ -224,7 +222,6 @@
 
 
 		function updateActiveLink(url) {
-			console.log(url);
 			// Get all the navigation links
 			const navLinks = document.querySelectorAll('.header a');
 			
@@ -237,8 +234,6 @@
 			});
 
 			const dashboardLink = document.querySelector('.header a[href="/"]');
-			console.log("Dashboard Link:", dashboardLink);
-
 
 			// If the URL is the base URL, set the Dashboard link to active
 			if (url === '/' || url === '/home' || !url) {
@@ -261,6 +256,49 @@
 		}
 
 		app.validate_login();
+
+
+		function performSearch(query) {
+			console.log('performSearch', query);
+
+			// Check if page is active in DOM
+			const searchPageElement = document.querySelector('#page--search');
+			const isSearchPageActive = searchPageElement && searchPageElement.style.display !== 'none';
+
+			if (query) {
+				// Search page is already active, running executeSearch
+				if (isSearchPageActive) {
+					executeSearch(query);  // Run search
+				}
+				// Search page is not active, redirecting to search page
+				else {
+					page(`/search?q=${encodeURIComponent(query)}`);  // Redirect to search page
+					
+					// Search page loaded, running executeSearch after timeout
+					setTimeout(() => {
+						const searchPageAfterRedirect = document.querySelector('#page--search');
+						if (searchPageAfterRedirect && searchPageAfterRedirect.style.display !== 'none') {
+							executeSearch(query);
+						}
+					}, 500); // Set timeout to allow page to load
+				}
+			}
+		}
+
+
+		document.querySelector('.form__search').addEventListener('submit', function(e) {
+			e.preventDefault(); // Prevent regular submit
+			console.log("Form submitted");
+
+			// Get search-string
+			const query = document.getElementById('nav-header-search').value.trim();
+
+			// Execute search if input is not empty
+			performSearch(query);
+		});
+
+
+
 	</script>
 
 

@@ -59,6 +59,6 @@
 
 	.catch((err) => {
 		notification.error('En feil oppstod under henting av template');
-		console.log(err);
+		console.error(err);
 	});
 </script>

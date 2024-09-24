@@ -475,12 +475,6 @@
 <script>
 
 	var modal_upload = M.Modal.init(document.getElementById('modal-app-image-upload-{{>id}}'), {
-		/* onOpenStart: function () {
-			console.log("I trigger as soon as the page is loaded");
-		},
-		onCloseEnd: function () {
-			console.log("same");
-		} */
 	});
 
 	var modal_description = M.Modal.init(document.getElementById('modal-app-description-{{>id}}'), {
@@ -626,7 +620,7 @@
 
 		.catch((err) => {
 			notification.error('En feil oppstod (Feilkode 2). Sjekk console i nettleser og event-viewer under innstillinger.');
-			console.log(err);
+			console.error(err);
 		});
 
 
@@ -647,7 +641,7 @@
 
 		.catch((err) => {
 			notification.error('En feil oppstod under henting av template');
-			console.log(err);
+			console.error(err);
 		});
 	}
 
@@ -708,7 +702,7 @@
 
 		.catch((err) => {
 			notification.error('En feil oppstod (Feilkode 1)');
-			console.log(err);
+			console.error(err);
 		});
 	
 	});
@@ -734,7 +728,7 @@
 
 		.catch((err) => {
 			notification.error('En feil oppstod (Feilkode 1)');
-			console.log(err);
+			console.error(err);
 		});
 	});
 
@@ -820,7 +814,7 @@
 
 		.catch((err) => {
 			notification.error('En feil oppstod (Feilkode 2). Sjekk console i nettleser og event-viewer under innstillinger.');
-			console.log(err);
+			console.error(err);
 		});
 
 
@@ -857,7 +851,7 @@
 
 		.catch((err) => {
 			notification.error('En feil oppstod under henting av template');
-			console.log(err);
+			console.error(err);
 		});
 	}
 
@@ -898,7 +892,7 @@
 
 		.catch((err) => {
 			notification.error('En feil oppstod under henting av template');
-			console.log(err);
+			console.error(err);
 		});
 	}
 
@@ -1033,7 +1027,7 @@
 
 		.catch((err) => {
 			notification.error('En feil oppstod (Feilkode 2)');
-			console.log(err);
+			console.error(err);
 		});
 
 		return false;
@@ -1068,7 +1062,7 @@
 
 		.catch((err) => {
 			notification.error('En feil oppstod (Feilkode 2)');
-			console.log(err);
+			console.error(err);
 		});
 
 		return false;
@@ -1112,7 +1106,7 @@
 
 		.catch((err) => {
 			notification.error('En feil oppstod (Feilkode 2)');
-			console.log(err);
+			console.error(err);
 		});
 
 		return false;
@@ -1127,15 +1121,11 @@
 	 * Published, draft or deleted
 	*/
 	function change_status(id, type) {
-
 		let endpoint = '';
 
 		if (type == 'publish') endpoint = '/app/publish/';
 		else if (type == 'unpublish') endpoint = '/app/unpublish/';
 		else if (type == 'delete') endpoint = '/app/delete/';
-		else {
-			console.log('id: '+id+'. type: '+type);
-		}
 
 		remote.rpc(config.api_url+endpoint+id).then(response => {
 			if (response != null) {
@@ -1171,7 +1161,7 @@
 
 		.catch((err) => {
 			notification.error('En feil oppstod (Feilkode 2). Sjekk console i nettleser og event-viewer under innstillinger.');
-			console.log(err);
+			console.error(err);
 		});
 	}
 
@@ -1207,7 +1197,7 @@
 
 			.catch((err) => {
 				notification.error('En feil oppstod (Feilkode 2). Sjekk console i nettleser og event-viewer under innstillinger.');
-				console.log(err);
+				console.error(err);
 			});
 		}
 	}

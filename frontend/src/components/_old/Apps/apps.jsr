@@ -1,28 +1,11 @@
 <div class="container page-top-space">
-
-	
-
-	<!-- <h1>Applikasjoner</h1> -->
-
-	<!-- <a class="waves-effect waves-light btn" href="/app/new">
-		Ny applikasjon
-	</a> -->
-
-
 	<div id="apps-by-type" class="row apps-list">
 		<i class="fas fa-circle-notch fa-spin"></i> Henter applikasjoner...
 	</div>
-
 </div>
-
-<!-- <a class="close-sidebar" href="javascript:nav_sidebar.toggle()">
-	<i class="fas fa-chevron-left"></i>
-</a> -->
 
 <script>
 	remote.rpc(config.api_url+'/apps/get'+window.location.search).then(response => {
-		console.log(response);
-
 		if (response == null || response.length == 0) {
 			document.getElementById('apps-by-type').innerHTML = `
 				<div class="noResult">
@@ -44,6 +27,6 @@
 
 	.catch((err) => {
 		notification.error('En feil oppstod under henting av template');
-		console.log(err);
+		console.error(err);
 	});
 </script>

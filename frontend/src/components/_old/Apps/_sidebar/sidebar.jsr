@@ -32,14 +32,10 @@
 
 
 <script>
-	console.log(getParameterByName('type'));
-
 	if (getParameterByName('type') != null) {
 		document.getElementById('app-sidebar-categories').querySelectorAll('.nav-item').forEach(function(item) {
 			item.classList.remove("active");
 		});
-		
-		console.log('apps-sidebar-category-'+getParameterByName('type'));
 
 		document.getElementById('apps-sidebar-category-'+getParameterByName('type')).classList.add("active");
 	}

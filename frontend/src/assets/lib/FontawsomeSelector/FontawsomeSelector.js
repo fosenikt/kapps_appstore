@@ -1,13 +1,9 @@
 class FontawsomeSelector {
 
 	constructor(config) {
-		//this.element = element;		// The input-element (search-element)
-		console.log(config);
-
 		this.element = config.element;
 		this.input = config.input_name;
 		this.randid = this.randomId();
-
 
 		this.init();
 	}
@@ -18,12 +14,8 @@ class FontawsomeSelector {
 	*/
 
 
-	init()
-	{
+	init() {
 		var plugin = this;
-		console.log(plugin.element);
-
-		//console.log(document.querySelector(plugin.element));
 
 		document.querySelector(plugin.element).innerHTML = `
 			<div class="dropdown fa-icon-selector" id="dd-${this.randid}">
@@ -37,8 +29,6 @@ class FontawsomeSelector {
 			</div>
 			<input type="hidden" id="input-fontawsome-icon-${plugin.randid}" name="${plugin.input}">
 		`;
-
-		//console.log();
 
 		//let preview_container = document.querySelector(plugin.element).getElementsByClassName("fa-selector-icon-preview")[0];
 		let ddm = document.querySelector(plugin.element).getElementsByClassName("dropdown-menu")[0];
@@ -56,8 +46,6 @@ class FontawsomeSelector {
 
 
 		addEvent(document, 'click', '.fa-selector-icon-'+plugin.randid, function(e) {
-			console.log(this);
-
 			let dd = this.closest(".fa-icon-selector");
 			let preview_container = dd.getElementsByClassName("fa-selector-icon-preview")[0];
 
@@ -74,11 +62,6 @@ class FontawsomeSelector {
 	select(icon)
 	{
 		var plugin = this;
-
-		console.log('selecting icon');
-		console.log(icon);
-		console.log('ID: ' + plugin.randid);
-		console.log('element: ' + this.element);
 
 		document.getElementById('dd-preview-'+this.randid).innerHTML = `<i class="${icon} fa-fw">`;
 		document.querySelector('#input-fontawsome-icon-'+plugin.randid).value = icon;

@@ -85,8 +85,6 @@
 <script>
 	function organization_apps() {
 		remote.rpc(`${config.api_url}/company/published/apps/{{>public_id}}`).then(response => {
-			console.log(response);
-
 			template.load_webpart('/components/apps/_webparts/apps.jsr', '#organization-mine-apps', response).then(response => {
 
 			});

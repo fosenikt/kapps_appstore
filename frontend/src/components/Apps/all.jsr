@@ -29,8 +29,6 @@
 <script>
     function get_apps() {
         remote.rpc(`${config.api_url}/apps/get`).then(response => {
-            console.log(response);
-
             template.load_webpart('/components/apps/_webparts/apps.jsr', '#app-list', response).then(() => {
                 const typeCounts = new Map();
                 const tagCounts = new Map();

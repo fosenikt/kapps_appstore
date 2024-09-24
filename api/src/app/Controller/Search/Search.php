@@ -7,16 +7,6 @@ class Search {
 
     private $AuthUser;
 
-    public function __construct()
-    {
-        $this->AuthUser = new AuthUser;
-        if (!$this->AuthUser->isAuthenticated()) {
-            header('HTTP/1.0 403 Forbidden');
-            echo json_encode(['status' => 'error', 'message' => 'Access denied']);
-            exit;
-        }
-    }
-
     /**
      * @OA\Post(
      *     path="/search/all",
@@ -83,6 +73,13 @@ class Search {
      */
     public function all()
     {
+		$this->AuthUser = new AuthUser;
+        if (!$this->AuthUser->isAuthenticated()) {
+            header('HTTP/1.0 403 Forbidden');
+            echo json_encode(['status' => 'error', 'message' => 'Access denied']);
+            exit;
+        }
+
         $obj = new \Kapps\Model\Search\Search();
         return $obj->all($_POST['q']);
     }
@@ -184,6 +181,13 @@ class Search {
      */
     public function companies()
     {
+		$this->AuthUser = new AuthUser;
+        if (!$this->AuthUser->isAuthenticated()) {
+            header('HTTP/1.0 403 Forbidden');
+            echo json_encode(['status' => 'error', 'message' => 'Access denied']);
+            exit;
+        }
+
         $obj = new \Kapps\Model\Search\Search();
         return $obj->companies($_POST['q']);
     }
@@ -233,6 +237,13 @@ class Search {
      */
     public function companies_get($q)
     {
+		$this->AuthUser = new AuthUser;
+        if (!$this->AuthUser->isAuthenticated()) {
+            header('HTTP/1.0 403 Forbidden');
+            echo json_encode(['status' => 'error', 'message' => 'Access denied']);
+            exit;
+        }
+
         $obj = new \Kapps\Model\Search\Search();
         return $obj->companies($q);
     }
@@ -285,7 +296,13 @@ class Search {
      */
     public function users($q)
     {
-		error_log("Search Query: $q");
+		$this->AuthUser = new AuthUser;
+        if (!$this->AuthUser->isAuthenticated()) {
+            header('HTTP/1.0 403 Forbidden');
+            echo json_encode(['status' => 'error', 'message' => 'Access denied']);
+            exit;
+        }
+
         $obj = new \Kapps\Model\Search\Search();
         return $obj->users($q);
     }
