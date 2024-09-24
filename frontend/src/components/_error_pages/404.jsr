@@ -1,7 +1,30 @@
-<section class="section__page">
-	
-	<h2>404</h2>
+<section class="section__page" style="text-align: center; padding: 50px;">
+    
+    <h2 style="font-size: 6rem; color: #ff6b6b;">404</h2>
+    
+    <p style="font-size: 1.5rem; color: #333;">
+        Oops! Ser ut som vi mistet denne siden på veien.
+    </p>
 
-	Finner ikke siden
+    <div id="funnyMessage" style="font-size: 1.2rem; color: #777; margin-top: 20px;"></div>
+
+	<div style="margin-top:35px">
+		<a href="/" class="btn btn-secondary">
+			Tilbake til trygghet (Hjem)
+		</a>
+	</div>
 
 </section>
+
+<script>
+    const messages_404 = [
+        "Det ser ut som du har gått deg bort... Har du prøvd å sjekke kartet?",
+        "Hmmm... det er visst ingen skatter på denne siden!",
+        "404... akkurat som når du leter etter fjernkontrollen.",
+        "Ingen pølser her, bare en 404-side.",
+        "Kanskje en kake kan gjøre det bedre? Nei, vi har ikke kake her heller..."
+    ];
+
+    // Velg en tilfeldig melding
+    document.getElementById('funnyMessage').textContent = messages_404[Math.floor(Math.random() * messages_404.length)];
+</script>

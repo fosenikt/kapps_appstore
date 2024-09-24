@@ -172,6 +172,12 @@ page('/admin/users', (context, next) => {
 
 
 
+/* Error pages
+----------------------------------------- */
+page('/401', (context, next) => {
+	page_switch('_error_pages/401', 'page-401', {})
+});
+
 
 
 page('*', notfound);

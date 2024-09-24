@@ -236,4 +236,9 @@
 			document.getElementById('admin-org-delete-id').value = user_id;
 		});
 	}
+	
+	var user = JSON.parse(localStorage.getItem('user_data'));
+	if (user.admin == 0) {
+		page('401');
+	}
 </script>

@@ -20,3 +20,10 @@
 	</div>
 
 </section>
+
+<script>
+	var user = JSON.parse(localStorage.getItem('user_data'));
+	if (user.admin == 0) {
+		page('401');
+	}
+</script>

@@ -1,0 +1,30 @@
+<section class="section__page" style="text-align: center; padding: 50px;">
+    
+    <h2 style="font-size: 6rem; color: #ff6b6b;">401</h2>
+    
+    <p style="font-size: 1.5rem; color: #333;">
+        Uff da! Du har ikke tilgang til denne siden.
+    </p>
+
+    <div id="funnyMessage" style="font-size: 1.2rem; color: #777; margin-top: 20px;"></div>
+
+	<div style="margin-top:35px">
+		<a href="/user/login" class="btn btn-primary">
+			Logg inn for å fortsette
+		</a>
+	</div>
+
+</section>
+
+<script>
+    const messages_401 = [
+        "Hvem går der? Du trenger nøkler for å komme inn.",
+        "Dette er en eksklusiv fest... og du står ikke på gjestelisten.",
+        "Er du sikker på at du har adgang? Prøv å logge inn igjen.",
+        "Ingen adgang! Selv ikke med en superheltkappe.",
+        "Ser ut som du prøver å snike deg inn... Det er tid for å logge inn!"
+    ];
+
+    // Velg en tilfeldig melding
+    document.getElementById('funnyMessage').textContent = messages_401[Math.floor(Math.random() * messages_401.length)];
+</script>

@@ -61,11 +61,12 @@ button::-moz-focus-inner {
     padding: 0;
     border: 0;
 }
-a,
-a:visited {
-	color: var(--link-text-color);
+a:not(.btn),
+a:not(.btn):visited {
+    color: var(--link-text-color);
     text-decoration: none;
 }
+
 a:hover {
 	color: var(--link-text-color-hover);
     text-decoration: none;

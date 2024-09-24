@@ -102,7 +102,7 @@ if (isset($_SESSION['redir']) && !empty($_SESSION['redir'])) {
 }
 
 if (!empty($token)) {
-	header('Location: https://'.FRONTEND_HOST.'/login/?login=success&token='.$token.'&autologin=0&redir='.urlencode($redir));
+	header('Location: https://'.FRONTEND_HOST.'/user/login?login=success&token='.$token.'&autologin=0&redir='.urlencode($redir));
 } else {
-	header('Location: https://'.FRONTEND_HOST.'/login/?login=error&error=1&redir='.urlencode($redir));
+	header('Location: https://'.FRONTEND_HOST.'/user/login?login=error&error=1&redir='.urlencode($redir));
 }
