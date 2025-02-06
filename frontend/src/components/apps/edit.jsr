@@ -1,6 +1,5 @@
 <!-- Inkluder Quill CSS og JS -->
-<script src="https://cdn.jsdelivr.net/npm/quill@2.0.3/dist/quill.js"></script>
-<script src="https://unpkg.com/quill-table-ui@1.0.5/dist/umd/index.js" type="text/javascript"></script>
+
 
 <link href="https://cdn.jsdelivr.net/npm/quill@2.0.3/dist/quill.snow.css" rel="stylesheet" />
 <link href="https://unpkg.com/quill-table-ui@1.0.5/dist/index.css" rel="stylesheet">
@@ -430,7 +429,7 @@
 					}
 				}
 
-				if (err.status == 403) {
+				else if (err.status == 403) {
 					if (err.response.message != null) {
 						console.error(err.response.message);
 					}
@@ -468,7 +467,7 @@
 		['code-block', 'clean']                  	      // Blokker
 	];
 
-	document.addEventListener("DOMContentLoaded", function() {
+	//document.addEventListener("DOMContentLoaded", function() {
 		// Initialiser Quill for "Beskrivelse"
 		var quillDesc = new Quill('#textAppEditDesc', {
 			theme: 'snow',  // Velg tema, 'snow' er standardtemaet
@@ -485,7 +484,7 @@
 				toolbar: toolbarOptions
 			}
 		});
-	});
+	//});
 
 
 
