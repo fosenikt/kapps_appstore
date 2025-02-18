@@ -89,7 +89,7 @@
 		<div style="margin-bottom:35px;">
 			<div class="d-grid gap-2">
 				<a class="btn btn-primary btn-lg" href="/organization/myapps/{{>customer.public_id}}">
-					<i class="fa-light fa-boxes-stacked"></i> Se hva vi har delt
+					<i class="fa-light fa-boxes-stacked"></i> Våre delte applikasjoner
 				</a>
 				<a class="btn btn-success" href="/apps/share">
 					<i class="fa-light fa-hand-holding-box"></i> Del noe nytt?

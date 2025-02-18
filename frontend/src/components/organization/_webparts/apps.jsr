@@ -51,16 +51,57 @@
 	</div>
 
 	<div class="tools">
-		<a href="javascript:void(0);" 
-           class="delete-app"
-           data-app-id="{{>id}}" 
-           data-app-status="{{>status}}" 
-           onclick="organization_modal_app_delete(event)">
-            <i class="fas fa-trash-alt"></i>
-        </a>
+		<div class="btn-group" role="group" aria-label="Manage application" style="margin:15px;">
+			{{if status=='draft'}}
+				<button type="button" 
+						class="btn btn-success"
+						onclick="organization_publish_app('{{>id}}');"
+						data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="Publiser, slik at den blir tilgjengelig for andre">
+					<i class="fa-solid fa-fw fa-play"></i>
+				</button>
+			{{else status=='published'}}
+				<button type="button" 
+						class="btn btn-warning"
+						onclick="organization_unpublish_app('{{>id}}');"
+						data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="Fjern publisering">
+					<i class="fa-solid fa-fw fa-pause"></i>
+				</button>
+			{{else status=='deleted'}}
+				<button type="button" 
+						class="btn btn-primary"
+						onclick="organization_unpublish_app('{{>id}}');"
+						data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="Angre sletting">
+					<i class="fa-solid fa-fw fa-rotate-left"></i>
+				</button>
+			{{/if}}
+			
+			{{if status=='draft' || status=='published'}}
+				<button type="button" 
+						class="btn btn-secondary"
+						style="margin:0px;"
+						onclick="window.location.href='/apps/edit/{{>id}}'"
+						data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="Rediger">
+					<i class="fa-solid fa-fw fa-pencil-alt"></i>
+				</button>
 
-		<a href="/apps/edit/{{>id}}">
-			<i class="fas fa-pencil-alt"></i>
-		</a>
+				<button type="button" 
+						class="btn btn-danger" 
+						data-app-id="{{>id}}" 
+						data-app-status="{{>status}}" 
+						onclick="organization_modal_app_delete(event)"
+						data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="Merk som slettet">
+					<i class="fa-solid fa-fw fa-xmark"></i>
+				</button>
+			{{else}}
+				<button type="button" 
+						class="btn btn-danger" 
+						data-app-id="{{>id}}" 
+						data-app-status="{{>status}}" 
+						onclick="organization_modal_app_delete(event)"
+						data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="Slett permanent">
+					<i class="fa-solid fa-fw fa-trash-alt"></i>
+				</button>
+			{{/if}}
+		</div>
 	</div>
 </div>

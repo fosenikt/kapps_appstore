@@ -1595,9 +1595,17 @@ html.dark .section__form-form select {
 .modal-content h4 { font-size: 1.1rem; color: var(--main-text-color) !important; }
 .modal-content h5 { font-size: 1rem; color: var(--main-text-color) !important; }
 
+
+
+/* Buttons
+--------------------------------------------------------------*/
+
 .btn-secondary { background-color:var(--btn-dark-bg-color); color:var(--btn-dark-text-color) !important; }
+.btn-danger { background-color:var(--btn-danger-bg-color); color:var(--btn-danger-text-color) !important; border:var(--btn-danger-text-color); }
+.btn-success { background-color:var(--btn-success-bg-color); color:var(--btn-success-text-color) !important; border:var(--btn-success-text-color); }
+.btn-warning { background-color:var(--btn-warning-bg-color); color:var(--btn-warning-text-color) !important; border:var(--btn-warning-text-color); }
 
-
+.btn-group button {border:0px;}
 
 
 /* Form

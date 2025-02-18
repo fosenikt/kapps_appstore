@@ -28,7 +28,12 @@
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
-                Er du sikker på at du vil slette denne applikasjonen?
+				<p>
+                	Er du sikker på at du vil slette denne?
+				</p>
+				<p>
+					Den vil først bli merket som slettet. Dersom du velger å slette igjen, så vil den slettes helt fra databasen.
+				</p>
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Avbryt</button>
@@ -39,11 +44,45 @@
 </div>
 
 
+<style>
+	@media (min-width: 0px) {
+		#organization-myapps .list-box .info-wrapper {
+			flex-direction: column;
+		}
+		#organization-myapps .list-box .info-wrapper .icon {
+			flex: 1 1 auto;
+		}
+		#organization-myapps .list-box .info-wrapper .image {
+			width: 100%;
+			height: 200px;
+		}
+	}
+
+	@media (min-width: 768px) {
+		#organization-myapps .list-box .info-wrapper {
+			flex-direction: row;
+		}
+		#organization-myapps .list-box .info-wrapper .icon {
+			flex: 0 0 140px;
+		}
+		#organization-myapps .list-box .info-wrapper .image {
+			height: 90px;
+			width: 120px;
+		}
+	}
+</style>
+
+
 <script>
 	function organization_apps_list() {
+
+		// Remove tooltip to prevent them sticking around from last button when changing status
+		document.querySelectorAll('.tooltip').forEach(tooltip => tooltip.remove());
+
 		remote.rpc(`${config.api_url}/company/apps`).then(response => {
 			template.load_webpart('/components/organization/_webparts/apps.jsr', '#organization-myapps', response).then(response => {
-
+				const tooltipTriggerList = document.querySelectorAll('[data-bs-toggle="tooltip"]')
+				const tooltipList = [...tooltipTriggerList].map(tooltipTriggerEl => new bootstrap.Tooltip(tooltipTriggerEl))
 			});
 		})
 
@@ -102,5 +141,42 @@
 			// Hide the modal after confirming delete
 			modal.hide();
 		};
+	}
+
+
+
+
+	function organization_publish_app(app_id) {
+		remote.rpc(`${config.api_url}/app/publish/${app_id}`).then(response => {
+			organization_apps_list();
+		})
+
+		.catch((err) => {
+			notification.error('En feil oppstod under publisering av applikasjon');
+			console.error(err);
+
+			// If token is expired
+			if (err.status == 401) {
+				localStorage.removeItem("user_token");
+				page('/user/login');
+			}
+		});
+	}
+
+	function organization_unpublish_app(app_id) {
+		remote.rpc(`${config.api_url}/app/unpublish/${app_id}`).then(response => {
+			organization_apps_list();
+		})
+
+		.catch((err) => {
+			notification.error('En feil oppstod under publisering av applikasjon');
+			console.error(err);
+
+			// If token is expired
+			if (err.status == 401) {
+				localStorage.removeItem("user_token");
+				page('/user/login');
+			}
+		});
 	}
 </script>

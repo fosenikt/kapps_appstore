@@ -56,4 +56,10 @@
 
 	--btn-dark-bg-color: #6c757d;
 	--btn-dark-text-color: #fff;
+	--btn-success-bg-color: #83e97f;
+	--btn-success-text-color: #fff;
+	--btn-warning-bg-color: #e9de7f;
+	--btn-warning-text-color: #fff;
+	--btn-danger-bg-color: #db5c5c;
+	--btn-danger-text-color: #fff;
 }

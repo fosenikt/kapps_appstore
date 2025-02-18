@@ -79,7 +79,12 @@ let App = function() {
 
 			}
 		}).catch((err) => {
-			//console.error(err);
+			console.error(err);
+			console.error(err.status);
+			if (err.status == 401) {
+				localStorage.removeItem("user_token");
+				window.location.replace('/user/login');
+			}
 		});
 	}
 
@@ -95,7 +100,7 @@ let App = function() {
 
 		// Remove JWT token from client
 		localStorage.removeItem("user_token");
-		window.location.replace(config.login_url + '?tokenRemove=1');
+		window.location.replace('/user/login');
 	}
 
 
