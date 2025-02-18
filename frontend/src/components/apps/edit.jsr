@@ -533,62 +533,67 @@
 	 * @param {string} containerId - ID for containeren der elementene skal vises.
 	 */
 	function app_edit_refresh_uploads(type, containerId) {
-    let container = document.getElementById(containerId);
+		let container = document.getElementById(containerId);
 
-    remote.rpc(`${config.api_url}/app/get/{{>id}}`)
-        .then(response => {
-            container.innerHTML = '';
+		remote.rpc(`${config.api_url}/app/get/{{>id}}`)
+			.then(response => {
+				console.log('app_edit_refresh_uploads', response);
+				container.innerHTML = '';
 
-            if (type === 'images') {
-                response.images.forEach(image => {
-                    const thumbHTML = `
-                        <div class="thumb" style="background-image: url('${image.thumb}');">
-                            <div class="thumb-footer">
-                                <div class="left">
-                                    ${image.primary === 1 ? `
-                                        <i class="fas fa-check" style="color:green;"></i> Hovedbilde
-                                    ` : `
-                                        <a href="#" onclick="app_edit_img_set_primary('${image.filename}')">Sett hovedbilde</a>
-                                    `}
-                                </div>
-                                <div class="right">
-                                    <a href="#" data-bs-toggle="modal" data-bs-target="#modal-app-edit-delete-confirmation" data-bs-id="${image.filename}" data-bs-type="image">
-                                        <i class="fas fa-trash-alt" style="color:rgb(255, 122, 122);"></i>
-                                    </a>
-                                </div>
-                            </div>
-                        </div>
-                    `;
-                    container.insertAdjacentHTML('beforeend', thumbHTML);
-                });
-            } else if (type === 'files') {
-                response.files.forEach(file => {
-                    const fileHTML = `
-                        <div class="file box box-sm box-bg">
-                            <div class="icon">
-                                ${file.icon}
-                            </div>
-                            <div class="filedata">
-                                <div class="title">
-                                    <a href="${file.path}" target="_blank">${file.filename}</a>
-                                </div>
-                                <div class="info">${file.size.readable} &middot; ${file.time_uploaded}</div>
-                            </div>
-                            <div class="file-actions">
-                                <a href="#" data-bs-toggle="modal" data-bs-target="#modal-app-edit-delete-confirmation" data-bs-id="${file.id}" data-bs-type="file">
-                                    <i class="fas fa-trash-alt" style="color:rgb(255, 122, 122);"></i>
-                                </a>
-                            </div>
-                        </div>
-                    `;
-                    container.insertAdjacentHTML('beforeend', fileHTML);
-                });
-            }
-        })
-        .catch((err) => {
-            notification.error(`En feil oppstod under henting av ${type}`);
-            console.error(err);
-        });
+				if (type === 'images') {
+					if (response.images == false || response.images == null) return;
+
+					response.images.forEach(image => {
+						const thumbHTML = `
+							<div class="thumb" style="background-image: url('${image.thumb}');">
+								<div class="thumb-footer">
+									<div class="left">
+										${image.primary === 1 ? `
+											<i class="fas fa-check" style="color:green;"></i> Hovedbilde
+										` : `
+											<a href="#" onclick="app_edit_img_set_primary('${image.filename}')">Sett hovedbilde</a>
+										`}
+									</div>
+									<div class="right">
+										<a href="#" data-bs-toggle="modal" data-bs-target="#modal-app-edit-delete-confirmation" data-bs-id="${image.filename}" data-bs-type="image">
+											<i class="fas fa-trash-alt" style="color:rgb(255, 122, 122);"></i>
+										</a>
+									</div>
+								</div>
+							</div>
+						`;
+						container.insertAdjacentHTML('beforeend', thumbHTML);
+					});
+				} else if (type === 'files') {
+					if (response.files == false || response.files == null) return;
+
+					response.files.forEach(file => {
+						const fileHTML = `
+							<div class="file box box-sm box-bg">
+								<div class="icon">
+									${file.icon}
+								</div>
+								<div class="filedata">
+									<div class="title">
+										<a href="${file.path}" target="_blank">${file.filename}</a>
+									</div>
+									<div class="info">${file.size.readable} &middot; ${file.time_uploaded}</div>
+								</div>
+								<div class="file-actions">
+									<a href="#" data-bs-toggle="modal" data-bs-target="#modal-app-edit-delete-confirmation" data-bs-id="${file.id}" data-bs-type="file">
+										<i class="fas fa-trash-alt" style="color:rgb(255, 122, 122);"></i>
+									</a>
+								</div>
+							</div>
+						`;
+						container.insertAdjacentHTML('beforeend', fileHTML);
+					});
+				}
+			})
+			.catch((err) => {
+				notification.error(`En feil oppstod under henting av ${type}`);
+				console.error(err);
+			});
 	}
 
 
@@ -802,7 +807,7 @@
 	/**
 	 * Delete confirmation
 	 */
-	document.addEventListener('DOMContentLoaded', function() {
+	//document.addEventListener('DOMContentLoaded', function() {
 		var deleteConfirmModal = document.getElementById('modal-app-edit-delete-confirmation');
 		let idToDelete = null;
 		let deleteType = null;
@@ -815,20 +820,22 @@
 		});
 
 		// Håndterer klikk på "Slett"-knappen i modalet
-		document.getElementById('btn-app-edit-item-delete').addEventListener('click', function() {
+		//document.getElementById('btn-app-edit-item-delete').addEventListener('click', function() {
+		addEvent(document, 'click', '#btn-app-edit-item-delete', function(e) {
+			console.log('Button clicked');
 			if (idToDelete && deleteType) {
-			if (deleteType === 'file') {
-				app_edit_file_delete(idToDelete); // Kall til slett-funksjonen for filer
-			} else if (deleteType === 'image') {
-				app_edit_img_delete(idToDelete); // Kall til slett-funksjonen for bilder
-			}
-			idToDelete = null; // Tilbakestill IDen etter sletting
-			deleteType = null; // Tilbakestill typen etter sletting
-			const modalInstance = bootstrap.Modal.getInstance(deleteConfirmModal);
-			modalInstance.hide(); // Lukk modalet etter sletting
+				if (deleteType === 'file') {
+					app_edit_file_delete(idToDelete); // Kall til slett-funksjonen for filer
+				} else if (deleteType === 'image') {
+					app_edit_img_delete(idToDelete); // Kall til slett-funksjonen for bilder
+				}
+				idToDelete = null; // Tilbakestill IDen etter sletting
+				deleteType = null; // Tilbakestill typen etter sletting
+				const modalInstance = bootstrap.Modal.getInstance(deleteConfirmModal);
+				modalInstance.hide(); // Lukk modalet etter sletting
 			}
 		});
-	});
+	//});
 
 
 
