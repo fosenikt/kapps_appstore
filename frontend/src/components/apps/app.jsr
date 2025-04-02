@@ -183,7 +183,7 @@
 					<i class="fa-solid fa-link"></i> Kildekode
 				</div>
 				<div class="detail__value">
-					{{if link_source_code}}
+					{{if link_source_code && link_source_code!='0'}}
 						<a href="{{>link_source_code}}">{{>link_source_code}}</a>
 					{{else}}
 						<i>Ikke oppgitt</i>

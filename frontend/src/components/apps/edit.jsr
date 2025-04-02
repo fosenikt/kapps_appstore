@@ -114,7 +114,7 @@
 					<h3>Installasjonsveiledning</h3>
 
 					<div id="textAppEditInst">
-						{{:description}}
+						{{:installation}}
 					</div>
 				</div>
 
