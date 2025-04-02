@@ -74,6 +74,10 @@
 							<i class="fas fa-file-alt"></i>
 							<p>Dokument</p>
 						</div>
+						<div class="option-box-type option-box" data-value="7">
+							<i class="fas fa-arrow-progress"></i>
+							<p>Prosess</p>
+						</div>
 						<div class="option-box-type option-box" data-value="5">
 							<i class="fas fa-code"></i>
 							<p>Skript</p>
