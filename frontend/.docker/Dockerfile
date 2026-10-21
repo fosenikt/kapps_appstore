@@ -1,4 +1,5 @@
-FROM php:8.2-apache
+# PHP 8.4 — patched against CVE-2026-109618/109619 (PHP2Shell). Rebuild pulls >= 8.4.27.
+FROM php:8.4-apache
 COPY ./.docker/vhost.conf /etc/apache2/sites-available/000-default.conf
 
 RUN a2enmod rewrite

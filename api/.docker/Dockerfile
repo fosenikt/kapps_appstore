@@ -1,7 +1,8 @@
 # Get Composer
-FROM composer:2.0 as vendor
+FROM composer:2 as vendor
 
-FROM php:8.2-apache
+# PHP 8.4 — patched against CVE-2026-109618/109619 (PHP2Shell). Rebuild pulls >= 8.4.27.
+FROM php:8.4-apache
 
 # Install necessary extensions
 RUN apt-get update && apt-get install -y \

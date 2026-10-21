@@ -1,19 +1,18 @@
-FROM php:8.2-cli
+# PHP 8.4 — patched against CVE-2026-109618/109619 (PHP2Shell).
+FROM php:8.4-cli
 
-# Install necessary extensions and tools
+# Install necessary extensions and tools.
+# Note: ext/imap was removed from PHP core in 8.4 (moved to PECL) and is unused by this app, so it is not installed.
 RUN apt-get clean && apt-get update && apt-get install -y \
     libzip-dev \
     libpng-dev \
     libjpeg-dev \
     libicu-dev \
-    libc-client-dev \
-    libkrb5-dev \
     unzip \
     curl \
-    && docker-php-ext-configure imap --with-kerberos --with-imap-ssl \
-    && docker-php-ext-install -j$(nproc) intl imap zip mysqli gd exif bcmath iconv \
+    && docker-php-ext-install -j$(nproc) intl zip mysqli gd exif bcmath iconv \
     && pecl install apcu \
-    && docker-php-ext-enable apcu imap mysqli
+    && docker-php-ext-enable apcu mysqli
 
 # Install Composer
 COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
