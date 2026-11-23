@@ -25,6 +25,29 @@ class User
 
 
 
+	/**
+	 * Check that a token still maps to an active session row.
+	 * signout() deletes the row, so this is what makes logout actually revoke a token
+	 * (the JWT itself stays cryptographically valid until it expires).
+	 */
+	private function has_active_session($token)
+	{
+		if (empty($token)) {
+			return false;
+		}
+
+		$stmt = $this->db->prepare("SELECT id FROM user_sessions WHERE token = ? LIMIT 1");
+		$stmt->bind_param('s', $token);
+		$stmt->execute();
+		$stmt->store_result();
+		$exists = $stmt->num_rows > 0;
+		$stmt->close();
+
+		return $exists;
+	}
+
+
+
 	public function me()
 	{
 		$r = array();
@@ -62,6 +85,15 @@ class User
 
 			if (empty($user_id)) {
 				error_log('No userID found in token payload');
+				http_response_code(401);
+				return array();
+			}
+
+
+			// The token must still have an active server-side session. signout() deletes
+			// the session row, so a signed-out (but not yet JWT-expired) token is rejected.
+			if (!$this->has_active_session($get_token)) {
+				error_log('Token has no active session (signed out or revoked)');
 				http_response_code(401);
 				return array();
 			}
@@ -145,6 +177,14 @@ class User
 		if (empty($user_id)) {
 			error_log('No userID found in token payload');
 			//return array('status' => 'error', 'message' => 'No userID found in token payload');
+			return false;
+		}
+
+
+		// The token must still have an active server-side session. signout() deletes the
+		// session row, so a signed-out (but not yet JWT-expired) token is revoked here.
+		if (!$this->has_active_session($get_token)) {
+			error_log('Token has no active session (signed out or revoked)');
 			return false;
 		}
 
@@ -252,8 +292,17 @@ class User
 
 	public function signout()
 	{
+		// Fetch the current bearer token. This was previously an undefined variable, so the
+		// DELETE matched nothing and signout never actually revoked the token.
+		$objTools = new Utils;
+		$get_token = $objTools->getBearerToken();
+
 		$user = $this->me();
-		$user_id = $user['id'];
+		$user_id = $user['id'] ?? null;
+
+		if (empty($get_token) || empty($user_id)) {
+			return array('status' => 'error', 'message' => 'Not authenticated');
+		}
 
 
 		// Prepare our SQL, preparing the SQL statement will prevent SQL injection.

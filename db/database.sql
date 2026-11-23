@@ -902,6 +902,7 @@ CREATE TABLE IF NOT EXISTS `login_keys` (
   `user_id` int NOT NULL,
   `pincode` varchar(16) NOT NULL,
   `hash` varchar(256) NOT NULL,
+  `attempts` tinyint NOT NULL DEFAULT 0 COMMENT 'Failed verification attempts (PIN rate-limiting)',
   PRIMARY KEY (`id`),
   KEY `user_id` (`user_id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;

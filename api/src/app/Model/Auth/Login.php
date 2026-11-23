@@ -149,31 +149,72 @@ class Login
 
 
 
-		// Prepare our SQL, preparing the SQL statement will prevent SQL injection.
-		// time_expires > NOW() enforces the 1-hour validity (bounds brute-force of the PIN).
-		if ($stmt = $this->db->prepare('SELECT user_id FROM login_keys WHERE user_id=? AND pincode=? AND time_expires > NOW() LIMIT 1')) {
-			// Bind parameters (s = string, i = int, b = blob, etc), in our case the username is a string so we use "s"
+		// Rate-limited verification: at most MAX_ATTEMPTS guesses per issued code, and the
+		// code must still be valid (time_expires > NOW()). This bounds brute-force of the
+		// 5-digit PIN. Requires the login_keys.attempts column (see db/migrations). If that
+		// column is missing we fall back to a plain match so login never breaks before the
+		// migration is applied.
+		$MAX_ATTEMPTS = 5;
+
+		try {
+			$stmt = $this->db->prepare('SELECT id, pincode, attempts FROM login_keys WHERE user_id=? AND time_expires > NOW() ORDER BY id DESC LIMIT 1');
+			$stmt->bind_param('i', $user_id);
+			$stmt->execute();
+			$row = $stmt->get_result()->fetch_assoc();
+			$stmt->close();
+
+			if (!$row) {
+				return array('status' => 'error', 'message' => 'Ingen aktiv innloggingskode. Be om en ny.');
+			}
+
+			// Too many wrong guesses already -> invalidate and force a new code
+			if ((int)$row['attempts'] >= $MAX_ATTEMPTS) {
+				$this->delete_users_login_codes($user_id);
+				return array('status' => 'error', 'message' => 'For mange forsøk. Be om en ny innloggingskode.');
+			}
+
+			// Correct code (constant-time compare)
+			if (hash_equals((string)$row['pincode'], (string)$code)) {
+				$this->delete_users_login_codes($user_id);
+				$payload = array('user_id' => $user_id, 'mail' => $mail);
+				$token = $this->Utils->create_token($payload);
+				return array('status' => 'success', 'token' => $token);
+			}
+
+			// Wrong code: count the attempt and lock out when the limit is reached
+			$new_attempts = (int)$row['attempts'] + 1;
+			$upd = $this->db->prepare('UPDATE login_keys SET attempts=? WHERE id=?');
+			$upd->bind_param('ii', $new_attempts, $row['id']);
+			$upd->execute();
+			$upd->close();
+
+			if ($new_attempts >= $MAX_ATTEMPTS) {
+				$this->delete_users_login_codes($user_id);
+			}
+
+			return array('status' => 'error');
+		}
+
+		// Fallback (e.g. login_keys.attempts not migrated yet): plain expiry-checked match.
+		catch (\Throwable $e) {
+			error_log('validate_code: attempts path unavailable, using fallback. ' . $e->getMessage());
+
+			$stmt = $this->db->prepare('SELECT user_id FROM login_keys WHERE user_id=? AND pincode=? AND time_expires > NOW() LIMIT 1');
 			$stmt->bind_param('si', $user_id, $code);
 			$stmt->execute();
-			
-			// Store the result so we can check if the account exists in the database.
 			$stmt->store_result();
+			$ok = $stmt->num_rows == 1;
+			$stmt->close();
+
+			if ($ok) {
+				$this->delete_users_login_codes($user_id);
+				$payload = array('user_id' => $user_id, 'mail' => $mail);
+				$token = $this->Utils->create_token($payload);
+				return array('status' => 'success', 'token' => $token);
+			}
+
+			return array('status' => 'error');
 		}
-
-
-		if($stmt->num_rows == 1) {
-			
-			// Delete old login-codes
-			$this->delete_users_login_codes($user_id);
-
-			// Generate token
-			$payload = array('user_id' => $user_id, 'mail' => $mail);
-			$token = $this->Utils->create_token($payload);
-
-			return array('status' => 'success', 'token' => $token);
-		}
-		
-		return array('status' => 'error');
 	}
 
 
