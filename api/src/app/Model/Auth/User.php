@@ -67,9 +67,12 @@ class User
 			}
 
 
-			// Query user
-			$query = "SELECT id, mail, customer_id, firstname, lastname, initials, mobile, company_role, admin FROM users WHERE id LIKE '$user_id' LIMIT 1";
-			$result = $this->db->query($query);
+			// Query user (parameterized)
+			$query = "SELECT id, mail, customer_id, firstname, lastname, initials, mobile, company_role, admin FROM users WHERE id = ? LIMIT 1";
+			$stmt = $this->db->prepare($query);
+			$stmt->bind_param('i', $user_id);
+			$stmt->execute();
+			$result = $stmt->get_result();
 			$numRows = $result->num_rows;
 
 			if ($numRows > 0) {
@@ -187,8 +190,10 @@ class User
 	{
 		$r = array();
 
-		$query = "SELECT * FROM company WHERE id='$id'";
-		$result = $this->db->query($query);
+		$stmt = $this->db->prepare("SELECT * FROM company WHERE id = ?");
+		$stmt->bind_param('i', $id);
+		$stmt->execute();
+		$result = $stmt->get_result();
 
 		if ($result->num_rows > 0) {
 			while ($row = $result->fetch_array()) {

@@ -132,6 +132,13 @@ class Search {
      */
     public function apps()
     {
+		$this->AuthUser = new AuthUser;
+        if (!$this->AuthUser->isAuthenticated()) {
+            header('HTTP/1.0 403 Forbidden');
+            echo json_encode(['status' => 'error', 'message' => 'Access denied']);
+            exit;
+        }
+
         $obj = new \Kapps\Model\Search\Search();
         return $obj->apps($_POST['q']);
     }

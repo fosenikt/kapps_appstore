@@ -185,21 +185,33 @@ class Utils
 			$stmt->close();
 		}
 
-		$query = "INSERT INTO user_sessions SET
-					user_id='$user_id',
-					title='$title',
-					token='$token',
-					time_expires='$expires',
-					user_agent='$user_agent', 
-					ip_address='$ip_address'";
-		$result = $this->db->query($query);
+		// Parameterized INSERT - user_agent and ip_address come from attacker-controlled
+		// HTTP headers and must never be concatenated into the query string.
+		$stmt = $this->db->prepare("INSERT INTO user_sessions SET
+					user_id=?,
+					title=?,
+					token=?,
+					time_expires=?,
+					user_agent=?,
+					ip_address=?");
+
+		if ($stmt === false) {
+			error_log('Token: Could not store user session in database, for userID: ' . $user_id);
+			return array('status' => 'error', 'message' => 'db_error', 'error' => $this->db->error);
+		}
+
+		$stmt->bind_param('isssss', $user_id, $title, $token, $expires, $user_agent, $ip_address);
+		$result = $stmt->execute();
 
 		if ($result) {
+			$stmt->close();
 			error_log('Token: Stored in user_sessions for user: ' . $user_id);
 			return array('status' => 'success');
 		} else {
+			$error = $stmt->error;
+			$stmt->close();
 			error_log('Token: Could not store user session in database, for userID: ' . $user_id);
-			return array('status' => 'error', 'message' => 'db_error', 'error' => $this->db->error);
+			return array('status' => 'error', 'message' => 'db_error', 'error' => $error);
 		}
 	}
 

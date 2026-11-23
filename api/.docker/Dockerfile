@@ -29,6 +29,7 @@ COPY ./.docker/php.ini /usr/local/etc/php/php.ini
 
 RUN a2enmod rewrite
 RUN a2enmod ssl
+RUN a2enmod headers
 
 COPY ./src /var/www/html/
 

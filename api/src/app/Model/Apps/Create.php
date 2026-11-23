@@ -142,9 +142,11 @@ class Create
 	{
 		$r = array(); // Declare return-array
 
-		// Query apps
-		$query = "SELECT * FROM app_types WHERE id='$id'";
-		$result = $this->db->query($query);
+		// Query apps (parameterized)
+		$stmt = $this->db->prepare("SELECT * FROM app_types WHERE id = ?");
+		$stmt->bind_param('i', $id);
+		$stmt->execute();
+		$result = $stmt->get_result();
 
 		if ($result->num_rows > 0) {
 			while ($row = $result->fetch_array()) {

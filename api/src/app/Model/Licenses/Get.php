@@ -47,9 +47,11 @@ class Get
 		$r = array(); // Declare return-array
 
 
-		// Query apps
-		$query = "SELECT * FROM licenses WHERE id='$id'";
-		$result = $this->db->query($query);
+		// Query apps (parameterized)
+		$stmt = $this->db->prepare("SELECT * FROM licenses WHERE id = ?");
+		$stmt->bind_param('i', $id);
+		$stmt->execute();
+		$result = $stmt->get_result();
 
 		if ($result->num_rows > 0) {
 			while ($row = $result->fetch_array()) {
@@ -72,12 +74,14 @@ class Get
 	{
 		$r = null; // Declare return-array
 
-		// Query apps
-		$query = "SELECT D.*
+		// Query apps (parameterized)
+		$stmt = $this->db->prepare("SELECT D.*
 				  FROM license_has_details AS HAS
 				  INNER JOIN license_details AS D ON HAS.details_id = D.id
-				  WHERE HAS.license_id='$license_id'";
-		$result = $this->db->query($query);
+				  WHERE HAS.license_id = ?");
+		$stmt->bind_param('i', $license_id);
+		$stmt->execute();
+		$result = $stmt->get_result();
 
 		if ($result->num_rows > 0) {
 			while ($row = $result->fetch_array()) {

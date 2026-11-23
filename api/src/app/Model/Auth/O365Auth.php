@@ -45,9 +45,14 @@ class O365Auth
 	 */
 	public function auth_o365_user($profile, $tokens)
 	{
-		// Check if user is found by O365 ID
-		$query = "SELECT id FROM users WHERE o365_id LIKE '{$profile['id']}' OR mail LIKE '{$profile['userPrincipalName']}'";
-		$result = $this->db->query($query);
+		// Check if user is found by O365 ID (parameterized: profile fields come from the
+		// IdP and the /common/ endpoint lets a user control their own givenName/surname/UPN)
+		$o365_id = $profile['id'];
+		$upn = $profile['userPrincipalName'];
+		$stmt = $this->db->prepare("SELECT id FROM users WHERE o365_id LIKE ? OR mail LIKE ?");
+		$stmt->bind_param('ss', $o365_id, $upn);
+		$stmt->execute();
+		$result = $stmt->get_result();
 
 		if (!$result) {
 			error_log('Query to check for existing user failed');
@@ -88,9 +93,11 @@ class O365Auth
 		//$query = "UPDATE users SET o365_token='". json_encode($tokens) ."', customer_id='{$customer['id']}' WHERE id='$user_id'";
 		//$result = $db->query($query);
 
-		// Add event
-		$query = "INSERT INTO event SET user_id='$user_id', domain='Auth', event_type='GuiLogin'";
-		$result = $this->db->query($query);
+		// Add event (parameterized)
+		$stmt = $this->db->prepare("INSERT INTO event SET user_id=?, domain='Auth', event_type='GuiLogin'");
+		$stmt->bind_param('i', $user_id);
+		$stmt->execute();
+		$stmt->close();
 
 		return $token;
 	}
@@ -112,8 +119,14 @@ class O365Auth
 			return false;
 		}
 
-		$query = "UPDATE users SET o365_id='{$profile['id']}', firstname='{$profile['givenName']}', lastname='{$profile['surname']}' WHERE o365_id='{$profile['id']}'";
-		$result = $this->db->query($query);
+		// Parameterized (profile fields are IdP/user-controlled)
+		$o365_id = $profile['id'];
+		$firstname = $profile['givenName'];
+		$lastname = $profile['surname'];
+		$stmt = $this->db->prepare("UPDATE users SET o365_id=?, firstname=?, lastname=? WHERE o365_id=?");
+		$stmt->bind_param('ssss', $o365_id, $firstname, $lastname, $o365_id);
+		$result = $stmt->execute();
+		$stmt->close();
 
 		if ($result) {
 			return true;

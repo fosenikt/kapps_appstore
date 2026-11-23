@@ -49,55 +49,44 @@ class Search
 
 		$r = null;
 
-		// Check for content in search-string, and split each words into an array
-		if (strlen($q) > 1)
-			$qarr = explode(" ", $q);
-
-		$query = "SELECT A.id, A.title, A.short_description, A.primary_image, A.company_id, 
+		$query = "SELECT A.id, A.title, A.short_description, A.primary_image, A.company_id,
 					C.title AS company_title, C.logo AS company_logo
 				  FROM apps AS A
 				  INNER JOIN company AS C ON C.public_id = A.company_id
-				  INNER JOIN users AS U ON U.id = A.created_by
-				  ";
+				  INNER JOIN users AS U ON U.id = A.created_by";
 
-		// Set counter to 0
-		$t = 0;
+		// Build search conditions with bound parameters (prevents SQL injection)
+		$conditions = [];
+		$params = [];
+		$param_types = '';
 
-		// Count words in search-string
-		$n = count($qarr);
-		
-		// Loop each words and build the query to search for each word
 		if (strlen($q) > 1) {
-			$query .= " WHERE ";
-
-			foreach($qarr as $so) {
-			  $query .= "(
-			  	        A.title LIKE '%$so%' OR 
-			  	        A.short_description LIKE '%$so%' OR 
-			  	        A.tags LIKE '%$so%' OR 
-			  	        C.title LIKE '%$so%'
-			  	       ) ";
-			  
-				
-				// Add AND to earch word
-				if($t++ < $n - 1)
-				{
-					$query .= "AND ";
-				}
+			foreach (explode(" ", $q) as $so) {
+				$conditions[] = "(A.title LIKE ? OR A.short_description LIKE ? OR A.tags LIKE ? OR C.title LIKE ?)";
+				$param_types .= 'ssss';
+				$search_term = '%' . $so . '%';
+				$params = array_merge($params, array_fill(0, 4, $search_term));
 			}
 		}
-		
-		// End search string
-		$query .= " AND (A.status='published')";
-		$query .= " ORDER BY A.title ASC";
-		$query .= " LIMIT $limit";
 
+		// Always restrict to published apps
+		if (!empty($conditions)) {
+			$query .= " WHERE " . implode(" AND ", $conditions) . " AND (A.status = 'published')";
+		} else {
+			$query .= " WHERE (A.status = 'published')";
+		}
 
-		$result = $this->db->query($query);
-		$numRows = $result->num_rows;
+		$query .= " ORDER BY A.title ASC LIMIT ?";
+		$param_types .= 'i';
+		$params[] = (int)$limit;
+
+		$stmt = $this->db->prepare($query);
+		$stmt->bind_param($param_types, ...$params);
+		$stmt->execute();
+		$result = $stmt->get_result();
 
 		while ($row = $result->fetch_array()) {
-			
+
 
 			$r[] = array(
 				'id' => $row['id'],
@@ -125,45 +114,34 @@ class Search
 
 		$r = null;
 
-		// Check for content in search-string, and split each words into an array
-		if (strlen($q) > 1)
-			$qarr = explode(" ", $q);
-
 		$query = "SELECT * FROM company AS C";
 
-		// Set counter to 0
-		$t = 0;
+		// Build search conditions with bound parameters (prevents SQL injection)
+		$conditions = [];
+		$params = [];
+		$param_types = '';
 
-		// Count words in search-string
-		$n = count($qarr);
-		
-		// Loop each words and build the query to search for each word
 		if (strlen($q) > 1) {
-			$query .= " WHERE ";
-
-			foreach($qarr as $so) {
-			  $query .= "(
-			  	        C.domain LIKE '%$so%' OR 
-			  	        C.title LIKE '%$so%' OR 
-			  	        C.org_numb LIKE '%$so%'
-			  	       ) ";
-			  
-				
-				// Add AND to earch word
-				if($t++ < $n - 1)
-				{
-					$query .= "AND ";
-				}
+			foreach (explode(" ", $q) as $so) {
+				$conditions[] = "(C.domain LIKE ? OR C.title LIKE ? OR C.org_numb LIKE ?)";
+				$param_types .= 'sss';
+				$search_term = '%' . $so . '%';
+				$params = array_merge($params, array_fill(0, 3, $search_term));
 			}
 		}
-		
-		// End search string
-		$query .= " ORDER BY C.title ASC";
-		$query .= " LIMIT $limit";
 
+		if (!empty($conditions)) {
+			$query .= " WHERE " . implode(" AND ", $conditions);
+		}
 
-		$result = $this->db->query($query);
-		$numRows = $result->num_rows;
+		$query .= " ORDER BY C.title ASC LIMIT ?";
+		$param_types .= 'i';
+		$params[] = (int)$limit;
+
+		$stmt = $this->db->prepare($query);
+		$stmt->bind_param($param_types, ...$params);
+		$stmt->execute();
+		$result = $stmt->get_result();
 
 		while ($row = $result->fetch_array()) {
 			

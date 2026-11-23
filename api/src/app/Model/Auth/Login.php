@@ -193,7 +193,9 @@ class Login
 		}
 
 		// Prepare our SQL, preparing the SQL statement will prevent SQL injection.
-		if ($stmt = $this->db->prepare('SELECT user_id status FROM login_keys WHERE hash LIKE ? AND user_id=? LIMIT 1')) {
+		// Use exact match (=) not LIKE: LIKE lets an attacker pass "%" as the hash to
+		// match ANY pending login code and take over an account without knowing it.
+		if ($stmt = $this->db->prepare('SELECT user_id, status FROM login_keys WHERE hash = ? AND user_id = ? LIMIT 1')) {
 			// Bind parameters (s = string, i = int, b = blob, etc), in our case the username is a string so we use "s"
 			$stmt->bind_param('si', $hash, $user_id);
 			$stmt->execute();
@@ -234,14 +236,18 @@ class Login
 		$parts = explode('.', $domain);
 		$last_part = end($parts);
 
-		$query = "SELECT domain FROM company WHERE (domain LIKE '$domain' OR domain LIKE '$last_part')";
-		$result = $this->db->query($query);
+		// Parameterized to prevent SQL injection (pre-auth, reachable via /auth/login/send)
+		if ($stmt = $this->db->prepare("SELECT domain FROM company WHERE (domain LIKE ? OR domain LIKE ?)")) {
+			$stmt->bind_param('ss', $domain, $last_part);
+			$stmt->execute();
+			$stmt->store_result();
+			$num_rows = $stmt->num_rows;
+			$stmt->close();
 
-		if ($result->num_rows == 0) {
-			return false;
-		} else {
-			return true;
+			return $num_rows > 0;
 		}
+
+		return false;
 	}
 
 
@@ -417,7 +423,7 @@ class Login
 		$expires->modify('+ 1 hour');
 		$time_expires = $expires->format('Y-m-d H:i:s');
 
-		$pin_code = rand(11111, 99999);
+		$pin_code = random_int(11111, 99999);
 		$hash = hash('sha256', $this->generateRandomString(15));
 
 		// Prepare our SQL, preparing the SQL statement will prevent SQL injection.
@@ -522,7 +528,7 @@ class Login
 		$charactersLength = strlen($characters);
 		$randomString = '';
 		for ($i = 0; $i < $length; $i++) {
-			$randomString .= $characters[rand(0, $charactersLength - 1)];
+			$randomString .= $characters[random_int(0, $charactersLength - 1)];
 		}
 		return $randomString;
 	}

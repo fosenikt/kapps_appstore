@@ -1,0 +1,7 @@
+{
+  "name": "Kapps",
+  "description": "Appstore for offentlig sektor: del og gjenbruk åpne applikasjoner og tjenester på tvers av kommuner, fylker og statlige virksomheter.",
+  "logo": "frontend/src/assets/images/logo/kapps_no.svg",
+  "color": "#4c67dd",
+  "website": "https://apps.kapps.no"
+}

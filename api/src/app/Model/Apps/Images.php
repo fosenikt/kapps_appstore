@@ -232,8 +232,10 @@ class Images
 	 */
 	public function get_primary_image($id)
 	{
-		$query = "SELECT primary_image FROM apps WHERE id='$id'";
-		$result = $this->db->query($query);
+		$stmt = $this->db->prepare("SELECT primary_image FROM apps WHERE id=?");
+		$stmt->bind_param('i', $id);
+		$stmt->execute();
+		$result = $stmt->get_result();
 
 		// If merchandise not found, return false
 		if ($result->num_rows == 0) {
@@ -317,9 +319,11 @@ class Images
 		}
 
 
-		// Query
-		$query = "UPDATE apps SET primary_image='$image' WHERE id='$id'";
-		$result = $this->db->query($query);
+		// Query (parameterized: $image is fully attacker-controlled POST input)
+		$stmt = $this->db->prepare("UPDATE apps SET primary_image=? WHERE id=?");
+		$stmt->bind_param('si', $image, $id);
+		$result = $stmt->execute();
+		$stmt->close();
 
 
 		// If query = OK
@@ -597,14 +601,20 @@ class Images
 	*/
 	public function chk_app_access($app_id)
 	{
-		$query = "SELECT id FROM apps WHERE id='$app_id' AND company_id='{$this->thisUser['customer']['public_id']}'";
-		$result = $this->db->query($query);
-
-		if ($result->num_rows > 0) {
-			return true;
+		$public_id = $this->thisUser['customer']['public_id'] ?? null;
+		if (empty($public_id)) {
+			return false;
 		}
 
-		return false;
+		// Parameterized: this IS the access-control check, so $app_id must not be injectable.
+		$stmt = $this->db->prepare("SELECT id FROM apps WHERE id=? AND company_id=?");
+		$stmt->bind_param('is', $app_id, $public_id);
+		$stmt->execute();
+		$stmt->store_result();
+		$num_rows = $stmt->num_rows;
+		$stmt->close();
+
+		return $num_rows > 0;
 	}
 
 }

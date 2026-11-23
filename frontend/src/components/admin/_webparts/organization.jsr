@@ -6,7 +6,7 @@
 	<div class="info">
 		<div class="title">
 			<a href="/organization/profile/{{>public_id}}">
-				{{:title}}
+				{{>title}}
 			</a>
 		</div>
 

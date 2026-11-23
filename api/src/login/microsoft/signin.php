@@ -4,9 +4,18 @@ require_once('../../app/autoload.php');
 require_once('../../vendor/autoload.php');
 
 if (isset($_GET['redir'])) {
-	error_log($_GET['redir']);
-	$_SESSION['redir'] = $_GET['redir'];
+	$redir = (string)$_GET['redir'];
 
+	// Open-redirect guard: only accept a same-site absolute path (e.g. "/apps/all").
+	// Reject absolute URLs ("http://evil"), protocol-relative ("//evil"), backslash
+	// tricks ("/\evil") and anything containing a scheme (":"). This also stops the
+	// JWT (passed back on the login URL) from leaking to an attacker-controlled host.
+	if ($redir === '' || $redir[0] !== '/' || strpos($redir, '//') === 0
+		|| strpos($redir, '\\') !== false || strpos($redir, ':') !== false) {
+		$redir = '';
+	}
+
+	$_SESSION['redir'] = $redir;
 	error_log('Session redir #1: ' . $_SESSION['redir']);
 }
 

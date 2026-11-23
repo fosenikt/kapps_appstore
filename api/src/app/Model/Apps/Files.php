@@ -113,8 +113,10 @@ class Files
 
 		// Array for allowed filetypes
 		// Remember that any changes here, also need to be reflected in backend .htaccess, to allow user to download the actual file
-		$ext_img   = array( 'jpg', 'jpeg', 'png', 'gif', 'bmp', 'svg', 'ico', 'webp' ); //Images
-		$ext_file  = array( 'doc', 'docx', 'rtf', 'pdf', 'xls', 'xlsx', 'txt', 'csv', 'html', 'xhtml', 'psd', 'sql', 'log', 'fla', 'xml', 'ade', 'adp', 'mdb', 'accdb', 'ppt', 'pptm', 'pptx', 'odt', 'ots', 'ott', 'odb', 'odg', 'otp', 'otg', 'odf', 'ods', 'odp', 'css', 'ai', 'kmz','dwg', 'dxf', 'hpgl', 'plt', 'spl', 'step', 'stp', 'iges', 'igs', 'sat', 'cgm', 'tiff' ); //Files
+		// NOTE: active web formats (html, xhtml, xml, svg, css) are intentionally excluded -
+		// they execute script in the app's origin when opened directly => stored XSS.
+		$ext_img   = array( 'jpg', 'jpeg', 'png', 'gif', 'bmp', 'ico', 'webp' ); //Images
+		$ext_file  = array( 'doc', 'docx', 'rtf', 'pdf', 'xls', 'xlsx', 'txt', 'csv', 'psd', 'sql', 'log', 'fla', 'ade', 'adp', 'mdb', 'accdb', 'ppt', 'pptm', 'pptx', 'odt', 'ots', 'ott', 'odb', 'odg', 'otp', 'otg', 'odf', 'ods', 'odp', 'ai', 'kmz','dwg', 'dxf', 'hpgl', 'plt', 'spl', 'step', 'stp', 'iges', 'igs', 'sat', 'cgm', 'tiff' ); //Files
 		$ext_video = array( 'mov', 'mpeg', 'm4v', 'mp4', 'avi', 'mpg', 'wma', "flv", "webm" ); //Video
 		$ext_music = array( 'mp3', 'mpga', 'm4a', 'ac3', 'aiff', 'mid', 'ogg', 'wav' ); //Audio
 		$ext_misc  = array( 'zip', 'rar', 'gz', 'tar', 'iso', 'dmg', 'bprelease' ); //Div
@@ -566,14 +568,20 @@ class Files
 	*/
 	public function chk_app_access($app_id)
 	{
-		$query = "SELECT id FROM apps WHERE id='$app_id' AND company_id='{$this->thisUser['customer']['public_id']}'";
-		$result = $this->db->query($query);
-
-		if ($result->num_rows > 0) {
-			return true;
+		$public_id = $this->thisUser['customer']['public_id'] ?? null;
+		if (empty($public_id)) {
+			return false;
 		}
 
-		return false;
+		// Parameterized: this IS the access-control check, so $app_id must not be injectable.
+		$stmt = $this->db->prepare("SELECT id FROM apps WHERE id=? AND company_id=?");
+		$stmt->bind_param('is', $app_id, $public_id);
+		$stmt->execute();
+		$stmt->store_result();
+		$num_rows = $stmt->num_rows;
+		$stmt->close();
+
+		return $num_rows > 0;
 	}
 
 }

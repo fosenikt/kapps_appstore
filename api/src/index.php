@@ -26,26 +26,33 @@ header('Content-Type: application/json');
  *
  */
 function cors() {
-	// Allow from any origin
-	if (isset($_SERVER['HTTP_ORIGIN'])) {
-		// Decide if the origin in $_SERVER['HTTP_ORIGIN'] is one
-		// you want to allow, and if so:
+	// Only allow the trusted frontend origin(s) to make credentialed requests.
+	// Reflecting an arbitrary Origin together with Allow-Credentials lets any website
+	// make authenticated cross-origin calls on behalf of a user.
+	$allowed_origins = array(
+		'https://'.FRONTEND_HOST,
+		'http://'.FRONTEND_HOST,
+	);
+
+	$origin_allowed = isset($_SERVER['HTTP_ORIGIN']) && in_array($_SERVER['HTTP_ORIGIN'], $allowed_origins, true);
+
+	if ($origin_allowed) {
 		header("Access-Control-Allow-Origin: {$_SERVER['HTTP_ORIGIN']}");
-		//header("Access-Control-Allow-Origin: *");
+		header('Vary: Origin');
 		header('Access-Control-Allow-Credentials: true');
 		header('Access-Control-Max-Age: 86400');    // cache for 1 day
-		//header("Access-Control-Allow-Headers: Content-Type, Access-Control-Allow-Headers, Authorization, X-Requested-With");
 	}
 
 	// Access-Control headers are received during OPTIONS requests
 	if ($_SERVER['REQUEST_METHOD'] == 'OPTIONS') {
 
-		if (isset($_SERVER['HTTP_ACCESS_CONTROL_REQUEST_METHOD']))
+		if ($origin_allowed) {
 			// may also be using PUT, PATCH, HEAD etc
-			header("Access-Control-Allow-Methods: POST, GET, PUT, DELETE, OPTIONS");         
+			header("Access-Control-Allow-Methods: POST, GET, PUT, DELETE, OPTIONS");
 
-		if (isset($_SERVER['HTTP_ACCESS_CONTROL_REQUEST_HEADERS']))
-			header("Access-Control-Allow-Headers: {$_SERVER['HTTP_ACCESS_CONTROL_REQUEST_HEADERS']}");
+			if (isset($_SERVER['HTTP_ACCESS_CONTROL_REQUEST_HEADERS']))
+				header("Access-Control-Allow-Headers: {$_SERVER['HTTP_ACCESS_CONTROL_REQUEST_HEADERS']}");
+		}
 
 		exit(0);
 	}

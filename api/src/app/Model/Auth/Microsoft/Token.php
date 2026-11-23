@@ -56,9 +56,11 @@ class Token {
 
         
         $userID = $this->thisUser['id'];
-        
-        $query = "SELECT * FROM system_users_o365_keys WHERE user_id='$userID'";
-		$result = $this->db->query($query);
+
+        $stmt = $this->db->prepare("SELECT * FROM system_users_o365_keys WHERE user_id = ?");
+        $stmt->bind_param('i', $userID);
+        $stmt->execute();
+        $result = $stmt->get_result();
         if ($result->num_rows == 0) {
             return array('status' => 'error', 'message' => 'No user/access token found');
         }

@@ -5,7 +5,7 @@
 
 	<div class="info">
 		<div class="title">
-			{{:displayname}}
+			{{>displayname}}
 		</div>
 
 		<div class="help muted">

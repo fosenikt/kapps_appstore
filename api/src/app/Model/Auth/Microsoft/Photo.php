@@ -153,10 +153,12 @@ class Photo
 		if ($this->debug) error_log('Store filename in database');
 		$time_now = date('Y-m-d H:i:s');
 
-		// Save to DB
-		$query = "UPDATE users SET photo='$filename.jpg', last_update='$time_now' WHERE mail LIKE '$upn'";
-		if ($this->debug) error_log($query);
-		$result = $this->db->query($query);
+		// Save to DB (parameterized: $upn is the O365 userPrincipalName)
+		$photo_val = $filename.'.jpg';
+		$stmt = $this->db->prepare("UPDATE users SET photo=?, last_update=? WHERE mail LIKE ?");
+		$stmt->bind_param('sss', $photo_val, $time_now, $upn);
+		$result = $stmt->execute();
+		$stmt->close();
 
 		if ($result) {
 			return true;

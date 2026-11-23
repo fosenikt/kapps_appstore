@@ -114,16 +114,19 @@ class Stats
 	{
 		$r = null;
 
-		$query = "SELECT A.id, A.time_created, A.title, A.short_description, A.primary_image, A.company_id, 
+		$query = "SELECT A.id, A.time_created, A.title, A.short_description, A.primary_image, A.company_id,
 						 C.title AS company_title, C.logo AS company_logo,
 						 T.id AS type_id, T.title AS type_title
-				  FROM apps AS A 
+				  FROM apps AS A
 				  INNER JOIN company AS C ON A.company_id = C.public_id
 				  INNER JOIN app_types AS T ON T.id = A.type_id
-				  WHERE A.status LIKE 'published' AND A.id='$id'
-				  ORDER BY A.time_created DESC 
+				  WHERE A.status LIKE 'published' AND A.id = ?
+				  ORDER BY A.time_created DESC
 				  LIMIT 5";
-		$result = $this->db->query($query);
+		$stmt = $this->db->prepare($query);
+		$stmt->bind_param('i', $id);
+		$stmt->execute();
+		$result = $stmt->get_result();
 
 		if ($result->num_rows > 0) {
 			while ($row = $result->fetch_array()) {

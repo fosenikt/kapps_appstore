@@ -233,8 +233,10 @@ class Get
 	{
 		$r = array();
 
-		$query = "SELECT * FROM company WHERE id='$id'";
-		$result = $this->db->query($query);
+		$stmt = $this->db->prepare("SELECT * FROM company WHERE id = ?");
+		$stmt->bind_param('i', $id);
+		$stmt->execute();
+		$result = $stmt->get_result();
 
 		if ($result->num_rows > 0) {
 			while ($row = $result->fetch_array()) {

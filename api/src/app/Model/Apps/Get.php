@@ -170,7 +170,9 @@ class Get
 			return null;
 		}
 
-		// Query apps
+		$public_id = $this->thisUser['customer']['public_id'];
+
+		// Query apps (parameterized to prevent SQL injection)
 		$query = "SELECT A.*,
 						 T.title AS type_title, T.fa_icon AS type_icon,
 						 UC.firstname AS uc_firstname, UC.lastname AS uc_lastname, UC.mail AS uc_mail,
@@ -179,8 +181,11 @@ class Get
 				  INNER JOIN app_types AS T ON A.type_id = T.id
 				  INNER JOIN users AS UC ON A.created_by = UC.id
 				  INNER JOIN users AS UE ON A.updated_by = UE.id
-				  WHERE A.id='$id' AND A.company_id='{$this->thisUser['customer']['public_id']}'";
-		$result = $this->db->query($query);
+				  WHERE A.id=? AND A.company_id=?";
+		$stmt = $this->db->prepare($query);
+		$stmt->bind_param('ss', $id, $public_id);
+		$stmt->execute();
+		$result = $stmt->get_result();
 
 		if ($result->num_rows > 0) {
 			while ($row = $result->fetch_array()) {
@@ -213,7 +218,9 @@ class Get
 			return null;
 		}
 
-		// Query apps
+		$public_id = $this->thisUser['customer']['public_id'];
+
+		// Query apps (parameterized to prevent SQL injection)
 		$query = "SELECT A.*,
 						 T.title AS type_title, T.fa_icon AS type_icon,
 						 UC.firstname AS uc_firstname, UC.lastname AS uc_lastname, UC.mail AS uc_mail,
@@ -222,9 +229,12 @@ class Get
 				  INNER JOIN app_types AS T ON A.type_id = T.id
 				  INNER JOIN users AS UC ON A.created_by = UC.id
 				  INNER JOIN users AS UE ON A.updated_by = UE.id
-				  WHERE A.company_id='{$this->thisUser['customer']['public_id']}'
+				  WHERE A.company_id=?
 				  ORDER BY A.title ASC";
-		$result = $this->db->query($query);
+		$stmt = $this->db->prepare($query);
+		$stmt->bind_param('s', $public_id);
+		$stmt->execute();
+		$result = $stmt->get_result();
 
 		if ($result->num_rows > 0) {
 			while ($row = $result->fetch_array()) {
@@ -259,7 +269,7 @@ class Get
 	{
 		$r = array(); // Declare return-array
 
-		// Query apps
+		// Query apps (parameterized to prevent SQL injection - this endpoint is public)
 		$query = "SELECT A.*,
 						 T.title AS type_title, T.fa_icon AS type_icon,
 						 UC.firstname AS uc_firstname, UC.lastname AS uc_lastname, UC.mail AS uc_mail,
@@ -268,9 +278,12 @@ class Get
 				  INNER JOIN app_types AS T ON A.type_id = T.id
 				  INNER JOIN users AS UC ON A.created_by = UC.id
 				  INNER JOIN users AS UE ON A.updated_by = UE.id
-				  WHERE A.company_id='$id' AND A.status LIKE 'published'
+				  WHERE A.company_id=? AND A.status LIKE 'published'
 				  ORDER BY A.title ASC";
-		$result = $this->db->query($query);
+		$stmt = $this->db->prepare($query);
+		$stmt->bind_param('s', $id);
+		$stmt->execute();
+		$result = $stmt->get_result();
 
 		if ($result->num_rows > 0) {
 			while ($row = $result->fetch_array()) {

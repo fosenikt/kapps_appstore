@@ -65,6 +65,18 @@ class Upload
 		$exp = explode('.', $file["name"]);
 		$ext = strtolower(end($exp));
 
+		// Only allow safe image extensions. Without this an attacker could upload a
+		// .php file into the web-accessible data dir and execute it (RCE).
+		$allowed_ext = array('jpg', 'jpeg', 'png', 'gif', 'webp', 'svg');
+		if (!in_array($ext, $allowed_ext, true)) {
+			return array('status' => 'error', 'message' => 'Ugyldig filformat. Kun bilder (jpg, png, gif, webp, svg) er tillatt.');
+		}
+
+		// For raster images, verify the bytes really are an image (blocks disguised/polyglot files).
+		if ($ext !== 'svg' && @getimagesize($file["tmp_name"]) === false) {
+			return array('status' => 'error', 'message' => 'Filen er ikke et gyldig bilde.');
+		}
+
 		//$file["name"] = str_replace('.jpeg', '.jpg', $file["name"]);
 
 		$hashed_filename = hash('sha256', $this->me['customer']['public_id'].$file["name"]);

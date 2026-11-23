@@ -287,8 +287,11 @@ if (getParameterByName('token') != '' && getParameterByName('token') != null) {
 			//localStorage.setItem("user_access", response.access);
 			localStorage.setItem('user', JSON.stringify(response));
 
-			if (getParameterByName('redir') != null && getParameterByName('redir') != '') {
-				window.location.replace(getParameterByName('redir'));
+			var redir = getParameterByName('redir');
+			// Open-redirect guard: only follow a same-site absolute path (e.g. "/apps/all").
+			// Reject absolute/protocol-relative URLs so the token can't leak to another host.
+			if (redir != null && redir != '' && /^\/(?!\/)/.test(redir) && redir.indexOf('\\') === -1 && redir.indexOf(':') === -1) {
+				window.location.replace(redir);
 			} else {
 				window.location.replace("../");
 			}
