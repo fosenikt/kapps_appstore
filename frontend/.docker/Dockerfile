@@ -4,6 +4,7 @@ COPY ./.docker/vhost.conf /etc/apache2/sites-available/000-default.conf
 
 RUN a2enmod rewrite
 RUN a2enmod ssl
+RUN a2enmod headers
 
 COPY ./src /var/www/html/
 

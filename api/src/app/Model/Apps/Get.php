@@ -404,8 +404,8 @@ class Get
 				'company' => $this->Companies->get_company($data['company_id']),
 				'title' => $data['title'],
 				'short_description' => $data['short_description'],
-				'description' => $data['description'],
-				'installation' => $data['installation'],
+				'description' => $this->sanitize_html($data['description']),
+				'installation' => $this->sanitize_html($data['installation']),
 				'primary_image' => $primary_image,
 				'images' => $get_app_images,
 				'type' => array(
@@ -436,35 +436,31 @@ class Get
 
 
 	/**
-	 * Build mysql-query-string for single parameter
-	 * from comma-seperated list.
-	 * 
+	 * Sanitize user-provided rich text (app description / installation) before output.
+	 * These fields allow HTML from the editor and are rendered unescaped in the UI,
+	 * so they must be run through HTMLPurifier to strip <script>, on* handlers,
+	 * javascript: URIs etc. (stored XSS). Falls back to the raw value only if the
+	 * library is unavailable, so a missing dependency can never fatal the API.
+	 *
 	 * Security: Private
-	 * 
-	 * @author Robert Andresen <ra@fosenikt.no>
-	 * 
-	 * @param 	String    $column   Column name
-	 * @param 	String    $input    Comma-seperated list (e.g. 1,2,3)
-	 * @return 	String    $qWhere   Query string. E.g. (type='1' OR type='2' OR type='3')
+	 *
+	 * @param   String   $html   Raw HTML from the database
+	 * @return  String           Sanitized HTML
 	 */
-	private function create_query($column, $input)
+	private function sanitize_html($html)
 	{
-		if (empty($input)) return '';
-
-		if (isset($input)) {
-			$exploded = explode(',', $input);
-			foreach ($exploded as $key => $item) {
-				$qWhereArr[] = "$column='$item'";
-			}
-
-			if (is_array($qWhereArr) && count($qWhereArr) > 0) {
-				$qWhere = '('.join(' OR ', $qWhereArr).')';
-			}
-
-			return $qWhere;
+		if (empty($html) || !class_exists('\HTMLPurifier')) {
+			return $html;
 		}
 
-		return '';
+		static $purifier = null;
+		if ($purifier === null) {
+			$config = \HTMLPurifier_Config::createDefault();
+			$config->set('Cache.DefinitionImpl', null); // avoid filesystem cache dependency
+			$purifier = new \HTMLPurifier($config);
+		}
+
+		return $purifier->purify($html);
 	}
 
 
