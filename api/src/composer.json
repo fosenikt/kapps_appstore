@@ -5,7 +5,7 @@
         "league/oauth2-client": "^2.0",
         "microsoft/microsoft-graph": "^1.0",
         "vlucas/phpdotenv": "^5.4",
-        "phpmailer/phpmailer": "~6.2",
+        "phpmailer/phpmailer": "~7.2",
         "gumlet/php-image-resize": "1.9.*",
         "zircote/swagger-php": "^4.8",
         "doctrine/annotations": "^2.0",
