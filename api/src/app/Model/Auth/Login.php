@@ -150,7 +150,8 @@ class Login
 
 
 		// Prepare our SQL, preparing the SQL statement will prevent SQL injection.
-		if ($stmt = $this->db->prepare('SELECT user_id FROM login_keys WHERE user_id=? AND pincode=? LIMIT 1')) {
+		// time_expires > NOW() enforces the 1-hour validity (bounds brute-force of the PIN).
+		if ($stmt = $this->db->prepare('SELECT user_id FROM login_keys WHERE user_id=? AND pincode=? AND time_expires > NOW() LIMIT 1')) {
 			// Bind parameters (s = string, i = int, b = blob, etc), in our case the username is a string so we use "s"
 			$stmt->bind_param('si', $user_id, $code);
 			$stmt->execute();
@@ -195,7 +196,7 @@ class Login
 		// Prepare our SQL, preparing the SQL statement will prevent SQL injection.
 		// Use exact match (=) not LIKE: LIKE lets an attacker pass "%" as the hash to
 		// match ANY pending login code and take over an account without knowing it.
-		if ($stmt = $this->db->prepare('SELECT user_id, status FROM login_keys WHERE hash = ? AND user_id = ? LIMIT 1')) {
+		if ($stmt = $this->db->prepare('SELECT user_id, status FROM login_keys WHERE hash = ? AND user_id = ? AND time_expires > NOW() LIMIT 1')) {
 			// Bind parameters (s = string, i = int, b = blob, etc), in our case the username is a string so we use "s"
 			$stmt->bind_param('si', $hash, $user_id);
 			$stmt->execute();
